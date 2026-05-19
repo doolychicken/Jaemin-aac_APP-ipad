@@ -169,6 +169,80 @@ function playPuzzleSound(kind = "success") {
 }
 
 // ── 3. warmupTTS: 첫 터치 시 오디오 엔진 강제 활성화 ─────────────────────────
+function playWeatherSound(label = "") {
+  try {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    const ctx = new AudioCtx();
+    const now = ctx.currentTime;
+    const master = ctx.createGain();
+    master.gain.setValueAtTime(0.0001, now);
+    master.gain.exponentialRampToValueAtTime(1, now + 0.02);
+    master.connect(ctx.destination);
+
+    function tone(freq, start, duration, type = "sine", volume = 0.12) {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, now + start);
+      gain.gain.setValueAtTime(0.0001, now + start);
+      gain.gain.exponentialRampToValueAtTime(volume, now + start + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + start + duration);
+      osc.connect(gain);
+      gain.connect(master);
+      osc.start(now + start);
+      osc.stop(now + start + duration + 0.04);
+    }
+
+    function noise(start, duration, lowpass, volume = 0.08) {
+      const buffer = ctx.createBuffer(1, Math.max(1, Math.floor(ctx.sampleRate * duration)), ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < data.length; i += 1) data[i] = Math.random() * 2 - 1;
+      const source = ctx.createBufferSource();
+      const filter = ctx.createBiquadFilter();
+      const gain = ctx.createGain();
+      filter.type = "lowpass";
+      filter.frequency.setValueAtTime(lowpass, now + start);
+      gain.gain.setValueAtTime(0.0001, now + start);
+      gain.gain.exponentialRampToValueAtTime(volume, now + start + 0.03);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + start + duration);
+      source.buffer = buffer;
+      source.connect(filter);
+      filter.connect(gain);
+      gain.connect(master);
+      source.start(now + start);
+      source.stop(now + start + duration);
+    }
+
+    const name = String(label);
+    if (name.includes("맑")) {
+      tone(784, 0, 0.16, "sine", 0.10);
+      tone(988, 0.10, 0.16, "sine", 0.10);
+      tone(1319, 0.20, 0.20, "sine", 0.09);
+    } else if (name.includes("흐")) {
+      tone(294, 0, 0.42, "triangle", 0.08);
+      tone(247, 0.10, 0.38, "triangle", 0.06);
+    } else if (name.includes("비")) {
+      [0, 0.08, 0.16, 0.24, 0.32].forEach((t, i) => tone(1100 + i * 80, t, 0.06, "sine", 0.055));
+    } else if (name.includes("눈")) {
+      tone(988, 0, 0.22, "sine", 0.08);
+      tone(1319, 0.16, 0.26, "sine", 0.07);
+      tone(1568, 0.34, 0.22, "sine", 0.05);
+    } else if (name.includes("바람")) {
+      noise(0, 0.62, 900, 0.07);
+      tone(330, 0.08, 0.45, "sine", 0.035);
+    } else if (name.includes("천둥") || name.includes("번개")) {
+      noise(0, 0.45, 180, 0.12);
+      tone(82, 0.05, 0.46, "sawtooth", 0.06);
+    } else {
+      tone(660, 0, 0.16, "sine", 0.08);
+      tone(880, 0.12, 0.16, "sine", 0.08);
+    }
+
+    setTimeout(() => ctx.close().catch(() => {}), 900);
+  } catch (_e) {}
+}
+
 function warmupTTS() {
   if (!("speechSynthesis" in window) || ttsWarmedUp) return;
   ttsWarmedUp = true;
@@ -871,6 +945,7 @@ function renderDateHome() {
     btn.appendChild(text);
     btn.addEventListener("click", () => {
       onPick();
+      if (options.weather) playWeatherSound(label);
       speak(label);
       render();
     });
@@ -1100,6 +1175,7 @@ function renderDateCardPicker() {
     btn.appendChild(text);
     btn.addEventListener("click", () => {
       onPick();
+      if (options.weather) playWeatherSound(label);
       speak(label);
       render();
     });
@@ -1240,6 +1316,7 @@ function renderDatePuzzle() {
     if (kind === "weather") targetSelection.weather = value;
     if (isBlankPuzzle && kind !== "weather") dateSelection[kind] = targetSelection[kind];
     if (kind === "weather") dateSelection.weather = value;
+    if (kind === "weather") playWeatherSound(value);
     dateCardFocus = nextDateFocus[kind] || "weather";
     showPuzzleSuccess(targetEl, value);
   }
@@ -1365,7 +1442,10 @@ function renderDatePuzzle() {
       card.addEventListener("pointerup", up);
       card.addEventListener("pointercancel", cancel);
     });
-    card.addEventListener("click", () => speak(label));
+    card.addEventListener("click", () => {
+      if (options.weather) playWeatherSound(label);
+      speak(label);
+    });
 
     if (options.image) {
       const img = document.createElement("img");
@@ -1547,9 +1627,13 @@ function renderButtons(items, layout) {
       }
       if (currentKey() === "dateWeatherPicker") {
         dateSelection.weather = item.label;
+        playWeatherSound(item.label);
         speak(item.label); popScreen(); render(); return;
       }
 
+      if (currentKey() === "weatherHome") {
+        playWeatherSound(item.label);
+      }
       speak(item.label);
       window.setTimeout(() => {
         if (item.nav) { pushScreen(item.nav, item.label); render(); return; }

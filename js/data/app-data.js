@@ -565,12 +565,12 @@ const DATA = {
       helper: "오늘 날씨를 선택하세요.",
       hero: [],
       items: [
-        { label: "맑음",     image: "./images/weather_sunny.png" },
-        { label: "흐림",     image: "./images/weather_cloudy.png" },
-        { label: "비",       image: "./images/weather_rain.png" },
-        { label: "눈",       image: "./images/weather_snow.png" },
-        { label: "바람",     image: "./images/weather_wind.png" },
-        { label: "천둥번개", image: "./images/weather_thunder.png" }
+        { label: "맑음",     image: "./images/weather_cards/sunny.svg" },
+        { label: "흐림",     image: "./images/weather_cards/cloudy.svg" },
+        { label: "비",       image: "./images/weather_cards/rain.svg" },
+        { label: "눈",       image: "./images/weather_cards/snow.svg" },
+        { label: "바람",     image: "./images/weather_cards/wind.svg" },
+        { label: "천둥번개", image: "./images/weather_cards/thunder.svg" }
       ],
       layout: "main",
       showPlayer: false
@@ -907,12 +907,12 @@ const DATA = {
       helper: "오늘 날씨를 선택하세요.",
       hero: [],
       items: [
-        { label: "맑음",     image: "./images/weather_sunny.png" },
-        { label: "흐림",     image: "./images/weather_cloudy.png" },
-        { label: "비",       image: "./images/weather_rain.png" },
-        { label: "눈",       image: "./images/weather_snow.png" },
-        { label: "바람",     image: "./images/weather_wind.png" },
-        { label: "천둥번개", image: "./images/weather_thunder.png" }
+        { label: "맑음",     image: "./images/weather_cards/sunny.svg" },
+        { label: "흐림",     image: "./images/weather_cards/cloudy.svg" },
+        { label: "비",       image: "./images/weather_cards/rain.svg" },
+        { label: "눈",       image: "./images/weather_cards/snow.svg" },
+        { label: "바람",     image: "./images/weather_cards/wind.svg" },
+        { label: "천둥번개", image: "./images/weather_cards/thunder.svg" }
       ],
       layout: "main",
       showPlayer: false
