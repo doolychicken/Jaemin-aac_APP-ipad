@@ -856,7 +856,7 @@ body {
 
 .date-mode-select {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
   align-content: center;
   justify-items: stretch;
@@ -866,7 +866,7 @@ body {
 }
 
 .date-mode-card {
-  min-height: min(42vh, 280px);
+  min-height: min(38vh, 250px);
   border: 2px solid #dbe3ef;
   border-radius: 18px;
   background: #fff;
@@ -882,16 +882,273 @@ body {
 }
 
 .date-mode-title {
-  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-size: clamp(1.55rem, 3.2vw, 2.6rem);
   font-weight: 900;
 }
 
 .date-mode-sub {
-  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-size: clamp(0.9rem, 1.7vw, 1.14rem);
   font-weight: 800;
   line-height: 1.35;
   color: #475569;
   text-align: center;
+}
+
+.date-step {
+  display: grid;
+  grid-template-rows: minmax(0, 0.85fr) minmax(0, 1.15fr) auto;
+  gap: clamp(8px, 1.4vh, 12px);
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  width: 100%;
+}
+
+.date-step--summary {
+  grid-template-rows: minmax(0, 1fr) auto auto;
+}
+
+.date-step-focus-card,
+.date-step-summary-grid {
+  min-height: 0;
+  border: 2px solid #d7dee9;
+  border-radius: 18px;
+  background: #f8fafc;
+  padding: clamp(8px, 1.5vh, 14px);
+}
+
+.date-step-focus-card {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+
+.date-step-focus-card .date-step-drop-slot {
+  width: min(720px, 100%);
+  min-height: clamp(150px, 28vh, 270px);
+}
+
+.date-step--year .date-step-drop-slot .date-puzzle-slot-main {
+  font-size: clamp(3rem, 9vw, 7rem);
+}
+
+.date-step--year .date-step-drop-slot .date-puzzle-slot-unit {
+  font-size: clamp(1.8rem, 4vw, 3.4rem);
+}
+
+.date-step--year .date-puzzle-card-grid--year .date-drag-card {
+  min-height: clamp(88px, 14vh, 130px);
+  font-size: clamp(2rem, 5vw, 4rem);
+}
+
+.date-step-focus-card .date-step-summary-card {
+  width: min(520px, 100%);
+}
+
+.date-step-focus-card--weather .date-step-summary-card {
+  width: min(420px, 100%);
+}
+
+.date-step-summary-grid {
+  display: grid;
+  gap: clamp(7px, 1.2vh, 12px);
+}
+
+.date-step-summary-grid--three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.date-step-summary-grid--final {
+  grid-template-columns: 1.3fr 1fr 1fr 1fr 1.5fr;
+}
+
+.date-step-summary-card {
+  min-width: 0;
+  min-height: 0;
+  border: 3px solid #cbd5e1;
+  border-radius: 14px;
+  background: #fff;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: clamp(8px, 1.5vh, 16px);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+
+.date-step-summary-main {
+  font-size: clamp(2.2rem, 6vw, 5rem);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.date-step-summary-unit {
+  font-size: clamp(1.4rem, 3vw, 2.6rem);
+  font-weight: 900;
+  color: #047857;
+}
+
+.date-step-summary-card--weather {
+  flex-direction: column;
+  gap: 2px;
+}
+
+.date-step-summary-card--weather img {
+  flex: 1 1 auto;
+  width: min(160px, 92%);
+  height: min(132px, 17vh);
+  object-fit: contain;
+}
+
+.date-step-summary-card--weather .date-step-summary-main {
+  flex: 0 0 auto;
+  font-size: clamp(1rem, 2.3vw, 1.8rem);
+}
+
+.date-step-choice-grid {
+  display: grid;
+  gap: 10px;
+  min-height: 0;
+  overflow: hidden;
+  align-content: center;
+}
+
+.date-step-choice-grid--year {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.date-step-choice-grid--month,
+.date-step-choice-grid--day {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.date-step-choice-grid--weekday {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.date-step-choice-grid--weather {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.date-step-multi-panel {
+  min-height: 0;
+  display: grid;
+  grid-template-rows: 0.75fr 0.75fr 1fr;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.date-step-choice-group {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(48px, 0.18fr) minmax(0, 1fr);
+  gap: 8px;
+  align-items: stretch;
+}
+
+.date-step-choice-title {
+  border-radius: 12px;
+  background: #e0f2fe;
+  color: #075985;
+  font-size: clamp(1rem, 2.2vw, 1.6rem);
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.date-step-choice {
+  min-width: 0;
+  min-height: 68px;
+  border: 2px solid #dbe3ef;
+  border-radius: 12px;
+  background: #fff;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 6px;
+  font-size: clamp(1.25rem, 3vw, 2.2rem);
+  font-weight: 900;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.date-step-choice.is-selected {
+  border-color: #f59e0b;
+  background: #fef3c7;
+  box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.20);
+}
+
+.date-step-choice--image {
+  flex-direction: column;
+  min-height: clamp(118px, 17vh, 150px);
+  font-size: clamp(0.72rem, 1.25vw, 0.95rem);
+  gap: 3px;
+}
+
+.date-step-choice--image img {
+  flex: 1 1 auto;
+  width: min(110px, 92%);
+  height: min(96px, 13vh);
+  object-fit: contain;
+}
+
+.date-step-choice--image span {
+  flex: 0 0 auto;
+  line-height: 1;
+}
+
+.date-step-date-board {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.date-step-drag-groups {
+  min-height: 0;
+  display: grid;
+  grid-template-rows: 0.8fr 0.8fr 1fr;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.date-step-drag-group {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(48px, 0.18fr) minmax(0, 1fr);
+  gap: 8px;
+  align-items: stretch;
+}
+
+.date-step-drag-grid {
+  min-height: 0;
+}
+
+.date-step-drag-grid--month,
+.date-step-drag-grid--day {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.date-step-drag-grid--weekday {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.date-step-drag-grid--weekday .date-drag-card {
+  font-size: clamp(0.9rem, 1.9vw, 1.35rem);
+}
+
+.date-step-sentence {
+  min-height: clamp(58px, 8vh, 78px);
+  border: 2px solid #bfdbfe;
+  border-radius: 16px;
+  background: #eff6ff;
+  color: #1e3a8a;
+  font-size: clamp(1rem, 2.2vw, 1.45rem);
+  font-weight: 900;
+  padding: 10px;
+  cursor: pointer;
+  touch-action: manipulation;
 }
 
 .date-puzzle {
