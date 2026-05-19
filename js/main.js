@@ -1816,12 +1816,12 @@ function renderDateStepFlowDrag() {
   }
 
   const summary = document.createElement("section");
-  summary.className = "date-step-summary-grid date-step-summary-grid--final";
-  summary.appendChild(makeDropSlot("year", "년", datePuzzleBlankSelection.year));
+  summary.className = "date-puzzle-board date-step-final-board";
+  summary.appendChild(makeDropSlot("year", "년", datePuzzleBlankSelection.year, { wide: true }));
   summary.appendChild(makeDropSlot("month", "월", datePuzzleBlankSelection.month));
   summary.appendChild(makeDropSlot("day", "일", datePuzzleBlankSelection.day));
   summary.appendChild(makeDropSlot("weekday", "요일", datePuzzleBlankSelection.weekday ? datePuzzleBlankSelection.weekday.replace("요일", "") : ""));
-  summary.appendChild(makeDropSlot("weather", "날씨", datePuzzleBlankSelection.weather, { weather: true }));
+  summary.appendChild(makeDropSlot("weather", "날씨", datePuzzleBlankSelection.weather, { weather: true, wide: true }));
   gridEl.appendChild(summary);
 
   const sentence = document.createElement("button");

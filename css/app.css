@@ -1105,6 +1105,10 @@ body {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.date-step-final-board {
+  grid-template-columns: 1.4fr 1fr 1fr 1fr 1.4fr;
+}
+
 .date-step-drag-groups {
   min-height: 0;
   display: grid;
