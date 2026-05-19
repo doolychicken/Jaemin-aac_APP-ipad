@@ -1,45 +1,28 @@
 /**
- * app.js — 앱 로직 (상태, 렌더링, 이벤트 핸들러)
+ * Schedule feature module.
  *
- * DATA 객체는 data.js 에서 정의됩니다.
- * HTML 구조는 index.html 에 있습니다.
+ * Extracted from app.js to keep schedule state, persistence, and renderers
+ * behind a small public interface.
  */
-
-// ── DOM 참조 ──────────────────────────────────────────────────────────────────
-const titleEl            = document.getElementById("screenTitle");
-const backBtn            = document.getElementById("backButton");
-const homeBtn            = document.getElementById("homeButton") || { style: {}, addEventListener: () => {} };
-const crumbEl            = document.getElementById("breadcrumb");
-const gridEl             = document.getElementById("buttonGrid");
-const appMainEl          = document.querySelector("main.app");
-const spotlightViewEl    = document.getElementById("spotlightView");
-const spotlightBtnEl     = document.getElementById("spotlightButton");
-const spotlightImgEl     = document.getElementById("spotlightImage");
-const helperEl           = document.getElementById("helperText");
-const heroEl             = document.getElementById("heroRow");
-const playerWrapEl       = document.getElementById("playerWrap");
-const playerEl           = document.getElementById("youtubePlayer");
-const openInYoutubeButton= document.getElementById("openInYoutubeButton");
-const returnHintEl       = document.getElementById("returnHint");
-
-// ── 네비게이션 상태 ──────────────────────────────────────────────────────────
-const navStack = [{ key: "main", label: "메인" }];
-let selectedYoutube = "";
-
-function currentKey()           { return navStack[navStack.length - 1]?.key || "main"; }
-function pushScreen(key, label) { navStack.push({ key, label }); selectedYoutube = ""; }
-function popScreen()            { if (navStack.length > 1) navStack.pop(); }
-function breadcrumbText() {
-  const parts = navStack.filter((x) => x.key !== "main").map((x) => x.label);
-  return parts.join(" > ");
-}
-
-// ── 외출 플래너 상태 ─────────────────────────────────────────────────────────
-const OUTING_MAX_PERSON = 4;
-let outingPlannerMode = "";
-const outingSelection = { people: [], place: null, transport: null };
-
-// ── 치료 선택 상태 ───────────────────────────────────────────────────────────
+(function () {
+  function createScheduleFeature(ctx) {
+    const {
+      DATA,
+      gridEl,
+      titleEl,
+      helperEl,
+      appMainEl,
+      heroEl,
+      spotlightViewEl,
+      spotlightBtnEl,
+      speak,
+      render,
+      pushScreen,
+      popScreen,
+      currentKey,
+      navStack,
+      setupImageElement
+    } = ctx;
 const THERAPY_MAX_SELECT = 3;
 const THERAPY_OPTIONS = ["언어", "인지", "음악", "연하", "작업", "물리"];
 const THERAPY_OPTIONS_BY_CENTER = {
@@ -218,350 +201,22 @@ const HOME_ACTIVITIES = [
 ];
 let homeSchedule = [];
 let homeScheduleRemaining = [];
+const schedulePager = window.createTilePager({
+  getScopeKey: () => navStack.map((x) => x.key).join("/"),
+  render,
+  speak
+});
+
+function paginateScheduleList(list, suffix, reserveSlots = 0) {
+  return schedulePager.paginate(list, suffix, { reserveSlots });
+}
+
+function appendSchedulePager(pageInfo) {
+  schedulePager.append(gridEl, pageInfo);
+}
 
 // ── 날짜 선택 상태 ───────────────────────────────────────────────────────────
-const WEEKDAY_OPTIONS = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"];
-const WEATHER_OPTIONS = ["맑음", "흐림", "비", "눈", "바람", "천둥번개"];
-const WEATHER_EMOJI   = { "맑음": "☀️", "흐림": "🌥️", "비": "🌧️", "눈": "❄️", "바람": "💨", "천둥번개": "⚡" };
-let datePlannerMode = "";
-let guardianDateSetup = false;
-const dateSelection = { month: null, day: null, weekday: null, weather: null };
 
-// ── TTS ──────────────────────────────────────────────────────────────────────
-let preferredKoVoice = null;
-let ttsWarmedUp = false;
-const isAppleMobile = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-  (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-const useDirectYoutubeOpen = true;
-
-const isAndroid = /android/i.test(navigator.userAgent);
-
-// ── 1. 한국어 목소리 선택 (fallback: default 목소리) ─────────────────────────
-function pickPreferredKoVoice() {
-  if (!("speechSynthesis" in window)) return null;
-  const voices = window.speechSynthesis.getVoices() || [];
-  if (!voices.length) return null;
-  const koVoices = voices.filter((v) => (v.lang || "").toLowerCase().startsWith("ko"));
-  if (koVoices.length) {
-    const priorities = [/female/i, /woman/i, /여성/, /google/i, /premium|neural|natural/i];
-    for (const rule of priorities) {
-      const found = koVoices.find((v) => rule.test(v.name || "") || rule.test(v.voiceURI || ""));
-      if (found) return found;
-    }
-    return koVoices[0];
-  }
-  // 한국어 없으면 브라우저 기본(default) 목소리 우선, 없으면 첫 번째
-  return voices.find((v) => v.default) || voices[0] || null;
-}
-
-// ── 2. speak: 안드로이드 정교한 예외 처리 ────────────────────────────────────
-function speak(text) {
-  if (!("speechSynthesis" in window)) return;
-  if (!preferredKoVoice) preferredKoVoice = pickPreferredKoVoice();
-
-  const doSpeak = () => {
-    const u = new SpeechSynthesisUtterance(text);
-    if (preferredKoVoice) {
-      u.voice = preferredKoVoice;
-      u.lang = preferredKoVoice.lang || "ko-KR";
-    } else {
-      u.lang = "ko-KR";
-    }
-    u.rate = 0.95;
-    u.pitch = 1.0;
-    window.speechSynthesis.resume();
-    window.speechSynthesis.speak(u);
-  };
-
-  if (isAndroid) {
-    // 안드로이드: 재생 중일 때만 cancel, 아닐 때는 바로 재생
-    if (window.speechSynthesis.speaking) {
-      window.speechSynthesis.cancel();
-      setTimeout(doSpeak, 80);
-    } else {
-      setTimeout(doSpeak, 50);
-    }
-  } else {
-    window.speechSynthesis.cancel();
-    doSpeak();
-  }
-}
-
-// ── 3. warmupTTS: 첫 터치 시 오디오 엔진 강제 활성화 ─────────────────────────
-function warmupTTS() {
-  if (!("speechSynthesis" in window) || ttsWarmedUp) return;
-  ttsWarmedUp = true;
-  if (!preferredKoVoice) preferredKoVoice = pickPreferredKoVoice();
-  const warm = new SpeechSynthesisUtterance("\u200b"); // 제로폭 공백
-  warm.lang = preferredKoVoice?.lang || "ko-KR";
-  if (preferredKoVoice) warm.voice = preferredKoVoice;
-  warm.volume = 0;
-  warm.rate = 1.0;
-  window.speechSynthesis.resume();
-  window.speechSynthesis.speak(warm);
-  setTimeout(() => window.speechSynthesis.cancel(), 200);
-}
-
-// ── YouTube 유틸 ─────────────────────────────────────────────────────────────
-function getYouTubeId(url) {
-  try {
-    const u = new URL(url);
-    if (u.hostname.includes("youtu.be")) return u.pathname.replace("/", "").trim();
-    return u.searchParams.get("v");
-  } catch (_e) { return ""; }
-}
-
-function parseStartSeconds(url) {
-  try {
-    const u = new URL(url);
-    const t = u.searchParams.get("t");
-    if (!t) return 0;
-    if (/^\d+$/.test(t)) return Number(t);
-    const m = t.match(/(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?/);
-    if (!m) return 0;
-    return Number(m[1] || 0) * 3600 + Number(m[2] || 0) * 60 + Number(m[3] || 0);
-  } catch (_e) { return 0; }
-}
-
-function setPlayer(youtubeUrl) {
-  const id = getYouTubeId(youtubeUrl);
-  if (!id) return;
-  selectedYoutube = youtubeUrl;
-  const start = parseStartSeconds(youtubeUrl);
-  const startQuery = start > 0 ? `&start=${start}` : "";
-  playerEl.src = `https://www.youtube-nocookie.com/embed/${id}?playsinline=1&autoplay=1&rel=0&modestbranding=1${startQuery}`;
-}
-
-function openYoutubeDirect(url) {
-  if (!url) return;
-  window.open(url, "_blank", "noopener,noreferrer");
-}
-
-function resolveYoutube(item) {
-  if (!item.youtube) return "";
-  return DATA.youtube[item.youtube] || "";
-}
-
-function getThumbnail(youtubeUrl) {
-  const id = getYouTubeId(youtubeUrl);
-  if (!id) return "";
-  return `https://img.youtube.com/vi/${id}/mqdefault.jpg`;
-}
-
-// ── 이미지 프리페치 ──────────────────────────────────────────────────────────
-function setupImageElement(img, eager = false) {
-  img.loading = eager ? "eager" : "lazy";
-  img.decoding = "async";
-  img.referrerPolicy = "no-referrer";
-  img.draggable = false;
-}
-
-const prefetchedImages = new Set();
-function prefetchLocalImage(src) {
-  if (!src || !src.startsWith("./images/")) return;
-  if (prefetchedImages.has(src)) return;
-  prefetchedImages.add(src);
-  const im = new Image();
-  setupImageElement(im, true);
-  im.src = src;
-}
-
-function prefetchScreenImages(screenKey) {
-  const screen = DATA.screens[screenKey];
-  if (!screen) return;
-  (screen.hero || []).forEach((it) => prefetchLocalImage(it.image));
-  (screen.items || []).forEach((it) => prefetchLocalImage(it.image));
-  if (screen.spotlight && screen.spotlight.image) prefetchLocalImage(screen.spotlight.image);
-}
-
-function prefetchLikelyNextScreens(screenKey) {
-  if (screenKey === "outingPlace") {
-    prefetchScreenImages("outingSchool");
-  } else if (screenKey === "outingSchool") {
-    prefetchScreenImages("outingSchoolFriends");
-    prefetchScreenImages("outingSchool_p2");
-  } else if (screenKey === "outingSchool_p2") {
-    prefetchScreenImages("outingSchool_p3");
-  }
-}
-
-// ── 외출 플래너 ──────────────────────────────────────────────────────────────
-function outingOptions(kind) {
-  if (kind === "person")    return DATA.screens.outingPerson.items    || [];
-  if (kind === "place")     return DATA.screens.outingPlace.items     || [];
-  if (kind === "transport") return DATA.screens.outingTransport.items || [];
-  return [];
-}
-
-function isOutingSelected(kind, item) {
-  if (kind === "person")    return outingSelection.people.some((p) => p.label === item.label);
-  if (kind === "place")     return outingSelection.place     && outingSelection.place.label     === item.label;
-  if (kind === "transport") return outingSelection.transport && outingSelection.transport.label === item.label;
-  return false;
-}
-
-function toggleOutingSelection(kind, item) {
-  if (kind === "person") {
-    const idx = outingSelection.people.findIndex((p) => p.label === item.label);
-    if (idx >= 0) { outingSelection.people.splice(idx, 1); return; }
-    if (outingSelection.people.length >= OUTING_MAX_PERSON) return;
-    outingSelection.people.push({ label: item.label, image: item.image || "./images/outing_person_me.png" });
-    if (outingSelection.people.length >= OUTING_MAX_PERSON) outingPlannerMode = "";
-    return;
-  }
-  if (kind === "place") {
-    outingSelection.place = { label: item.label, image: item.image || "./images/outing_school1.png" };
-    outingPlannerMode = "";
-    return;
-  }
-  if (kind === "transport") {
-    outingSelection.transport = { label: item.label, image: item.image || "./images/transport_bus.png" };
-    outingPlannerMode = "";
-  }
-}
-
-function getOutingHeroItems() {
-  const peopleCards = outingSelection.people.length
-    ? outingSelection.people.map((p, i) => ({ label: `사람${i + 1}: ${p.label}`, image: p.image }))
-    : [{ label: "사람: 미선택", image: "./images/outing_person_me.png" }];
-  return [
-    ...peopleCards,
-    { label: `장소: ${outingSelection.place?.label || "미선택"}`,        image: outingSelection.place?.image     || "./images/outing_school1.png" },
-    { label: `교통수단: ${outingSelection.transport?.label || "미선택"}`, image: outingSelection.transport?.image || "./images/transport_bus.png" }
-  ];
-}
-
-function renderOutingPlanner() {
-  appMainEl.classList.remove("app--spotlight");
-  spotlightViewEl.style.display = "none";
-  spotlightBtnEl.onclick = null;
-  heroEl.style.display = "none";
-  heroEl.className = "hero";
-  gridEl.style.display = "";
-  gridEl.innerHTML = "";
-
-  if (outingPlannerMode) {
-    // ── 선택 화면: 항목들 표시 ──
-    gridEl.className = "grid";
-    outingOptions(outingPlannerMode).forEach((item) => {
-      const btn = document.createElement("button");
-      btn.className = "tile" + (isOutingSelected(outingPlannerMode, item) ? " is-selected" : "");
-      const img = document.createElement("img");
-      img.src = item.image || "./images/study.png";
-      img.alt = item.label;
-      setupImageElement(img, true);
-      const lbl = document.createElement("div");
-      lbl.className = "tile-label";
-      lbl.textContent = item.label;
-      btn.appendChild(img);
-      btn.appendChild(lbl);
-      if (isOutingSelected(outingPlannerMode, item)) {
-        const check = document.createElement("span");
-        check.className = "tile-check";
-        check.textContent = "✓";
-        btn.appendChild(check);
-      }
-      btn.addEventListener("click", () => {
-        speak(item.label);
-        if (item.subScreen) {
-          pushScreen(item.subScreen, item.label);
-          render();
-          return;
-        }
-        toggleOutingSelection(outingPlannerMode, item);
-        render();
-      });
-      gridEl.appendChild(btn);
-    });
-
-    if (outingPlannerMode === "person") {
-      const doneBtn = document.createElement("button");
-      doneBtn.className = "btn";
-      doneBtn.textContent = "선택 완료";
-      doneBtn.addEventListener("click", () => {
-        speak("사람 선택 완료");
-        outingPlannerMode = "";
-        render();
-      });
-      gridEl.appendChild(doneBtn);
-    }
-    return;
-  }
-
-  // ── 메인 요약 화면: 3개 타일 ──
-  gridEl.className = "grid outing-summary-tiles";
-  const tiles = [
-    {
-      kind: "person",
-      title: "사람",
-      image: outingSelection.people.length
-        ? outingSelection.people[0].image
-        : "./images/outing_person_me.png",
-      subtitle: outingSelection.people.length
-        ? outingSelection.people.map((p) => p.label).join(", ")
-        : "눌러서 선택",
-    },
-    {
-      kind: "place",
-      title: "장소",
-      image: outingSelection.place?.image || "./images/outing_school1.png",
-      subtitle: outingSelection.place?.label || "눌러서 선택",
-    },
-    {
-      kind: "transport",
-      title: "이동수단",
-      image: outingSelection.transport?.image || "./images/transport_bus.png",
-      subtitle: outingSelection.transport?.label || "눌러서 선택",
-    },
-  ];
-
-  tiles.forEach(({ kind, title, image, subtitle }) => {
-    const btn = document.createElement("button");
-    btn.className = "tile outing-summary-tile";
-
-    if (kind === "person") {
-      // 선택된 사람이 있으면 최대 3명 사진을 격자로 표시
-      const people = outingSelection.people;
-      const photoWrap = document.createElement("div");
-      photoWrap.className = "outing-person-photos" + (people.length === 0 ? " outing-person-empty" : "");
-      if (people.length === 0) {
-        const img = document.createElement("img");
-        img.src = "./images/outing_person_me.png";
-        img.alt = "사람";
-        setupImageElement(img, true);
-        photoWrap.appendChild(img);
-      } else {
-        people.forEach((p) => {
-          const img = document.createElement("img");
-          img.src = p.image;
-          img.alt = p.label;
-          setupImageElement(img, true);
-          photoWrap.appendChild(img);
-        });
-      }
-      btn.appendChild(photoWrap);
-    } else {
-      const img = document.createElement("img");
-      img.src = image;
-      img.alt = title;
-      setupImageElement(img, true);
-      btn.appendChild(img);
-    }
-
-    const lbl = document.createElement("div");
-    lbl.className = "tile-label";
-    lbl.textContent = `${title}: ${subtitle}`;
-    btn.appendChild(lbl);
-    btn.addEventListener("click", () => {
-      speak(title);
-      outingPlannerMode = kind;
-      render();
-    });
-    gridEl.appendChild(btn);
-  });
-}
-
-// ── 치료 선택 ────────────────────────────────────────────────────────────────
 function buildTherapyPlanItems() {
   const result = [
     { label: "1. 학교가요",         image: "./images/outing_school1.png" },
@@ -752,7 +407,9 @@ function renderHomeActivityPicker() {
   gridEl.innerHTML = "";
   gridEl.className = "grid";
 
-  HOME_ACTIVITIES.forEach((activity) => {
+  const pageInfo = paginateScheduleList(HOME_ACTIVITIES, "home-activity", homeSchedule.length > 0 ? 2 : 1);
+
+  pageInfo.items.forEach((activity) => {
     const orderIdx = homeSchedule.indexOf(activity.label);
     const isSelected = orderIdx >= 0;
     const btn = document.createElement("button");
@@ -793,6 +450,7 @@ function renderHomeActivityPicker() {
 
     gridEl.appendChild(btn);
   });
+  appendSchedulePager(pageInfo);
 
   // 전체 지우기 버튼
   if (homeSchedule.length > 0) {
@@ -1074,6 +732,7 @@ function renderWeeklySchedule() {
   btnRow.style.cssText = "display:flex;gap:10px;margin-top:4px;";
 
   const editBtn = document.createElement("button");
+  editBtn.type = "button";
   editBtn.className = "weekly-edit-btn primary";
   editBtn.textContent = "✏️ 수정";
   editBtn.addEventListener("click", () => {
@@ -1085,65 +744,34 @@ function renderWeeklySchedule() {
 
   const resetBtn = document.createElement("button");
   resetBtn.className = "weekly-edit-btn weekly-reset-btn";
+  resetBtn.type = "button";
   resetBtn.textContent = "🗑 초기화";
-  resetBtn.addEventListener("click", () => {
+  resetBtn.addEventListener("click", (ev) => {
+    ev.preventDefault();
+    ev.stopPropagation();
     if (!confirm("주간 스케줄을 모두 초기화할까요?\n입력한 내용이 모두 지워집니다.")) return;
+    try {
+      localStorage.removeItem("jaemin-weekly-v1");
+      localStorage.removeItem("jaemin-weekly-periods-v1");
+    } catch (_) { /* 사생활 보호 모드 등 */ }
     weeklyScheduleData = getDefaultWeeklySchedule();
+    weeklyPeriodLabels = ["오전", "오후"];
     saveWeeklySchedule();
+    saveWeeklyPeriods();
+    weeklyEditMode = false;
+    weeklyEditPersonFor = null;
+    weeklyEditPeriods = false;
     render();
   });
   btnRow.appendChild(resetBtn);
   gridEl.appendChild(btnRow);
 }
 
-// ── 일일 시각 스케줄 ──────────────────────────────────────────────────────────
-function renderDailyVisual() {
-  appMainEl.classList.remove("app--spotlight");
-  spotlightViewEl.style.display = "none";
-  spotlightBtnEl.onclick = null;
-  heroEl.style.display = "none";
-  gridEl.style.display = "";
-  gridEl.innerHTML = "";
-  gridEl.className = "dv-outer";
-
-  // 오늘 요일 → 주간 스케줄 데이터에서 활동 가져오기
-  const KO_DAYS = ["일", "월", "화", "수", "목", "금", "토"];
-  const today = new Date();
-  const todayDay = KO_DAYS[today.getDay()];
-  const month   = today.getMonth() + 1;
-  const date    = today.getDate();
-  const acts    = (weeklyScheduleData[todayDay] || []);
-
-  titleEl.textContent = "일일 시각 스케줄";
-  helperEl.textContent = "";
-
-  // ── 날짜 헤더 ──
-  const dateBar = document.createElement("div");
-  dateBar.className = "dv-date-bar";
-
-  const dateNum = document.createElement("span");
-  dateNum.className = "dv-date-num";
-  dateNum.textContent = `${month}월 ${date}일`;
-  dateBar.appendChild(dateNum);
-
-  const dayBadge = document.createElement("span");
-  dayBadge.className = "dv-day-badge";
-  dayBadge.textContent = `${todayDay}`;
-  dateBar.appendChild(dayBadge);
-
-  gridEl.appendChild(dateBar);
-
-  if (acts.length === 0) {
-    const empty = document.createElement("div");
-    empty.className = "dv-empty";
-    empty.textContent = "오늘 스케줄이 없어요. 주간 스케줄에서 오늘 활동을 추가해 주세요.";
-    gridEl.appendChild(empty);
-    return;
-  }
-
-  // ── 활동 카드 그리드 ──
+// ── 일일 / 요일별 시각 스케줄 — 공통 카드 그리드 (일일과 동일 UI) ─────────────
+/** @param {"order"|"period"} numMode — order: 1,2,3… / period: 오전·오후 등 */
+function createDvScheduleCardGrid(acts, dayKey, numMode) {
   const cardGrid = document.createElement("div");
-  cardGrid.className = "dv-grid";
+  cardGrid.className = "dv-grid dv-grid--flow";
 
   acts.forEach((act, idx) => {
     const def = SCHEDULE_ACTIVITY_DEFS.find((d) => d.type === act.type);
@@ -1153,13 +781,15 @@ function renderDailyVisual() {
     card.className = "dv-card";
     card.setAttribute("aria-label", def.label);
 
-    // 번호 배지
     const num = document.createElement("div");
     num.className = "dv-num";
-    num.textContent = idx + 1;
+    const numText = numMode === "period"
+      ? String(weeklyPeriodLabels[idx] !== undefined ? weeklyPeriodLabels[idx] : idx + 1)
+      : String(idx + 1);
+    num.textContent = numText;
+    if (numText.length > 2) num.classList.add("dv-num--wide");
     card.appendChild(num);
 
-    // 활동 이미지
     const imgWrap = document.createElement("div");
     imgWrap.className = "dv-img-wrap";
     if (def.image) {
@@ -1178,7 +808,6 @@ function renderDailyVisual() {
     }
     card.appendChild(imgWrap);
 
-    // 텍스트 + 사람 블록
     const textBlock = document.createElement("div");
     textBlock.className = "dv-text-block";
 
@@ -1187,7 +816,6 @@ function renderDailyVisual() {
     lbl.textContent = def.label;
     textBlock.appendChild(lbl);
 
-    // 함께하는 사람 얼굴 (최대 4명)
     if (act.people && act.people.length > 0) {
       const faces = document.createElement("div");
       faces.className = "dv-faces";
@@ -1209,17 +837,63 @@ function renderDailyVisual() {
     card.appendChild(textBlock);
     card.addEventListener("click", () => {
       speak(def.label);
-      weeklyDetailAct = { type: act.type, people: act.people || [], day: todayDay };
+      weeklyDetailAct = { type: act.type, people: act.people || [], day: dayKey };
       pushScreen("scheduleWeeklyDetail", def.label);
       render();
     });
     cardGrid.appendChild(card);
   });
 
-  gridEl.appendChild(cardGrid);
+  return cardGrid;
 }
 
-// ── 하루 스케줄 페이지 ────────────────────────────────────────────────────────
+// ── 일일 시각 스케줄 ──────────────────────────────────────────────────────────
+function renderDailyVisual() {
+  appMainEl.classList.remove("app--spotlight");
+  spotlightViewEl.style.display = "none";
+  spotlightBtnEl.onclick = null;
+  heroEl.style.display = "none";
+  gridEl.style.display = "";
+  gridEl.innerHTML = "";
+  gridEl.className = "dv-outer dv-outer--fit dv-outer--daily";
+
+  const KO_DAYS = ["일", "월", "화", "수", "목", "금", "토"];
+  const today = new Date();
+  const todayDay = KO_DAYS[today.getDay()];
+  const month   = today.getMonth() + 1;
+  const date    = today.getDate();
+  const acts    = (weeklyScheduleData[todayDay] || []);
+
+  titleEl.textContent = "일일 시각 스케줄";
+  helperEl.textContent = "";
+
+  const dateBar = document.createElement("div");
+  dateBar.className = "dv-date-bar dv-date-bar--daily";
+
+  const dateNum = document.createElement("span");
+  dateNum.className = "dv-date-num";
+  dateNum.textContent = `${month}월 ${date}일`;
+  dateBar.appendChild(dateNum);
+
+  const dayBadge = document.createElement("span");
+  dayBadge.className = "dv-day-badge";
+  dayBadge.textContent = `${todayDay}`;
+  dateBar.appendChild(dayBadge);
+
+  gridEl.appendChild(dateBar);
+
+  if (acts.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "dv-empty";
+    empty.textContent = "오늘 스케줄이 없어요. 주간 스케줄에서 오늘 활동을 추가해 주세요.";
+    gridEl.appendChild(empty);
+    return;
+  }
+
+  gridEl.appendChild(createDvScheduleCardGrid(acts, todayDay, "order"));
+}
+
+// ── 주간에서 요일 탭 → 일일 시각 스케줄과 동일 형식 (가로 줄바꿈) ─────────────
 function renderWeeklyDaySchedule() {
   appMainEl.classList.remove("app--spotlight");
   spotlightViewEl.style.display = "none";
@@ -1228,7 +902,7 @@ function renderWeeklyDaySchedule() {
   heroEl.className = "hero";
   gridEl.style.display = "";
   gridEl.innerHTML = "";
-  gridEl.className = "wday-outer";
+  gridEl.className = "dv-outer dv-outer--fit";
 
   const day = weeklySelectedDay;
   if (!day) { popScreen(); render(); return; }
@@ -1237,85 +911,27 @@ function renderWeeklyDaySchedule() {
   titleEl.textContent = `${day}요일 스케줄`;
   helperEl.textContent = acts.length > 0 ? "활동을 누르면 자세히 볼 수 있어요." : "아직 활동이 없어요.";
 
+  const dateBar = document.createElement("div");
+  dateBar.className = "dv-date-bar";
+  const dateNum = document.createElement("span");
+  dateNum.className = "dv-date-num";
+  dateNum.textContent = `${day}요일`;
+  dateBar.appendChild(dateNum);
+  const dayBadge = document.createElement("span");
+  dayBadge.className = "dv-day-badge";
+  dayBadge.textContent = day;
+  dateBar.appendChild(dayBadge);
+  gridEl.appendChild(dateBar);
+
   if (acts.length === 0) {
     const empty = document.createElement("div");
-    empty.className = "wday-empty";
-    empty.textContent = "📅 스케줄이 없어요";
+    empty.className = "dv-empty";
+    empty.textContent = "📅 이 요일에 스케줄이 없어요.";
     gridEl.appendChild(empty);
     return;
   }
 
-  acts.forEach((act, idx) => {
-    const def = SCHEDULE_ACTIVITY_DEFS.find((d) => d.type === act.type);
-    if (!def) return;
-
-    const periodLabel = weeklyPeriodLabels[idx] || `${idx + 1}`;
-    const c = WEEKLY_DAY_COLORS[SCHEDULE_DAYS.indexOf(day)];
-
-    const card = document.createElement("button");
-    card.className = "wday-card";
-    card.style.setProperty("--day-border", c.border);
-    card.style.setProperty("--day-bg", c.bg);
-    card.setAttribute("aria-label", def.label);
-
-    // 시간대 배지
-    const badge = document.createElement("div");
-    badge.className = "wday-badge";
-    badge.textContent = periodLabel;
-    badge.style.background = c.border;
-    card.appendChild(badge);
-
-    // 활동 이미지
-    if (def.image) {
-      const img = document.createElement("img");
-      img.src = def.image;
-      img.alt = def.label;
-      img.className = "wday-img";
-      img.loading = "eager";
-      img.referrerPolicy = "no-referrer";
-      card.appendChild(img);
-    } else {
-      const art = document.createElement("div");
-      art.className = "wday-art";
-      art.textContent = def.emoji;
-      card.appendChild(art);
-    }
-
-    // 활동 이름
-    const lbl = document.createElement("div");
-    lbl.className = "wday-lbl";
-    lbl.textContent = def.label;
-    card.appendChild(lbl);
-
-    // 함께하는 사람 얼굴 (미리보기 - 최대 4명)
-    if (act.people && act.people.length > 0) {
-      const facesRow = document.createElement("div");
-      facesRow.className = "wday-faces";
-      act.people.slice(0, 4).forEach((pLabel) => {
-        const pd = SCHEDULE_PERSON_DEFS.find((p) => p.label === pLabel);
-        if (!pd) return;
-        const wrap = document.createElement("div");
-        wrap.className = "wday-face-wrap";
-        wrap.appendChild(makeFaceImg(pd, "wday-face"));
-        const fl = document.createElement("div");
-        fl.className = "wday-face-lbl";
-        fl.textContent = pLabel;
-        wrap.appendChild(fl);
-        facesRow.appendChild(wrap);
-      });
-      card.appendChild(facesRow);
-    }
-
-    // 탭하면 항상 상세 페이지로 이동 + TTS
-    card.addEventListener("click", () => {
-      speak(def.label);
-      weeklyDetailAct = { type: act.type, people: act.people || [], day };
-      pushScreen("scheduleWeeklyDetail", def.label);
-      render();
-    });
-
-    gridEl.appendChild(card);
-  });
+  gridEl.appendChild(createDvScheduleCardGrid(acts, day, "period"));
 }
 
 // ── 주간 스케줄 상세 페이지 ───────────────────────────────────────────────────
@@ -1850,624 +1466,84 @@ function renderFridaySlotPicker(slotKey) {
 }
 
 // ── 날짜 화면 ────────────────────────────────────────────────────────────────
-function renderDateHome() {
-  // 오늘 날짜 초기화 (최초 1회)
-  if (!dateSelection._initialized) {
-    const now = new Date();
-    dateSelection.month   = now.getMonth() + 1;
-    dateSelection.day     = now.getDate();
-    const wNames = ["일요일","월요일","화요일","수요일","목요일","금요일","토요일"];
-    dateSelection.weekday = wNames[now.getDay()];
-    dateSelection._initialized = true;
-  }
 
-  appMainEl.classList.remove("app--spotlight");
-  spotlightViewEl.style.display = "none";
-  spotlightBtnEl.onclick = null;
-  heroEl.style.display = "none";
-  heroEl.className = "hero";
-  gridEl.style.display = "";
-  gridEl.innerHTML = "";
-  gridEl.className = "date-home-wrap";
+    const scheduleLayouts = new Set([
+      "weeklySchedule",
+      "dailyVisual",
+      "weeklyDay",
+      "weeklyDetail",
+      "homeActivityPicker",
+      "homeScheduleRunner",
+      "therapyCenterPicker",
+      "therapyClassPicker",
+      "therapyPicker",
+      "fridayClassPicker"
+    ]);
 
-  const weather     = dateSelection.weather;
-  const weatherEmoji = weather ? (WEATHER_EMOJI[weather] || "🌤️") : null;
-
-  function buildFullText() {
-    return `오늘은 ${dateSelection.month}월 ${dateSelection.day}일 ${dateSelection.weekday}${dateSelection.weather ? " " + dateSelection.weather : ""}`;
-  }
-
-  // ── 드럼 피커 생성 함수 ──
-  function createDrumPicker(initVal, min, max, unit, onCommit) {
-    let curVal     = initVal;
-    let dragStartY = 0;
-    let dragStartV = initVal;
-    let dragging   = false;
-
-    const wrap   = document.createElement("div");
-    wrap.className = "date-drum";
-
-    const upBtn  = document.createElement("button");
-    upBtn.type   = "button";
-    upBtn.className = "date-drum-arrow";
-    upBtn.setAttribute("aria-label", `${unit} 올리기`);
-    upBtn.textContent = "▲";
-
-    const numRow = document.createElement("div");
-    numRow.className = "date-drum-numrow";
-
-    const numEl  = document.createElement("div");
-    numEl.className = "date-drum-number";
-
-    numRow.appendChild(numEl);   // 숫자만 박스 안에
-
-    const unitEl = document.createElement("div");
-    unitEl.className = "date-drum-unit";
-    unitEl.textContent = unit;   // 박스 바깥에 배치
-
-    const downBtn = document.createElement("button");
-    downBtn.type  = "button";
-    downBtn.className = "date-drum-arrow";
-    downBtn.setAttribute("aria-label", `${unit} 내리기`);
-    downBtn.textContent = "▼";
-
-    const range = max - min + 1;
-    function clamp(v) { return ((v - min) % range + range) % range + min; }
-
-    function display(v, offset = 0) {
-      curVal = clamp(v);
-      numEl.textContent = curVal;
-      numRow.style.transform = offset ? `translateY(${offset * 0.38}px)` : "";
-      numRow.style.opacity   = offset ? String(Math.max(0.45, 1 - Math.abs(offset) * 0.007)) : "";
+    function handles(key) {
+      const screen = DATA.screens[key] || {};
+      return key === "scheduleFridayFinalResult" || scheduleLayouts.has(screen.layout);
     }
 
-    display(initVal);
-
-    upBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      display(curVal + 1);
-      onCommit(curVal);
-    });
-    downBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      display(curVal - 1);
-      onCommit(curVal);
-    });
-
-    numRow.addEventListener("pointerdown", (e) => {
-      dragging   = true;
-      dragStartY = e.clientY;
-      dragStartV = curVal;
-      numRow.setPointerCapture(e.pointerId);
-      e.preventDefault();
-    });
-    numRow.addEventListener("pointermove", (e) => {
-      if (!dragging) return;
-      const dy    = e.clientY - dragStartY;
-      const steps = -Math.round(dy / 38);
-      display(dragStartV + steps, dy);
-    });
-    numRow.addEventListener("pointerup", (e) => {
-      if (!dragging) return;
-      dragging = false;
-      const dy    = e.clientY - dragStartY;
-      const steps = -Math.round(dy / 38);
-      display(dragStartV + steps);
-      onCommit(curVal);
-    });
-    numRow.addEventListener("pointercancel", () => { dragging = false; display(curVal); });
-
-    wrap.appendChild(upBtn);
-    wrap.appendChild(numRow);
-    wrap.appendChild(downBtn);
-
-    // 바깥 컨테이너: [드럼] + [단위 레이블]
-    const outer = document.createElement("div");
-    outer.className = "date-drum-outer";
-    outer.appendChild(wrap);
-    outer.appendChild(unitEl);
-    return outer;
-  }
-
-  // ── 날짜 카드 ──
-  const dateCard = document.createElement("div");
-  dateCard.className = "date-card";
-
-  const badge = document.createElement("div");
-  badge.className = "date-card-badge";
-  badge.textContent = "오늘 📅";
-  dateCard.appendChild(badge);
-
-  // ── 드럼 피커 행 (먼저 선언 — 꼭지 이벤트에서 참조) ──
-  const drumRow = document.createElement("div");
-  drumRow.className = "date-drum-row";
-
-  // ── 오늘 꼭지 3개 ──
-  const chipNow = new Date();
-  const chipM   = chipNow.getMonth() + 1;
-  const chipD   = chipNow.getDate();
-  const chipWS  = ["일","월","화","수","목","금","토"][chipNow.getDay()];
-  const chipWF  = ["일요일","월요일","화요일","수요일","목요일","금요일","토요일"][chipNow.getDay()];
-
-  function makeDragChip(displayText, sublabel, onApply) {
-    const chip = document.createElement("div");
-    chip.className = "date-today-chip";
-    chip.innerHTML =
-      `<span class="chip-vals">${displayText}</span>` +
-      `<span class="chip-sub">${sublabel}</span>` +
-      `<span class="chip-hint">↓</span>`;
-
-    let cDrag = false, cSX = 0, cSY = 0, cRect0 = null, cGhost = null;
-
-    chip.addEventListener("pointerdown", (e) => {
-      cDrag = true; cSX = e.clientX; cSY = e.clientY;
-      cRect0 = chip.getBoundingClientRect();
-      chip.setPointerCapture(e.pointerId);
-      cGhost = chip.cloneNode(true);
-      cGhost.className = "date-today-chip date-today-chip--ghost";
-      Object.assign(cGhost.style, {
-        position: "fixed", left: cRect0.left + "px", top: cRect0.top + "px",
-        width: cRect0.width + "px", zIndex: "9999", pointerEvents: "none", margin: "0"
-      });
-      document.body.appendChild(cGhost);
-      chip.classList.add("date-today-chip--dragging");
-      e.preventDefault();
-    });
-
-    chip.addEventListener("pointermove", (e) => {
-      if (!cDrag || !cGhost) return;
-      cGhost.style.left = (cRect0.left + e.clientX - cSX) + "px";
-      cGhost.style.top  = (cRect0.top  + e.clientY - cSY) + "px";
-      const ov = document.elementFromPoint(e.clientX, e.clientY);
-      drumRow.classList.toggle("date-drum-row--highlight",
-        !!(ov?.closest(".date-drum-row, .date-drum-outer, .date-drum")));
-    });
-
-    chip.addEventListener("pointerup", (e) => {
-      if (!cDrag) return;
-      cDrag = false;
-      chip.classList.remove("date-today-chip--dragging");
-      drumRow.classList.remove("date-drum-row--highlight");
-      if (cGhost) { cGhost.remove(); cGhost = null; }
-      const moved = Math.hypot(e.clientX - cSX, e.clientY - cSY) > 12;
-      if (!moved) { onApply(); return; }
-      const ov = document.elementFromPoint(e.clientX, e.clientY);
-      if (ov?.closest(".date-drum-row, .date-drum-outer, .date-drum, .date-card") ||
-          (e.clientY - cSY) > 40) onApply();
-    });
-
-    chip.addEventListener("pointercancel", () => {
-      cDrag = false;
-      chip.classList.remove("date-today-chip--dragging");
-      drumRow.classList.remove("date-drum-row--highlight");
-      if (cGhost) { cGhost.remove(); cGhost = null; }
-    });
-
-    return chip;
-  }
-
-  const chipRow = document.createElement("div");
-  chipRow.className = "date-chip-row";
-  chipRow.appendChild(makeDragChip(String(chipM), "월", () => { dateSelection.month   = chipM;  render(); }));
-  chipRow.appendChild(makeDragChip(String(chipD), "일", () => { dateSelection.day     = chipD;  render(); }));
-  chipRow.appendChild(makeDragChip(chipWS, "요일",    () => { dateSelection.weekday = chipWF; render(); }));
-
-  dateCard.appendChild(chipRow);
-
-  drumRow.appendChild(
-    createDrumPicker(dateSelection.month, 1, 12, "월", (v) => { dateSelection.month = v; render(); })
-  );
-
-  drumRow.appendChild(
-    createDrumPicker(dateSelection.day, 1, 31, "일", (v) => { dateSelection.day = v; render(); })
-  );
-
-  // 요일 드럼 피커
-  const WDAY_FULL = ["월요일","화요일","수요일","목요일","금요일","토요일","일요일"];
-  let wdayIdx = WDAY_FULL.indexOf(dateSelection.weekday);
-  if (wdayIdx < 0) wdayIdx = 0;
-
-  const weekdayDrum = (() => {
-    let curIdx = wdayIdx;
-    let dragStartY = 0, dragStartIdx = wdayIdx, isDragging = false;
-
-    const wrap = document.createElement("div");
-    wrap.className = "date-drum";
-
-    const upBtn2 = document.createElement("button");
-    upBtn2.type = "button"; upBtn2.className = "date-drum-arrow"; upBtn2.textContent = "▲";
-
-    const wdRow = document.createElement("div");
-    wdRow.className = "date-drum-numrow";
-
-    const wdNameEl = document.createElement("div");
-    wdNameEl.className = "date-drum-number date-drum-number--wd";
-
-    wdRow.appendChild(wdNameEl);   // 요일명(수/목/금)만 박스 안에
-
-    const wdSuffixEl = document.createElement("div");
-    wdSuffixEl.className = "date-drum-unit date-drum-unit--wd";
-    wdSuffixEl.textContent = "요일";  // 박스 바깥에 배치
-
-    const downBtn2 = document.createElement("button");
-    downBtn2.type = "button"; downBtn2.className = "date-drum-arrow"; downBtn2.textContent = "▼";
-
-    function ci(i) { return ((i % 7) + 7) % 7; }
-    function dispWd(idx, off = 0) {
-      curIdx = ci(idx);
-      wdNameEl.textContent = WDAY_FULL[curIdx].replace("요일", "");
-      wdRow.style.transform = off ? `translateY(${off * 0.38}px)` : "";
-      wdRow.style.opacity   = off ? String(Math.max(0.45, 1 - Math.abs(off) * 0.007)) : "";
-    }
-    dispWd(curIdx);
-
-    upBtn2.addEventListener("click",   (e) => { e.stopPropagation(); dispWd(curIdx - 1); dateSelection.weekday = WDAY_FULL[curIdx]; render(); });
-    downBtn2.addEventListener("click", (e) => { e.stopPropagation(); dispWd(curIdx + 1); dateSelection.weekday = WDAY_FULL[curIdx]; render(); });
-
-    wdRow.addEventListener("pointerdown", (e) => { isDragging = true; dragStartY = e.clientY; dragStartIdx = curIdx; wdRow.setPointerCapture(e.pointerId); e.preventDefault(); });
-    wdRow.addEventListener("pointermove", (e) => { if (!isDragging) return; const dy = e.clientY - dragStartY; dispWd(dragStartIdx - Math.round(dy / 38), dy); });
-    wdRow.addEventListener("pointerup",   (e) => { if (!isDragging) return; isDragging = false; const dy = e.clientY - dragStartY; dispWd(dragStartIdx - Math.round(dy / 38)); dateSelection.weekday = WDAY_FULL[curIdx]; render(); });
-    wdRow.addEventListener("pointercancel", () => { isDragging = false; dispWd(curIdx); });
-
-    wrap.appendChild(upBtn2); wrap.appendChild(wdRow); wrap.appendChild(downBtn2);
-
-    const wdOuter = document.createElement("div");
-    wdOuter.className = "date-drum-outer";
-    wdOuter.appendChild(wrap);
-    wdOuter.appendChild(wdSuffixEl);
-    return wdOuter;
-  })();
-
-  drumRow.appendChild(weekdayDrum);
-  dateCard.appendChild(drumRow);
-
-  // 선택된 날씨 배지
-  if (weather) {
-    const wb = document.createElement("div");
-    wb.className = "date-card-weather";
-    wb.textContent = `${weatherEmoji} ${weather}`;
-    dateCard.appendChild(wb);
-  }
-
-  gridEl.appendChild(dateCard);
-
-  // ── 날씨 선택 섹션 ──
-  const weatherSection = document.createElement("div");
-  weatherSection.className = "date-weather-section";
-
-  const weatherLabel = document.createElement("div");
-  weatherLabel.className = "date-weather-label";
-  weatherLabel.textContent = "오늘 날씨";
-  weatherSection.appendChild(weatherLabel);
-
-  const weatherGrid = document.createElement("div");
-  weatherGrid.className = "date-weather-grid";
-
-  DATA.screens.dateWeatherPicker.items.forEach((item) => {
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "date-weather-tile" + (dateSelection.weather === item.label ? " is-selected" : "");
-    const img = document.createElement("img");
-    img.src = item.image; img.alt = item.label;
-    setupImageElement(img, true);
-    const lbl = document.createElement("div");
-    lbl.className = "date-weather-tile-label";
-    lbl.textContent = item.label;
-    btn.appendChild(img); btn.appendChild(lbl);
-    btn.addEventListener("click", () => { speak(item.label); dateSelection.weather = item.label; render(); });
-    weatherGrid.appendChild(btn);
-  });
-
-  weatherSection.appendChild(weatherGrid);
-  gridEl.appendChild(weatherSection);
-
-  // ── 전체 문장 읽기 버튼 ──
-  const sentenceBtn = document.createElement("button");
-  sentenceBtn.type = "button";
-  sentenceBtn.className = "date-sentence-btn";
-  const ft = buildFullText();
-  sentenceBtn.innerHTML = `<span class="date-sentence-icon">🔊</span><span>${ft}</span>`;
-  sentenceBtn.addEventListener("click", () => speak(buildFullText()));
-  gridEl.appendChild(sentenceBtn);
-}
-
-// 이전 코드 호환용 alias
-function renderDatePlanner() { renderDateHome(); }
-
-// ── 공통 렌더 함수 ───────────────────────────────────────────────────────────
-function renderHero(items) {
-  heroEl.innerHTML = "";
-  if (!items || !items.length) { heroEl.style.display = "none"; return; }
-  heroEl.style.display = "grid";
-  items.forEach((item) => {
-    const btn = document.createElement("button");
-    if (item.image) {
-      btn.className = "tile";
-      const img = document.createElement("img");
-      img.src = item.image; img.alt = item.label;
-      const label = document.createElement("div");
-      label.className = "tile-label"; label.textContent = item.label;
-      btn.appendChild(img); btn.appendChild(label);
-    } else {
-      btn.className = "btn hero";
-      btn.textContent = item.label;
-    }
-    btn.addEventListener("click", () => {
-      speak(item.label);
-      if (item.nav) { pushScreen(item.nav, item.label); render(); }
-    });
-    heroEl.appendChild(btn);
-  });
-}
-
-function renderButtons(items, layout) {
-  gridEl.innerHTML = "";
-  const isMain  = layout === "main";
-  const isMedia = layout === "media";
-  gridEl.className = isMain ? "grid" : (isMedia ? "grid media" : "grid detail");
-
-  items.forEach((item, index) => {
-    const btn  = document.createElement("button");
-    const yUrl = resolveYoutube(item);
-
-    if ((isMain && item.image) || (isMedia && (item.image || yUrl))) {
-      const isNavBtn = isMain && (item.label === "다음" || item.label === "이전");
-      btn.className = isNavBtn ? "tile tile-nav" : "tile";
-      if (!isNavBtn) {
-        const img = document.createElement("img");
-        img.src = item.image || getThumbnail(yUrl); img.alt = item.label;
-        setupImageElement(img, index < 2 || !!(item.image && item.image.startsWith("./images/")));
-        btn.appendChild(img);
+    function renderSchedule(key, screen) {
+      if (key === "scheduleFridayFinalResult") {
+        DATA.screens.scheduleFridayFinalResult.items = buildFridayPlanItems();
       }
-      const label = document.createElement("div");
-      label.className = "tile-label"; label.textContent = item.label;
-      btn.appendChild(label);
-    } else if (isMain) {
-      btn.className = "tile";
-      const art = document.createElement("div");
-      art.className = "tile-art";
-      art.textContent = item.icon || (
-        item.label.includes("버스") ? "🚌" :
-        (item.label.includes("음악") || item.label.includes("노래")) ? "🎵" :
-        item.label.includes("유튜브") ? "▶️" : "📌"
-      );
-      const label = document.createElement("div");
-      label.className = "tile-label"; label.textContent = item.label;
-      btn.appendChild(art); btn.appendChild(label);
-    } else {
-      btn.className = isMain ? "btn main" : "btn";
-      if (!isMain && yUrl && yUrl === selectedYoutube) btn.classList.add("selected");
-      btn.textContent = item.label;
+
+      if (screen.layout === "weeklySchedule") {
+        renderWeeklySchedule();
+      } else if (screen.layout === "dailyVisual") {
+        renderDailyVisual();
+      } else if (screen.layout === "weeklyDay") {
+        renderWeeklyDaySchedule();
+      } else if (screen.layout === "weeklyDetail") {
+        renderWeeklyDetail();
+      } else if (screen.layout === "homeActivityPicker") {
+        renderHomeActivityPicker();
+      } else if (screen.layout === "homeScheduleRunner") {
+        renderHomeScheduleRunner();
+      } else if (screen.layout === "therapyCenterPicker") {
+        renderCenterPicker();
+      } else if (screen.layout === "therapyClassPicker") {
+        renderClassPicker(screen.centerIndex || 0);
+      } else if (screen.layout === "therapyPicker") {
+        renderTherapyPicker(screen);
+      } else if (screen.layout === "fridayClassPicker") {
+        const slotKey = screen.fridaySlot === 1 ? "slot1" : "slot2";
+        renderFridaySlotPicker(slotKey);
+      }
     }
 
-    btn.addEventListener("click", () => {
-      // 날짜 picker 처리
-      if (currentKey() === "dateMonthPicker") {
-        dateSelection.month = Number(item.label.replace("월", ""));
-        speak(item.label); popScreen();
-        if (guardianDateSetup) pushScreen("dateDayPicker", "일 선택");
-        render(); return;
-      }
-      if (currentKey() === "dateDayPicker") {
-        dateSelection.day = Number(item.label.replace("일", ""));
-        speak(item.label); popScreen();
-        if (guardianDateSetup) pushScreen("dateWeekdayPicker", "요일 선택");
-        render(); return;
-      }
-      if (currentKey() === "dateWeekdayPicker") {
-        dateSelection.weekday = item.label;
-        speak(item.label);
-        guardianDateSetup = false;
-        while (currentKey() !== "dateHome" && navStack.length > 1) popScreen();
-        render(); return;
-      }
-      if (currentKey() === "dateWeatherPicker") {
-        dateSelection.weather = item.label;
-        speak(item.label); popScreen(); render(); return;
-      }
-
-      speak(item.label);
-      window.setTimeout(() => {
-        if (item.nav) { pushScreen(item.nav, item.label); render(); return; }
-        if (yUrl) {
-          if (item.playInApp && !useDirectYoutubeOpen) {
-            pushScreen("youtubePlayer", item.label); setPlayer(yUrl); render();
-          } else {
-            const screen = DATA.screens[currentKey()] || {};
-            if (screen.showPlayer) { setPlayer(yUrl); render(); }
-            else openYoutubeDirect(yUrl);
-          }
+    function handleBack(key) {
+      if (key === "scheduleWeekly" && weeklyEditMode) {
+        if (weeklyEditPersonFor !== null) {
+          weeklyEditPersonFor = null;
+        } else {
+          weeklyEditMode = false;
         }
-      }, 70);
-    });
-
-    if (item.nav) {
-      btn.addEventListener("pointerdown", () => prefetchScreenImages(item.nav), { passive: true });
-    }
-    gridEl.appendChild(btn);
-  });
-}
-
-// ── 메인 렌더 ────────────────────────────────────────────────────────────────
-function render() {
-  const key    = currentKey();
-  const screen = DATA.screens[key] || DATA.screens.main;
-  const isMain = key === "main";
-  backBtn.style.display = isMain ? "none" : "inline-flex";
-  homeBtn.style.display = isMain ? "none" : "inline-flex";
-  titleEl.textContent = screen.title || "AAC";
-  helperEl.textContent = screen.helper || "";
-  const crumb = breadcrumbText();
-  crumbEl.textContent = crumb;
-  crumbEl.style.display = crumb ? "block" : "none";
-  renderHero(screen.hero);
-
-  if (screen.showPlayer) {
-    playerWrapEl.style.display = "block";
-    openInYoutubeButton.style.display = "inline-flex";
-    const screenYoutubeUrls = (screen.items || []).map((x) => resolveYoutube(x)).filter(Boolean);
-    if (screenYoutubeUrls.length && selectedYoutube && !screenYoutubeUrls.includes(selectedYoutube))
-      selectedYoutube = "";
-    const firstUrl = screenYoutubeUrls[0] || "";
-    if (!selectedYoutube && firstUrl) setPlayer(firstUrl);
-  } else {
-    playerWrapEl.style.display = "none";
-    openInYoutubeButton.style.display = "none";
-    playerEl.src = "";
-  }
-
-  const isSpotlight = screen.layout === "spotlight" && screen.spotlight?.image;
-  const isEmpty     = screen.layout === "empty";
-
-  if (key === "scheduleFridayFinalResult") {
-    DATA.screens.scheduleFridayFinalResult.items = buildFridayPlanItems();
-  }
-
-  if (key === "outingHome") {
-    if (outingPlannerMode) {
-      const modeTitle = { person: "사람 선택", place: "장소 선택", transport: "이동수단 선택" };
-      titleEl.textContent = modeTitle[outingPlannerMode] || "선택";
-    }
-    renderOutingPlanner();
-  } else if (key === "outingCarTypes") {
-    // 자동차 서브 선택 → 고르면 transport로 저장 후 outingHome으로 복귀
-    appMainEl.classList.remove("app--spotlight");
-    spotlightViewEl.style.display = "none";
-    heroEl.style.display = "none";
-    gridEl.style.display = "";
-    gridEl.innerHTML = "";
-    gridEl.className = "grid";
-    (screen.items || []).forEach((item) => {
-      const btn = document.createElement("button");
-      btn.className = "tile";
-      const img = document.createElement("img");
-      img.src = item.image || "./images/transport_car.png";
-      img.alt = item.label;
-      setupImageElement(img, true);
-      const lbl = document.createElement("div");
-      lbl.className = "tile-label";
-      lbl.textContent = item.label;
-      btn.appendChild(img);
-      btn.appendChild(lbl);
-      btn.addEventListener("click", () => {
-        speak(item.label);
-        outingSelection.transport = { label: item.label, image: item.image || "./images/transport_car.png" };
-        outingPlannerMode = "";
-        while (currentKey() !== "outingHome" && navStack.length > 1) popScreen();
         render();
-      });
-      gridEl.appendChild(btn);
-    });
-  } else if (key === "dateHome") {
-    renderDateHome();
-  } else if (screen.layout === "weeklySchedule") {
-    renderWeeklySchedule();
-  } else if (screen.layout === "dailyVisual") {
-    renderDailyVisual();
-  } else if (screen.layout === "weeklyDay") {
-    renderWeeklyDaySchedule();
-  } else if (screen.layout === "weeklyDetail") {
-    renderWeeklyDetail();
-  } else if (screen.layout === "homeActivityPicker") {
-    renderHomeActivityPicker();
-  } else if (screen.layout === "homeScheduleRunner") {
-    renderHomeScheduleRunner();
-  } else if (screen.layout === "therapyCenterPicker") {
-    renderCenterPicker();
-  } else if (screen.layout === "therapyClassPicker") {
-    renderClassPicker(screen.centerIndex || 0);
-  } else if (screen.layout === "therapyPicker") {
-    renderTherapyPicker(screen);
-  } else if (screen.layout === "fridayClassPicker") {
-    const slotKey = screen.fridaySlot === 1 ? "slot1" : "slot2";
-    renderFridaySlotPicker(slotKey);
-  } else if (isSpotlight) {
-    appMainEl.classList.add("app--spotlight");
-    spotlightViewEl.style.display = "flex";
-    gridEl.style.display = "none";
-    gridEl.innerHTML = "";
-    spotlightImgEl.src = screen.spotlight.image;
-    spotlightImgEl.alt = screen.spotlight.label || screen.title || "";
-    setupImageElement(spotlightImgEl, true);
-    const spotLabel = screen.spotlight.label || screen.title || "";
-    spotlightBtnEl.setAttribute("aria-label", `${spotLabel}, 눌러서 읽기`);
-    spotlightBtnEl.onclick = () => speak(spotLabel);
-  } else if (isEmpty) {
-    appMainEl.classList.add("app--spotlight");
-    spotlightViewEl.style.display = "none";
-    spotlightBtnEl.onclick = null;
-    gridEl.style.display = "none";
-    gridEl.innerHTML = "";
-  } else {
-    appMainEl.classList.remove("app--spotlight");
-    spotlightViewEl.style.display = "none";
-    spotlightBtnEl.onclick = null;
-    heroEl.className = "hero";
-    gridEl.style.display = "";
-    renderButtons(screen.items || [], screen.layout || (isMain ? "main" : "detail"));
-  }
-
-  requestAnimationFrame(() => prefetchLikelyNextScreens(key));
-}
-
-// ── 이벤트 핸들러 ────────────────────────────────────────────────────────────
-backBtn.addEventListener("click", () => {
-  speak("뒤로 가기");
-  if (currentKey() === "outingHome" && outingPlannerMode) {
-    outingPlannerMode = "";
-    render();
-    return;
-  }
-  if (currentKey() === "scheduleWeekly" && weeklyEditMode) {
-    if (weeklyEditPersonFor !== null) {
-      weeklyEditPersonFor = null;
-    } else {
-      weeklyEditMode = false;
+        return true;
+      }
+      if (key === "scheduleWeeklyDay") {
+        weeklyDayEditMode = false;
+      }
+      return false;
     }
-    render();
-    return;
+
+    function resetToHome() {
+      weeklyDayEditMode = false;
+      weeklyEditMode = false;
+      weeklyEditPersonFor = null;
+      weeklyEditPeriods = false;
+    }
+
+    return {
+      handles,
+      render: renderSchedule,
+      handleBack,
+      resetToHome
+    };
   }
-  if (currentKey() === "scheduleWeeklyDay") {
-    weeklyDayEditMode = false;
-  }
-  popScreen();
-  selectedYoutube = "";
-  render();
-});
 
-homeBtn.addEventListener("click", () => {
-  speak("홈");
-  while (navStack.length > 1) popScreen();
-  outingPlannerMode = "";
-  selectedYoutube = "";
-  render();
-});
-
-openInYoutubeButton.addEventListener("click", () => {
-  if (!selectedYoutube) return;
-  speak("유튜브에서 열기");
-  openYoutubeDirect(selectedYoutube);
-});
-
-// ── 4. 목소리 강제 로딩: 0.2초 간격으로 계속 확인 ───────────────────────────
-if ("speechSynthesis" in window) {
-  window.speechSynthesis.onvoiceschanged = () => {
-    preferredKoVoice = pickPreferredKoVoice();
-  };
-  preferredKoVoice = pickPreferredKoVoice();
-  // Chrome/Android: getVoices()가 빈 배열을 반환할 때를 대비해 0.2초 간격으로 재시도
-  let voiceRetry = 0;
-  const voiceTimer = setInterval(() => {
-    const v = pickPreferredKoVoice();
-    if (v) { preferredKoVoice = v; clearInterval(voiceTimer); return; }
-    if (voiceRetry++ > 30) clearInterval(voiceTimer); // 최대 6초
-  }, 200);
-}
-
-window.addEventListener("pointerdown", warmupTTS, { once: true });
-window.addEventListener("touchstart",  warmupTTS, { once: true });
-
-if (isAppleMobile) returnHintEl.style.display = "block";
-
-// ── 앱 시작 ──────────────────────────────────────────────────────────────────
-render();
+  window.createScheduleFeature = createScheduleFeature;
+})();

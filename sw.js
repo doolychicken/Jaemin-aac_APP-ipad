@@ -4,15 +4,23 @@
  * On first visit, pre-caches all images so subsequent loads are instant.
  */
 
-const CACHE_VERSION = 'v31';
+const CACHE_VERSION = 'v53';
 const CACHE_NAME = `jaemin-aac-${CACHE_VERSION}`;
+
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
 
 const PRECACHE_ASSETS = [
   './',
   './index.html',
   './css/app.css',
-  './js/data.js',
-  './js/app.js',
+  './js/data/app-data.js',
+  './js/core/pager.js',
+  './js/features/schedule.js',
+  './js/main.js',
   // ── Images ──
   './images/apple.png',
   './images/bannana.png',

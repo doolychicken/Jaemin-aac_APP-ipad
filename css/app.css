@@ -7,6 +7,11 @@
   --border: #dbe3ef;
 }
 
+html {
+  height: 100%;
+  overflow: hidden;
+}
+
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
@@ -17,17 +22,24 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
+  overflow: hidden;
 }
 
 .app {
   max-width: 1400px;
   margin: 0 auto;
-  min-height: 100vh;
-  padding: 40px 22px;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  padding: max(14px, env(safe-area-inset-top)) 22px max(14px, env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 14px;
+  justify-content: flex-start;
+  gap: 10px;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .app.app--spotlight {
@@ -88,6 +100,7 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  flex: 0 0 auto;
 }
 
 .return-hint {
@@ -149,8 +162,12 @@ body {
 .grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  gap: clamp(8px, 1.4vh, 12px);
   justify-items: center;
+  align-content: center;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .grid.detail {
@@ -161,11 +178,17 @@ body {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.grid.detail .tile,
+.grid.media .tile {
+  width: min(30vw, 28vh, 240px);
+}
+
 .hero {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
   justify-items: center;
+  flex: 0 0 auto;
 }
 
 /* ── 외출하기 요약 타일 3개 ── */
@@ -644,16 +667,440 @@ body {
   flex-shrink: 0;
 }
 
-.tile {
-  width: min(42vw, 270px);
-  aspect-ratio: 1 / 1;
-  border-radius: 22px;
-  border: 2px solid var(--border);
+/* 날짜 카드판: 실제 그림카드를 골라 붙이는 방식 */
+.date-board {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto auto;
+  gap: clamp(8px, 1.4vh, 12px);
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  width: 100%;
+}
+
+.date-card-board {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr 1.4fr;
+  gap: clamp(6px, 1.2vh, 12px);
+  align-items: stretch;
+  min-height: 0;
+  padding: clamp(8px, 1.5vh, 14px);
+  border: 2px solid #d7dee9;
+  border-radius: 18px;
+  background: #f8fafc;
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,0.75);
+}
+
+.date-slot {
+  min-width: 0;
+  min-height: 92px;
+  border: 3px dashed #cbd5e1;
+  border-radius: 14px;
   background: #fff;
-  padding: 16px;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 8px;
+  cursor: pointer;
+  touch-action: manipulation;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+
+.date-slot.is-active {
+  border-color: #2563eb;
+  background: #eff6ff;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.14);
+}
+
+.date-slot-main {
+  font-size: clamp(1.8rem, 5.8vw, 4.8rem);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.date-slot-unit {
+  font-size: clamp(1.2rem, 3vw, 2.3rem);
+  font-weight: 900;
+  color: #047857;
+  line-height: 1;
+}
+
+.date-slot--wide .date-slot-main {
+  font-size: clamp(1.55rem, 4.2vw, 4.4rem);
+}
+
+.date-slot--weather {
+  flex-direction: column;
+  gap: 4px;
+}
+
+.date-slot--weather img {
+  width: min(64px, 9vh);
+  height: min(64px, 9vh);
+  object-fit: contain;
+}
+
+.date-option-panel {
+  min-height: 0;
+  border: 1px solid #dbe3ef;
+  border-radius: 16px;
+  padding: 10px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.date-option-title {
+  font-size: 0.85rem;
+  font-weight: 900;
+  color: #475569;
+  margin-bottom: 8px;
+}
+
+.date-option-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+  max-height: min(28vh, 190px);
+  overflow: hidden;
+}
+
+.date-option-panel--year .date-option-grid,
+.date-option-panel--weekday .date-option-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.date-option-panel--weather .date-option-grid {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.date-option-panel--day .date-option-grid {
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  max-height: min(32vh, 230px);
+}
+
+.date-option-card {
+  min-width: 0;
+  min-height: 54px;
+  border: 2px solid #dbe3ef;
+  border-radius: 12px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 6px;
+  cursor: pointer;
+  color: #0f172a;
+  font-size: clamp(1rem, 2.4vw, 1.45rem);
+  font-weight: 900;
+  touch-action: manipulation;
+}
+
+.date-option-panel--day .date-option-card {
+  min-height: 42px;
+  padding: 4px;
+  font-size: clamp(0.9rem, 2vw, 1.25rem);
+}
+
+.date-option-card.is-selected {
+  border-color: #16a34a;
+  background: #ecfdf5;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.14);
+}
+
+.date-option-card--weather {
+  flex-direction: column;
+  min-height: 74px;
+  font-size: 0.82rem;
+}
+
+.date-option-card--weather img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+}
+
+.date-action-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.date-action-btn {
+  min-height: 52px;
+  border: 2px solid #dbe3ef;
+  border-radius: 14px;
+  background: #fff;
+  color: #0f172a;
+  font-size: 1rem;
+  font-weight: 900;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.date-action-btn--primary {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #fff;
+}
+
+.date-mode-select {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  align-content: center;
+  justify-items: stretch;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.date-mode-card {
+  min-height: min(42vh, 280px);
+  border: 2px solid #dbe3ef;
+  border-radius: 18px;
+  background: #fff;
+  color: #0f172a;
+  padding: 20px;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.10);
+}
+
+.date-mode-title {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 900;
+}
+
+.date-mode-sub {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: 800;
+  line-height: 1.35;
+  color: #475569;
+  text-align: center;
+}
+
+.date-puzzle {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) minmax(0, 0.95fr) auto;
+  gap: clamp(8px, 1.4vh, 12px);
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  width: 100%;
+}
+
+.date-puzzle-board {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr 1.4fr;
+  gap: clamp(6px, 1.2vh, 12px);
+  min-height: 0;
+  padding: clamp(8px, 1.5vh, 14px);
+  border: 2px solid #d7dee9;
+  border-radius: 18px;
+  background: #f8fafc;
+}
+
+.date-puzzle-slot {
+  min-width: 0;
+  min-height: 78px;
+  border: 3px dashed #cbd5e1;
+  border-radius: 14px;
+  background: #fff;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 8px;
+  touch-action: none;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+
+.date-puzzle-slot.is-ready {
+  border-color: #16a34a;
+  background: #ecfdf5;
+  box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.16);
+}
+
+.date-puzzle-slot.is-active {
+  border-color: #2563eb;
+  background: #eff6ff;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.14);
+}
+
+.date-puzzle-slot-main {
+  font-size: clamp(1.6rem, 4.8vw, 4.2rem);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.date-puzzle-slot-unit {
+  font-size: clamp(1rem, 2.5vw, 2rem);
+  font-weight: 900;
+  color: #047857;
+}
+
+.date-puzzle-slot--wide .date-puzzle-slot-main {
+  font-size: clamp(1.35rem, 3.8vw, 3.7rem);
+}
+
+.date-puzzle-slot--weather {
+  flex-direction: column;
+}
+
+.date-puzzle-slot--weather img {
+  width: min(54px, 8vh);
+  height: min(54px, 8vh);
+  object-fit: contain;
+}
+
+.date-puzzle-tray {
+  min-height: 0;
+  border: 1px solid #dbe3ef;
+  border-radius: 16px;
+  padding: 8px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.date-puzzle-tray-title {
+  font-size: 0.82rem;
+  font-weight: 900;
+  color: #475569;
+  margin-bottom: 6px;
+}
+
+.date-puzzle-card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 10px;
+  max-height: 100%;
+  overflow: hidden;
+  align-content: center;
+}
+
+.date-puzzle-card-grid--year,
+.date-puzzle-card-grid--month,
+.date-puzzle-card-grid--day {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: 560px;
+  margin-inline: auto;
+}
+
+.date-puzzle-card-grid--weekday {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.date-puzzle-card-grid--weather {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.date-drag-card {
+  min-width: 0;
+  min-height: clamp(58px, 9vh, 92px);
+  border: 2px solid #dbe3ef;
+  border-radius: 10px;
+  background: #fff;
+  color: #0f172a;
+  font-size: clamp(1.25rem, 3vw, 2rem);
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 3px;
+  cursor: grab;
+  touch-action: none;
+}
+
+.date-drag-card:active,
+.date-drag-card.is-dragging {
+  cursor: grabbing;
+  opacity: 0.55;
+}
+
+.date-drag-card--ghost {
+  opacity: 0.95 !important;
+  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.28);
+  transform: scale(1.05);
+}
+
+.date-drag-card--weather {
+  flex-direction: column;
+  min-height: clamp(74px, 11vh, 104px);
+  font-size: clamp(0.78rem, 1.5vw, 1rem);
+}
+
+.date-drag-card--weather img {
+  width: clamp(34px, 6vh, 52px);
+  height: clamp(34px, 6vh, 52px);
+  object-fit: contain;
+}
+
+@media (max-width: 760px) {
+  .date-mode-select {
+    grid-template-columns: 1fr;
+  }
+  .date-mode-card {
+    min-height: 120px;
+  }
+  .date-card-board {
+    grid-template-columns: 1.2fr 0.9fr 0.9fr;
+  }
+  .date-slot--wide {
+    grid-column: span 3;
+  }
+  .date-option-grid,
+  .date-option-panel--year .date-option-grid,
+  .date-option-panel--weekday .date-option-grid,
+  .date-option-panel--weather .date-option-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .date-option-panel--day .date-option-grid {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    max-height: min(34vh, 240px);
+  }
+  .date-option-grid {
+    max-height: min(30vh, 190px);
+  }
+  .date-puzzle-board {
+    grid-template-columns: 1.2fr 0.9fr 0.9fr;
+  }
+  .date-puzzle-slot--wide {
+    grid-column: span 3;
+  }
+  .date-puzzle-card-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .date-puzzle-card-grid--year,
+  .date-puzzle-card-grid--month,
+  .date-puzzle-card-grid--day {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .date-puzzle-card-grid--weekday,
+  .date-puzzle-card-grid--weather {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.tile {
+  width: min(42vw, 26vh, 270px);
+  aspect-ratio: 1 / 1;
+  border-radius: 18px;
+  border: 2px solid var(--border);
+  background: #fff;
+  padding: clamp(8px, 1.5vh, 16px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(6px, 1vh, 10px);
   cursor: pointer;
   box-shadow: 0 10px 26px rgba(15, 23, 42, 0.10);
   transition: transform 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
@@ -688,7 +1135,7 @@ body {
 }
 
 .tile-label {
-  font-size: 1rem;
+  font-size: clamp(0.82rem, 1.6vh, 1rem);
   font-weight: 800;
   color: #0f172a;
   text-align: center;
@@ -810,6 +1257,11 @@ body {
   color: #475569;
 }
 
+/* 일일 스케줄 등에서 문구 없을 때 세로 공간 절약 */
+#helperText:empty {
+  display: none;
+}
+
 @media (min-width: 768px) {
   .grid:not(.detail):not(.media) {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -818,7 +1270,7 @@ body {
   }
 
   .grid:not(.detail):not(.media) .tile {
-    width: min(30vw, 260px);
+    width: min(30vw, 29vh, 260px);
   }
 }
 
@@ -826,6 +1278,11 @@ body {
   .grid.detail,
   .grid.media {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .grid.detail .tile,
+  .grid.media .tile {
+    width: min(42vw, 26vh, 240px);
   }
 }
 
@@ -917,6 +1374,11 @@ body {
   flex-direction: column;
   gap: 10px;
   grid-template-columns: unset;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  align-self: stretch;
+  box-sizing: border-box;
 }
 
 /* 7일 가로 나열 (가로 스크롤 허용) */
@@ -1249,7 +1711,7 @@ body {
 /* 시간대×요일 그리드 컨테이너 */
 .wt-grid {
   display: grid;
-  /* 첫 열: 시간대 레이블, 나머지 7열: 요일 (최소 110px 보장 → 좁으면 가로 스크롤) */
+  /* 첫 열: 시간대 레이블, 나머지 7열: 요일 (최소 너비 보장 — 좁으면 가로 스크롤) */
   grid-template-columns: 36px repeat(7, minmax(110px, 1fr));
   gap: 5px;
   overflow-x: auto;
@@ -1257,6 +1719,8 @@ body {
   scroll-snap-type: x proximity;
   padding: 0 0 8px;
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 /* 좌상단 빈 코너 */
@@ -1779,6 +2243,10 @@ body {
   gap: 12px;
   padding: 4px 0 24px;
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  align-self: stretch;
+  box-sizing: border-box;
   background: transparent;
 }
 
@@ -1835,7 +2303,7 @@ body {
 }
 
 @media (min-width: 600px) {
-  .dv-grid {
+  .dv-grid:not(.dv-grid--flow) {
     grid-template-columns: 1fr 1fr;
     gap: 14px;
   }
@@ -1885,7 +2353,7 @@ body {
   z-index: 1;
 }
 
-/* 이미지 영역: 카드 너비에 맞게 유연하게 */
+/* 이미지 영역: 카드 너비에 맞게 유연하게 (고정 240px은 좁은 열에서 넘침) */
 .dv-img-wrap {
   flex-shrink: 0;
   width: min(240px, calc(100% - 8px));
@@ -1965,6 +2433,193 @@ body {
   width: 100%;
 }
 
+/* 일일·요일별 스케줄: 한 화면에 맞추기 + 가로 흐름 (아이패드는 내부 스크롤 없음) */
+.dv-outer--fit {
+  padding-top: 0;
+  padding-bottom: 4px;
+  gap: 6px;
+}
+
+.dv-outer--fit .dv-date-bar {
+  padding: 5px 12px 5px 14px;
+  border-radius: 14px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(251, 191, 36, 0.28);
+}
+.dv-outer--fit .dv-date-num {
+  font-size: 1.1rem;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.dv-outer--fit .dv-day-badge {
+  width: 34px;
+  height: 34px;
+  font-size: 0.95rem;
+}
+
+/* 일일 스케줄: 날짜·요일이 들어가는 노란 박스 세로(위아래) 약 1/2 */
+.dv-outer--fit.dv-outer--daily .dv-date-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 10px 2px 12px;
+  border-radius: 10px;
+  min-height: 0;
+  line-height: 1;
+  box-shadow: 0 1px 4px rgba(251, 191, 36, 0.28);
+}
+.dv-outer--fit.dv-outer--daily .dv-date-num {
+  font-size: 0.88rem;
+  line-height: 1.1;
+  padding: 0;
+  margin: 0;
+}
+.dv-outer--fit.dv-outer--daily .dv-day-badge {
+  width: 24px;
+  height: 24px;
+  font-size: 0.7rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.dv-grid--flow {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  align-items: stretch;
+  gap: 6px 8px;
+  width: 100%;
+  max-width: 100%;
+  min-height: 0;
+  max-height: none;
+  overflow: visible;
+}
+
+/* 좁은 폰만: 카드가 많을 때 이 영역만 스크롤 */
+@media (max-width: 767px) {
+  .dv-outer--fit .dv-grid--flow {
+    max-height: min(60vh, calc(100dvh - 160px));
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+.dv-outer--fit .dv-card {
+  width: auto;
+  flex: 1 1 100px;
+  max-width: min(160px, 24vw);
+  min-width: 86px;
+  box-sizing: border-box;
+  padding: 4px 5px 5px;
+  gap: 3px;
+  border-radius: 16px;
+  border-width: 2px;
+}
+
+.dv-outer--fit .dv-num {
+  width: 30px;
+  height: 30px;
+  font-size: 0.82rem;
+  top: 4px;
+  left: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+.dv-outer--fit .dv-num--wide {
+  width: auto;
+  min-width: 32px;
+  max-width: 4.5em;
+  height: auto;
+  min-height: 30px;
+  border-radius: 9px;
+  font-size: 0.6rem;
+  padding: 3px 4px;
+  line-height: 1.1;
+  white-space: normal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.dv-outer--fit .dv-img-wrap {
+  width: min(80px, 20vw);
+  max-height: 80px;
+  margin-top: 0;
+  border-radius: 12px;
+}
+.dv-outer--fit .dv-art {
+  font-size: clamp(1.35rem, 4.5vw, 2.1rem);
+  line-height: 1;
+}
+.dv-outer--fit .dv-lbl {
+  font-size: 0.8rem;
+  font-weight: 900;
+  line-height: 1.1;
+  margin-top: 1px;
+}
+.dv-outer--fit .dv-text-block {
+  gap: 3px;
+}
+.dv-outer--fit .dv-faces {
+  gap: 2px 4px;
+  padding-top: 2px;
+  border-top-width: 1px;
+  margin-top: 1px;
+}
+.dv-outer--fit .person-avatar.dv-face {
+  width: 32px;
+  height: 32px;
+  border-width: 2px;
+}
+.dv-outer--fit .person-avatar.dv-face .person-avatar-emoji {
+  font-size: 1.05rem;
+}
+.dv-outer--fit .dv-face-lbl {
+  font-size: 0.5rem;
+  max-width: 44px;
+}
+
+/* 아이패드·태블릿: 날짜+1·2·3·4를 한 눈에, 스크롤 없이 */
+@media (min-width: 768px) {
+  .dv-outer--fit {
+    gap: 5px;
+  }
+  .dv-outer--fit .dv-date-bar {
+    padding: 4px 14px;
+  }
+  .dv-outer--fit .dv-date-num {
+    font-size: 1.05rem;
+  }
+  .dv-outer--fit .dv-day-badge {
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+  }
+  .dv-outer--fit .dv-grid--flow {
+    align-content: center;
+  }
+  .dv-outer--fit .dv-card {
+    flex: 0 1 auto;
+    min-width: 88px;
+    max-width: min(148px, 22vw);
+    padding: 3px 4px 5px;
+  }
+  .dv-outer--fit .dv-img-wrap {
+    width: min(72px, 12vw);
+    max-height: 72px;
+  }
+  .dv-outer--fit .dv-lbl {
+    font-size: 0.78rem;
+  }
+  .dv-outer--fit .dv-num {
+    width: 28px;
+    height: 28px;
+    font-size: 0.75rem;
+    top: 3px;
+    left: 3px;
+  }
+}
+
 /* ══════════════════════════════════════════════════
    iPad 가로 (Landscape) 최적화
    기준: min-width 1024px (iPad Air/Pro 가로)
@@ -2032,32 +2687,44 @@ body {
     font-size: clamp(2.2rem, 4.5vw, 4rem);
   }
 
-  /* 일일 시각 스케줄: 3열 */
-  .dv-grid {
+  /* 일일 시각 스케줄: 3열 (가로 줄바꿈 레이아웃 제외) */
+  .dv-grid:not(.dv-grid--flow) {
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;
   }
 
-  /* 일일 스케줄 카드 이미지: 가로에서 반응형 */
-  .dv-img-wrap {
+  /* 예전 그리드형 일일 스케줄만 — fit(한 화면) 레이아웃은 건드리지 않음 */
+  .dv-outer:not(.dv-outer--fit) .dv-img-wrap {
     width: min(180px, calc(100% - 8px));
   }
-  .dv-art {
+  .dv-outer:not(.dv-outer--fit) .dv-art {
     font-size: 7rem;
   }
-  .dv-lbl {
+  .dv-outer:not(.dv-outer--fit) .dv-lbl {
     font-size: 1.3rem;
   }
-  .dv-num {
+  .dv-outer:not(.dv-outer--fit) .dv-num {
     width: 44px;
     height: 44px;
     font-size: 1.35rem;
   }
-
-  /* 얼굴 사진 */
-  .person-avatar.dv-face {
+  .dv-outer:not(.dv-outer--fit) .person-avatar.dv-face {
     width: 72px;
     height: 72px;
+  }
+
+  /* fit(일일/요일): 1024px 이상 — 한 화면 밀도 유지(스크롤 없음 목표) */
+  .dv-outer--fit .dv-grid--flow {
+    max-height: none;
+    overflow: visible;
+  }
+  .dv-outer--fit .dv-card {
+    min-width: 90px;
+    max-width: min(142px, 20vw);
+  }
+  .dv-outer--fit .dv-img-wrap {
+    width: min(70px, 11vw);
+    max-height: 70px;
   }
 
   /* 주간 스케줄 컬럼 최소 너비 업 */
@@ -2149,18 +2816,18 @@ body {
     padding: 20px 56px;
   }
 
-  /* 일일 스케줄: 4열 */
-  .dv-grid {
+  /* 일일 스케줄: 4열 (flow 제외) */
+  .dv-grid:not(.dv-grid--flow) {
     grid-template-columns: repeat(4, 1fr);
     gap: 14px;
   }
-  .dv-img-wrap {
+  .dv-outer:not(.dv-outer--fit) .dv-img-wrap {
     width: min(150px, calc(100% - 8px));
   }
-  .dv-art {
+  .dv-outer:not(.dv-outer--fit) .dv-art {
     font-size: 5.5rem;
   }
-  .dv-lbl {
+  .dv-outer:not(.dv-outer--fit) .dv-lbl {
     font-size: 1.15rem;
   }
 }
