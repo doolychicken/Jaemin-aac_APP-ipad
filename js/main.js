@@ -1540,6 +1540,7 @@ function renderDateStepFlowDrag() {
     if (kind === "year") return `${value}년`;
     if (kind === "month") return `${value}월`;
     if (kind === "day") return `${value}일`;
+    if (kind === "weather") return `날씨 ${value}`;
     return String(value);
   }
 
@@ -1590,11 +1591,11 @@ function renderDateStepFlowDrag() {
     const targetSelection = dateStepPage === "summary" ? dateStepFinalSelection : datePuzzleBlankSelection;
     targetSelection[kind] = stored;
     dateSelection[kind] = stored;
-    if (kind === "weather") playWeatherSound(value);
     playPuzzleSound("success");
     fillMatchedSlot(kind, stored, targetEl);
     targetEl?.classList.add("is-matched");
-    speak(spokenStepLabel(kind, value));
+    speak(spokenStepLabel(kind, stored));
+    if (kind === "weather") window.setTimeout(() => playWeatherSound(value), 420);
     const next = nextAfterMatch(kind);
     if (dateStepPage === "summary") {
       window.setTimeout(render, kind === "month" || kind === "day" ? 550 : 850);
@@ -1931,6 +1932,7 @@ function renderDatePuzzle() {
     if (kind === "year") return `${value}년`;
     if (kind === "month") return `${value}월`;
     if (kind === "day") return `${value}일`;
+    if (kind === "weather") return `날씨 ${value}`;
     return String(value);
   }
 
@@ -1961,9 +1963,9 @@ function renderDatePuzzle() {
     if (kind === "weather") targetSelection.weather = value;
     if (isBlankPuzzle && kind !== "weather") dateSelection[kind] = targetSelection[kind];
     if (kind === "weather") dateSelection.weather = value;
-    if (kind === "weather") playWeatherSound(value);
     dateCardFocus = nextDateFocus[kind] || "weather";
     showPuzzleSuccess(targetEl, spokenDropLabel(kind, value));
+    if (kind === "weather") window.setTimeout(() => playWeatherSound(value), 420);
   }
 
   function allowDrop(e) {
