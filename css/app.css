@@ -3819,3 +3819,113 @@ body {
     width: min(28vw, 27vh, 252px);
   }
 }
+
+/* Home schedule: six square choices per page, then one large active task. */
+.grid.home-activity-picker {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  width: 100%;
+  max-width: min(860px, 100%);
+  margin-inline: auto;
+  align-content: start;
+  justify-items: stretch;
+  gap: clamp(12px, 2vh, 18px);
+}
+
+.grid.home-activity-picker > .tile {
+  width: 100% !important;
+  max-width: none !important;
+  aspect-ratio: 1 / 1 !important;
+  min-height: 0 !important;
+  padding: clamp(10px, 1.6vh, 16px);
+}
+
+.grid.home-activity-picker > .tile img {
+  object-fit: contain;
+  padding: clamp(5px, 0.9vh, 8px);
+}
+
+.grid.home-activity-picker > .tile .tile-label {
+  flex: 0 0 auto;
+  min-height: 2em;
+  font-size: clamp(1rem, 2vh, 1.28rem);
+}
+
+.grid.home-activity-picker > .tile-nav {
+  width: 100% !important;
+  aspect-ratio: 1 / 1 !important;
+  min-height: 0 !important;
+  flex-direction: column;
+}
+
+.grid.home-activity-picker > .btn {
+  grid-column: 1 / -1;
+  min-height: 56px;
+}
+
+.grid.home-runner-grid {
+  grid-template-columns: 1fr !important;
+  width: 100%;
+  max-width: 100%;
+  min-height: min(72vh, 620px);
+  align-content: center;
+  justify-items: center;
+  gap: clamp(14px, 2vh, 22px);
+}
+
+.grid.home-runner-grid .home-runner-current {
+  grid-column: auto !important;
+  width: min(76vh, 82vw, 560px) !important;
+  max-width: 560px !important;
+  aspect-ratio: 1 / 1 !important;
+  min-height: 0 !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: clamp(16px, 2.4vh, 26px) !important;
+  gap: clamp(12px, 2vh, 20px) !important;
+  border: 4px solid #14c8c5 !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.56) 100%),
+    linear-gradient(135deg, #35d6d2 0%, #4f8cff 100%) !important;
+}
+
+.grid.home-runner-grid .home-runner-current img {
+  width: 100% !important;
+  height: clamp(230px, 52vh, 390px) !important;
+  max-height: 68% !important;
+  flex: 1 1 auto !important;
+  object-fit: contain !important;
+  border-radius: 10px !important;
+}
+
+.grid.home-runner-grid .home-runner-current .tile-art {
+  width: 100% !important;
+  height: clamp(230px, 52vh, 390px) !important;
+  max-height: 68% !important;
+  flex: 1 1 auto !important;
+  font-size: clamp(5rem, 16vh, 9rem) !important;
+}
+
+.grid.home-runner-grid .home-runner-current .tile-label {
+  flex: 0 0 auto !important;
+  min-height: auto;
+  color: #ffffff !important;
+  font-size: clamp(1.65rem, 4vh, 2.4rem) !important;
+  line-height: 1.08;
+  text-align: center !important;
+}
+
+.grid.home-runner-grid > .btn {
+  grid-column: auto !important;
+  width: min(82vw, 360px);
+}
+
+@media (max-width: 720px) {
+  .grid.home-activity-picker {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .grid.home-runner-grid .home-runner-current {
+    width: min(84vw, 500px) !important;
+  }
+}

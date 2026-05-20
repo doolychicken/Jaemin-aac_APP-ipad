@@ -195,11 +195,13 @@ const HOME_ACTIVITY_GROUPS = [
     image: "./images/outing.png",
     emoji: "🚶",
     activities: [
-      { label: "분리수거",    image: "./images/home_schedule/recycling.png", emoji: "♻️" },
-      { label: "산책",        image: "./images/home_schedule/walk.png", emoji: "🚶" },
-      { label: "마트 장보기", image: "./images/outing_mart1.png", emoji: "🛒" },
-      { label: "파리바게트",  image: "./images/home_schedule/paris_baguette.png", emoji: "🥐" },
-      { label: "놀이터",      image: "./images/home_schedule/playground.png", emoji: "🛝" }
+      { label: "분리수거장", image: "./images/home_schedule/recycling_station.png", emoji: "♻️" },
+      { label: "하나로마트", image: "./images/home_schedule/hanaro_mart.png", emoji: "🛒" },
+      { label: "한살림",     image: "./images/home_schedule/hansalim.png", emoji: "🥬" },
+      { label: "파리바게트", image: "./images/home_schedule/paris_baguette.png", emoji: "🥐" },
+      { label: "놀이터",     image: "./images/home_schedule/playground.png", emoji: "🛝" },
+      { label: "우체국",     image: "./images/home_schedule/post_office.png", emoji: "📮" },
+      { label: "소방서",     image: "./images/home_schedule/fire_station.png", emoji: "🚒" }
     ]
   },
   {
@@ -219,6 +221,7 @@ const HOME_ACTIVITY_GROUPS = [
 const HOME_ACTIVITIES = HOME_ACTIVITY_GROUPS.flatMap((group) => group.activities);
 let homeActivityGroupId = "";
 let homeScheduleGroupId = "";
+let homeActivityPage = 0;
 let homeSchedule = [];
 let homeScheduleRemaining = [];
 const schedulePager = window.createTilePager({
@@ -425,7 +428,7 @@ function renderHomeActivityPicker() {
   heroEl.className = "hero";
   gridEl.style.display = "";
   gridEl.innerHTML = "";
-  gridEl.className = "grid";
+  gridEl.className = "grid home-activity-picker";
 
   function appendActivityTile(activity) {
     const orderIdx = homeSchedule.indexOf(activity.label);
@@ -438,6 +441,13 @@ function renderHomeActivityPicker() {
       img.src = activity.image;
       img.alt = activity.label;
       setupImageElement(img, true);
+      img.addEventListener("error", () => {
+        img.remove();
+        const art = document.createElement("div");
+        art.className = "tile-art";
+        art.textContent = activity.emoji;
+        btn.insertBefore(art, btn.firstChild);
+      }, { once: true });
       btn.appendChild(img);
     } else {
       const art = document.createElement("div");
@@ -477,6 +487,7 @@ function renderHomeActivityPicker() {
       groupBtn.textContent = "외출 / 집 선택으로";
       groupBtn.addEventListener("click", () => {
         homeActivityGroupId = "";
+        homeActivityPage = 0;
         speak("종류 선택");
         render();
       });
@@ -513,6 +524,23 @@ function renderHomeActivityPicker() {
     gridEl.appendChild(startBtn);
   }
 
+  function appendHomeActivityPager(group) {
+    if (group.id !== "outing" || group.activities.length <= 5) return;
+
+    const btn = document.createElement("button");
+    btn.className = "tile tile-nav";
+    const lbl = document.createElement("div");
+    lbl.className = "tile-label";
+    lbl.textContent = homeActivityPage === 0 ? "다음" : "이전";
+    btn.appendChild(lbl);
+    btn.addEventListener("click", () => {
+      homeActivityPage = homeActivityPage === 0 ? 1 : 0;
+      speak(lbl.textContent);
+      render();
+    });
+    gridEl.appendChild(btn);
+  }
+
   if (!homeActivityGroupId) {
     titleEl.textContent = "집 스케줄 만들기";
     helperEl.textContent = "외출인지, 집에만 있을 때인지 먼저 골라요.";
@@ -539,6 +567,7 @@ function renderHomeActivityPicker() {
         if (homeScheduleGroupId && homeScheduleGroupId !== group.id) homeSchedule = [];
         homeActivityGroupId = group.id;
         homeScheduleGroupId = group.id;
+        homeActivityPage = 0;
         speak(group.label);
         render();
       });
@@ -551,7 +580,11 @@ function renderHomeActivityPicker() {
   const group = HOME_ACTIVITY_GROUPS.find((item) => item.id === homeActivityGroupId) || HOME_ACTIVITY_GROUPS[0];
   titleEl.textContent = `${group.label} 스케줄`;
   helperEl.textContent = "할 일을 클릭한 순서대로 골라요. 다시 누르면 취소돼요.";
-  group.activities.forEach(appendActivityTile);
+  const visibleActivities = group.id === "outing"
+    ? group.activities.slice(homeActivityPage === 0 ? 0 : 5, homeActivityPage === 0 ? 5 : group.activities.length)
+    : group.activities;
+  visibleActivities.forEach(appendActivityTile);
+  appendHomeActivityPager(group);
   appendControls();
 }
 
@@ -599,47 +632,53 @@ function renderHomeScheduleRunner() {
   // helperEl에 남은 개수 표시
   helperEl.textContent = `남은 할 일: ${homeScheduleRemaining.length}가지 · 눌러서 완료`;
 
-  homeScheduleRemaining.forEach((label, idx) => {
-    const activity = HOME_ACTIVITIES.find((a) => a.label === label);
-    const btn = document.createElement("button");
-    btn.className = `tile home-runner-tile${idx === 0 ? " home-runner-current" : ""}`;
+  const label = homeScheduleRemaining[0];
+  const activity = HOME_ACTIVITIES.find((a) => a.label === label);
+  const originalOrder = Math.max(homeSchedule.indexOf(label), 0) + 1;
+  const btn = document.createElement("button");
+  btn.className = "tile home-runner-tile home-runner-current";
 
-    if (activity?.image) {
-      const img = document.createElement("img");
-      img.src = activity.image;
-      img.alt = label;
-      setupImageElement(img, true);
-      btn.appendChild(img);
-    } else {
+  if (activity?.image) {
+    const img = document.createElement("img");
+    img.src = activity.image;
+    img.alt = label;
+    setupImageElement(img, true);
+    img.addEventListener("error", () => {
+      img.remove();
       const art = document.createElement("div");
       art.className = "tile-art";
       art.textContent = activity?.emoji || "✅";
-      btn.appendChild(art);
-    }
+      btn.insertBefore(art, btn.firstChild);
+    }, { once: true });
+    btn.appendChild(img);
+  } else {
+    const art = document.createElement("div");
+    art.className = "tile-art";
+    art.textContent = activity?.emoji || "✅";
+    btn.appendChild(art);
+  }
 
-    const lbl = document.createElement("div");
-    lbl.className = "tile-label";
-    lbl.textContent = label;
-    btn.appendChild(lbl);
+  const lbl = document.createElement("div");
+  lbl.className = "tile-label";
+  lbl.textContent = label;
+  btn.appendChild(lbl);
 
-    const numBadge = document.createElement("span");
-    numBadge.className = "tile-check";
-    numBadge.textContent = String(idx + 1);
-    btn.appendChild(numBadge);
+  const numBadge = document.createElement("span");
+  numBadge.className = "tile-check";
+  numBadge.textContent = String(originalOrder);
+  btn.appendChild(numBadge);
 
-    btn.addEventListener("click", () => {
-      const isLast = homeScheduleRemaining.length === 1;
-      speak(isLast ? "모두 다 했어요! 정말 잘했어요!" : label + " 완료!");
-      btn.classList.add("home-runner-done-anim");
-      btn.addEventListener("animationend", () => {
-        const i = homeScheduleRemaining.indexOf(label);
-        if (i >= 0) homeScheduleRemaining.splice(i, 1);
-        render();
-      }, { once: true });
-    });
-
-    gridEl.appendChild(btn);
+  btn.addEventListener("click", () => {
+    const isLast = homeScheduleRemaining.length === 1;
+    speak(isLast ? "모두 다 했어요! 정말 잘했어요!" : label + " 완료!");
+    btn.classList.add("home-runner-done-anim");
+    btn.addEventListener("animationend", () => {
+      homeScheduleRemaining.shift();
+      render();
+    }, { once: true });
   });
+
+  gridEl.appendChild(btn);
 
   // 처음부터 다시 버튼
   const resetBtn = document.createElement("button");
@@ -1588,7 +1627,13 @@ function renderFridaySlotPicker(slotKey) {
 
     function handleBack(key) {
       if (key === "scheduleHomeActivity" && homeActivityGroupId) {
+        if (homeActivityPage > 0) {
+          homeActivityPage = 0;
+          render();
+          return true;
+        }
         homeActivityGroupId = "";
+        homeActivityPage = 0;
         render();
         return true;
       }
@@ -1614,6 +1659,7 @@ function renderFridaySlotPicker(slotKey) {
       weeklyEditPeriods = false;
       homeActivityGroupId = "";
       homeScheduleGroupId = "";
+      homeActivityPage = 0;
     }
 
     return {
