@@ -31,12 +31,14 @@ const THERAPY_OPTIONS_BY_CENTER = {
   "사람과소통":  ["언어"]
 };
 const THERAPY_CENTER_IMAGE = {
-  "세브란스병원": "./images/therapy_center_severance.png"
+  "세브란스병원": "./images/therapy_center_severance.png",
+  "사람과소통": "./images/therapy/communication_with_people.png"
 };
 const THERAPY_CLASS_IMAGE = {
   "언어": "./images/therapy_class_speech.png",
   "인지": "./images/therapy_class_cognitive.png",
-  "음악": "./images/therapy_class_music.png"
+  "음악": "./images/therapy_class_music.png",
+  "물리": "./images/therapy/severance_physical_therapy.png"
 };
 const THERAPY_CLASS_EMOJI = {
   "언어": "🗣️", "인지": "🧠", "음악": "🎵",
@@ -60,7 +62,7 @@ const SCHEDULE_ACTIVITY_DEFS = [
   { type: "home",       label: "집",         shortLabel: "집",      image: "./images/home.png",                     emoji: "🏠" },
   { type: "큰나무",     label: "큰나무병원", shortLabel: "큰나무",  image: null,                                    emoji: "🌳" },
   { type: "세브란스",   label: "세브란스병원", shortLabel: "세브란스", image: "./images/therapy_center_severance.png", emoji: "🏥" },
-  { type: "사람과소통", label: "사람과소통", shortLabel: "소통",    image: null,                                    emoji: "🗣️" },
+  { type: "사람과소통", label: "사람과소통", shortLabel: "소통",    image: "./images/therapy/communication_with_people.png", emoji: "🗣️" },
   { type: "mart",       label: "마트",       shortLabel: "마트",    image: "./images/outing_mart1.png",             emoji: "🛒" },
   { type: "bakery",     label: "빵가게",     shortLabel: "빵가게",  image: "./images/outing_bakery.png",            emoji: "🥐" },
   { type: "cafe",       label: "카페",       shortLabel: "카페",    image: "./images/outing_cafe.png",              emoji: "☕" },
@@ -85,8 +87,8 @@ const SCHEDULE_PERSON_DEFS = [
   { label: "세브란스 언어 선생님", image: null, emoji: "🗣️", groups: ["세브란스"] },
   { label: "세브란스 작업 선생님", image: null, emoji: "🖐️", groups: ["세브란스"] },
   { label: "세브란스 연하 선생님", image: null, emoji: "💧",  groups: ["세브란스"] },
-  { label: "세브란스 물리 선생님", image: null, emoji: "🏃",  groups: ["세브란스"] },
-  { label: "사람과소통 선생님",   image: null, emoji: "🗣️", groups: ["사람과소통"] },
+  { label: "세브란스 물리 선생님", image: "./images/therapy/severance_physical_therapy.png", emoji: "🏃",  groups: ["세브란스"] },
+  { label: "사람과소통 선생님",   image: "./images/therapy/communication_with_people.png", emoji: "🗣️", groups: ["사람과소통"] },
   { label: "담임선생님",        image: "./images/school_homeroom_teacher.png",       emoji: "👩‍🏫", groups: ["school"] },
   { label: "건민",             image: "./images/school_friends_건민.png",            emoji: "🧒",  groups: ["school"] },
   { label: "동하",             image: "./images/school_friends_동하.png",            emoji: "🧒",  groups: ["school"] },
