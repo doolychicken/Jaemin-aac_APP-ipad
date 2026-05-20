@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://img.youtube.com" />
   <link rel="preconnect" href="https://i.ytimg.com" />
   <title>AAC 앱</title>
-  <link rel="stylesheet" href="./css/app.css?v=67" />
+  <link rel="stylesheet" href="./css/app.css?v=70" />
 </head>
 <body>
   <main class="app">
@@ -47,15 +47,15 @@
     <section id="buttonGrid" class="grid"></section>
   </main>
 
-  <script src="./js/data/app-data.js?v=67"></script>
-  <script src="./js/core/pager.js?v=67"></script>
-  <script src="./js/features/schedule.js?v=67"></script>
-  <script src="./js/main.js?v=67"></script>
+  <script src="./js/data/app-data.js?v=70"></script>
+  <script src="./js/core/pager.js?v=70"></script>
+  <script src="./js/features/schedule.js?v=70"></script>
+  <script src="./js/main.js?v=70"></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         /* sw.js에도 v를 붙이지 않으면 Safari가 옛 서비스 워커를 붙잡는 경우가 있음 */
-        navigator.serviceWorker.register('./sw.js?v=67', { updateViaCache: 'none' })
+        navigator.serviceWorker.register('./sw.js?v=70', { updateViaCache: 'none' })
           .then(function (reg) { reg.update().catch(function () {}); })
           .catch(function () { /* local file 등 */ });
       });

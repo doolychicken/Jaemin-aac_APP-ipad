@@ -297,8 +297,8 @@ const DATA = {
         { label: "아이패드",   nav: "ipadHome",     image: "./images/ipad.png" },
         { label: "밥 먹기",   nav: "meal",         image: "./images/meal.png" },
         { label: "화장실",    nav: "toilet",       image: "./images/toilet.png" },
-        { label: "학교",      nav: "outingSchool", image: "./images/school_classroom.png" },
-        { label: "스케줄표",  nav: "scheduleHome", image: "./images/outing_school1.png" },
+        { label: "학교",      nav: "outingSchool", image: "./images/outing_school1.png" },
+        { label: "스케줄표",  nav: "scheduleHome", image: "./images/school_classroom.png" },
         { label: "날짜",      nav: "dateHome",     image: "./images/outing_park1.png" },
         { label: "다음",      nav: "main_p2",      image: "./images/outing.png" }
       ],
@@ -344,10 +344,10 @@ const DATA = {
       helper: "스케줄 관련 항목을 선택하세요.",
       hero: [],
       items: [
-        { label: "오늘 일정", nav: "scheduleToday",        image: "./images/outing_school1.png" },
+        { label: "오늘 일정", nav: "scheduleToday",        image: "./images/school_classroom.png" },
         { label: "집 스케줄", nav: "scheduleHomeActivity", image: "./images/home.png" },
-        { label: "주간 스케줄", nav: "scheduleWeekly",     image: "./images/outing_school1.png" },
-        { label: "일일 스케줄표", nav: "scheduleDailyVisual", image: "./images/outing_school1.png" },
+        { label: "주간 스케줄", nav: "scheduleWeekly",     image: "./images/school_classroom.png" },
+        { label: "일일 스케줄표", nav: "scheduleDailyVisual", image: "./images/school_classroom.png" },
         { label: "내일 일정" }
       ],
       layout: "main",
@@ -413,7 +413,7 @@ const DATA = {
       helper: "요일을 선택하세요.",
       hero: [],
       items: [
-        { label: "월~목 일정", nav: "scheduleMTh",    image: "./images/outing_school1.png" },
+        { label: "월~목 일정", nav: "scheduleMTh",    image: "./images/school_classroom.png" },
         { label: "금요일 일정", nav: "scheduleFriday", image: "./images/transport_calltaxi.png" }
       ],
       layout: "main",
@@ -425,7 +425,7 @@ const DATA = {
       helper: "순서대로 눌러 말해 보세요. (치료실은 선택)",
       hero: [],
       items: [
-        { label: "1. 학교가요",           image: "./images/outing_school1.png" },
+        { label: "1. 학교가요",           image: "./images/school_classroom.png" },
         { label: "2. 장애인 콜택시 타요",  image: "./images/transport_calltaxi.png" },
         { label: "3. 치료실 선택",         nav: "scheduleTodayTherapy" },
         { label: "4. 장애인 콜택시 타요",  image: "./images/transport_calltaxi.png" },
@@ -442,7 +442,7 @@ const DATA = {
       items: [
         { label: "오전 치료실 선택",  nav: "scheduleFridayTherapy1", image: "./images/therapy_center_severance.png" },
         { label: "오후 치료실 선택",  nav: "scheduleFridayTherapy2", image: "./images/therapy_center_severance.png" },
-        { label: "전체 일정 보기",    nav: "scheduleFridayFinalResult", image: "./images/outing_school1.png" }
+        { label: "전체 일정 보기",    nav: "scheduleFridayFinalResult", image: "./images/school_classroom.png" }
       ],
       layout: "main",
       showPlayer: false
@@ -731,16 +731,118 @@ const DATA = {
     // ── 일상 ──────────────────────────────────────────────────────────────────
     meal: {
       title: "밥 먹기",
-      helper: "원하는 것을 선택하세요.",
+      helper: "원하는 카테고리를 선택하세요.",
       hero: [],
       items: [
-        { label: "밥",         image: "./images/meal_rice.png" },
-        { label: "물",         image: "./images/meal_water.png" },
+        { label: "밥",   nav: "mealRice",      image: "./images/meal_rice.png" },
+        { label: "간식", nav: "mealSnack",     image: "./images/meal_eggtart.png" },
+        { label: "과일", nav: "mealFruit",     image: "./images/apple.png" },
+        { label: "야채", nav: "mealVegetable", image: "./images/tomato.png" },
+        { label: "음료", nav: "mealDrink",     image: "./images/meal_juice.png" },
+        { label: "빵",   nav: "mealBread",     image: "./images/outing_bakery.png" },
+        { label: "커피", nav: "mealCoffee",    icon: "☕" }
+      ],
+      layout: "main"
+    },
+
+    mealRice: {
+      title: "밥",
+      helper: "먹고 싶은 것을 선택하세요.",
+      hero: [],
+      items: [
+        { label: "밥",   image: "./images/meal_rice.png" },
+        { label: "물",   icon: "💧" },
+        { label: "주스", image: "./images/meal_juice.png" },
+        { label: "우유", image: "./images/meal_milk.png" },
+        { label: "두유", image: "./images/meal_soymilk.png" }
+      ],
+      layout: "main"
+    },
+
+    mealSnack: {
+      title: "간식",
+      helper: "먹고 싶은 간식을 선택하세요.",
+      hero: [],
+      items: [
+        { label: "에그타르트", image: "./images/meal_eggtart.png" },
+        { label: "요구르트",   icon: "🥛" },
         { label: "주스",       image: "./images/meal_juice.png" },
+        { label: "워터젤리",   icon: "🧃" },
         { label: "우유",       image: "./images/meal_milk.png" },
         { label: "두유",       image: "./images/meal_soymilk.png" },
+        { label: "과자",       icon: "🍪" },
+        { label: "젤리",       icon: "🍬" },
+        { label: "아이스크림", icon: "🍦" }
+      ],
+      layout: "main"
+    },
+
+    mealFruit: {
+      title: "과일",
+      helper: "먹고 싶은 과일을 선택하세요.",
+      hero: [],
+      items: [
+        { label: "사과",       image: "./images/apple.png" },
+        { label: "바나나",     image: "./images/bannana.png" },
+        { label: "딸기",       image: "./images/strawberry.png" },
+        { label: "포도",       image: "./images/grape.png" },
+        { label: "수박",       image: "./images/watermelon.png" },
+        { label: "귤",         icon: "🍊" },
+        { label: "오렌지",     image: "./images/orange.png" },
+        { label: "블루베리",   icon: "🫐" }
+      ],
+      layout: "main"
+    },
+
+    mealVegetable: {
+      title: "야채",
+      helper: "먹고 싶은 야채를 선택하세요.",
+      hero: [],
+      items: [
+        { label: "토마토",   image: "./images/tomato.png" },
+        { label: "당근",     icon: "🥕" },
+        { label: "오이",     icon: "🥒" },
+        { label: "브로콜리", icon: "🥦" },
+        { label: "옥수수",   icon: "🌽" },
+        { label: "고구마",   icon: "🍠" }
+      ],
+      layout: "main"
+    },
+
+    mealDrink: {
+      title: "음료",
+      helper: "마시고 싶은 것을 선택하세요.",
+      hero: [],
+      items: [
+        { label: "물",       icon: "💧" },
+        { label: "주스",     image: "./images/meal_juice.png" },
+        { label: "우유",     image: "./images/meal_milk.png" },
+        { label: "두유",     image: "./images/meal_soymilk.png" },
+        { label: "요구르트", icon: "🥛" }
+      ],
+      layout: "main"
+    },
+
+    mealBread: {
+      title: "빵",
+      helper: "먹고 싶은 빵을 선택하세요.",
+      hero: [],
+      items: [
+        { label: "빵",         image: "./images/outing_bakery.png" },
+        { label: "식빵",       icon: "🍞" },
+        { label: "크루아상",   icon: "🥐" },
         { label: "에그타르트", image: "./images/meal_eggtart.png" },
-        { label: "우쿠렐레",   image: "./images/ukulele.png" }
+        { label: "파리바게트", image: "./images/home_schedule/paris_baguette.png" }
+      ],
+      layout: "main"
+    },
+
+    mealCoffee: {
+      title: "커피",
+      helper: "마시고 싶은 것을 선택하세요.",
+      hero: [],
+      items: [
+        { label: "커피", icon: "☕" }
       ],
       layout: "main"
     },
@@ -752,8 +854,8 @@ const DATA = {
       items: [
         { label: "양치하기", image: "./images/brush.png" },
         { label: "샤워",     image: "./images/shower.png" },
-        { label: "소변",     image: "./images/pee.png" },
-        { label: "대변",     image: "./images/poo.png" },
+        { label: "오줌 싸고 싶어요", image: "./images/pee.png" },
+        { label: "똥 싸고 싶어요",   image: "./images/poo.png" },
         { label: "세수",     image: "./images/wash_face.png" },
         { label: "손씻기",   image: "./images/wash_hands.png" }
       ],
@@ -798,7 +900,7 @@ const DATA = {
       helper: "어디로 갈까요?",
       hero: [],
       items: [
-        { label: "학교", nav: "outingSchool", image: "./images/outing_school1.png" },
+        { label: "학교", nav: "outingSchool", image: "./images/school_classroom.png" },
         { label: "공원",                      image: "./images/outing_park1.png" },
         { label: "마트",                      image: "./images/outing_mart1.png" },
         { label: "빵집",                      image: "./images/outing_bakery.png" },
