@@ -2604,7 +2604,7 @@ body {
   font-size: 1.8rem;
   font-weight: 900;
   color: #1e293b;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
 }
 
 .dv-day-badge {
@@ -2788,7 +2788,7 @@ body {
 .dv-outer--fit .dv-date-num {
   font-size: 1.1rem;
   line-height: 1.1;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
 }
 .dv-outer--fit .dv-day-badge {
   width: 34px;
@@ -3168,5 +3168,654 @@ body {
   }
   .dv-outer:not(.dv-outer--fit) .dv-lbl {
     font-size: 1.15rem;
+  }
+}
+
+/* ══════════════════════════════════════════════════
+   Product polish layer: calmer, clearer tablet UI
+══════════════════════════════════════════════════ */
+:root {
+  --bg: #f4f7fb;
+  --card: #ffffff;
+  --text: #111827;
+  --main: #2f63d7;
+  --accent: #00a88f;
+  --warm: #f5a524;
+  --coral: #ef6f61;
+  --border: #d7e0ec;
+  --surface: #ffffff;
+  --surface-soft: #f8fbff;
+  --shadow-soft: 0 10px 28px rgba(15, 23, 42, 0.08);
+  --shadow-lift: 0 16px 36px rgba(15, 23, 42, 0.12);
+}
+
+body {
+  background:
+    linear-gradient(180deg, #f8fbff 0%, #eef6f4 48%, #f5f7fb 100%);
+}
+
+.app {
+  padding: max(12px, env(safe-area-inset-top)) clamp(14px, 2.4vw, 34px) max(12px, env(safe-area-inset-bottom));
+  gap: clamp(8px, 1.4vh, 14px);
+}
+
+.topbar {
+  min-height: 64px;
+  padding: 10px 12px;
+  border: 1px solid rgba(215, 224, 236, 0.9);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: var(--shadow-soft);
+}
+
+.title {
+  font-size: 1.18rem;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.crumb,
+.muted {
+  color: #546179;
+  font-weight: 800;
+}
+
+.muted {
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+  padding: 0 2px;
+}
+
+.home-btn,
+.back-btn,
+.weekly-edit-btn,
+.section-select-all-btn,
+.weekly-period-del,
+.date-action-btn,
+.date-sentence-btn,
+.date-step-sentence {
+  border-radius: 8px;
+  font-weight: 900;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+}
+
+.home-btn,
+.date-action-btn--primary,
+.weekly-edit-btn--primary,
+.weekly-edit-btn.primary {
+  background: linear-gradient(180deg, #3d73ed 0%, var(--main) 100%);
+  border-color: transparent;
+}
+
+.back-btn,
+.date-action-btn,
+.weekly-edit-btn {
+  background: #ffffff;
+  border: 1.5px solid var(--border);
+}
+
+.grid {
+  gap: clamp(10px, 1.8vh, 18px);
+  padding: 2px;
+}
+
+.tile,
+.grid.outing-summary-tiles .outing-summary-tile,
+.date-mode-card,
+.date-card-board,
+.date-slot,
+.date-option-card,
+.date-step-choice,
+.date-puzzle-slot,
+.date-drag-card,
+.weekly-tile,
+.weekly-act-row,
+.weekly-person-btn,
+.wday-card,
+.wdetail-hero,
+.wdetail-person-btn,
+.dv-date-bar,
+.dv-empty,
+.dv-card {
+  border-radius: 8px;
+  border-color: var(--border);
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+  box-shadow: var(--shadow-soft);
+}
+
+.tile {
+  padding: clamp(8px, 1.2vh, 14px);
+  border: 1.5px solid rgba(215, 224, 236, 0.95);
+  box-shadow: var(--shadow-soft);
+  isolation: isolate;
+}
+
+.tile img {
+  border-radius: 6px;
+  object-fit: contain;
+  padding: clamp(4px, 0.9vh, 8px);
+  background: linear-gradient(180deg, #f8fbff 0%, #eef6ff 100%);
+}
+
+.tile-art {
+  border-radius: 6px;
+  background: linear-gradient(135deg, #e7f8f3 0%, #eaf1ff 54%, #fff4d8 100%);
+  color: #0f766e;
+}
+
+.tile-label {
+  color: #111827;
+  font-size: 0.98rem;
+  line-height: 1.16;
+  min-height: 2.25em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  word-break: keep-all;
+}
+
+.tile:active,
+.btn:active,
+.weekly-tile:active,
+.weekly-person-btn:active,
+.date-drag-card:active,
+.date-option-card:active,
+.date-step-choice:active {
+  transform: scale(0.97);
+  border-color: var(--main);
+  box-shadow: 0 0 0 4px rgba(47, 99, 215, 0.16), var(--shadow-soft);
+}
+
+.tile.is-selected,
+.weekly-person-btn.is-selected,
+.date-option-card.is-selected,
+.date-step-choice.is-selected,
+.date-puzzle-slot.is-active {
+  border-color: var(--warm);
+  background: #fff8e8;
+  box-shadow: 0 0 0 4px rgba(245, 165, 36, 0.22), var(--shadow-soft);
+}
+
+.tile-check {
+  background: var(--accent);
+  box-shadow: 0 6px 16px rgba(0, 168, 143, 0.28);
+}
+
+.tile-nav {
+  border-color: #c7d2fe;
+  background: #eef3ff;
+}
+
+.date-card {
+  border-radius: 8px;
+  background: linear-gradient(140deg, #2563eb 0%, #00a88f 100%);
+  box-shadow: 0 18px 42px rgba(37, 99, 235, 0.24);
+}
+
+.date-card::before,
+.date-card::after {
+  display: none;
+}
+
+.date-weather-section,
+.date-option-panel,
+.date-step-focus-card,
+.date-step-summary-grid,
+.date-puzzle-board,
+.date-puzzle-tray,
+.player-wrap {
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: var(--shadow-soft);
+}
+
+.date-weather-tile,
+.date-option-card,
+.date-drag-card {
+  border-radius: 8px;
+  border-width: 1.5px;
+}
+
+.date-puzzle-slot.is-ready {
+  border-color: var(--accent);
+  background: #e8fbf5;
+  box-shadow: 0 0 0 4px rgba(0, 168, 143, 0.18), var(--shadow-soft);
+}
+
+.date-puzzle-slot-main,
+.date-step-summary-main,
+.date-slot-main {
+  color: #0b1220;
+}
+
+.date-puzzle-slot-unit,
+.date-step-summary-unit,
+.date-slot-unit {
+  color: #00806e;
+}
+
+.date-puzzle-tray-title,
+.date-option-title {
+  color: #334155;
+  font-size: 0.9rem;
+}
+
+.date-drag-card--weather img,
+.date-puzzle-slot--weather img,
+.date-weather-tile img {
+  border-radius: 6px;
+  background: #e7f4ff;
+}
+
+.home-runner-current {
+  border-color: var(--accent) !important;
+  background: linear-gradient(180deg, #ecfdf7 0%, #ffffff 100%) !important;
+  box-shadow: 0 0 0 4px rgba(0, 168, 143, 0.18), var(--shadow-lift) !important;
+}
+
+.home-runner-current .tile-label {
+  color: #065f52;
+}
+
+.home-runner-complete-text {
+  color: var(--accent);
+}
+
+.weekly-outer,
+.dv-outer {
+  background: rgba(255, 255, 255, 0.58);
+  border: 1px solid rgba(215, 224, 236, 0.72);
+  border-radius: 8px;
+  padding: clamp(6px, 1vh, 12px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.78);
+}
+
+.weekly-hdr,
+.wt-dayhdr {
+  border-radius: 8px;
+  background: #eaf1ff;
+  color: #1746a2;
+  border: 1px solid #cddcff;
+}
+
+.weekly-tile,
+.wt-tile,
+.dv-card {
+  border-width: 1.5px;
+}
+
+.weekly-tile-img,
+.weekly-act-img,
+.wday-img,
+.wdetail-hero-img,
+.dv-img,
+.dv-img-wrap img {
+  border-radius: 6px;
+}
+
+.dv-date-bar {
+  background: linear-gradient(180deg, #ffe8a3 0%, #ffd166 100%);
+  box-shadow: 0 8px 20px rgba(245, 165, 36, 0.20);
+}
+
+.dv-date-num {
+  color: #1f2937;
+  letter-spacing: 0;
+}
+
+.dv-day-badge,
+.dv-num {
+  background: #ffffff;
+  color: #9a5a00;
+  border: 1.5px solid #f6c34f;
+}
+
+.dv-card {
+  border-color: #f3d48a;
+}
+
+.dv-img-wrap {
+  border-radius: 8px;
+  background: #fffaf0;
+}
+
+.dv-img {
+  object-fit: contain;
+  padding: 4px;
+}
+
+.wdetail-hero {
+  border: 1.5px solid var(--border);
+}
+
+.wdetail-person-btn {
+  border: 1.5px solid var(--border);
+}
+
+.wdetail-heading {
+  color: #546179;
+  font-weight: 900;
+}
+
+.weekly-act-row--checked {
+  border-color: var(--accent);
+  background: #eafbf6;
+}
+
+.weekly-act-row--checked .weekly-act-checkmark {
+  color: var(--accent);
+}
+
+.weekly-person-section-hdr {
+  color: #1746a2;
+}
+
+.person-avatar,
+.weekly-person-btn img {
+  background: #edf5ff;
+}
+
+.return-hint {
+  border-radius: 8px;
+  background: #fff8e8;
+  border-color: #f7c66d;
+}
+
+@media (hover: hover) {
+  .tile:hover,
+  .date-drag-card:hover,
+  .weekly-tile:hover,
+  .weekly-person-btn:hover,
+  .date-option-card:hover,
+  .date-step-choice:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lift);
+  }
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 1.32rem;
+  }
+
+  .grid:not(.detail):not(.media) .tile {
+    width: min(29vw, 28vh, 250px);
+  }
+
+  .tile-label {
+    font-size: 1.05rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .app {
+    padding: 18px 44px;
+    gap: 12px;
+  }
+
+  .topbar {
+    min-height: 68px;
+  }
+
+  .grid:not(.detail):not(.media) .tile {
+    width: min(28vw, 27vh, 246px);
+  }
+
+  .grid.detail .tile,
+  .grid.media .tile {
+    width: min(28vw, 26vh, 230px);
+  }
+
+  .weekly-view {
+    gap: 8px;
+  }
+}
+
+@media (max-width: 760px) {
+  .app {
+    padding-inline: 12px;
+  }
+
+  .topbar {
+    min-height: 58px;
+    padding: 8px;
+  }
+
+  .home-btn,
+  .back-btn {
+    min-width: 0;
+    padding: 10px 12px;
+  }
+
+  .tile-label {
+    font-size: 0.9rem;
+  }
+}
+
+/* ══════════════════════════════════════════════════
+   Soft playful theme: pastel, cute, friendly
+══════════════════════════════════════════════════ */
+:root {
+  --bg: #eef6ff;
+  --main: #3f7df4;
+  --accent: #14c8c5;
+  --warm: #ffd24a;
+  --coral: #ff6f9d;
+  --berry: #ef4f8f;
+  --violet: #8067ff;
+  --mint: #52d6a7;
+  --border: #d8e7fb;
+  --shadow-soft: 0 18px 44px rgba(73, 112, 178, 0.14);
+  --shadow-lift: 0 24px 54px rgba(73, 112, 178, 0.20);
+}
+
+body {
+  background: linear-gradient(145deg, #eaf3ff 0%, #f7fbff 42%, #eff7ff 100%);
+}
+
+.app {
+  max-width: 1360px;
+}
+
+.topbar {
+  border: 1px solid rgba(255, 255, 255, 0.84);
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 18px 46px rgba(77, 111, 166, 0.13);
+}
+
+.title {
+  color: #ef4f8f;
+  font-weight: 900;
+}
+
+.crumb,
+.muted {
+  color: #7a8aa6;
+}
+
+.home-btn {
+  background: linear-gradient(135deg, #18c6d3 0%, #3f7df4 100%);
+}
+
+.back-btn {
+  color: #31528f;
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.tile {
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.86);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.58) 100%),
+    linear-gradient(135deg, #ff78a9 0%, #ffbd72 100%);
+  box-shadow: 0 16px 34px rgba(76, 111, 174, 0.15);
+}
+
+.tile:nth-child(3n + 1) {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.48) 100%),
+    linear-gradient(135deg, #ff6f9d 0%, #ffb56f 100%);
+}
+
+.tile:nth-child(3n + 2) {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.76) 0%, rgba(255, 255, 255, 0.46) 100%),
+    linear-gradient(135deg, #4f8cff 0%, #11c5d8 100%);
+}
+
+.tile:nth-child(3n) {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.50) 100%),
+    linear-gradient(135deg, #9f8cff 0%, #ff9ed7 100%);
+}
+
+.tile img {
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.90);
+}
+
+.tile-art {
+  background: rgba(255, 255, 255, 0.76);
+  color: #31528f;
+}
+
+.tile-label {
+  color: #ffffff;
+  font-weight: 900;
+  text-shadow: 0 2px 10px rgba(37, 52, 86, 0.22);
+}
+
+.tile-nav {
+  background: #ffffff;
+}
+
+.tile-nav .tile-label,
+.tile--weather-choice .tile-label {
+  color: #23437f;
+  text-shadow: none;
+}
+
+.tile.is-selected {
+  border-color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(255, 210, 74, 0.55), 0 18px 44px rgba(76, 111, 174, 0.18);
+}
+
+.date-card {
+  background: linear-gradient(145deg, #4095ff 0%, #6276f7 55%, #7d67f7 100%);
+  box-shadow: 0 24px 60px rgba(67, 119, 239, 0.30);
+}
+
+.date-card-badge,
+.date-card-weather {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.date-weather-section,
+.date-option-panel,
+.date-step-focus-card,
+.date-step-summary-grid,
+.date-puzzle-board,
+.date-puzzle-tray,
+.weekly-outer,
+.dv-outer,
+.player-wrap {
+  border-color: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 18px 44px rgba(76, 111, 174, 0.13);
+}
+
+.date-weather-tile,
+.date-option-card,
+.date-step-choice,
+.date-puzzle-slot,
+.date-drag-card,
+.weekly-tile,
+.weekly-act-row,
+.weekly-person-btn,
+.wday-card,
+.wdetail-hero,
+.wdetail-person-btn,
+.dv-card {
+  border-color: #dbeafe;
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.date-puzzle-slot.is-active,
+.date-slot.is-active,
+.weekly-person-btn.is-selected,
+.date-option-card.is-selected,
+.date-step-choice.is-selected {
+  border-color: #ffd24a;
+  background: #fff9df;
+  box-shadow: 0 0 0 4px rgba(255, 210, 74, 0.34), 0 18px 44px rgba(76, 111, 174, 0.15);
+}
+
+.date-puzzle-slot.is-ready {
+  border-color: #14c8c5;
+  background: #e9fffb;
+}
+
+.date-action-btn--primary,
+.weekly-edit-btn--primary,
+.weekly-edit-btn.primary,
+.date-sentence-btn,
+.date-step-sentence {
+  color: #ffffff;
+  background: linear-gradient(135deg, #4f8cff 0%, #6f6df7 100%);
+  border-color: transparent;
+}
+
+.date-action-btn,
+.weekly-edit-btn {
+  color: #31528f;
+}
+
+.weekly-hdr,
+.wt-dayhdr {
+  color: #ffffff;
+  border-color: transparent;
+  background: linear-gradient(135deg, #4f8cff 0%, #22c6d8 100%);
+  box-shadow: 0 8px 20px rgba(79, 140, 255, 0.22);
+}
+
+.weekly-tile-lbl,
+.weekly-act-lbl,
+.weekly-person-lbl,
+.wday-lbl,
+.wdetail-hero-lbl,
+.wdetail-person-lbl,
+.dv-lbl {
+  color: #25395f;
+}
+
+.home-runner-current {
+  background: linear-gradient(135deg, #e9fffb 0%, #ffffff 100%) !important;
+  border-color: #14c8c5 !important;
+}
+
+.dv-date-bar {
+  background: linear-gradient(135deg, #ffe66d 0%, #ffb86f 100%);
+}
+
+.dv-card {
+  border-color: #ffe1a8;
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.person-avatar,
+.weekly-person-btn img,
+.weekly-tile-img,
+.wday-img,
+.wdetail-hero-img,
+.dv-img-wrap {
+  background: rgba(255, 255, 255, 0.80);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.96);
+}
+
+@media (min-width: 768px) {
+  .grid:not(.detail):not(.media) .tile {
+    width: min(28vw, 27vh, 252px);
   }
 }
