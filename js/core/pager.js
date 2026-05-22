@@ -9,15 +9,20 @@
     return (items || []).some((item) => item && (item.label === "다음" || item.label === "이전"));
   }
 
-  function createPagerButton(label, onClick) {
+  function createPagerButton(label, onClick, side = false) {
     const btn = document.createElement("button");
-    btn.className = "tile tile-nav";
+    btn.className = side ? `tile-nav-arrow tile-nav-arrow--${label === "이전" ? "prev" : "next"}` : "tile tile-nav";
     btn.type = "button";
+    btn.setAttribute("aria-label", label);
 
-    const lbl = document.createElement("div");
-    lbl.className = "tile-label";
-    lbl.textContent = label;
-    btn.appendChild(lbl);
+    if (side) {
+      btn.textContent = label === "이전" ? "‹" : "›";
+    } else {
+      const lbl = document.createElement("div");
+      lbl.className = "tile-label";
+      lbl.textContent = label;
+      btn.appendChild(lbl);
+    }
     btn.addEventListener("click", onClick);
     return btn;
   }
@@ -50,6 +55,14 @@
         return { items: list, page: 0, totalPages: 1, key, paged: false };
       }
 
+      if (options.sidePager) {
+        const totalPages = Math.ceil(list.length / pageSize);
+        const page = Math.min(pageByKey[key] || 0, totalPages - 1);
+        pageByKey[key] = page;
+        const start = page * pageSize;
+        return { items: list.slice(start, start + pageSize), page, totalPages, key, paged: true };
+      }
+
       const firstPageCapacity = Math.max(1, pageSize - 1);
       const middlePageCapacity = Math.max(1, pageSize - 2);
       const pageStarts = [];
@@ -70,15 +83,16 @@
       return { items: list.slice(pageStarts[page], end), page, totalPages, key, paged: true };
     }
 
-    function append(container, pageInfo) {
+    function append(container, pageInfo, options = {}) {
       if (!pageInfo || !pageInfo.paged) return;
+      const side = !!options.sidePager;
 
       if (pageInfo.page > 0) {
         container.appendChild(createPagerButton("이전", () => {
           speak("이전");
           pageByKey[pageInfo.key] = pageInfo.page - 1;
           render();
-        }));
+        }, side));
       }
 
       if (pageInfo.page < pageInfo.totalPages - 1) {
@@ -86,7 +100,7 @@
           speak("다음");
           pageByKey[pageInfo.key] = pageInfo.page + 1;
           render();
-        }));
+        }, side));
       }
     }
 

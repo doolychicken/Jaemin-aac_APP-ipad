@@ -325,15 +325,110 @@ const DATA = {
     // ── 사람 ──────────────────────────────────────────────────────────────────
     peopleHome: {
       title: "사람",
+      helper: "사람을 골라보세요.",
+      hero: [],
+      items: [
+        { label: "우리집 가족", nav: "peopleHomeFamily", image: "./images/home.png" },
+        { label: "선생님",     nav: "peopleTeachers",   image: "./images/school_homeroom_teacher.png" },
+        { label: "학교 친구",  nav: "peopleSchoolFriends", image: "./images/school_friends.png" },
+        { label: "가족",       nav: "peopleRelatives",  image: "./images/outing_person_grandma.png" },
+        { label: "모든 사람",  nav: "peopleAll",        image: "./images/outing_person_me.png" }
+      ],
+      layout: "main",
+      showPlayer: false
+    },
+
+    peopleHomeFamily: {
+      title: "우리집 가족",
+      helper: "우리집 가족을 선택하세요.",
+      hero: [],
+      items: [
+        { label: "나", image: "./images/outing_person_me.png" },
+        { label: "아빠", image: "./images/outing_person_dad.png" },
+        { label: "엄마", image: "./images/outing_person_mom.png" },
+        { label: "나 홍재민", image: "./images/outing_person_me.png", speech: "내 이름은 홍재민이야" },
+        { label: "아빠 홍진혁", image: "./images/outing_person_dad.png", speech: "아빠 이름은 홍진혁이야" },
+        { label: "엄마 김주리", image: "./images/outing_person_mom.png", speech: "엄마 이름은 김주리야" }
+      ],
+      layout: "main",
+      showPlayer: false
+    },
+
+    peopleTeachers: {
+      title: "선생님",
+      helper: "선생님을 선택하세요.",
+      hero: [],
+      items: [
+        { label: "활동보조 선생님", image: "./images/outing_person_activity_support.png" },
+        { label: "담임선생님", image: "./images/school_homeroom_teacher.png" },
+        { label: "실무사 선생님", icon: "👩‍🏫" },
+        { label: "큰나무병원 선생님", image: "./images/therapy/communication_with_people.png" },
+        { label: "세브란스 병원 선생님", image: "./images/therapy_center_severance.png" }
+      ],
+      layout: "main",
+      showPlayer: false
+    },
+
+    peopleSchoolFriends: {
+      title: "학교 친구",
+      helper: "친구를 선택하세요.",
+      hero: [],
+      items: [
+        { label: "건민", image: "./images/school_friends_건민.png" },
+        { label: "동하", image: "./images/school_friends_동하.png" },
+        { label: "승우", image: "./images/school_friends_승우.png" },
+        { label: "윤희", image: "./images/school_friends_윤희.png" },
+        { label: "윤희 2", image: "./images/school_friends_윤희1.png" },
+        { label: "하린", image: "./images/school_friends_하린.png" }
+      ],
+      layout: "main",
+      showPlayer: false
+    },
+
+    peopleRelatives: {
+      title: "가족",
+      helper: "가족을 선택하세요.",
+      hero: [],
+      items: [
+        { label: "할머니", image: "./images/outing_person_grandma.png" },
+        { label: "할아버지", image: "./images/outing_person_grandpa.png" },
+        { label: "큰엄마", icon: "👩" },
+        { label: "큰아빠", icon: "👨" },
+        { label: "라희", image: "./images/person/rahee.png" },
+        { label: "라온이", image: "./images/person/raon.png" },
+        { label: "엄마", image: "./images/outing_person_mom.png" },
+        { label: "아빠", image: "./images/outing_person_dad.png" },
+        { label: "나", image: "./images/outing_person_me.png" }
+      ],
+      layout: "main",
+      showPlayer: false
+    },
+
+    peopleAll: {
+      title: "모든 사람",
       helper: "사람을 선택하세요.",
       hero: [],
       items: [
-        { label: "나",            image: "./images/outing_person_me.png" },
-        { label: "엄마",          image: "./images/outing_person_mom.png" },
-        { label: "아빠",          image: "./images/outing_person_dad.png" },
+        { label: "나", image: "./images/outing_person_me.png" },
+        { label: "엄마", image: "./images/outing_person_mom.png" },
+        { label: "아빠", image: "./images/outing_person_dad.png" },
         { label: "활동보조 선생님", image: "./images/outing_person_activity_support.png" },
-        { label: "할아버지",       image: "./images/outing_person_grandpa.png" },
-        { label: "할머니",         image: "./images/outing_person_grandma.png" }
+        { label: "담임선생님", image: "./images/school_homeroom_teacher.png" },
+        { label: "실무사 선생님", icon: "👩‍🏫" },
+        { label: "큰나무병원 선생님", image: "./images/therapy/communication_with_people.png" },
+        { label: "세브란스 병원 선생님", image: "./images/therapy_center_severance.png" },
+        { label: "건민", image: "./images/school_friends_건민.png" },
+        { label: "동하", image: "./images/school_friends_동하.png" },
+        { label: "승우", image: "./images/school_friends_승우.png" },
+        { label: "윤희", image: "./images/school_friends_윤희.png" },
+        { label: "윤희 2", image: "./images/school_friends_윤희1.png" },
+        { label: "하린", image: "./images/school_friends_하린.png" },
+        { label: "할머니", image: "./images/outing_person_grandma.png" },
+        { label: "할아버지", image: "./images/outing_person_grandpa.png" },
+        { label: "큰엄마", icon: "👩" },
+        { label: "큰아빠", icon: "👨" },
+        { label: "라희", image: "./images/person/rahee.png" },
+        { label: "라온이", image: "./images/person/raon.png" }
       ],
       layout: "main",
       showPlayer: false
@@ -766,9 +861,10 @@ const DATA = {
       hero: [],
       items: [
         { label: "에그타르트", image: "./images/meal_eggtart.png" },
+        { label: "요플레",     image: "./images/yoplait.png" },
         { label: "요구르트",   icon: "🥛" },
         { label: "주스",       image: "./images/meal_juice.png" },
-        { label: "워터젤리",   icon: "🧃" },
+        { label: "워터젤리",   image: "./images/water_jelly.png" },
         { label: "우유",       image: "./images/meal_milk.png" },
         { label: "두유",       image: "./images/meal_soymilk.png" },
         { label: "과자",       icon: "🍪" },
@@ -819,7 +915,16 @@ const DATA = {
         { label: "주스",     image: "./images/meal_juice.png" },
         { label: "우유",     image: "./images/meal_milk.png" },
         { label: "두유",     image: "./images/meal_soymilk.png" },
-        { label: "요구르트", icon: "🥛" }
+        { label: "워터젤리", image: "./images/water_jelly.png" },
+        { label: "요구르트", icon: "🥛" },
+        { label: "바나나우유", icon: "🍌" },
+        { label: "딸기우유", icon: "🍓" },
+        { label: "초코우유", icon: "🍫" },
+        { label: "수박주스", icon: "🍉" },
+        { label: "밀크쉐이크", icon: "🥤" },
+        { label: "콜라", icon: "🥤" },
+        { label: "사이다", icon: "🥤" },
+        { label: "환타", icon: "🥤" }
       ],
       layout: "main"
     },
@@ -833,6 +938,7 @@ const DATA = {
         { label: "식빵",       icon: "🍞" },
         { label: "크루아상",   icon: "🥐" },
         { label: "에그타르트", image: "./images/meal_eggtart.png" },
+        { label: "케이크",     icon: "🎂" },
         { label: "파리바게트", image: "./images/home_schedule/paris_baguette.png" }
       ],
       layout: "main"

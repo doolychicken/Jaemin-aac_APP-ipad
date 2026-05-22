@@ -40,10 +40,10 @@ const mainPager = window.createTilePager({
 });
 
 function resetPageState(prefix) { mainPager.reset(prefix); }
-function paginateItems(items, layout = "main", suffix = "", reserveSlots = 0) {
-  return mainPager.paginate(items, suffix, { layout, reserveSlots });
+function paginateItems(items, layout = "main", suffix = "", reserveSlots = 0, options = {}) {
+  return mainPager.paginate(items, suffix, { layout, reserveSlots, ...options });
 }
-function appendPagerButtons(container, pageInfo) { mainPager.append(container, pageInfo); }
+function appendPagerButtons(container, pageInfo, options = {}) { mainPager.append(container, pageInfo, options); }
 
 // ── 외출 플래너 상태 ─────────────────────────────────────────────────────────
 const OUTING_MAX_PERSON = 4;
@@ -2615,7 +2615,7 @@ function renderHero(items) {
       btn.textContent = item.label;
     }
     btn.addEventListener("click", () => {
-      speak(item.label);
+      speak(item.speech || item.label);
       if (item.nav) { pushScreen(item.nav, item.label); render(); }
     });
     heroEl.appendChild(btn);
@@ -2626,21 +2626,27 @@ function renderButtons(items, layout) {
   gridEl.innerHTML = "";
   const isMain  = layout === "main";
   const isMedia = layout === "media";
-  const pageInfo = paginateItems(items || [], layout);
-  const sidePagerKeys = ["main", "main_p2"];
-  const useSidePager = isMain && sidePagerKeys.includes(currentKey());
-  const sideNavItems = useSidePager
+  const pageInfo = paginateItems(items || [], layout, "", 0, { sidePager: isMain });
+  const sideNavItems = isMain
     ? pageInfo.items.filter((item) => item.label === "다음" || item.label === "이전")
     : [];
   const visibleItems = sideNavItems.length
     ? pageInfo.items.filter((item) => item.label !== "다음" && item.label !== "이전")
     : pageInfo.items;
+  const extraGridClass = currentKey() === "mealDrink" ? " grid--meal-drink" : "";
+  const autoSideNavCount = isMain && pageInfo.paged
+    ? Number(pageInfo.page > 0) + Number(pageInfo.page < pageInfo.totalPages - 1)
+    : 0;
+  const sideNavClass = isMain && (sideNavItems.length || autoSideNavCount)
+    ? ` grid--side-pager${(sideNavItems.length || autoSideNavCount) > 1 ? " grid--side-pager-double" : ""}`
+    : "";
   gridEl.className = isMain
-    ? `grid${sideNavItems.length ? " grid--side-pager" : ""}`
-    : (isMedia ? "grid media" : "grid detail");
+    ? `grid${sideNavClass}${extraGridClass}`
+    : (isMedia ? `grid media${extraGridClass}` : `grid detail${extraGridClass}`);
 
   function activateItem(item) {
     const yUrl = resolveYoutube(item);
+    const speechText = item.speech || item.label;
 
     if (currentKey() === "dateMonthPicker") {
       dateSelection.month = Number(item.label.replace("월", ""));
@@ -2683,7 +2689,7 @@ function renderButtons(items, layout) {
       }
     }, 70);
 
-    const speechDone = Promise.resolve(speak(item.label));
+    const speechDone = Promise.resolve(speak(speechText));
     if (item.label === "다음" || item.label === "이전") {
       speechDone.finally(moveAfterSpeech);
     } else {
@@ -2748,7 +2754,7 @@ function renderButtons(items, layout) {
     }
     gridEl.appendChild(btn);
   });
-  appendPagerButtons(gridEl, pageInfo);
+  appendPagerButtons(gridEl, pageInfo, { sidePager: isMain });
 }
 
 // ── 메인 렌더 ────────────────────────────────────────────────────────────────
