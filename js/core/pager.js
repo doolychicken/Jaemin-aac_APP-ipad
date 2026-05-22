@@ -16,7 +16,7 @@
     btn.setAttribute("aria-label", label);
 
     if (side) {
-      btn.textContent = label === "이전" ? "‹" : "›";
+      btn.textContent = label;
     } else {
       const lbl = document.createElement("div");
       lbl.className = "tile-label";

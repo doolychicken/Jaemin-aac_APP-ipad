@@ -2747,7 +2747,7 @@ function renderButtons(items, layout) {
     btn.className = `tile-nav-arrow tile-nav-arrow--${item.label === "이전" ? "prev" : "next"}`;
     btn.type = "button";
     btn.setAttribute("aria-label", item.label);
-    btn.textContent = item.label === "이전" ? "‹" : "›";
+    btn.textContent = item.label;
     btn.addEventListener("click", () => activateItem(item));
     if (item.nav) {
       btn.addEventListener("pointerdown", () => prefetchScreenImages(item.nav), { passive: true });
