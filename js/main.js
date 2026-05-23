@@ -9,6 +9,7 @@
 const titleEl            = document.getElementById("screenTitle");
 const backBtn            = document.getElementById("backButton");
 const homeBtn            = document.getElementById("homeButton") || { style: {}, addEventListener: () => {} };
+const fullscreenBtn      = document.getElementById("fullscreenButton") || { style: {}, addEventListener: () => {}, setAttribute: () => {} };
 const crumbEl            = document.getElementById("breadcrumb");
 const gridEl             = document.getElementById("buttonGrid");
 const appMainEl          = document.querySelector("main.app");
@@ -71,6 +72,63 @@ const isAppleMobile = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
 const useDirectYoutubeOpen = true;
 
 const isAndroid = /android/i.test(navigator.userAgent);
+let softFullscreenMode = false;
+
+function getFullscreenElement() {
+  return document.fullscreenElement || document.webkitFullscreenElement || null;
+}
+
+function isStandaloneDisplay() {
+  const standalone = window.navigator.standalone === true;
+  const displayStandalone = window.matchMedia
+    ? window.matchMedia("(display-mode: standalone)").matches || window.matchMedia("(display-mode: fullscreen)").matches
+    : false;
+  return standalone || displayStandalone;
+}
+
+function syncFullscreenButton() {
+  const active = !!getFullscreenElement() || softFullscreenMode || isStandaloneDisplay();
+  fullscreenBtn.textContent = active ? "↙ 기본화면" : "⛶ 전체화면";
+  fullscreenBtn.setAttribute("aria-pressed", active ? "true" : "false");
+}
+
+function setSoftFullscreenMode(active) {
+  softFullscreenMode = active;
+  appMainEl.classList.toggle("app--fullscreen-soft", active);
+  document.body.classList.toggle("body--fullscreen-soft", active);
+  syncFullscreenButton();
+  requestAnimationFrame(() => {
+    try { window.scrollTo(0, 1); } catch (_) {}
+  });
+}
+
+async function toggleFullscreenMode() {
+  if (getFullscreenElement() || softFullscreenMode) {
+    const exitFullscreen = document.exitFullscreen || document.webkitExitFullscreen;
+    if (getFullscreenElement() && exitFullscreen) {
+      try { await exitFullscreen.call(document); } catch (_) {}
+    }
+    setSoftFullscreenMode(false);
+    speak("기본 화면");
+    return;
+  }
+
+  const target = document.documentElement;
+  const requestFullscreen = target.requestFullscreen || target.webkitRequestFullscreen;
+  if (requestFullscreen) {
+    try {
+      await requestFullscreen.call(target);
+      setSoftFullscreenMode(true);
+      speak("전체 화면");
+      return;
+    } catch (_) {
+      // iPad Safari may expose the API but reject it for normal pages.
+    }
+  }
+
+  setSoftFullscreenMode(true);
+  speak("전체 화면");
+}
 
 const scheduleFeature = window.createScheduleFeature({
   DATA,
@@ -2678,7 +2736,13 @@ function renderButtons(items, layout) {
   gridEl.innerHTML = "";
   const isMain  = layout === "main";
   const isMedia = layout === "media";
-  const pageInfo = paginateItems(items || [], layout, "", 0, { sidePager: isMain });
+  const sideSlotItem = isMain && currentKey() === "mealRice"
+    ? (items || []).find((item) => item.sideSlot)
+    : null;
+  const listItems = sideSlotItem ? (items || []).filter((item) => item !== sideSlotItem) : (items || []);
+  const pageInfo = sideSlotItem
+    ? { items: listItems, page: 0, totalPages: 1, key: "", paged: false }
+    : paginateItems(listItems, layout, "", 0, { sidePager: isMain });
   const sideNavItems = isMain
     ? pageInfo.items.filter((item) => item.label === "다음" || item.label === "이전")
     : [];
@@ -2693,7 +2757,7 @@ function renderButtons(items, layout) {
     ? ` grid--side-pager${(sideNavItems.length || autoSideNavCount) > 1 ? " grid--side-pager-double" : ""}`
     : "";
   gridEl.className = isMain
-    ? `grid${sideNavClass}${extraGridClass}`
+    ? `grid${sideSlotItem ? " grid--side-pager grid--side-slot" : sideNavClass}${extraGridClass}`
     : (isMedia ? `grid media${extraGridClass}` : `grid detail${extraGridClass}`);
 
   function openWeatherVideo(item) {
@@ -2843,7 +2907,30 @@ function renderButtons(items, layout) {
     }
     gridEl.appendChild(btn);
   });
-  appendPagerButtons(gridEl, pageInfo, { sidePager: isMain });
+  if (sideSlotItem) {
+    const btn = document.createElement("button");
+    btn.className = "tile tile-side-slot";
+    if (sideSlotItem.image) {
+      const img = document.createElement("img");
+      img.src = sideSlotItem.image;
+      img.alt = sideSlotItem.label;
+      setupImageElement(img, true);
+      btn.appendChild(img);
+    } else {
+      const art = document.createElement("div");
+      art.className = "tile-art";
+      art.textContent = sideSlotItem.icon || "▶️";
+      btn.appendChild(art);
+    }
+    const label = document.createElement("div");
+    label.className = "tile-label";
+    label.textContent = sideSlotItem.label;
+    btn.appendChild(label);
+    btn.addEventListener("click", () => activateItem(sideSlotItem));
+    gridEl.appendChild(btn);
+  } else {
+    appendPagerButtons(gridEl, pageInfo, { sidePager: isMain });
+  }
 }
 
 // ── 메인 렌더 ────────────────────────────────────────────────────────────────
@@ -2975,6 +3062,13 @@ homeBtn.addEventListener("click", () => {
   render();
 });
 
+fullscreenBtn.addEventListener("click", () => {
+  toggleFullscreenMode();
+});
+
+document.addEventListener("fullscreenchange", syncFullscreenButton);
+document.addEventListener("webkitfullscreenchange", syncFullscreenButton);
+
 openInYoutubeButton.addEventListener("click", () => {
   if (!selectedYoutube) return;
   speak("유튜브에서 열기");
@@ -3008,6 +3102,7 @@ window.addEventListener("orientationchange", () => {
   clearTimeout(resizeRenderTimer);
   resizeRenderTimer = setTimeout(render, 180);
 });
+syncFullscreenButton();
 
 // ── 앱 시작 ──────────────────────────────────────────────────────────────────
 render();

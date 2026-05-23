@@ -10,8 +10,8 @@
   <link rel="preconnect" href="https://img.youtube.com" />
   <link rel="preconnect" href="https://i.ytimg.com" />
   <title>AAC 앱</title>
-  <link rel="stylesheet" href="./css/app.css?v=136" />
-  <link rel="stylesheet" href="./css/date-overrides.css?v=136" />
+  <link rel="stylesheet" href="./css/app.css?v=142" />
+  <link rel="stylesheet" href="./css/date-overrides.css?v=142" />
 </head>
 <body>
   <main class="app">
@@ -22,6 +22,7 @@
         <p id="breadcrumb" class="crumb" style="display:none;"></p>
       </div>
       <div class="topbar-btns">
+        <button id="fullscreenButton" class="fullscreen-btn" type="button" aria-pressed="false">⛶ 전체화면</button>
         <button id="homeButton" class="home-btn" style="display:none;">🏠 홈</button>
         <button id="backButton" class="back-btn" style="display:none;">뒤로 가기</button>
       </div>
@@ -49,15 +50,15 @@
     <section id="buttonGrid" class="grid"></section>
   </main>
 
-  <script src="./js/data/app-data.js?v=135"></script>
-  <script src="./js/core/pager.js?v=135"></script>
-  <script src="./js/features/schedule.js?v=135"></script>
-  <script src="./js/main.js?v=135"></script>
+  <script src="./js/data/app-data.js?v=142"></script>
+  <script src="./js/core/pager.js?v=142"></script>
+  <script src="./js/features/schedule.js?v=142"></script>
+  <script src="./js/main.js?v=142"></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         /* sw.js에도 v를 붙이지 않으면 Safari가 옛 서비스 워커를 붙잡는 경우가 있음 */
-        navigator.serviceWorker.register('./sw.js?v=135', { updateViaCache: 'none' })
+        navigator.serviceWorker.register('./sw.js?v=142', { updateViaCache: 'none' })
           .then(function (reg) { reg.update().catch(function () {}); })
           .catch(function () { /* local file 등 */ });
       });

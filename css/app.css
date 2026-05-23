@@ -153,10 +153,59 @@ body {
   touch-action: manipulation;
 }
 
+.fullscreen-btn {
+  border: none;
+  background: linear-gradient(135deg, #14c8c5, #3b82f6);
+  color: #fff;
+  border-radius: 14px;
+  padding: 12px 16px;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  min-width: 116px;
+  touch-action: manipulation;
+  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.18);
+}
+
 .topbar-btns {
   display: flex;
   gap: 8px;
   align-items: center;
+}
+
+.body--fullscreen-soft {
+  background: #eef6ff;
+}
+
+.app.app--fullscreen-soft {
+  max-width: none;
+  padding: max(6px, env(safe-area-inset-top)) 12px max(8px, env(safe-area-inset-bottom));
+  gap: 6px;
+}
+
+.app.app--fullscreen-soft .topbar {
+  gap: 8px;
+}
+
+.app.app--fullscreen-soft .title {
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
+}
+
+.app.app--fullscreen-soft .crumb {
+  margin-top: 1px;
+  font-size: 0.78rem;
+}
+
+.app.app--fullscreen-soft .muted {
+  margin-block: 0;
+  font-size: 0.9rem;
+}
+
+.app.app--fullscreen-soft .home-btn,
+.app.app--fullscreen-soft .back-btn,
+.app.app--fullscreen-soft .fullscreen-btn {
+  padding: 10px 13px;
+  min-height: 46px;
 }
 
 .grid {
@@ -5297,6 +5346,16 @@ body {
 .grid.grid--side-pager > .tile:nth-of-type(5) { grid-column: 2; grid-row: 2; }
 .grid.grid--side-pager > .tile:nth-of-type(6) { grid-column: 3; grid-row: 2; }
 
+.grid.grid--side-pager > .tile.tile-side-slot {
+  grid-column: 4;
+  grid-row: 1 / span 2;
+  align-self: center;
+  justify-self: center;
+  width: min(100%, 245px) !important;
+  max-width: 245px !important;
+  aspect-ratio: 1 / 1 !important;
+}
+
 .tile-nav-arrow {
   grid-column: 4;
   grid-row: 1 / span 2;
@@ -5386,6 +5445,12 @@ body {
   .grid.grid--side-pager > .tile:nth-of-type(4) { grid-column: 2; grid-row: 2; }
   .grid.grid--side-pager > .tile:nth-of-type(5) { grid-column: 1; grid-row: 3; }
   .grid.grid--side-pager > .tile:nth-of-type(6) { grid-column: 2; grid-row: 3; }
+
+  .grid.grid--side-pager > .tile.tile-side-slot {
+    grid-column: 3;
+    grid-row: 1 / span 3;
+    width: min(100%, 210px) !important;
+  }
 
   .tile-nav-arrow {
     grid-column: 3;

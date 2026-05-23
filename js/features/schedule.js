@@ -198,6 +198,23 @@ const HOME_ACTIVITY_GROUPS = [
       { label: "장보기",     image: "./images/outing_mart1.png", emoji: "🛒", nav: "scheduleShopping" },
       { label: "분리수거장", image: "./images/home_schedule/recycling_station.png", emoji: "♻️" },
       { label: "하나로마트", image: "./images/home_schedule/hanaro_mart.png", emoji: "🛒" },
+      { label: "홈플러스",   image: "./images/home_schedule/homeplus.png", emoji: "🛒" },
+      { label: "한살림",     image: "./images/home_schedule/hansalim.png", emoji: "🥬" },
+      { label: "파리바게트", image: "./images/home_schedule/paris_baguette.png", emoji: "🥐" },
+      { label: "놀이터",     image: "./images/home_schedule/playground.png", emoji: "🛝" },
+      { label: "우체국",     image: "./images/home_schedule/post_office.png", emoji: "📮" },
+      { label: "소방서",     image: "./images/home_schedule/fire_station.png", emoji: "🚒" }
+    ]
+  },
+  {
+    id: "outingShopping",
+    label: "외출 + 장보기",
+    image: "./images/outing_mart1.png",
+    emoji: "🛒",
+    activities: [
+      { label: "분리수거장", image: "./images/home_schedule/recycling_station.png", emoji: "♻️" },
+      { label: "하나로마트", image: "./images/home_schedule/hanaro_mart.png", emoji: "🛒" },
+      { label: "홈플러스",   image: "./images/home_schedule/homeplus.png", emoji: "🛒" },
       { label: "한살림",     image: "./images/home_schedule/hansalim.png", emoji: "🥬" },
       { label: "파리바게트", image: "./images/home_schedule/paris_baguette.png", emoji: "🥐" },
       { label: "놀이터",     image: "./images/home_schedule/playground.png", emoji: "🛝" },
@@ -225,6 +242,7 @@ let homeScheduleGroupId = "";
 let homeActivityPage = 0;
 let homeSchedule = [];
 let homeScheduleRemaining = [];
+let homeShoppingTargetLabel = "";
 
 const SHOPPING_PLACES = [
   {
@@ -254,6 +272,19 @@ const SHOPPING_PLACES = [
     ]
   },
   {
+    id: "homeplus",
+    label: "홈플러스",
+    image: "./images/home_schedule/homeplus.png",
+    items: [
+      { label: "물", image: "./images/water.png" },
+      { label: "우유", image: "./images/meal_milk.png" },
+      { label: "두유", image: "./images/meal_soymilk.png" },
+      { label: "주스", image: "./images/meal_juice.png" },
+      { label: "요구르트", image: "./images/yogurt_drink.png" },
+      { label: "바나나", image: "./images/bannana.png" }
+    ]
+  },
+  {
     id: "paris",
     label: "파리바게트",
     image: "./images/home_schedule/paris_baguette.png",
@@ -270,6 +301,78 @@ const SHOPPING_PLACES = [
 let shoppingPlace = null;
 let shoppingItems = [];
 let shoppingRemaining = [];
+
+function isOutingScheduleGroup(groupOrId) {
+  const id = typeof groupOrId === "string" ? groupOrId : groupOrId?.id;
+  return id === "outing" || id === "outingShopping";
+}
+
+function isOutingShoppingMode() {
+  return homeActivityGroupId === "outingShopping";
+}
+
+function getShoppingPlaceByLabel(label) {
+  return SHOPPING_PLACES.find((place) => place.label === label) || null;
+}
+
+function getHomeScheduleEntryLabel(entry) {
+  return typeof entry === "string" ? entry : entry?.label || "";
+}
+
+function getHomeScheduleEntryIndex(label) {
+  return homeSchedule.findIndex((entry) => getHomeScheduleEntryLabel(entry) === label);
+}
+
+function getHomeScheduleEntry(label) {
+  const idx = getHomeScheduleEntryIndex(label);
+  return idx >= 0 ? homeSchedule[idx] : null;
+}
+
+function getHomeScheduleActivity(entry) {
+  const label = getHomeScheduleEntryLabel(entry);
+  const activeGroup = HOME_ACTIVITY_GROUPS.find((group) => group.id === homeActivityGroupId);
+  return activeGroup?.activities.find((item) => item.label === label)
+    || HOME_ACTIVITIES.find((item) => item.label === label)
+    || null;
+}
+
+function makeHomeScheduleEntry(activity) {
+  if (!isOutingShoppingMode()) return activity.label;
+  const place = getShoppingPlaceByLabel(activity.label);
+  return {
+    label: activity.label,
+    image: activity.image,
+    emoji: activity.emoji,
+    canShop: !!place,
+    items: []
+  };
+}
+
+function buildHomeScheduleRunSteps() {
+  const steps = [];
+  homeSchedule.forEach((entry) => {
+    const activity = getHomeScheduleActivity(entry) || {};
+    const label = getHomeScheduleEntryLabel(entry);
+    const itemEntry = typeof entry === "string" ? null : entry;
+    steps.push({
+      label,
+      speech: label,
+      image: itemEntry?.image || activity.image,
+      emoji: itemEntry?.emoji || activity.emoji,
+      order: steps.length + 1
+    });
+    (itemEntry?.items || []).forEach((item) => {
+      steps.push({
+        label: `${item.label} 사요`,
+        speech: `${item.label} 사요`,
+        image: item.image,
+        emoji: item.emoji || "🛒",
+        order: steps.length + 1
+      });
+    });
+  });
+  return steps;
+}
 const schedulePager = window.createTilePager({
   getScopeKey: () => navStack.map((x) => x.key).join("/"),
   render,
@@ -477,7 +580,7 @@ function renderHomeActivityPicker() {
   gridEl.className = "grid home-activity-picker";
 
   function appendActivityTile(activity) {
-    const orderIdx = homeSchedule.indexOf(activity.label);
+    const orderIdx = getHomeScheduleEntryIndex(activity.label);
     const isSelected = orderIdx >= 0;
     const btn = document.createElement("button");
     btn.className = `tile${isSelected ? " is-selected" : ""}`;
@@ -522,9 +625,22 @@ function renderHomeActivityPicker() {
         return;
       }
       speak(activity.label);
-      const idx = homeSchedule.indexOf(activity.label);
-      if (idx >= 0) homeSchedule.splice(idx, 1);
-      else homeSchedule.push(activity.label);
+      const idx = getHomeScheduleEntryIndex(activity.label);
+      if (isOutingShoppingMode()) {
+        const place = getShoppingPlaceByLabel(activity.label);
+        if (idx >= 0 && place) {
+          homeShoppingTargetLabel = activity.label;
+        } else if (idx >= 0) {
+          homeSchedule.splice(idx, 1);
+        } else {
+          homeSchedule.push(makeHomeScheduleEntry(activity));
+          if (place) homeShoppingTargetLabel = activity.label;
+        }
+      } else if (idx >= 0) {
+        homeSchedule.splice(idx, 1);
+      } else {
+        homeSchedule.push(activity.label);
+      }
       render();
     });
 
@@ -551,12 +667,13 @@ function renderHomeActivityPicker() {
     const startBtn = document.createElement("button");
     startBtn.className = "btn main";
     startBtn.disabled = homeSchedule.length === 0;
+    const runStepCount = buildHomeScheduleRunSteps().length;
     startBtn.textContent = homeSchedule.length === 0
       ? "할 일을 선택하세요"
-      : `시작하기 → (${homeSchedule.length}가지)`;
+      : `시작하기 → (${runStepCount}단계)`;
     startBtn.addEventListener("click", () => {
       if (!homeSchedule.length) return;
-      homeScheduleRemaining = [...homeSchedule];
+      homeScheduleRemaining = buildHomeScheduleRunSteps();
       speak("시작해봐요");
       pushScreen("scheduleHomeRun", "집 스케줄 실행");
       render();
@@ -566,7 +683,7 @@ function renderHomeActivityPicker() {
   }
 
   function appendHomeActivityPager(group) {
-    if (group.id !== "outing" || group.activities.length <= 6) return;
+    if (!isOutingScheduleGroup(group) || group.activities.length <= 6) return;
 
     const btn = document.createElement("button");
     const label = homeActivityPage === 0 ? "다음" : "이전";
@@ -580,6 +697,88 @@ function renderHomeActivityPicker() {
       render();
     });
     gridEl.appendChild(btn);
+  }
+
+  function renderHomeShoppingItems(group) {
+    const place = getShoppingPlaceByLabel(homeShoppingTargetLabel);
+    const activity = group.activities.find((item) => item.label === homeShoppingTargetLabel);
+    const entryIndex = getHomeScheduleEntryIndex(homeShoppingTargetLabel);
+    if (!place || !activity || entryIndex < 0) {
+      homeShoppingTargetLabel = "";
+      return false;
+    }
+
+    if (typeof homeSchedule[entryIndex] === "string") {
+      homeSchedule[entryIndex] = makeHomeScheduleEntry(activity);
+    }
+    const entry = homeSchedule[entryIndex];
+    if (!Array.isArray(entry.items)) entry.items = [];
+
+    titleEl.textContent = `${place.label}에서 살 물건`;
+    helperEl.textContent = "살 물건을 골라요. 다 고르면 장소 선택으로 돌아가요.";
+    gridEl.className = "grid home-activity-picker";
+
+    place.items.forEach((item) => {
+      const selectedIndex = entry.items.findIndex((picked) => picked.label === item.label);
+      const btn = document.createElement("button");
+      btn.className = `tile${selectedIndex >= 0 ? " is-selected" : ""}`;
+      if (item.image) {
+        const img = document.createElement("img");
+        img.src = item.image;
+        img.alt = item.label;
+        setupImageElement(img, true);
+        btn.appendChild(img);
+      } else {
+        const art = document.createElement("div");
+        art.className = "tile-art";
+        art.textContent = item.emoji || "🛒";
+        btn.appendChild(art);
+      }
+      const lbl = document.createElement("div");
+      lbl.className = "tile-label";
+      lbl.textContent = item.label;
+      btn.appendChild(lbl);
+      if (selectedIndex >= 0) {
+        const check = document.createElement("span");
+        check.className = "tile-check";
+        check.textContent = String(selectedIndex + 1);
+        btn.appendChild(check);
+      }
+      btn.addEventListener("click", () => {
+        speak(item.label);
+        const idx = entry.items.findIndex((picked) => picked.label === item.label);
+        if (idx >= 0) entry.items.splice(idx, 1);
+        else entry.items.push(item);
+        render();
+      });
+      gridEl.appendChild(btn);
+    });
+
+    const actions = document.createElement("div");
+    actions.className = "home-activity-actions";
+
+    const removeBtn = document.createElement("button");
+    removeBtn.className = "btn";
+    removeBtn.textContent = "장소 빼기";
+    removeBtn.addEventListener("click", () => {
+      homeSchedule.splice(entryIndex, 1);
+      homeShoppingTargetLabel = "";
+      speak("장소 빼기");
+      render();
+    });
+    actions.appendChild(removeBtn);
+
+    const doneBtn = document.createElement("button");
+    doneBtn.className = "btn main";
+    doneBtn.textContent = "장소 선택으로";
+    doneBtn.addEventListener("click", () => {
+      homeShoppingTargetLabel = "";
+      speak("장소 선택으로");
+      render();
+    });
+    actions.appendChild(doneBtn);
+    gridEl.appendChild(actions);
+    return true;
   }
 
   if (!homeActivityGroupId) {
@@ -609,6 +808,7 @@ function renderHomeActivityPicker() {
         homeActivityGroupId = group.id;
         homeScheduleGroupId = group.id;
         homeActivityPage = 0;
+        homeShoppingTargetLabel = "";
         speak(group.label);
         render();
       });
@@ -618,12 +818,16 @@ function renderHomeActivityPicker() {
   }
 
   const group = HOME_ACTIVITY_GROUPS.find((item) => item.id === homeActivityGroupId) || HOME_ACTIVITY_GROUPS[0];
+  if (isOutingShoppingMode() && homeShoppingTargetLabel && renderHomeShoppingItems(group)) return;
+
   titleEl.textContent = `${group.label} 스케줄`;
-  helperEl.textContent = "할 일을 클릭한 순서대로 골라요. 다시 누르면 취소돼요.";
-  if (group.id === "outing" && group.activities.length > 6) {
+  helperEl.textContent = isOutingShoppingMode()
+    ? "장소를 순서대로 고르고, 마트와 빵집은 살 물건도 골라요."
+    : "할 일을 클릭한 순서대로 골라요. 다시 누르면 취소돼요.";
+  if (isOutingScheduleGroup(group) && group.activities.length > 6) {
     gridEl.className = "grid home-activity-picker grid--side-pager";
   }
-  const visibleActivities = group.id === "outing"
+  const visibleActivities = isOutingScheduleGroup(group)
     ? group.activities.slice(homeActivityPage === 0 ? 0 : 6, homeActivityPage === 0 ? 6 : group.activities.length)
     : group.activities;
   visibleActivities.forEach(appendActivityTile);
@@ -665,7 +869,7 @@ function renderHomeScheduleRunner() {
     againBtn.style.cssText = "grid-column:1/-1; margin-top:8px;";
     againBtn.textContent = "처음부터 다시";
     againBtn.addEventListener("click", () => {
-      homeScheduleRemaining = [...homeSchedule];
+      homeScheduleRemaining = buildHomeScheduleRunSteps();
       render();
     });
     gridEl.appendChild(againBtn);
@@ -675,9 +879,14 @@ function renderHomeScheduleRunner() {
   // helperEl에 남은 개수 표시
   helperEl.textContent = `남은 할 일: ${homeScheduleRemaining.length}가지 · 큰 카드를 눌러서 완료`;
 
-  const label = homeScheduleRemaining[0];
-  const activity = HOME_ACTIVITIES.find((a) => a.label === label);
-  const originalOrder = Math.max(homeSchedule.indexOf(label), 0) + 1;
+  const rawStep = homeScheduleRemaining[0];
+  const label = typeof rawStep === "string" ? rawStep : rawStep.label;
+  const activity = typeof rawStep === "string"
+    ? HOME_ACTIVITIES.find((a) => a.label === label)
+    : rawStep;
+  const originalOrder = typeof rawStep === "string"
+    ? Math.max(getHomeScheduleEntryIndex(label), 0) + 1
+    : rawStep.order || 1;
   const btn = document.createElement("button");
   btn.className = "tile home-runner-tile home-runner-current";
 
@@ -713,7 +922,7 @@ function renderHomeScheduleRunner() {
 
   btn.addEventListener("click", () => {
     btn.disabled = true;
-    const afterSpeech = Promise.resolve(speak(label + " 완료!"));
+    const afterSpeech = Promise.resolve(speak(`${activity?.speech || label} 완료!`));
     afterSpeech.finally(() => {
       btn.classList.add("home-runner-done-anim");
       btn.addEventListener("animationend", () => {
@@ -735,7 +944,7 @@ function renderHomeScheduleRunner() {
   resetBtn.style.cssText = "grid-column:1/-1; background:#f1f5f9; color:#64748b; min-height:56px; font-size:1rem;";
   resetBtn.textContent = "처음부터 다시";
   resetBtn.addEventListener("click", () => {
-    homeScheduleRemaining = [...homeSchedule];
+    homeScheduleRemaining = buildHomeScheduleRunSteps();
     render();
   });
   gridEl.appendChild(resetBtn);
@@ -1901,6 +2110,11 @@ function renderFridaySlotPicker(slotKey) {
 
     function handleBack(key) {
       if (key === "scheduleHomeActivity" && homeActivityGroupId) {
+        if (homeShoppingTargetLabel) {
+          homeShoppingTargetLabel = "";
+          render();
+          return true;
+        }
         if (homeActivityPage > 0) {
           homeActivityPage = 0;
           render();
@@ -1908,6 +2122,7 @@ function renderFridaySlotPicker(slotKey) {
         }
         homeActivityGroupId = "";
         homeActivityPage = 0;
+        homeShoppingTargetLabel = "";
         render();
         return true;
       }
@@ -1941,6 +2156,7 @@ function renderFridaySlotPicker(slotKey) {
       homeActivityGroupId = "";
       homeScheduleGroupId = "";
       homeActivityPage = 0;
+      homeShoppingTargetLabel = "";
       shoppingPlace = null;
       shoppingItems = [];
       shoppingRemaining = [];

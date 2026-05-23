@@ -383,7 +383,9 @@ const DATA = {
     gayo3: "https://www.youtube.com/watch?v=Iz1YrvCq5x4",
     gayo4: "https://www.youtube.com/watch?v=qz5mck_-jXM",
     gayo5: "https://www.youtube.com/watch?v=fa6RXRvixXI",
-    gayo6: "https://www.youtube.com/watch?v=A1JfsShN2GE"
+    gayo6: "https://www.youtube.com/watch?v=A1JfsShN2GE",
+    busrailNara: "https://www.youtube.com/@busrail-nara",
+    mealRiceYoutube: "https://www.youtube.com/watch?v=7IPlzOBDxSc&list=RD7IPlzOBDxSc&start_radio=1"
   },
 
   screens: {
@@ -846,6 +848,7 @@ const DATA = {
       hero: [],
       items: [
         { label: "버스 영상", nav: "busVideoList", image: "./images/bus.png" },
+        { label: "뚜버기의 외출", youtube: "busrailNara", image: "./images/bus.png" },
         { label: "노래",      nav: "ipadMusic",    image: "./images/sing.png" }
       ],
       layout: "main",
@@ -967,7 +970,8 @@ const DATA = {
         { label: "주스", image: "./images/meal_juice.png" },
         { label: "우유", image: "./images/meal_milk.png" },
         { label: "두유", image: "./images/meal_soymilk.png" },
-        { label: "화장실", image: "./images/pee.png", speech: "화장실" }
+        { label: "화장실", image: "./images/pee.png", speech: "화장실" },
+        { label: "유튜브", image: "./images/youtube.png", youtube: "mealRiceYoutube", sideSlot: true }
       ],
       layout: "main"
     },
@@ -978,8 +982,8 @@ const DATA = {
       hero: [],
       items: [
         { label: "에그타르트", image: "./images/meal_eggtart.png" },
-        { label: "요플레",     image: "./images/yoplait.png" },
-        { label: "요구르트",   icon: "🥛" },
+        { label: "요플레",     image: "./images/yogurt.png" },
+        { label: "요구르트",   image: "./images/yogurt_drink.png" },
         { label: "주스",       image: "./images/meal_juice.png" },
         { label: "워터젤리",   image: "./images/water_jelly.png" },
         { label: "우유",       image: "./images/meal_milk.png" },
@@ -1033,7 +1037,7 @@ const DATA = {
         { label: "우유",     image: "./images/meal_milk.png" },
         { label: "두유",     image: "./images/meal_soymilk.png" },
         { label: "워터젤리", image: "./images/water_jelly.png" },
-        { label: "요구르트", icon: "🥛" },
+        { label: "요구르트", image: "./images/yogurt_drink.png" },
         { label: "바나나우유", icon: "🍌" },
         { label: "딸기우유", icon: "🍓" },
         { label: "초코우유", icon: "🍫" },
