@@ -68,7 +68,7 @@ function buildStudyScreensMap() {
   ];
 
   const appStudyItems = [
-    { label: "숫자",   nav: "studySticker_6",  image: "./images/stickerbook_number.png" },
+    { label: "숫자",   nav: "studyNumbers",    image: "./images/stickerbook_number.png" },
     { label: "과일",   nav: "studySticker_2",  image: "./images/stickerbook_fruit.png" },
     { label: "우리집", nav: "studySticker_3",  image: "./images/stickerbook_myhome.png" },
     { label: "동물",   nav: "studySticker_4",  image: "./images/stickerbook_animal.png" },
@@ -86,7 +86,7 @@ function buildStudyScreensMap() {
   ].map(([letter, speech]) => ({ label: letter, icon: letter, speech }));
 
   const nameStudyItems = [
-    { label: "홍재민", image: "./images/person/me.png", speech: "내 이름은 홍재민이야" },
+    { label: "홍재민", nav: "studyNamePuzzleJaemin", image: "./images/person/me.png", speech: "내 이름은 홍재민이야" },
     { label: "아빠 홍진혁", image: "./images/person/dad.png", speech: "아빠 이름은 홍진혁이야" },
     { label: "엄마 김주리", image: "./images/person/mom.png", speech: "엄마 이름은 김주리야" }
   ];
@@ -127,16 +127,85 @@ function buildStudyScreensMap() {
     showPlayer: false
   };
 
+  rest.studyNumbers = {
+    title: "숫자",
+    helper: "숫자 공부를 선택하세요.",
+    hero: [],
+    items: [
+      { label: "숫자 퍼즐", nav: "studyNumberPuzzle", image: "./images/knobpuzzle_numbers.png" },
+      { label: "숫자 카드", nav: "studySticker_6", image: "./images/stickerbook_number.png" }
+    ],
+    layout: "main",
+    showPlayer: false
+  };
+
+  rest.studyNumberPuzzle = {
+    title: "숫자 퍼즐",
+    helper: "카드를 끌어서 같은 숫자 빈칸에 맞춰요.",
+    hero: [],
+    items: [],
+    layout: "studyPuzzle",
+    showPlayer: false,
+    puzzle: {
+      title: "1부터 10까지",
+      completeSpeech: "숫자 퍼즐 완료! 정말 잘했어요!",
+      slots: [
+        { label: "1", value: "1", speech: "일" },
+        { label: "2", value: "2", speech: "이" },
+        { label: "3", value: "3", speech: "삼" },
+        { label: "4", value: "4", speech: "사" },
+        { label: "5", value: "5", speech: "오" },
+        { label: "6", value: "6", speech: "육" },
+        { label: "7", value: "7", speech: "칠" },
+        { label: "8", value: "8", speech: "팔" },
+        { label: "9", value: "9", speech: "구" },
+        { label: "10", value: "10", speech: "십" }
+      ],
+      pieces: [
+        { label: "1", value: "1", speech: "일" },
+        { label: "3", value: "3", speech: "삼" },
+        { label: "5", value: "5", speech: "오" },
+        { label: "7", value: "7", speech: "칠" },
+        { label: "9", value: "9", speech: "구" },
+        { label: "2", value: "2", speech: "이" },
+        { label: "4", value: "4", speech: "사" },
+        { label: "6", value: "6", speech: "육" },
+        { label: "8", value: "8", speech: "팔" },
+        { label: "10", value: "10", speech: "십" }
+      ]
+    }
+  };
+
   rest.studyHangul = {
     title: "한글",
     helper: "공부할 것을 선택하세요.",
     hero: [],
     items: [
+      { label: "한글 퍼즐", nav: "studyHangulPuzzle", image: "./images/stickerbook_language.png" },
       { label: "ㄱㄴㄷ", nav: "studyHangulLetters", image: "./images/stickerbook_language.png" },
       { label: "이름", nav: "studyNames", image: "./images/person/me.png" }
     ],
     layout: "main",
     showPlayer: false
+  };
+
+  rest.studyHangulPuzzle = {
+    title: "한글 퍼즐",
+    helper: "글자 조각을 끌어서 같은 글자 자리에 맞춰요.",
+    hero: [],
+    items: [],
+    layout: "studyPuzzle",
+    showPlayer: false,
+    puzzle: {
+      title: "ㄱ부터 ㅎ까지",
+      completeSpeech: "한글 퍼즐 완료! 정말 잘했어요!",
+      slots: hangulLetterItems.map(({ label, speech }) => ({ label, value: label, speech })),
+      pieces: ["ㄱ", "ㄷ", "ㅁ", "ㅅ", "ㅈ", "ㅋ", "ㅍ", "ㄴ", "ㄹ", "ㅂ", "ㅇ", "ㅊ", "ㅌ", "ㅎ"]
+        .map((letter) => {
+          const item = hangulLetterItems.find(({ label }) => label === letter);
+          return { label: letter, value: letter, speech: item?.speech || letter };
+        })
+    }
   };
 
   rest.studyHangulLetters = {
@@ -155,6 +224,31 @@ function buildStudyScreensMap() {
     items: nameStudyItems,
     layout: "main",
     showPlayer: false
+  };
+
+  rest.studyNamePuzzleJaemin = {
+    title: "홍재민",
+    helper: "이름 조각을 끌어서 맞춰요.",
+    hero: [],
+    items: [],
+    layout: "studyPuzzle",
+    showPlayer: false,
+    puzzle: {
+      title: "홍재민 이름 퍼즐",
+      image: "./images/person/me.png",
+      imageLabel: "홍재민",
+      completeSpeech: "홍재민, 내 이름은 홍재민이야",
+      slots: [
+        { label: "홍", value: "hong", speech: "홍" },
+        { label: "재", value: "jae", speech: "재" },
+        { label: "민", value: "min", speech: "민" }
+      ],
+      pieces: [
+        { label: "재", value: "jae", speech: "재" },
+        { label: "홍", value: "hong", speech: "홍" },
+        { label: "민", value: "min", speech: "민" }
+      ]
+    }
   };
 
   rest.studyVehicles = {
