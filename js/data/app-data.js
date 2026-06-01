@@ -1080,6 +1080,7 @@ const DATA = {
         { label: "요구르트",   image: "./images/yogurt_drink.png" },
         { label: "주스",       image: "./images/meal_juice.png" },
         { label: "워터젤리",   image: "./images/water_jelly.png" },
+        { label: "화장실",     image: "./images/pee.png", speech: "화장실" },
         { label: "우유",       image: "./images/meal_milk.png" },
         { label: "두유",       image: "./images/meal_soymilk.png" },
         { label: "과자",       icon: "🍪" },
