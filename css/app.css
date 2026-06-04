@@ -5012,6 +5012,12 @@ body {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.90);
 }
 
+.tile img.tile-img--cover {
+  object-fit: cover;
+  padding: 0;
+  background: transparent;
+}
+
 .tile-art {
   background: rgba(255, 255, 255, 0.76);
   color: #31528f;

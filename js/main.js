@@ -195,7 +195,7 @@ function speak(text) {
         clearTimeout(fallbackTimer);
         resolve();
       };
-      const fallbackMs = Math.min(4500, Math.max(900, String(text || "").length * 170 + 500));
+      const fallbackMs = Math.min(3600, Math.max(650, String(text || "").length * 120 + 360));
       const fallbackTimer = setTimeout(finish, fallbackMs);
 
       u.onend = finish;
@@ -207,7 +207,7 @@ function speak(text) {
       } else {
         u.lang = "ko-KR";
       }
-      u.rate = 0.95;
+      u.rate = 1.15;
       u.pitch = 1.0;
       window.speechSynthesis.resume();
       window.speechSynthesis.speak(u);
@@ -2852,6 +2852,7 @@ function renderButtons(items, layout) {
       if (!isNavBtn) {
         const img = document.createElement("img");
         img.src = item.image || getThumbnail(yUrl); img.alt = item.label;
+        if (item.imageFit === "cover") img.classList.add("tile-img--cover");
         setupImageElement(img, index < 2 || !!(item.image && item.image.startsWith("./images/")));
         btn.appendChild(img);
       }

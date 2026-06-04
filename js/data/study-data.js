@@ -68,13 +68,13 @@ function buildStudyScreensMap() {
 
   const appStudyItems = [
     { label: "숫자",   nav: "studyNumbers",    image: "./images/stickerbook_number.png" },
+    { label: "한글",   nav: "studyHangul",     image: "./images/stickerbook_language.png" },
+    { label: "이름",   nav: "studyNames",      image: "./images/person/me.png" },
     { label: "과일",   nav: "studySticker_2",  image: "./images/stickerbook_fruit.png" },
     { label: "우리집", nav: "studySticker_3",  image: "./images/stickerbook_myhome.png" },
     { label: "동물",   nav: "studySticker_4",  image: "./images/stickerbook_animal.png" },
     { label: "탈것",   nav: "studyVehicles",   image: "./images/stickerbook_vehicle.png" },
-    { label: "색깔",   nav: "studySticker_10", image: "./images/stickerbook_shape.png" },
-    { label: "한글",   nav: "studyHangul",     image: "./images/stickerbook_language.png" },
-    { label: "이름",   nav: "studyNames",      image: "./images/person/me.png" }
+    { label: "색깔",   nav: "studySticker_10", image: "./images/stickerbook_shape.png" }
   ];
 
   const hangulLetterItems = [
@@ -85,9 +85,12 @@ function buildStudyScreensMap() {
   ].map(([letter, speech]) => ({ label: letter, icon: letter, speech }));
 
   const nameStudyItems = [
-    { label: "홍재민", nav: "studyNamePuzzleJaemin", image: "./images/person/me.png", speech: "내 이름은 홍재민이야" },
-    { label: "아빠 홍진혁", image: "./images/person/dad.png", speech: "아빠 이름은 홍진혁이야" },
-    { label: "엄마 김주리", image: "./images/person/mom.png", speech: "엄마 이름은 김주리야" }
+    { label: "홍재민 버전1", nav: "studyNamePuzzleJaemin", image: "./images/person/me.png", speech: "내 이름은 홍재민이야" },
+    { label: "홍재민 버전2", nav: "studyNamePuzzleJaeminV2", image: "./images/knobpuzzle_numbers.png", speech: "내 이름은 홍재민이야" },
+    { label: "아빠 홍진혁 버전1", nav: "studyNamePuzzleDad", image: "./images/person/dad.png", speech: "아빠 이름은 홍진혁이야" },
+    { label: "아빠 홍진혁 버전2", nav: "studyNamePuzzleDadV2", image: "./images/knobpuzzle_numbers.png", speech: "아빠 이름은 홍진혁이야" },
+    { label: "엄마 김주리 버전1", nav: "studyNamePuzzleMom", image: "./images/person/mom.png", speech: "엄마 이름은 김주리야" },
+    { label: "엄마 김주리 버전2", nav: "studyNamePuzzleMomV2", image: "./images/knobpuzzle_numbers.png", speech: "엄마 이름은 김주리야" }
   ];
 
   const vehicleStudyItems = [
@@ -161,16 +164,16 @@ function buildStudyScreensMap() {
         { label: "10", value: "10", speech: "십" }
       ],
       pieces: [
-        { label: "1", value: "1", speech: "일" },
-        { label: "3", value: "3", speech: "삼" },
-        { label: "5", value: "5", speech: "오" },
-        { label: "7", value: "7", speech: "칠" },
-        { label: "9", value: "9", speech: "구" },
-        { label: "2", value: "2", speech: "이" },
-        { label: "4", value: "4", speech: "사" },
-        { label: "6", value: "6", speech: "육" },
-        { label: "8", value: "8", speech: "팔" },
-        { label: "10", value: "10", speech: "십" }
+        { label: "1", value: "1", speech: "?" },
+        { label: "2", value: "2", speech: "?" },
+        { label: "3", value: "3", speech: "?" },
+        { label: "4", value: "4", speech: "?" },
+        { label: "5", value: "5", speech: "?" },
+        { label: "6", value: "6", speech: "?" },
+        { label: "7", value: "7", speech: "?" },
+        { label: "8", value: "8", speech: "?" },
+        { label: "9", value: "9", speech: "?" },
+        { label: "10", value: "10", speech: "?" }
       ]
     }
   };
@@ -181,6 +184,8 @@ function buildStudyScreensMap() {
     hero: [],
     items: [
       { label: "한글 퍼즐", nav: "studyHangulPuzzle", image: "./images/stickerbook_language.png" },
+      { label: "가나다라 버전1", nav: "studyHangulGanadaraPuzzle", image: "./images/stickerbook_language.png" },
+      { label: "가나다라 버전2", nav: "studyHangulGanadaraPuzzleV2", image: "./images/knobpuzzle_numbers.png" },
       { label: "ㄱㄴㄷ", nav: "studyHangulLetters", image: "./images/stickerbook_language.png" },
       { label: "이름", nav: "studyNames", image: "./images/person/me.png" }
     ],
@@ -199,11 +204,62 @@ function buildStudyScreensMap() {
       title: "ㄱ부터 ㅎ까지",
       completeSpeech: "한글 퍼즐 완료! 정말 잘했어요!",
       slots: hangulLetterItems.map(({ label, speech }) => ({ label, value: label, speech })),
-      pieces: ["ㄱ", "ㄷ", "ㅁ", "ㅅ", "ㅈ", "ㅋ", "ㅍ", "ㄴ", "ㄹ", "ㅂ", "ㅇ", "ㅊ", "ㅌ", "ㅎ"]
+      pieces: ["?", "?", "?", "?", "?", "?", "?", "?", "?", "?", "?", "?", "?", "?"]
         .map((letter) => {
           const item = hangulLetterItems.find(({ label }) => label === letter);
           return { label: letter, value: letter, speech: item?.speech || letter };
         })
+    }
+  };
+
+  rest.studyHangulGanadaraPuzzle = {
+    title: "가나다라 버전1",
+    helper: "글자 조각을 끌어서 같은 글자 자리에 맞춰요.",
+    hero: [],
+    items: [],
+    layout: "studyPuzzle",
+    showPlayer: false,
+    puzzle: {
+      title: "가나다라 버전1 퍼즐",
+      completeSpeech: "가나다라 버전1 퍼즐 완료! 정말 잘했어요!",
+      slots: [
+        { label: "가", value: "ga", speech: "가" },
+        { label: "나", value: "na", speech: "나" },
+        { label: "다", value: "da", speech: "다" },
+        { label: "라", value: "ra", speech: "라" }
+      ],
+      pieces: [
+        { label: "가", value: "ga", speech: "가" },
+        { label: "나", value: "na", speech: "나" },
+        { label: "다", value: "da", speech: "다" },
+        { label: "라", value: "ra", speech: "라" }
+      ]
+    }
+  };
+
+  rest.studyHangulGanadaraPuzzleV2 = {
+    title: "가나다라 버전2",
+    helper: "숫자 퍼즐처럼 오른쪽 글자를 끌어서 같은 글자 칸에 맞춰요.",
+    hero: [],
+    items: [],
+    layout: "studyPuzzle",
+    showPlayer: false,
+    puzzle: {
+      title: "가나다라 버전2 퍼즐",
+      presentation: "number",
+      completeSpeech: "가나다라 버전2 퍼즐 완료! 정말 잘했어요!",
+      slots: [
+        { label: "가", value: "ga", speech: "가" },
+        { label: "나", value: "na", speech: "나" },
+        { label: "다", value: "da", speech: "다" },
+        { label: "라", value: "ra", speech: "라" }
+      ],
+      pieces: [
+        { label: "가", value: "ga", speech: "가" },
+        { label: "나", value: "na", speech: "나" },
+        { label: "다", value: "da", speech: "다" },
+        { label: "라", value: "ra", speech: "라" }
+      ]
     }
   };
 
@@ -236,16 +292,138 @@ function buildStudyScreensMap() {
       title: "홍재민 이름 퍼즐",
       image: "./images/person/me.png",
       imageLabel: "홍재민",
-      completeSpeech: "홍재민, 내 이름은 홍재민이야",
+      completeSpeech: "내 이름은 홍재민이야",
       slots: [
         { label: "홍", value: "hong", speech: "홍" },
         { label: "재", value: "jae", speech: "재" },
         { label: "민", value: "min", speech: "민" }
       ],
       pieces: [
-        { label: "재", value: "jae", speech: "재" },
         { label: "홍", value: "hong", speech: "홍" },
+        { label: "재", value: "jae", speech: "재" },
         { label: "민", value: "min", speech: "민" }
+      ]
+    }
+  };
+
+  rest.studyNamePuzzleDad = {
+    title: "아빠 홍진혁",
+    helper: "이름 조각을 끌어서 맞춰요.",
+    hero: [],
+    items: [],
+    layout: "studyPuzzle",
+    showPlayer: false,
+    puzzle: {
+      title: "아빠 홍진혁 이름 퍼즐",
+      image: "./images/person/dad.png",
+      imageLabel: "아빠 홍진혁",
+      completeSpeech: "아빠 이름은 홍진혁이야",
+      slots: [
+        { label: "홍", value: "hong", speech: "홍" },
+        { label: "진", value: "jin", speech: "진" },
+        { label: "혁", value: "hyeok", speech: "혁" }
+      ],
+      pieces: [
+        { label: "홍", value: "hong", speech: "홍" },
+        { label: "진", value: "jin", speech: "진" },
+        { label: "혁", value: "hyeok", speech: "혁" }
+      ]
+    }
+  };
+
+  rest.studyNamePuzzleMom = {
+    title: "엄마 김주리",
+    helper: "이름 조각을 끌어서 맞춰요.",
+    hero: [],
+    items: [],
+    layout: "studyPuzzle",
+    showPlayer: false,
+    puzzle: {
+      title: "엄마 김주리 이름 퍼즐",
+      image: "./images/person/mom.png",
+      imageLabel: "엄마 김주리",
+      completeSpeech: "엄마 이름은 김주리야",
+      slots: [
+        { label: "김", value: "kim", speech: "김" },
+        { label: "주", value: "ju", speech: "주" },
+        { label: "리", value: "ri", speech: "리" }
+      ],
+      pieces: [
+        { label: "김", value: "kim", speech: "김" },
+        { label: "주", value: "ju", speech: "주" },
+        { label: "리", value: "ri", speech: "리" }
+      ]
+    }
+  };
+
+  rest.studyNamePuzzleJaeminV2 = {
+    title: "홍재민 버전2",
+    helper: "숫자 퍼즐처럼 오른쪽 이름 글자를 끌어서 맞춰요.",
+    hero: [],
+    items: [],
+    layout: "studyPuzzle",
+    showPlayer: false,
+    puzzle: {
+      title: "홍재민 버전2 이름 퍼즐",
+      presentation: "number",
+      completeSpeech: "내 이름은 홍재민이야",
+      slots: [
+        { label: "홍", value: "hong", speech: "홍" },
+        { label: "재", value: "jae", speech: "재" },
+        { label: "민", value: "min", speech: "민" }
+      ],
+      pieces: [
+        { label: "홍", value: "hong", speech: "홍" },
+        { label: "재", value: "jae", speech: "재" },
+        { label: "민", value: "min", speech: "민" }
+      ]
+    }
+  };
+
+  rest.studyNamePuzzleDadV2 = {
+    title: "아빠 홍진혁 버전2",
+    helper: "숫자 퍼즐처럼 오른쪽 이름 글자를 끌어서 맞춰요.",
+    hero: [],
+    items: [],
+    layout: "studyPuzzle",
+    showPlayer: false,
+    puzzle: {
+      title: "아빠 홍진혁 버전2 이름 퍼즐",
+      presentation: "number",
+      completeSpeech: "아빠 이름은 홍진혁이야",
+      slots: [
+        { label: "홍", value: "hong", speech: "홍" },
+        { label: "진", value: "jin", speech: "진" },
+        { label: "혁", value: "hyeok", speech: "혁" }
+      ],
+      pieces: [
+        { label: "홍", value: "hong", speech: "홍" },
+        { label: "진", value: "jin", speech: "진" },
+        { label: "혁", value: "hyeok", speech: "혁" }
+      ]
+    }
+  };
+
+  rest.studyNamePuzzleMomV2 = {
+    title: "엄마 김주리 버전2",
+    helper: "숫자 퍼즐처럼 오른쪽 이름 글자를 끌어서 맞춰요.",
+    hero: [],
+    items: [],
+    layout: "studyPuzzle",
+    showPlayer: false,
+    puzzle: {
+      title: "엄마 김주리 버전2 이름 퍼즐",
+      presentation: "number",
+      completeSpeech: "엄마 이름은 김주리야",
+      slots: [
+        { label: "김", value: "kim", speech: "김" },
+        { label: "주", value: "ju", speech: "주" },
+        { label: "리", value: "ri", speech: "리" }
+      ],
+      pieces: [
+        { label: "김", value: "kim", speech: "김" },
+        { label: "주", value: "ju", speech: "주" },
+        { label: "리", value: "ri", speech: "리" }
       ]
     }
   };
