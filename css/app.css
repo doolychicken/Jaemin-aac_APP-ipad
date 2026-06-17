@@ -114,6 +114,56 @@ body {
   object-fit: contain;
 }
 
+.teaching-aid-complete,
+.teaching-aid-empty-complete {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.teaching-aid-complete {
+  flex-direction: column;
+  gap: clamp(12px, 2vh, 20px);
+  color: #0f3b82;
+  text-align: center;
+}
+
+.teaching-aid-complete-mark {
+  width: clamp(112px, 18vh, 168px);
+  height: clamp(112px, 18vh, 168px);
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  background: linear-gradient(135deg, #14b8a6, #3b82f6);
+  box-shadow: 0 22px 44px rgba(59, 130, 246, 0.22);
+  font-size: clamp(4rem, 10vh, 7rem);
+  font-weight: 900;
+}
+
+.teaching-aid-complete-title {
+  color: #ec4899;
+  font-size: clamp(2.4rem, 6vh, 4.4rem);
+  font-weight: 900;
+}
+
+.teaching-aid-complete-sub {
+  color: #64748b;
+  font-size: clamp(1.1rem, 2.6vh, 1.6rem);
+  font-weight: 900;
+}
+
+.teaching-aid-complete .btn,
+.teaching-aid-complete-button {
+  width: min(100%, 360px);
+  min-height: clamp(64px, 9vh, 88px);
+  font-size: clamp(1.2rem, 2.8vh, 1.7rem);
+  font-weight: 900;
+}
+
 @media (min-width: 768px) {
   .spotlight-button {
     width: min(60vw, 520px); /* 메인 타일(30vw/260)의 2배 */
@@ -5422,7 +5472,7 @@ body {
 
 .grid.grid--side-pager > .tile.quick-toilet-side {
   grid-column: 4;
-  grid-row: 2;
+  grid-row: 1;
   align-self: center;
   justify-self: center;
   width: min(100%, 245px) !important;
@@ -5431,19 +5481,19 @@ body {
 }
 
 .grid.grid--side-pager-with-toilet:not(.grid--side-pager-triple) .tile-nav-arrow {
-  grid-row: 1;
-}
-
-.grid.grid--side-pager-triple .tile-nav-arrow--prev {
-  grid-row: 1;
-}
-
-.grid.grid--side-pager-triple .tile-nav-arrow--next {
   grid-row: 2;
 }
 
-.grid.grid--side-pager-triple > .tile.quick-toilet-side {
+.grid.grid--side-pager-triple .tile-nav-arrow--prev {
+  grid-row: 2;
+}
+
+.grid.grid--side-pager-triple .tile-nav-arrow--next {
   grid-row: 3;
+}
+
+.grid.grid--side-pager-triple > .tile.quick-toilet-side {
+  grid-row: 1;
 }
 
 .quick-toilet-tile {
@@ -5526,6 +5576,18 @@ body {
   align-self: center;
 }
 
+.grid.grid--side-pager-with-toilet:not(.grid--side-pager-triple) .tile-nav-arrow {
+  grid-row: 2;
+}
+
+.grid.grid--side-pager-triple .tile-nav-arrow--prev {
+  grid-row: 2;
+}
+
+.grid.grid--side-pager-triple .tile-nav-arrow--next {
+  grid-row: 3;
+}
+
 .tile-nav-arrow:active {
   transform: scale(0.96);
 }
@@ -5555,13 +5617,13 @@ body {
 
   .grid.grid--side-pager > .tile.quick-toilet-side {
     grid-column: 3;
-    grid-row: 2;
+    grid-row: 1;
     width: min(100%, 210px) !important;
     max-width: 210px !important;
   }
 
   .grid.grid--side-pager-triple > .tile.quick-toilet-side {
-    grid-row: 3;
+    grid-row: 1;
   }
 
   .tile-nav-arrow {
@@ -5579,6 +5641,18 @@ body {
   .grid.grid--side-pager-double .tile-nav-arrow--next {
     grid-row: 2;
     align-self: center;
+  }
+
+  .grid.grid--side-pager-with-toilet:not(.grid--side-pager-triple) .tile-nav-arrow {
+    grid-row: 2;
+  }
+
+  .grid.grid--side-pager-triple .tile-nav-arrow--prev {
+    grid-row: 2;
+  }
+
+  .grid.grid--side-pager-triple .tile-nav-arrow--next {
+    grid-row: 3;
   }
 }
 

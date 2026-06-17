@@ -26,6 +26,8 @@ const returnHintEl       = document.getElementById("returnHint");
 // ── 네비게이션 상태 ──────────────────────────────────────────────────────────
 const navStack = [{ key: "main", label: "메인" }];
 let selectedYoutube = "";
+const TEACHING_AID_PROGRESS_KEY = "jaemin-teaching-aid-progress-v2";
+let completedTeachingAids = loadCompletedTeachingAids();
 
 function currentKey()           { return navStack[navStack.length - 1]?.key || "main"; }
 function pushScreen(key, label) { navStack.push({ key, label }); selectedYoutube = ""; }
@@ -45,6 +47,74 @@ function paginateItems(items, layout = "main", suffix = "", reserveSlots = 0, op
   return mainPager.paginate(items, suffix, { layout, reserveSlots, ...options });
 }
 function appendPagerButtons(container, pageInfo, options = {}) { mainPager.append(container, pageInfo, options); }
+
+function loadCompletedTeachingAids() {
+  try {
+    const raw = localStorage.getItem(TEACHING_AID_PROGRESS_KEY);
+    const values = JSON.parse(raw || "[]");
+    return new Set(Array.isArray(values) ? values.map(String) : []);
+  } catch {
+    return new Set();
+  }
+}
+
+function saveCompletedTeachingAids() {
+  try {
+    localStorage.setItem(TEACHING_AID_PROGRESS_KEY, JSON.stringify(Array.from(completedTeachingAids)));
+  } catch {}
+}
+
+function isTeachingAidComplete(id) {
+  return !!id && completedTeachingAids.has(String(id));
+}
+
+function teachingAidItemCompletionId(item) {
+  if (!item) return "";
+  return item.teachingAidTaskId || item.nav || "";
+}
+
+function teachingAidCurrentCompletionId(item = null) {
+  return teachingAidItemCompletionId(item) || currentKey();
+}
+
+function filterCompletedTeachingAidItems(items) {
+  if (!isInTeachingAidFlow()) return items || [];
+  return (items || []).filter((item) => {
+    if (item.label === "다음" || item.label === "이전") return true;
+    const completionId = currentKey() === "studyTeachingAids"
+      ? (item.teachingAidId || teachingAidItemCompletionId(item))
+      : teachingAidItemCompletionId(item);
+    return !completionId || !isTeachingAidComplete(completionId);
+  });
+}
+
+function completeTeachingAid(id, label = "교구", groupId = "") {
+  if (!id) return false;
+  const key = String(id);
+  const wasComplete = completedTeachingAids.has(key);
+  completedTeachingAids.add(key);
+  if (groupId) completedTeachingAids.add(String(groupId));
+  saveCompletedTeachingAids();
+  resetPageState();
+  helperEl.textContent = `${label} 완료! 뒤로 가면 다음 교구만 남아요.`;
+  speak(wasComplete ? `${label} 완료했어요` : `${label} 완료`);
+  return !wasComplete;
+}
+
+function resetTeachingAidProgress() {
+  completedTeachingAids = new Set();
+  saveCompletedTeachingAids();
+  resetPageState("main/studyTeachingAids");
+}
+
+function remainingTeachingAidItems() {
+  const screen = DATA.screens.studyTeachingAids || {};
+  return filterCompletedTeachingAidItems(screen.items || []);
+}
+
+function isInTeachingAidFlow() {
+  return navStack.some((entry) => entry.key === "studyTeachingAids");
+}
 
 // ── 외출 플래너 상태 ─────────────────────────────────────────────────────────
 const OUTING_MAX_PERSON = 4;
@@ -2761,12 +2831,19 @@ function hasVisibleToiletTile() {
 }
 
 function isMainMenuScreenKey() {
-  return currentKey() === "main";
+  const key = currentKey();
+  return key === "main" || key.startsWith("main_p");
 }
 
 function shouldHideQuickToiletOnScreen() {
   const key = currentKey();
   return isMainMenuScreenKey()
+    || key === "studyTeachingAids"
+    || key.startsWith("schedule")
+    || key.startsWith("date")
+    || key.startsWith("weather")
+    || key.startsWith("subject")
+    || key.startsWith("people")
     || key === "outingSchool"
     || key === "outingSchoolFriends"
     || key.startsWith("outingSchool_p");
@@ -2805,13 +2882,15 @@ function renderButtons(items, layout) {
   const isMain  = layout === "main";
   const isMedia = layout === "media";
   const usesSideFrame = isMain || isMedia;
+  const screen = DATA.screens[currentKey()] || {};
+  const filteredItems = filterCompletedTeachingAidItems(items || []);
   const sideSlotItem = isMain && currentKey() === "mealRice"
-    ? (items || []).find((item) => item.sideSlot)
+    ? filteredItems.find((item) => item.sideSlot)
     : null;
-  const rawItems = items || [];
+  const rawItems = filteredItems;
   const hasToiletInScreen = rawItems.some((item) => item.label === "화장실");
   const shouldAddQuickToilet = currentKey() !== "toilet" && !hasToiletInScreen && !shouldHideQuickToiletOnScreen();
-  const listItems = sideSlotItem ? (items || []).filter((item) => item !== sideSlotItem) : (items || []);
+  const listItems = sideSlotItem ? filteredItems.filter((item) => item !== sideSlotItem) : filteredItems;
   const manualSideNavItems = usesSideFrame
     ? listItems.filter((item) => item.label === "다음" || item.label === "이전")
     : [];
@@ -2887,6 +2966,11 @@ function renderButtons(items, layout) {
 
     if (currentKey() === "weatherHome") {
       playWeatherSound(item.label);
+    }
+    if (isInTeachingAidFlow() && screen.teachingAidId && item.teachingAidId && !item.nav && !yUrl) {
+      completeTeachingAid(teachingAidCurrentCompletionId(item), item.label || screen.title || "교구", screen.teachingAidId);
+      render();
+      return;
     }
     const moveAfterSpeech = () => window.setTimeout(() => {
       if (item.nav) { pushScreen(item.nav, item.label); render(); return; }
@@ -3019,6 +3103,64 @@ function renderButtons(items, layout) {
   appendQuickToiletTile({ side: usesSideFrame && !sideSlotItem && shouldAddQuickToilet });
 }
 
+function renderTeachingAidMissionComplete() {
+  appMainEl.classList.remove("app--spotlight");
+  spotlightViewEl.style.display = "none";
+  spotlightBtnEl.onclick = null;
+  heroEl.style.display = "none";
+  gridEl.style.display = "";
+  gridEl.innerHTML = "";
+  gridEl.className = "teaching-aid-complete";
+  helperEl.textContent = "모든 교구를 완료했어요.";
+
+  const mark = document.createElement("div");
+  mark.className = "teaching-aid-complete-mark";
+  mark.textContent = "✓";
+
+  const title = document.createElement("div");
+  title.className = "teaching-aid-complete-title";
+  title.textContent = "미션 클리어";
+
+  const sub = document.createElement("div");
+  sub.className = "teaching-aid-complete-sub";
+  sub.textContent = "교구를 모두 해냈어요.";
+
+  const resetBtn = document.createElement("button");
+  resetBtn.type = "button";
+  resetBtn.className = "btn main";
+  resetBtn.textContent = "처음부터 다시";
+  resetBtn.addEventListener("click", () => {
+    resetTeachingAidProgress();
+    speak("처음부터 다시");
+    render();
+  });
+
+  gridEl.appendChild(mark);
+  gridEl.appendChild(title);
+  gridEl.appendChild(sub);
+  gridEl.appendChild(resetBtn);
+}
+
+function renderTeachingAidEmptyComplete(screen) {
+  appMainEl.classList.add("app--spotlight");
+  spotlightViewEl.style.display = "none";
+  spotlightBtnEl.onclick = null;
+  heroEl.style.display = "none";
+  gridEl.style.display = "";
+  gridEl.innerHTML = "";
+  gridEl.className = "teaching-aid-empty-complete";
+
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "btn main teaching-aid-complete-button";
+  btn.textContent = isTeachingAidComplete(currentKey()) ? "완료했어요" : "완료";
+  btn.addEventListener("click", () => {
+    completeTeachingAid(currentKey(), screen.title || "교구", screen.teachingAidId);
+    render();
+  });
+  gridEl.appendChild(btn);
+}
+
 // ── 메인 렌더 ────────────────────────────────────────────────────────────────
 function render() {
   const key    = currentKey();
@@ -3028,6 +3170,9 @@ function render() {
   homeBtn.style.display = isMain ? "none" : "inline-flex";
   titleEl.textContent = screen.title || "AAC";
   helperEl.textContent = screen.helper || "";
+  if (isInTeachingAidFlow() && screen.teachingAidId && isTeachingAidComplete(currentKey())) {
+    helperEl.textContent = `${screen.title || "교구"} 완료! 뒤로 가면 다음 교구만 남아요.`;
+  }
   helperEl.style.display = "";
   const crumb = breadcrumbText();
   crumbEl.textContent = crumb;
@@ -3054,7 +3199,9 @@ function render() {
   const isEmpty     = screen.layout === "empty";
 
 
-  if (key === "outingHome") {
+  if (key === "studyTeachingAids" && remainingTeachingAidItems().length === 0) {
+    renderTeachingAidMissionComplete();
+  } else if (key === "outingHome") {
     if (outingPlannerMode) {
       const modeTitle = { person: "사람 선택", place: "장소 선택", transport: "이동수단 선택" };
       titleEl.textContent = modeTitle[outingPlannerMode] || "선택";
@@ -3108,9 +3255,20 @@ function render() {
     setupImageElement(spotlightImgEl, true);
     const spotLabel = screen.spotlight.label || screen.title || "";
     spotlightBtnEl.setAttribute("aria-label", `${spotLabel}, 눌러서 읽기`);
-    spotlightBtnEl.onclick = () => speak(spotLabel);
+    spotlightBtnEl.onclick = () => {
+      if (isInTeachingAidFlow() && screen.teachingAidId) {
+        completeTeachingAid(currentKey(), spotLabel, screen.teachingAidId);
+        render();
+        return;
+      }
+      speak(spotLabel);
+    };
     appendQuickToiletTile({ free: true });
   } else if (isEmpty) {
+    if (isInTeachingAidFlow() && screen.teachingAidId) {
+      renderTeachingAidEmptyComplete(screen);
+      return;
+    }
     appMainEl.classList.add("app--spotlight");
     spotlightViewEl.style.display = "none";
     spotlightBtnEl.onclick = null;
@@ -3125,7 +3283,12 @@ function render() {
     renderButtons(screen.items || [], screen.layout || (isMain ? "main" : "detail"));
   }
 
-  if (gridEl.style.display !== "none" && screen.layout !== "studyPuzzle") {
+  if (
+    gridEl.style.display !== "none"
+    && screen.layout !== "studyPuzzle"
+    && !gridEl.classList.contains("teaching-aid-complete")
+    && !gridEl.classList.contains("teaching-aid-empty-complete")
+  ) {
     appendQuickToiletTile({ side: gridEl.classList.contains("grid--side-pager") });
   }
 

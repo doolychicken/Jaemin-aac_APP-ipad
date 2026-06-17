@@ -62,7 +62,9 @@
       gridEl.style.display = "";
       gridEl.innerHTML = "";
       const useNumberPresentation = puzzle.presentation === "number" || slots.length > 6;
-      gridEl.className = `study-puzzle${useNumberPresentation ? " study-puzzle--number" : " study-puzzle--name"}`;
+      const isShortNumberPuzzle = useNumberPresentation && visibleSlotEntries.length <= 4;
+      gridEl.className = `study-puzzle${useNumberPresentation ? " study-puzzle--number" : " study-puzzle--name"}${isShortNumberPuzzle ? " study-puzzle--number-short" : ""}`;
+      gridEl.style.setProperty("--study-visible-count", String(Math.max(1, visibleSlotEntries.length)));
       helperEl.textContent = screen.helper || "카드를 끌어서 같은 빈칸에 맞춰요.";
       helperEl.style.display = "";
     

@@ -57,12 +57,13 @@ function buildStudyScreensMap() {
 
   const rest = {};
   const teachingAidItems = [
-    { label: "스티커북", nav: "studySticker",    image: "./images/stickerbook_mart.png" },
-    { label: "꼭지퍼즐", nav: "studyKnobPuzzle", image: "./images/knobpuzzle_fruits.png" },
+    { label: "스티커북", nav: "studySticker",    image: "./images/stickerbook_mart.png", teachingAidId: "studySticker" },
+    { label: "꼭지퍼즐", nav: "studyKnobPuzzle", image: "./images/knobpuzzle_fruits.png", teachingAidId: "studyKnobPuzzle" },
     ...defs.map((d) => ({
       label: d.label,
       nav: d.key,
-      image: d.studyTileImage || "./images/study.png"
+      image: d.studyTileImage || "./images/study.png",
+      teachingAidId: d.key
     }))
   ];
 
@@ -164,16 +165,16 @@ function buildStudyScreensMap() {
         { label: "10", value: "10", speech: "십" }
       ],
       pieces: [
-        { label: "1", value: "1", speech: "?" },
-        { label: "2", value: "2", speech: "?" },
-        { label: "3", value: "3", speech: "?" },
-        { label: "4", value: "4", speech: "?" },
-        { label: "5", value: "5", speech: "?" },
-        { label: "6", value: "6", speech: "?" },
-        { label: "7", value: "7", speech: "?" },
-        { label: "8", value: "8", speech: "?" },
-        { label: "9", value: "9", speech: "?" },
-        { label: "10", value: "10", speech: "?" }
+        { label: "1", value: "1", speech: "일" },
+        { label: "2", value: "2", speech: "이" },
+        { label: "3", value: "3", speech: "삼" },
+        { label: "4", value: "4", speech: "사" },
+        { label: "5", value: "5", speech: "오" },
+        { label: "6", value: "6", speech: "육" },
+        { label: "7", value: "7", speech: "칠" },
+        { label: "8", value: "8", speech: "팔" },
+        { label: "9", value: "9", speech: "구" },
+        { label: "10", value: "10", speech: "십" }
       ]
     }
   };
@@ -236,7 +237,7 @@ function buildStudyScreensMap() {
 
   rest.studyHangulGanadaraPuzzleV2 = {
     title: "가나다라 버전2",
-    helper: "숫자 퍼즐처럼 오른쪽 글자를 끌어서 같은 글자 칸에 맞춰요.",
+    helper: "아래 글자를 위로 끌어서 같은 글자 칸에 맞춰요.",
     hero: [],
     items: [],
     layout: "studyPuzzle",
@@ -355,7 +356,7 @@ function buildStudyScreensMap() {
 
   rest.studyNamePuzzleJaeminV2 = {
     title: "홍재민 버전2",
-    helper: "숫자 퍼즐처럼 오른쪽 이름 글자를 끌어서 맞춰요.",
+    helper: "아래 이름 글자를 위로 끌어서 맞춰요.",
     hero: [],
     items: [],
     layout: "studyPuzzle",
@@ -379,7 +380,7 @@ function buildStudyScreensMap() {
 
   rest.studyNamePuzzleDadV2 = {
     title: "아빠 홍진혁 버전2",
-    helper: "숫자 퍼즐처럼 오른쪽 이름 글자를 끌어서 맞춰요.",
+    helper: "아래 이름 글자를 위로 끌어서 맞춰요.",
     hero: [],
     items: [],
     layout: "studyPuzzle",
@@ -403,7 +404,7 @@ function buildStudyScreensMap() {
 
   rest.studyNamePuzzleMomV2 = {
     title: "엄마 김주리 버전2",
-    helper: "숫자 퍼즐처럼 오른쪽 이름 글자를 끌어서 맞춰요.",
+    helper: "아래 이름 글자를 위로 끌어서 맞춰요.",
     hero: [],
     items: [],
     layout: "studyPuzzle",
@@ -476,6 +477,7 @@ function buildStudyScreensMap() {
       items: [],
       layout: "spotlight",
       spotlight: { image: sub.image, label: sub.label },
+      teachingAidId: "studySticker",
       showPlayer: false
     };
   });
@@ -540,7 +542,7 @@ function buildStudyScreensMap() {
         (sub.label === "숫자" && j >= 3) ||
         (sub.label === "모양" && j >= 2);
       rest[leafKey] = isBlankSlot
-        ? { title: row.label, helper: "", hero: [], items: [], layout: "empty", showPlayer: false }
+        ? { title: row.label, helper: "완료하려면 버튼을 눌러 주세요.", hero: [], items: [], layout: "empty", teachingAidId: "studyKnobPuzzle", showPlayer: false }
         : {
           title: row.label,
           helper: "그림을 누르면 읽어 줘요.",
@@ -548,6 +550,7 @@ function buildStudyScreensMap() {
           items: [],
           layout: "spotlight",
           spotlight: { image: row.image, label: row.label },
+          teachingAidId: "studyKnobPuzzle",
           showPlayer: false
         };
     });
@@ -566,6 +569,7 @@ function buildStudyScreensMap() {
         items: [],
         layout: "spotlight",
         spotlight: { image: d.studyTileImage || "./images/study.png", label: d.label },
+        teachingAidId: d.key,
         showPlayer: false
       }
       : {
@@ -584,15 +588,18 @@ function buildStudyScreensMap() {
     d.subs.forEach((sub, i) => {
       const k = `${d.key}_${i + 1}`;
       rest[k] = isBlankCard
-        ? { title: sub, helper: "", hero: [], items: [], layout: "empty", showPlayer: false }
+        ? { title: sub, helper: "완료하려면 버튼을 눌러 주세요.", hero: [], items: [], layout: "empty", teachingAidId: d.key, showPlayer: false }
         : {
           title: sub,
           helper: "원하는 항목을 선택하세요.",
           hero: [],
           items: Array.from({ length: 6 }, (_, j) => ({
             label: `${sub} · ${j + 1}번`,
-            image: "./images/study.png"
+            image: "./images/study.png",
+            teachingAidTaskId: `${k}_${j + 1}`,
+            teachingAidId: d.key
           })),
+          teachingAidId: d.key,
           layout: "main",
           showPlayer: false
         };

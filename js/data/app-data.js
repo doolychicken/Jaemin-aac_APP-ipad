@@ -81,12 +81,27 @@ const DATA = {
       items: [
         { label: "교통수단사람장소 외출", nav: "outingHome", image: "./images/outing.png" },
         { label: "학교",      nav: "outingSchool", image: "./images/outing_school1.png" },
+        { label: "화장실",    nav: "toilet",       image: "./images/pee.png" },
         { label: "스케줄표",  nav: "scheduleHome", image: "./images/app_schedule.svg" },
         { label: "날짜",      nav: "dateHome",     image: "./images/app_date.svg" },
         { label: "과목",      nav: "subjectHome",  icon: "📚" },
+        { label: "이전",      nav: "main",         image: "./images/home.png" },
+        { label: "다음",      nav: "main_p3",      image: "./images/outing.png" }
+      ],
+      layout: "main",
+      showPlayer: false
+    },
+
+    main_p3: {
+      title: "메인 화면 (3)",
+      helper: "추가 카테고리를 선택하세요.",
+      hero: [],
+      items: [
         { label: "사람",      nav: "peopleHome",   image: "./images/outing_person_me.png" },
         { label: "날씨",      nav: "weatherHome",  image: "./images/weather.png" },
-        { label: "이전",      nav: "main",         image: "./images/home.png" }
+        { label: "화장실",    nav: "toilet",       image: "./images/pee.png" },
+        { label: "이전",      nav: "main_p2",      image: "./images/home.png" },
+        { label: "다음",      nav: "main",         image: "./images/outing.png" }
       ],
       layout: "main",
       showPlayer: false
