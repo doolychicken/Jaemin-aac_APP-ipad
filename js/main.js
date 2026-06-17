@@ -2761,11 +2761,20 @@ function hasVisibleToiletTile() {
 }
 
 function isMainMenuScreenKey() {
-  return currentKey() === "main" || currentKey().startsWith("main_p");
+  return currentKey() === "main";
+}
+
+function shouldHideQuickToiletOnScreen() {
+  const key = currentKey();
+  return isMainMenuScreenKey()
+    || key === "outingSchool"
+    || key === "outingSchoolFriends"
+    || key.startsWith("outingSchool_p");
 }
 
 function appendQuickToiletTile(options = {}) {
-  if (currentKey() === "toilet" || isMainMenuScreenKey() || hasVisibleToiletTile()) return;
+  if (currentKey() === "toilet" || shouldHideQuickToiletOnScreen() || hasVisibleToiletTile()) return;
+  if (!options.side && !options.free) return;
   if (options.side) {
     const sideControlCount = gridEl.querySelectorAll(".tile-nav-arrow").length + 1;
     gridEl.classList.add("grid--side-pager", "grid--side-pager-with-toilet");
@@ -2801,7 +2810,7 @@ function renderButtons(items, layout) {
     : null;
   const rawItems = items || [];
   const hasToiletInScreen = rawItems.some((item) => item.label === "화장실");
-  const shouldAddQuickToilet = currentKey() !== "toilet" && !hasToiletInScreen && !isMainMenuScreenKey();
+  const shouldAddQuickToilet = currentKey() !== "toilet" && !hasToiletInScreen && !shouldHideQuickToiletOnScreen();
   const listItems = sideSlotItem ? (items || []).filter((item) => item !== sideSlotItem) : (items || []);
   const manualSideNavItems = usesSideFrame
     ? listItems.filter((item) => item.label === "다음" || item.label === "이전")
@@ -3100,7 +3109,7 @@ function render() {
     const spotLabel = screen.spotlight.label || screen.title || "";
     spotlightBtnEl.setAttribute("aria-label", `${spotLabel}, 눌러서 읽기`);
     spotlightBtnEl.onclick = () => speak(spotLabel);
-    appendQuickToiletTile();
+    appendQuickToiletTile({ free: true });
   } else if (isEmpty) {
     appMainEl.classList.add("app--spotlight");
     spotlightViewEl.style.display = "none";
