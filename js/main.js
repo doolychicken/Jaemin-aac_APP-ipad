@@ -138,6 +138,7 @@ const dateStepFinalSelection = { year: null, month: null, day: null, weekday: nu
 let preferredKoVoice = null;
 let ttsWarmedUp = false;
 let sharedAudioCtx = null;
+let ttsRequestId = 0;
 const isAppleMobile = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
   (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 const useDirectYoutubeOpen = true;
@@ -278,6 +279,7 @@ function speak(text) {
   if (!preferredKoVoice) preferredKoVoice = pickPreferredKoVoice();
   const spokenText = String(text || "").trim();
   if (!spokenText) return Promise.resolve();
+  ttsRequestId += 1;
 
   return new Promise((resolve) => {
     const doSpeak = () => {
@@ -428,9 +430,11 @@ function playWeatherSound(label = "") {
 function warmupTTS() {
   if (ttsWarmedUp) return;
   ttsWarmedUp = true;
+  const warmupRequestId = ttsRequestId;
   unlockAudioOnce();
   if (!("speechSynthesis" in window)) return;
   if (!preferredKoVoice) preferredKoVoice = pickPreferredKoVoice();
+  if (isAndroid) return;
   const warm = new SpeechSynthesisUtterance(isAndroid ? "아" : " ");
   warm.lang = preferredKoVoice?.lang || "ko-KR";
   if (preferredKoVoice) warm.voice = preferredKoVoice;
@@ -440,6 +444,7 @@ function warmupTTS() {
   try { window.speechSynthesis.resume(); } catch (_) {}
   try { window.speechSynthesis.speak(warm); } catch (_) {}
   setTimeout(() => {
+    if (ttsRequestId !== warmupRequestId) return;
     try { window.speechSynthesis.cancel(); } catch (_) {}
   }, isAndroid ? 360 : 200);
 }
@@ -2908,7 +2913,8 @@ function renderButtons(items, layout) {
   gridEl.innerHTML = "";
   const isMain  = layout === "main";
   const isMedia = layout === "media";
-  const usesSideFrame = isMain || isMedia;
+  const compactMainMenu = isMainMenuScreenKey() && window.matchMedia("(max-width: 760px)").matches;
+  const usesSideFrame = (isMain || isMedia) && !compactMainMenu;
   const screen = DATA.screens[currentKey()] || {};
   const filteredItems = filterCompletedTeachingAidItems(items || []);
   const sideSlotItem = isMain && currentKey() === "mealRice"
@@ -2937,7 +2943,7 @@ function renderButtons(items, layout) {
   const visibleItems = sideNavItems.length
     ? pageInfo.items.filter((item) => item.label !== "다음" && item.label !== "이전")
     : pageInfo.items;
-  const extraGridClass = currentKey() === "mealDrink" ? " grid--meal-drink" : "";
+  const extraGridClass = `${currentKey() === "mealDrink" ? " grid--meal-drink" : ""}${compactMainMenu ? " grid--mobile-main-menu" : ""}`;
   const autoSideNavCount = usesSideFrame && pageInfo.paged
     ? Number(pageInfo.page > 0) + Number(pageInfo.page < pageInfo.totalPages - 1)
     : 0;

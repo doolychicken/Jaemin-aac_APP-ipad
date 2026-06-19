@@ -70,7 +70,6 @@ const SCHEDULE_ACTIVITY_DEFS = [
   { type: "calltaxi",  label: "장애인콜택시", shortLabel: "콜택시",  image: "./images/transport_calltaxi.png",       emoji: "🚕" },
   { type: "fieldtrip", label: "학교 현장학습", shortLabel: "현장학습", image: "./images/school bus.png",               emoji: "🚌" },
 ];
-const WEEKLY_VISIBLE_ACTIVITY_TYPES = new Set(["school", "사람과소통", "큰나무", "home"]);
 
 const SCHEDULE_PERSON_DEFS = [
   { label: "나",              image: "./images/outing_person_me.png",               emoji: "🙋",  groups: ["family"] },
@@ -125,9 +124,6 @@ const ALLOWED_GROUPS_BY_ACT = {
 function cleanWeeklySchedule(data) {
   const inGroup = (pd, g) => (pd.groups || [pd.group || ""]).includes(g);
   Object.values(data).forEach((acts) => {
-    for (let i = acts.length - 1; i >= 0; i--) {
-      if (!WEEKLY_VISIBLE_ACTIVITY_TYPES.has(acts[i]?.type)) acts.splice(i, 1);
-    }
     acts.forEach((act) => {
       const allowedGroups = ALLOWED_GROUPS_BY_ACT[act.type] || ALLOWED_GROUPS_BY_ACT["_default"];
       act.people = (act.people || []).filter((pLabel) => {
@@ -1903,7 +1899,7 @@ function renderWeeklyEditor() {
     const actList = document.createElement("div");
     actList.className = "weekly-act-list";
 
-    SCHEDULE_ACTIVITY_DEFS.filter((def) => WEEKLY_VISIBLE_ACTIVITY_TYPES.has(def.type)).forEach((def) => {
+    SCHEDULE_ACTIVITY_DEFS.forEach((def) => {
       const isChecked = dayActTypes.includes(def.type);
       const actIdx    = dayActTypes.indexOf(def.type);
       const actEntry  = isChecked ? dayActs[actIdx] : null;

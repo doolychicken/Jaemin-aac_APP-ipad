@@ -5774,6 +5774,39 @@ body {
   }
 }
 
+@media (max-width: 760px) {
+  .grid.grid--mobile-main-menu {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    align-content: start;
+    justify-content: stretch;
+    justify-items: stretch;
+    gap: 10px;
+    width: 100%;
+    max-width: 100%;
+    padding: 2px 4px max(18px, env(safe-area-inset-bottom));
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .grid.grid--mobile-main-menu > .tile {
+    width: 100% !important;
+    max-width: none !important;
+    min-height: 136px;
+    aspect-ratio: 1 / 1;
+  }
+
+  .grid.grid--mobile-main-menu > .tile img,
+  .grid.grid--mobile-main-menu > .tile .tile-art {
+    width: min(54%, 86px);
+    height: min(54%, 86px);
+  }
+
+  .grid.grid--mobile-main-menu > .tile .tile-label {
+    font-size: clamp(0.92rem, 4vw, 1.08rem);
+    line-height: 1.15;
+  }
+}
+
 /* Final date polish: match main menu scale and keep units outside value cards. */
 .date-mode-select {
   grid-template-columns: repeat(3, minmax(0, 245px)) !important;
