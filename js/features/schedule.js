@@ -1387,7 +1387,7 @@ function renderWeeklyDayPicker() {
     card.className = "weekly-day-card";
     card.style.setProperty("--day-bg", c.bg);
     card.style.setProperty("--day-border", c.border);
-    card.style.setProperty("--day-text", c.text);
+    card.style.setProperty("--day-text", day === "토" || day === "일" ? "#dc2626" : "#111827");
     card.setAttribute("aria-label", `${formatScheduleDayLabel(day)} 스케줄 보기`);
 
     const label = document.createElement("div");
