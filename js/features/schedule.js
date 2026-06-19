@@ -163,6 +163,10 @@ const WEEKLY_DAY_COLORS = [
   { bg: "#fee2e2", border: "#f87171", text: "#7f1d1d" }, // 일 - 빨강
 ];
 
+function formatScheduleDayLabel(day) {
+  return `${day}요일`;
+}
+
 function loadWeeklyPeriods() {
   try {
     const raw = localStorage.getItem("jaemin-weekly-periods-v1");
@@ -198,9 +202,10 @@ const HOME_ACTIVITY_GROUPS = [
       { label: "장보기",     image: "./images/outing_mart1.png", emoji: "🛒", nav: "scheduleShopping" },
       { label: "분리수거장", image: "./images/home_schedule/recycling_station.png", emoji: "♻️" },
       { label: "하나로마트", image: "./images/home_schedule/hanaro_mart.png", emoji: "🛒" },
-      { label: "홈플러스",   image: "./images/home_schedule/homeplus.png", emoji: "🛒" },
+      { label: "홈플러스",   image: "./images/homeplus.png", emoji: "🛒" },
       { label: "한살림",     image: "./images/home_schedule/hansalim.png", emoji: "🥬" },
       { label: "파리바게트", image: "./images/home_schedule/paris_baguette.png", emoji: "🥐" },
+      { label: "마포중앙도서관", image: "./images/mapocentral_library.png", emoji: "📚" },
       { label: "놀이터",     image: "./images/home_schedule/playground.png", emoji: "🛝" },
       { label: "우체국",     image: "./images/home_schedule/post_office.png", emoji: "📮" },
       { label: "소방서",     image: "./images/home_schedule/fire_station.png", emoji: "🚒" }
@@ -214,9 +219,10 @@ const HOME_ACTIVITY_GROUPS = [
     activities: [
       { label: "분리수거장", image: "./images/home_schedule/recycling_station.png", emoji: "♻️" },
       { label: "하나로마트", image: "./images/home_schedule/hanaro_mart.png", emoji: "🛒" },
-      { label: "홈플러스",   image: "./images/home_schedule/homeplus.png", emoji: "🛒" },
+      { label: "홈플러스",   image: "./images/homeplus.png", emoji: "🛒" },
       { label: "한살림",     image: "./images/home_schedule/hansalim.png", emoji: "🥬" },
       { label: "파리바게트", image: "./images/home_schedule/paris_baguette.png", emoji: "🥐" },
+      { label: "마포중앙도서관", image: "./images/mapocentral_library.png", emoji: "📚" },
       { label: "놀이터",     image: "./images/home_schedule/playground.png", emoji: "🛝" },
       { label: "우체국",     image: "./images/home_schedule/post_office.png", emoji: "📮" },
       { label: "소방서",     image: "./images/home_schedule/fire_station.png", emoji: "🚒" }
@@ -274,7 +280,7 @@ const SHOPPING_PLACES = [
   {
     id: "homeplus",
     label: "홈플러스",
-    image: "./images/home_schedule/homeplus.png",
+    image: "./images/homeplus.png",
     items: [
       { label: "물", image: "./images/water.png" },
       { label: "우유", image: "./images/meal_milk.png" },
@@ -1213,8 +1219,8 @@ function renderWeeklySchedule() {
     return;
   }
 
-  titleEl.textContent = "주간 스케줄";
-  helperEl.textContent = "활동을 누르면 소리로 읽어줍니다.";
+  titleEl.textContent = "요일별 스케줄";
+  helperEl.textContent = "월요일부터 일요일까지 한 장에 볼 수 있어요. 요일을 누르면 스케줄을 넣거나 볼 수 있어요.";
 
   // 최대 행 수 계산 (시간대 레이블 수 vs 실제 활동 수 중 큰 것)
   const maxRows = Math.max(
@@ -1235,13 +1241,13 @@ function renderWeeklySchedule() {
     const c = WEEKLY_DAY_COLORS[di];
     const hdr = document.createElement("button");
     hdr.className = "wt-dayhdr wt-dayhdr--btn";
-    hdr.textContent = day;
+    hdr.textContent = formatScheduleDayLabel(day);
     hdr.style.cssText = `background:${c.bg}; color:${c.text}; border-color:${c.border};`;
-    hdr.setAttribute("aria-label", `${day}요일 스케줄 보기`);
+    hdr.setAttribute("aria-label", `${formatScheduleDayLabel(day)} 스케줄 보기`);
     hdr.addEventListener("click", () => {
-      speak(`${day}요일`);
+      speak(formatScheduleDayLabel(day));
       weeklySelectedDay = day;
-      pushScreen("scheduleWeeklyDay", `${day}요일`);
+      pushScreen("scheduleWeeklyDay", formatScheduleDayLabel(day));
       render();
     });
     grid.appendChild(hdr);
@@ -1404,24 +1410,6 @@ function createDvScheduleCardGrid(acts, dayKey, numMode) {
     lbl.textContent = def.label;
     textBlock.appendChild(lbl);
 
-    if (act.people && act.people.length > 0) {
-      const faces = document.createElement("div");
-      faces.className = "dv-faces";
-      act.people.slice(0, 4).forEach((pLabel) => {
-        const pd = SCHEDULE_PERSON_DEFS.find((p) => p.label === pLabel);
-        if (!pd) return;
-        const fw = document.createElement("div");
-        fw.className = "dv-face-wrap";
-        fw.appendChild(makeFaceImg(pd, "dv-face"));
-        const fl = document.createElement("div");
-        fl.className = "dv-face-lbl";
-        fl.textContent = pLabel;
-        fw.appendChild(fl);
-        faces.appendChild(fw);
-      });
-      textBlock.appendChild(faces);
-    }
-
     card.appendChild(textBlock);
     card.addEventListener("click", () => {
       speak(def.label);
@@ -1496,20 +1484,41 @@ function renderWeeklyDaySchedule() {
   if (!day) { popScreen(); render(); return; }
 
   const acts = weeklyScheduleData[day] || [];
-  titleEl.textContent = `${day}요일 스케줄`;
-  helperEl.textContent = acts.length > 0 ? "활동을 누르면 자세히 볼 수 있어요." : "아직 활동이 없어요.";
+  const dayLabel = formatScheduleDayLabel(day);
+  titleEl.textContent = `${dayLabel} 스케줄`;
+  helperEl.textContent = acts.length > 0
+    ? "활동을 누르면 자세히 볼 수 있어요. 수정 버튼으로 스케줄을 넣을 수 있어요."
+    : "아직 활동이 없어요. 수정 버튼으로 스케줄을 넣어 주세요.";
 
   const dateBar = document.createElement("div");
   dateBar.className = "dv-date-bar";
   const dateNum = document.createElement("span");
   dateNum.className = "dv-date-num";
-  dateNum.textContent = `${day}요일`;
+  dateNum.textContent = dayLabel;
   dateBar.appendChild(dateNum);
   const dayBadge = document.createElement("span");
   dayBadge.className = "dv-day-badge";
   dayBadge.textContent = day;
   dateBar.appendChild(dayBadge);
   gridEl.appendChild(dateBar);
+
+  const actionRow = document.createElement("div");
+  actionRow.className = "weekly-day-actions";
+  const editDayBtn = document.createElement("button");
+  editDayBtn.type = "button";
+  editDayBtn.className = "weekly-edit-btn weekly-edit-btn--primary";
+  editDayBtn.textContent = `${dayLabel} 스케줄 넣기/수정`;
+  editDayBtn.addEventListener("click", () => {
+    speak(`${dayLabel} 스케줄 수정`);
+    weeklyEditMode = true;
+    weeklyEditDay = day;
+    weeklyEditPersonFor = null;
+    weeklyEditPeriods = false;
+    if (currentKey() === "scheduleWeeklyDay") popScreen();
+    render();
+  });
+  actionRow.appendChild(editDayBtn);
+  gridEl.appendChild(actionRow);
 
   if (acts.length === 0) {
     const empty = document.createElement("div");

@@ -3489,7 +3489,7 @@ body {
 .wt-grid {
   display: grid;
   /* 첫 열: 시간대 레이블, 나머지 7열: 요일 (최소 너비 보장 — 좁으면 가로 스크롤) */
-  grid-template-columns: 36px repeat(7, minmax(110px, 1fr));
+  grid-template-columns: 42px repeat(7, minmax(88px, 1fr));
   gap: 5px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -3513,7 +3513,8 @@ body {
   padding: 8px 2px;
   border-radius: 12px;
   border: 2.5px solid transparent;
-  letter-spacing: 0.02em;
+  letter-spacing: 0;
+  white-space: nowrap;
 }
 
 /* 시간대 레이블 셀 */
@@ -3894,6 +3895,18 @@ body {
 }
 .wt-dayhdr--btn:active { opacity: 0.75; transform: scale(0.96); }
 
+.weekly-day-actions {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.weekly-day-actions .weekly-edit-btn {
+  width: min(100%, 460px);
+  min-height: 54px;
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+}
+
 /* ── 하루 스케줄 페이지 ── */
 .wday-outer {
   display: flex;
@@ -4214,7 +4227,7 @@ body {
 .dv-outer--fit {
   padding-top: 0;
   padding-bottom: 4px;
-  gap: 6px;
+  gap: 12px;
 }
 
 .dv-outer--fit .dv-date-bar {
@@ -4259,13 +4272,10 @@ body {
 }
 
 .dv-grid--flow {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   align-items: stretch;
-  gap: 6px 8px;
+  gap: clamp(10px, 1.6vw, 18px);
   width: 100%;
   max-width: 100%;
   min-height: 0;
@@ -4283,13 +4293,11 @@ body {
 }
 
 .dv-outer--fit .dv-card {
-  width: auto;
-  flex: 1 1 100px;
-  max-width: min(160px, 24vw);
-  min-width: 86px;
+  width: 100%;
+  min-width: 0;
   box-sizing: border-box;
-  padding: 4px 5px 5px;
-  gap: 3px;
+  padding: clamp(12px, 1.8vw, 18px);
+  gap: 8px;
   border-radius: 16px;
   border-width: 2px;
 }
@@ -4319,8 +4327,8 @@ body {
   text-align: center;
 }
 .dv-outer--fit .dv-img-wrap {
-  width: min(80px, 20vw);
-  max-height: 80px;
+  width: min(150px, 72%);
+  max-height: none;
   margin-top: 0;
   border-radius: 12px;
 }
@@ -4329,37 +4337,19 @@ body {
   line-height: 1;
 }
 .dv-outer--fit .dv-lbl {
-  font-size: 0.8rem;
+  font-size: clamp(1rem, 1.7vw, 1.3rem);
   font-weight: 900;
   line-height: 1.1;
-  margin-top: 1px;
+  margin-top: 2px;
 }
 .dv-outer--fit .dv-text-block {
-  gap: 3px;
-}
-.dv-outer--fit .dv-faces {
-  gap: 2px 4px;
-  padding-top: 2px;
-  border-top-width: 1px;
-  margin-top: 1px;
-}
-.dv-outer--fit .person-avatar.dv-face {
-  width: 32px;
-  height: 32px;
-  border-width: 2px;
-}
-.dv-outer--fit .person-avatar.dv-face .person-avatar-emoji {
-  font-size: 1.05rem;
-}
-.dv-outer--fit .dv-face-lbl {
-  font-size: 0.5rem;
-  max-width: 44px;
+  gap: 6px;
 }
 
 /* 아이패드·태블릿: 날짜+1·2·3·4를 한 눈에, 스크롤 없이 */
 @media (min-width: 768px) {
   .dv-outer--fit {
-    gap: 5px;
+    gap: 14px;
   }
   .dv-outer--fit .dv-date-bar {
     padding: 4px 14px;
@@ -4373,20 +4363,17 @@ body {
     font-size: 0.9rem;
   }
   .dv-outer--fit .dv-grid--flow {
-    align-content: center;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
   }
   .dv-outer--fit .dv-card {
-    flex: 0 1 auto;
-    min-width: 88px;
-    max-width: min(148px, 22vw);
-    padding: 3px 4px 5px;
+    min-height: clamp(210px, 25vh, 280px);
+    padding: clamp(14px, 1.8vw, 22px);
   }
   .dv-outer--fit .dv-img-wrap {
-    width: min(72px, 12vw);
-    max-height: 72px;
+    width: min(150px, 70%);
   }
   .dv-outer--fit .dv-lbl {
-    font-size: 0.78rem;
+    font-size: clamp(1.08rem, 1.5vw, 1.35rem);
   }
   .dv-outer--fit .dv-num {
     width: 28px;
@@ -4494,14 +4481,17 @@ body {
   .dv-outer--fit .dv-grid--flow {
     max-height: none;
     overflow: visible;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: clamp(14px, 1.8vw, 24px);
   }
   .dv-outer--fit .dv-card {
-    min-width: 90px;
-    max-width: min(142px, 20vw);
+    min-width: 0;
+    max-width: none;
+    min-height: clamp(230px, 28vh, 330px);
   }
   .dv-outer--fit .dv-img-wrap {
-    width: min(70px, 11vw);
-    max-height: 70px;
+    width: min(170px, 70%);
+    max-height: none;
   }
 
   /* 주간 스케줄 컬럼 최소 너비 업 */
@@ -5124,6 +5114,10 @@ body {
   object-fit: cover;
   padding: 0;
   background: transparent;
+}
+
+.dv-outer:not(.dv-outer--daily) {
+  justify-content: flex-start;
 }
 
 .tile-art {

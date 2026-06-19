@@ -4,7 +4,7 @@
  * On first visit, pre-caches all images so subsequent loads are instant.
  */
 
-const CACHE_VERSION = 'v195';
+const CACHE_VERSION = 'v215';
 const CACHE_NAME = `jaemin-aac-${CACHE_VERSION}`;
 
 self.addEventListener('message', (event) => {
@@ -31,13 +31,20 @@ const PRECACHE_ASSETS = [
   './images/brush.png',
   './images/bus.png',
   './images/dad car.png',
+  './images/dadcar.png',
   './images/dad_carkey.png',
   './images/eggs.png',
+  './images/edia_cafe.png',
   './images/grape.png',
   './images/grape1.png',
   './images/home.png',
+  './images/homeplus.png',
+  './images/homeplus_foodcourt.png',
+  './images/ikea.png',
+  './images/mapocentral_library.png',
   './images/app_schedule.svg',
   './images/app_date.svg',
+  './images/bebefinn.png',
   './images/home_schedule/recycling_station.png',
   './images/home_schedule/paris_baguette.png',
   './images/home_schedule/playground.png',
@@ -84,6 +91,8 @@ const PRECACHE_ASSETS = [
   './images/pee.png',
   './images/pineapple.png',
   './images/poo.png',
+  './images/pororo.png',
+  './images/pororo.jpg',
   './images/school bus.png',
   './images/school_boccia.png',
   './images/school_cafeteria.png',
@@ -104,6 +113,7 @@ const PRECACHE_ASSETS = [
   './images/school_restroom.png',
   './images/school_shoe_locker.png',
   './images/school_subject_room.png',
+  './images/seouldrive.png',
   './images/shower.png',
   './images/sing.png',
   './images/stickerbook_animal.png',

@@ -137,6 +137,7 @@ const dateStepFinalSelection = { year: null, month: null, day: null, weekday: nu
 // ── TTS ──────────────────────────────────────────────────────────────────────
 let preferredKoVoice = null;
 let ttsWarmedUp = false;
+let sharedAudioCtx = null;
 const isAppleMobile = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
   (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 const useDirectYoutubeOpen = true;
@@ -250,14 +251,38 @@ function pickPreferredKoVoice() {
   return voices.find((v) => v.default) || voices[0] || null;
 }
 
+function unlockAudioOnce() {
+  try {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    if (!sharedAudioCtx) sharedAudioCtx = new AudioCtx();
+    if (sharedAudioCtx.state === "suspended") sharedAudioCtx.resume().catch(() => {});
+
+    const now = sharedAudioCtx.currentTime;
+    const gain = sharedAudioCtx.createGain();
+    const osc = sharedAudioCtx.createOscillator();
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(0.012, now + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.08);
+    osc.frequency.setValueAtTime(880, now);
+    osc.connect(gain);
+    gain.connect(sharedAudioCtx.destination);
+    osc.start(now);
+    osc.stop(now + 0.09);
+  } catch (_e) {}
+}
+
 // ── 2. speak: 안드로이드 정교한 예외 처리 ────────────────────────────────────
 function speak(text) {
   if (!("speechSynthesis" in window)) return Promise.resolve();
   if (!preferredKoVoice) preferredKoVoice = pickPreferredKoVoice();
+  const spokenText = String(text || "").trim();
+  if (!spokenText) return Promise.resolve();
 
   return new Promise((resolve) => {
     const doSpeak = () => {
-      const u = new SpeechSynthesisUtterance(text);
+      if (!preferredKoVoice) preferredKoVoice = pickPreferredKoVoice();
+      const u = new SpeechSynthesisUtterance(spokenText);
       let done = false;
       const finish = () => {
         if (done) return;
@@ -277,20 +302,17 @@ function speak(text) {
       } else {
         u.lang = "ko-KR";
       }
-      u.rate = 1.15;
+      u.rate = isAndroid ? 1.0 : 1.15;
       u.pitch = 1.0;
-      window.speechSynthesis.resume();
-      window.speechSynthesis.speak(u);
+      try { window.speechSynthesis.resume(); } catch (_) {}
+      try { window.speechSynthesis.speak(u); } catch (_) { finish(); }
     };
 
     if (isAndroid) {
-      // 안드로이드: 재생 중일 때만 cancel, 아닐 때는 바로 재생
-      if (window.speechSynthesis.speaking) {
-        window.speechSynthesis.cancel();
-        setTimeout(doSpeak, 80);
-      } else {
-        setTimeout(doSpeak, 50);
-      }
+      unlockAudioOnce();
+      try { window.speechSynthesis.cancel(); } catch (_) {}
+      try { window.speechSynthesis.resume(); } catch (_) {}
+      setTimeout(doSpeak, 140);
     } else {
       window.speechSynthesis.cancel();
       doSpeak();
@@ -404,17 +426,22 @@ function playWeatherSound(label = "") {
 }
 
 function warmupTTS() {
-  if (!("speechSynthesis" in window) || ttsWarmedUp) return;
+  if (ttsWarmedUp) return;
   ttsWarmedUp = true;
+  unlockAudioOnce();
+  if (!("speechSynthesis" in window)) return;
   if (!preferredKoVoice) preferredKoVoice = pickPreferredKoVoice();
-  const warm = new SpeechSynthesisUtterance("\u200b"); // 제로폭 공백
+  const warm = new SpeechSynthesisUtterance(isAndroid ? "아" : " ");
   warm.lang = preferredKoVoice?.lang || "ko-KR";
   if (preferredKoVoice) warm.voice = preferredKoVoice;
-  warm.volume = 0;
+  warm.volume = isAndroid ? 0.01 : 0;
   warm.rate = 1.0;
-  window.speechSynthesis.resume();
-  window.speechSynthesis.speak(warm);
-  setTimeout(() => window.speechSynthesis.cancel(), 200);
+  try { window.speechSynthesis.cancel(); } catch (_) {}
+  try { window.speechSynthesis.resume(); } catch (_) {}
+  try { window.speechSynthesis.speak(warm); } catch (_) {}
+  setTimeout(() => {
+    try { window.speechSynthesis.cancel(); } catch (_) {}
+  }, isAndroid ? 360 : 200);
 }
 
 // ── YouTube 유틸 ─────────────────────────────────────────────────────────────

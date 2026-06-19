@@ -53,6 +53,9 @@ const DATA = {
     gayo5: "https://www.youtube.com/watch?v=fa6RXRvixXI",
     gayo6: "https://www.youtube.com/watch?v=A1JfsShN2GE",
     busrailNara: "https://www.youtube.com/@busrail-nara",
+    seoulDrive: "https://www.youtube.com/@TheSeoulDrive",
+    bebefinChannel: "https://www.youtube.com/@%EB%B2%A0%EB%B2%A0%ED%95%80",
+    pororoChannel: "https://www.youtube.com/@%EB%BD%80%EB%A1%9C%EB%A1%9C%EA%B3%B5%EC%8B%9D%EC%B1%84%EB%84%90",
     mealRiceYoutube: "https://www.youtube.com/watch?v=7IPlzOBDxSc&list=RD7IPlzOBDxSc&start_radio=1"
   },
 
@@ -67,7 +70,7 @@ const DATA = {
         { label: "밥 먹기",   nav: "meal",         image: "./images/meal.png" },
         { label: "화장실",    nav: "toilet",       image: "./images/pee.png" },
         { label: "외출",      nav: "scheduleHomeOuting", image: "./images/outing.png" },
-        { label: "장소",      nav: "outingPlace",  image: "./images/outing_park1.png" },
+        { label: "차타고싶어", nav: "outingPlace",  image: "./images/dadcar.png" },
         { label: "공부하기",  nav: "studyHome",    image: "./images/study.png" },
         { label: "다음",      nav: "main_p2",      image: "./images/outing.png" }
       ],
@@ -82,9 +85,10 @@ const DATA = {
         { label: "교통수단사람장소 외출", nav: "outingHome", image: "./images/outing.png" },
         { label: "학교",      nav: "outingSchool", image: "./images/outing_school1.png" },
         { label: "화장실",    nav: "toilet",       image: "./images/pee.png" },
-        { label: "스케줄표",  nav: "scheduleHome", image: "./images/app_schedule.svg" },
+        { label: "요일별 스케줄", nav: "scheduleWeekly", image: "./images/app_schedule.svg" },
         { label: "날짜",      nav: "dateHome",     image: "./images/app_date.svg" },
         { label: "과목",      nav: "subjectHome",  icon: "📚" },
+        { label: "장소",      nav: "placeHome",    image: "./images/outing_park1.png" },
         { label: "이전",      nav: "main",         image: "./images/home.png" },
         { label: "다음",      nav: "main_p3",      image: "./images/outing.png" }
       ],
@@ -230,7 +234,7 @@ const DATA = {
         { label: "오늘 일정", nav: "scheduleToday",        image: "./images/school_classroom.png" },
         { label: "집 스케줄", nav: "scheduleHomeActivity", image: "./images/home.png" },
         { label: "장보기", nav: "scheduleShopping", image: "./images/outing_mart1.png" },
-        { label: "주간 스케줄", nav: "scheduleWeekly",     image: "./images/school_classroom.png" },
+        { label: "요일별 스케줄", nav: "scheduleWeekly",     image: "./images/school_classroom.png" },
         { label: "일일 스케줄표", nav: "scheduleDailyVisual", image: "./images/school_classroom.png" },
         { label: "내일 일정" }
       ],
@@ -248,8 +252,8 @@ const DATA = {
     },
 
     scheduleWeekly: {
-      title: "주간 스케줄",
-      helper: "활동을 누르면 자세히 볼 수 있어요.",
+      title: "요일별 스케줄",
+      helper: "요일을 누르면 그날 스케줄을 볼 수 있어요.",
       hero: [],
       items: [],
       layout: "weeklySchedule",
@@ -543,8 +547,10 @@ const DATA = {
       helper: "원하는 메뉴를 선택하세요.",
       hero: [],
       items: [
-        { label: "버스 영상", nav: "busVideoList", image: "./images/bus.png" },
         { label: "뚜버기의 외출", youtube: "busrailNara", image: "./images/bus.png" },
+        { label: "서울드라이브", youtube: "seoulDrive", image: "./images/seouldrive.png" },
+        { label: "베베핀", youtube: "bebefinChannel", image: "./images/bebefinn.png" },
+        { label: "뽀로로", youtube: "pororoChannel", image: "./images/pororo.png" },
         { label: "노래",      nav: "ipadMusic",    image: "./images/sing.png" }
       ],
       layout: "main",
@@ -777,12 +783,12 @@ const DATA = {
       helper: "원하는 것을 선택하세요.",
       hero: [],
       items: [
-        { label: "양치하기", image: "./images/brush.png" },
-        { label: "샤워",     image: "./images/shower.png" },
-        { label: "오줌 싸고 싶어요", image: "./images/pee.png" },
-        { label: "똥 싸고 싶어요",   image: "./images/poo.png" },
-        { label: "세수",     image: "./images/wash_face.png" },
-        { label: "손씻기",   image: "./images/wash_hands.png" }
+        { label: "똥싸고 싶어요",   image: "./images/poo.png" },
+        { label: "오줌싸고 싶어요", image: "./images/pee.png" },
+        { label: "양치",           image: "./images/brush.png" },
+        { label: "손씻기",         image: "./images/wash_hands.png" },
+        { label: "세수하기",       image: "./images/wash_face.png" },
+        { label: "샤워하기",       image: "./images/shower.png" }
       ],
       layout: "media",
       showPlayer: false
@@ -825,11 +831,43 @@ const DATA = {
       helper: "어디로 갈까요?",
       hero: [],
       items: [
+        { label: "공원",                      image: "./images/outing_park1.png" },
+        { label: "마트",                      image: "./images/outing_mart1.png" },
+        { label: "빵집",                      image: "./images/outing_bakery.png" },
+        { label: "카페",                      image: "./images/outing_cafe.png" },
+        { label: "이케아",                    image: "./images/ikea.png" },
+        { label: "홈플러스", nav: "outingHomeplus", image: "./images/homeplus.png" }
+      ],
+      layout: "main",
+      showPlayer: false
+    },
+
+    placeHome: {
+      title: "장소",
+      helper: "어디로 갈까요?",
+      hero: [],
+      items: [
         { label: "학교", nav: "outingSchool", image: "./images/school_classroom.png" },
         { label: "공원",                      image: "./images/outing_park1.png" },
         { label: "마트",                      image: "./images/outing_mart1.png" },
         { label: "빵집",                      image: "./images/outing_bakery.png" },
-        { label: "카페",                      image: "./images/outing_cafe.png" }
+        { label: "카페",                      image: "./images/outing_cafe.png" },
+        { label: "이케아",                    image: "./images/ikea.png" },
+        { label: "홈플러스", nav: "outingHomeplus", image: "./images/homeplus.png" }
+      ],
+      layout: "main",
+      showPlayer: false
+    },
+
+    outingHomeplus: {
+      title: "홈플러스",
+      helper: "홈플러스에서 어디로 갈까요?",
+      hero: [],
+      items: [
+        { label: "마트",   image: "./images/homeplus.png" },
+        { label: "카페",   image: "./images/edia_cafe.png" },
+        { label: "식당",   image: "./images/homeplus_foodcourt.png" },
+        { label: "다이소", image: "./images/stickerbook_mart.png" }
       ],
       layout: "main",
       showPlayer: false
