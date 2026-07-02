@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360" role="img" aria-label="windy weather">
+  <rect width="480" height="360" rx="28" fill="#E7F8F5"/>
+  <g fill="none" stroke="#35A7A0" stroke-width="20" stroke-linecap="round">
+    <path d="M96 128h206c48 0 48-58 3-58-22 0-36 14-42 30"/>
+    <path d="M92 186h278c42 0 42 52 2 52-21 0-34-12-40-28"/>
+    <path d="M122 246h150"/>
+  </g>
+  <path d="M316 254c42-4 71 17 86 47-39 8-72-4-94-31z" fill="#7CCB61" stroke="#4C9E43" stroke-width="10" stroke-linejoin="round"/>
+  <path d="M308 270c32 2 61 12 88 31" fill="none" stroke="#4C9E43" stroke-width="8" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,73 @@
+﻿<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <link rel="preconnect" href="https://www.youtube.com" />
+  <link rel="preconnect" href="https://img.youtube.com" />
+  <link rel="preconnect" href="https://i.ytimg.com" />
+  <title>AAC 앱 - iPad</title>
+  <link rel="stylesheet" href="./css/app.css?v=ipad-v1" />
+  <link rel="stylesheet" href="./css/features/study-puzzle.css?v=ipad-v1" />
+  <link rel="stylesheet" href="./css/date-overrides.css?v=ipad-v1" />
+</head>
+<body>
+  <main class="app">
+    <div id="returnHint" class="return-hint">유튜브 시청 후 Safari 왼쪽 상단 뒤로 버튼으로 AAC로 돌아오세요.</div>
+    <div class="topbar">
+      <div>
+        <h1 id="screenTitle" class="title">메인 화면</h1>
+        <p id="breadcrumb" class="crumb" style="display:none;"></p>
+      </div>
+      <div class="topbar-btns">
+        <button id="fullscreenButton" class="fullscreen-btn" type="button" aria-pressed="false">⛶ 전체화면</button>
+        <button id="homeButton" class="home-btn" style="display:none;">🏠 홈</button>
+        <button id="backButton" class="back-btn" style="display:none;">뒤로 가기</button>
+      </div>
+    </div>
+
+    <section id="playerWrap" class="player-wrap" style="display:none;">
+      <iframe
+        id="youtubePlayer"
+        class="player"
+        title="AAC YouTube Player"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen>
+      </iframe>
+    </section>
+    <button id="openInYoutubeButton" class="back-btn" style="display:none; align-self:flex-start;">유튜브에서 열기</button>
+
+    <p id="helperText" class="muted">버튼을 누르면 음성으로 읽어줍니다.</p>
+    <section id="heroRow" class="hero" style="display:none;"></section>
+    <section id="spotlightView" class="spotlight" style="display:none;" aria-label="선택한 그림">
+      <button type="button" id="spotlightButton" class="spotlight-button">
+        <img id="spotlightImage" alt="" />
+      </button>
+    </section>
+    <section id="buttonGrid" class="grid"></section>
+  </main>
+
+  <script src="./js/data/study-data.js?v=ipad-v1"></script>
+  <script src="./js/data/app-data.js?v=ipad-v1"></script>
+  <script src="./js/core/pager.js?v=ipad-v1"></script>
+  <script src="./js/features/schedule.js?v=ipad-v1"></script>
+  <script src="./js/features/study-puzzle.js?v=ipad-v1"></script>
+  <script src="./js/main.js?v=ipad-v1"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        /* sw.js에도 v를 붙이지 않으면 Safari가 옛 서비스 워커를 붙잡는 경우가 있음 */
+        navigator.serviceWorker.register('./sw.js?v=ipad-v1', { updateViaCache: 'none' })
+          .then(function (reg) { reg.update().catch(function () {}); })
+          .catch(function () { /* local file 등 */ });
+      });
+    }
+  </script>
+</body>
+</html>
+
+

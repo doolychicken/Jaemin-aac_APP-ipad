@@ -1,0 +1,5885 @@
+:root {
+  --bg: #f5f7fb;
+  --card: #ffffff;
+  --text: #1f2937;
+  --main: #2563eb;
+  --accent: #0ea5e9;
+  --border: #dbe3ef;
+}
+
+html {
+  height: 100%;
+  overflow: hidden;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  font-family: "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+}
+
+.app {
+  max-width: 1400px;
+  margin: 0 auto;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  padding: max(14px, env(safe-area-inset-top)) 22px max(14px, env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 10px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.app.app--spotlight {
+  justify-content: flex-start;
+  gap: 10px;
+  position: relative;
+}
+
+/* 스티커북 말단: 빈 배경 + 선택한 카테고리 그림만 크게 (iPad 한 화면) */
+.spotlight {
+  display: none;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 0;
+  padding: 0 0 max(12px, env(safe-area-inset-bottom));
+}
+
+.spotlight-button {
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  width: min(84vw, 540px); /* 메인 타일(42vw/270)의 2배 */
+  max-width: 100%;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.spotlight-button:active {
+  transform: scale(1.02);
+}
+
+.spotlight-button img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 18px;
+  box-shadow: 0 16px 48px rgba(15, 23, 42, 0.14);
+  background: #fff;
+}
+
+.spotlight-toilet-wrap {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: calc(50% + min(30vw, 260px) + 24px);
+  top: calc(50% + 57px);
+  transform: translateY(-50%);
+  width: auto;
+  padding: 0;
+  z-index: 5;
+}
+
+.spotlight-toilet-wrap .quick-toilet-tile {
+  width: min(22vw, 210px);
+  max-width: 210px;
+  min-width: 150px;
+  aspect-ratio: 1 / 1;
+}
+
+.spotlight-toilet-wrap .quick-toilet-tile img {
+  object-fit: contain;
+}
+
+.teaching-aid-complete,
+.teaching-aid-empty-complete {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.teaching-aid-complete {
+  flex-direction: column;
+  gap: clamp(12px, 2vh, 20px);
+  color: #0f3b82;
+  text-align: center;
+}
+
+.teaching-aid-complete-mark {
+  width: clamp(112px, 18vh, 168px);
+  height: clamp(112px, 18vh, 168px);
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  background: linear-gradient(135deg, #14b8a6, #3b82f6);
+  box-shadow: 0 22px 44px rgba(59, 130, 246, 0.22);
+  font-size: clamp(4rem, 10vh, 7rem);
+  font-weight: 900;
+}
+
+.teaching-aid-complete-title {
+  color: #ec4899;
+  font-size: clamp(2.4rem, 6vh, 4.4rem);
+  font-weight: 900;
+}
+
+.teaching-aid-complete-sub {
+  color: #64748b;
+  font-size: clamp(1.1rem, 2.6vh, 1.6rem);
+  font-weight: 900;
+}
+
+.teaching-aid-complete .btn,
+.teaching-aid-complete-button {
+  width: min(100%, 360px);
+  min-height: clamp(64px, 9vh, 88px);
+  font-size: clamp(1.2rem, 2.8vh, 1.7rem);
+  font-weight: 900;
+}
+
+@media (min-width: 768px) {
+  .spotlight-button {
+    width: min(60vw, 520px); /* 메인 타일(30vw/260)의 2배 */
+  }
+}
+
+@media (max-width: 900px) {
+  .spotlight-toilet-wrap {
+    left: calc(50% + min(42vw, 270px) + 14px);
+  }
+
+  .spotlight-toilet-wrap .quick-toilet-tile {
+    width: min(24vw, 170px);
+    min-width: 120px;
+  }
+}
+
+@media (max-width: 700px) {
+  .spotlight-toilet-wrap {
+    position: static;
+    transform: none;
+    width: 100%;
+    padding-bottom: max(8px, env(safe-area-inset-bottom));
+  }
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+}
+
+.topbar > div:first-child {
+  min-width: 0;
+}
+
+.return-hint {
+  display: none;
+  background: #fff7ed;
+  border: 2px solid #fdba74;
+  color: #7c2d12;
+  border-radius: 14px;
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+  font-weight: 700;
+}
+
+.crumb {
+  margin: 4px 0 0 0;
+  font-size: 0.9rem;
+  color: #64748b;
+  font-weight: 650;
+}
+
+.back-btn {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: #0f172a;
+  border-radius: 14px;
+  padding: 12px 16px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  min-width: 100px;
+  touch-action: manipulation;
+}
+
+.home-btn {
+  border: none;
+  background: var(--main);
+  color: #fff;
+  border-radius: 14px;
+  padding: 12px 16px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  min-width: 80px;
+  touch-action: manipulation;
+}
+
+.fullscreen-btn {
+  border: none;
+  background: linear-gradient(135deg, #14c8c5, #3b82f6);
+  color: #fff;
+  border-radius: 14px;
+  padding: 12px 16px;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  min-width: 116px;
+  touch-action: manipulation;
+  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.18);
+}
+
+.topbar-btns {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.body--fullscreen-soft {
+  background: #eef6ff;
+}
+
+.app.app--fullscreen-soft {
+  max-width: none;
+  padding: max(6px, env(safe-area-inset-top)) 12px max(8px, env(safe-area-inset-bottom));
+  gap: 6px;
+}
+
+.app.app--fullscreen-soft .topbar {
+  gap: 8px;
+}
+
+.app.app--fullscreen-soft .title {
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
+}
+
+.app.app--fullscreen-soft .crumb {
+  margin-top: 1px;
+  font-size: 0.78rem;
+}
+
+.app.app--fullscreen-soft .muted {
+  margin-block: 0;
+  font-size: 0.9rem;
+}
+
+.app.app--fullscreen-soft .home-btn,
+.app.app--fullscreen-soft .back-btn,
+.app.app--fullscreen-soft .fullscreen-btn {
+  padding: 10px 13px;
+  min-height: 46px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(8px, 1.4vh, 12px);
+  justify-items: center;
+  align-content: center;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.grid.detail {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.grid.media {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.grid.detail .tile,
+.grid.media .tile {
+  width: min(30vw, 28vh, 240px);
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  justify-items: center;
+  flex: 0 0 auto;
+}
+
+/* ── 외출하기 요약 타일 3개 ── */
+.grid.outing-summary-tiles {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  padding: 14px;
+  align-items: start;
+}
+
+.grid.outing-summary-tiles .outing-summary-tile {
+  width: 100%;
+  aspect-ratio: 1 / 1.1;
+  border-radius: 20px;
+  padding: 10px;
+  gap: 8px;
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(0,0,0,.10);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+}
+
+.grid.outing-summary-tiles .outing-summary-tile img {
+  width: 100%;
+  flex: 1;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+.grid.outing-summary-tiles .tile-label {
+  font-size: clamp(0.72rem, 1.8vw, 0.92rem);
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.2;
+  color: #222;
+}
+
+/* 사람 사진 격자 (1~4명) */
+.outing-person-photos {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px;
+  width: 100%;
+  flex: 1;
+}
+.outing-person-photos img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 10px;
+}
+/* 1명: 전체 폭 */
+.outing-person-photos:has(img:only-child) {
+  grid-template-columns: 1fr;
+}
+/* 3명: 첫 번째가 세로 2칸 */
+.outing-person-photos:has(img:nth-child(3)):not(:has(img:nth-child(4))) img:first-child {
+  grid-row: span 2;
+}
+/* 4명: 2×2 균등 */
+.outing-person-photos:has(img:nth-child(4)) {
+  grid-template-columns: repeat(2, 1fr);
+}
+/* 비어있을 때 */
+.outing-person-empty {
+  grid-template-columns: 1fr;
+  opacity: 0.45;
+}
+
+/* ── 날짜 홈 (새 디자인) ── */
+.date-home-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 날짜 카드 */
+.date-card {
+  width: 100%;
+  background: linear-gradient(145deg, #1e40af 0%, #2563eb 50%, #0ea5e9 100%);
+  border: none;
+  border-radius: 28px;
+  padding: 28px 24px 22px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 16px 48px rgba(37, 99, 235, 0.38);
+  position: relative;
+  overflow: hidden;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.date-card::before {
+  content: "";
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.07);
+  pointer-events: none;
+}
+.date-card::after {
+  content: "";
+  position: absolute;
+  bottom: -30px; left: -20px;
+  width: 140px; height: 140px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+  pointer-events: none;
+}
+
+.date-card:active { transform: scale(0.985); }
+
+.date-card-badge {
+  background: rgba(255,255,255,0.22);
+  color: #fff;
+  font-size: 0.88rem;
+  font-weight: 700;
+  padding: 5px 16px;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+}
+
+.date-card-main {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  color: #fff;
+  line-height: 1;
+}
+
+.date-card-month {
+  font-size: clamp(1.5rem, 5.5vw, 2.2rem);
+  font-weight: 700;
+  opacity: 0.85;
+}
+
+.date-card-day {
+  font-size: clamp(3.5rem, 14vw, 6rem);
+  font-weight: 900;
+  line-height: 0.95;
+  text-shadow: 0 4px 16px rgba(0,0,0,0.18);
+}
+
+.date-card-weekday {
+  color: rgba(255,255,255,0.88);
+  font-size: clamp(1.2rem, 4vw, 1.7rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-top: 4px;
+}
+
+.date-card-weather {
+  font-size: clamp(1rem, 3.2vw, 1.35rem);
+  font-weight: 700;
+  color: #fff;
+  background: rgba(255,255,255,0.2);
+  padding: 6px 20px;
+  border-radius: 999px;
+  margin-top: 8px;
+  backdrop-filter: blur(4px);
+}
+
+.date-card-weather--empty {
+  font-size: 0.88rem;
+  font-weight: 500;
+  opacity: 0.6;
+  background: rgba(255,255,255,0.12);
+}
+
+/* ── 오늘 꼭지 ── */
+/* 꼭지 3개 행 */
+.date-chip-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-self: center;
+  margin: 6px 0 10px;
+}
+
+.date-today-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: rgba(255,255,255,0.22);
+  border: 2.5px dashed rgba(255,255,255,0.7);
+  border-radius: 20px;
+  padding: 10px 16px 8px;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  color: #fff;
+  font-weight: 800;
+  min-width: 64px;
+  transition: transform 0.15s, background 0.15s, opacity 0.15s;
+}
+.date-today-chip:hover { background: rgba(255,255,255,0.32); transform: translateY(-2px); }
+.date-today-chip--dragging { opacity: 0.25; cursor: grabbing; }
+
+.date-today-chip--ghost {
+  opacity: 0.92 !important;
+  transform: scale(1.1) rotate(-4deg) !important;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.4) !important;
+  transition: none !important;
+  cursor: grabbing;
+}
+
+.chip-vals {
+  font-size: clamp(1.6rem, 6vw, 2.4rem);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.chip-sub {
+  font-size: 0.72rem;
+  font-weight: 700;
+  opacity: 0.7;
+  letter-spacing: 0.05em;
+}
+
+.chip-hint {
+  font-size: 0.9rem;
+  opacity: 0.6;
+  animation: chip-bounce 1.3s ease-in-out infinite;
+  margin-top: 2px;
+}
+
+@keyframes chip-bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(4px); }
+}
+
+/* 꼭지를 드래그해서 올렸을 때 드럼 영역 하이라이트 */
+.date-drum-row--highlight .date-drum-numrow {
+  background: rgba(255,255,255,0.32) !important;
+  box-shadow: 0 0 0 4px rgba(255,255,255,0.55);
+  transition: none;
+}
+
+/* ── 드럼 피커 (월·일 드래그) ── */
+.date-drum-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  padding: 4px 0 8px;
+}
+
+.date-drum-sep {
+  display: none;
+}
+
+.date-drum {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+}
+
+.date-drum-arrow {
+  width: 52px;
+  height: 38px;
+  background: rgba(255,255,255,0.18);
+  border: none;
+  border-radius: 12px;
+  color: rgba(255,255,255,0.9);
+  font-size: 1rem;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.12s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.date-drum-arrow:active { background: rgba(255,255,255,0.36); transform: scale(0.94); }
+
+/* 드럼 + 단위 레이블 묶음 */
+.date-drum-outer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 드럼 박스 — 숫자만 들어감 */
+.date-drum-numrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 14px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.12);
+  cursor: ns-resize;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: background 0.12s;
+  min-width: 80px;
+}
+.date-drum-numrow:hover { background: rgba(255,255,255,0.2); }
+
+.date-drum-number {
+  font-size: clamp(4.2rem, 17vw, 7.5rem);
+  font-weight: 900;
+  color: #fff;
+  line-height: 1;
+  text-align: center;
+  text-shadow: 0 6px 24px rgba(0,0,0,0.18);
+  transition: opacity 0.06s ease;
+}
+
+/* 박스 바깥 단위 레이블 */
+.date-drum-unit {
+  font-size: clamp(3.2rem, 13vw, 6rem);
+  font-weight: 900;
+  color: #fde68a;
+  line-height: 1;
+  text-shadow: 0 4px 14px rgba(0,0,0,0.15);
+  flex-shrink: 0;
+}
+
+/* 요일 드럼 */
+.date-drum-number--wd {
+  font-size: clamp(3rem, 12vw, 5.5rem);
+  color: #fff;
+}
+
+.date-drum-unit--wd {
+  font-size: clamp(2.4rem, 9vw, 4.5rem);
+  color: #fde68a;
+}
+
+/* ── 요일 선택 버튼 ── */
+.date-weekday-row {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+  justify-content: center;
+  padding: 6px 0 2px;
+}
+
+.date-weekday-btn {
+  flex: 1;
+  min-width: 0;
+  height: 48px;
+  background: rgba(255,255,255,0.15);
+  border: 2px solid transparent;
+  border-radius: 14px;
+  color: rgba(255,255,255,0.8);
+  font-size: clamp(0.82rem, 2.8vw, 1.05rem);
+  font-weight: 700;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: all 0.12s ease;
+}
+.date-weekday-btn:active { transform: scale(0.92); }
+
+.date-weekday-btn.is-selected {
+  background: #fff;
+  color: #1e40af;
+  border-color: rgba(255,255,255,0.6);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+}
+
+/* 날씨 선택 섹션 */
+.date-weather-section {
+  background: #fff;
+  border-radius: 22px;
+  padding: 18px 16px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.07);
+  border: 1.5px solid var(--border);
+}
+
+.date-weather-label {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 14px;
+}
+
+.date-weather-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+@media (min-width: 460px) {
+  .date-weather-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.date-weather-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: #f8faff;
+  border: 2px solid transparent;
+  border-radius: 16px;
+  padding: 10px 4px 8px;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+.date-weather-tile img {
+  width: 100%;
+  max-width: 56px;
+  aspect-ratio: 1;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.date-weather-tile-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #475569;
+  text-align: center;
+}
+
+.date-weather-tile.is-selected {
+  background: #eff6ff;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+}
+
+.date-weather-tile.is-selected .date-weather-tile-label {
+  color: #1d4ed8;
+}
+
+.date-weather-tile:active { transform: scale(0.92); }
+
+/* 전체 문장 읽기 버튼 */
+.date-sentence-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+  border: 2px solid #6ee7b7;
+  border-radius: 20px;
+  padding: 20px 20px;
+  font-size: clamp(1rem, 3vw, 1.3rem);
+  font-weight: 800;
+  color: #065f46;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 6px 18px rgba(5, 150, 105, 0.12);
+  white-space: normal;
+  text-align: center;
+  line-height: 1.35;
+}
+
+.date-sentence-btn:active { transform: scale(0.98); }
+
+.date-sentence-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+/* 날짜 카드판: 실제 그림카드를 골라 붙이는 방식 */
+.date-board {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto auto;
+  gap: clamp(8px, 1.4vh, 12px);
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  width: 100%;
+}
+
+.date-card-board {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr 1.4fr;
+  gap: clamp(6px, 1.2vh, 12px);
+  align-items: stretch;
+  min-height: 0;
+  padding: clamp(8px, 1.5vh, 14px);
+  border: 2px solid #d7dee9;
+  border-radius: 18px;
+  background: #f8fafc;
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,0.75);
+}
+
+.date-slot {
+  min-width: 0;
+  min-height: 92px;
+  border: 3px dashed #cbd5e1;
+  border-radius: 14px;
+  background: #fff;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 8px;
+  cursor: pointer;
+  touch-action: manipulation;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+
+.date-slot.is-active {
+  border-color: #2563eb;
+  background: #eff6ff;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.14);
+}
+
+.date-slot-main {
+  font-size: clamp(1.8rem, 5.8vw, 4.8rem);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.date-slot-unit {
+  font-size: clamp(1.2rem, 3vw, 2.3rem);
+  font-weight: 900;
+  color: #047857;
+  line-height: 1;
+}
+
+.date-slot--wide .date-slot-main {
+  font-size: clamp(1.55rem, 4.2vw, 4.4rem);
+}
+
+.date-slot--weather {
+  flex-direction: column;
+  gap: 4px;
+}
+
+.date-slot--weather img {
+  width: min(64px, 9vh);
+  height: min(64px, 9vh);
+  object-fit: contain;
+}
+
+.date-option-panel {
+  min-height: 0;
+  border: 1px solid #dbe3ef;
+  border-radius: 16px;
+  padding: 10px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.date-option-title {
+  font-size: 0.85rem;
+  font-weight: 900;
+  color: #475569;
+  margin-bottom: 8px;
+}
+
+.date-option-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+  max-height: min(28vh, 190px);
+  overflow: hidden;
+}
+
+.date-option-panel--year .date-option-grid,
+.date-option-panel--weekday .date-option-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.date-option-panel--weather .date-option-grid {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.date-option-panel--day .date-option-grid {
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  max-height: min(32vh, 230px);
+}
+
+.date-option-card {
+  min-width: 0;
+  min-height: 54px;
+  border: 2px solid #dbe3ef;
+  border-radius: 12px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 6px;
+  cursor: pointer;
+  color: #0f172a;
+  font-size: clamp(1rem, 2.4vw, 1.45rem);
+  font-weight: 900;
+  touch-action: manipulation;
+}
+
+.date-option-panel--day .date-option-card {
+  min-height: 42px;
+  padding: 4px;
+  font-size: clamp(0.9rem, 2vw, 1.25rem);
+}
+
+.date-option-card.is-selected {
+  border-color: #16a34a;
+  background: #ecfdf5;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.14);
+}
+
+.date-option-card--weather {
+  flex-direction: column;
+  min-height: clamp(112px, 17vh, 148px);
+  font-size: clamp(0.72rem, 1.3vw, 0.92rem);
+  gap: 4px;
+}
+
+.date-option-card--weather img {
+  flex: 1 1 auto;
+  width: min(96px, 90%);
+  height: min(92px, 12vh);
+  object-fit: contain;
+}
+
+.date-option-card--weather span {
+  flex: 0 0 auto;
+  line-height: 1;
+}
+
+.date-action-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.date-action-btn {
+  min-height: 52px;
+  border: 2px solid #dbe3ef;
+  border-radius: 14px;
+  background: #fff;
+  color: #0f172a;
+  font-size: 1rem;
+  font-weight: 900;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.date-action-btn--primary {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #fff;
+}
+
+.date-mode-select {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  align-content: center;
+  justify-items: stretch;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.date-mode-card {
+  min-height: min(38vh, 250px);
+  border: 2px solid #dbe3ef;
+  border-radius: 18px;
+  background: #fff;
+  color: #0f172a;
+  padding: 20px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.10);
+}
+
+.date-mode-title {
+  font-size: clamp(1.55rem, 3.2vw, 2.6rem);
+  font-weight: 900;
+}
+
+.date-mode-sub {
+  font-size: clamp(0.9rem, 1.7vw, 1.14rem);
+  font-weight: 800;
+  line-height: 1.35;
+  color: #475569;
+  text-align: center;
+}
+
+.date-step {
+  display: grid;
+  grid-template-rows: minmax(0, 0.85fr) minmax(0, 1.15fr) auto;
+  gap: clamp(8px, 1.4vh, 12px);
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  width: 100%;
+}
+
+.date-step--summary {
+  grid-template-rows: minmax(0, 0.95fr) minmax(0, 0.9fr) auto auto;
+}
+
+.date-step-focus-card,
+.date-step-summary-grid {
+  min-height: 0;
+  border: 2px solid #d7dee9;
+  border-radius: 18px;
+  background: #f8fafc;
+  padding: clamp(8px, 1.5vh, 14px);
+}
+
+.date-step-focus-card {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+
+.date-step-focus-card .date-step-drop-slot {
+  width: min(720px, 100%);
+  min-height: clamp(150px, 28vh, 270px);
+}
+
+.date-step--year .date-step-drop-slot .date-puzzle-slot-main {
+  font-size: clamp(3rem, 9vw, 7rem);
+}
+
+.date-step--year .date-step-drop-slot .date-puzzle-slot-unit {
+  font-size: clamp(1.8rem, 4vw, 3.4rem);
+}
+
+.date-step--year .date-puzzle-card-grid--year .date-drag-card {
+  min-height: clamp(88px, 14vh, 130px);
+  font-size: clamp(2rem, 5vw, 4rem);
+}
+
+.date-step-focus-card .date-step-summary-card {
+  width: min(520px, 100%);
+}
+
+.date-step-focus-card--weather .date-step-summary-card {
+  width: min(420px, 100%);
+}
+
+.date-step-summary-grid {
+  display: grid;
+  gap: clamp(7px, 1.2vh, 12px);
+}
+
+.date-step-summary-grid--three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.date-step-summary-grid--final {
+  grid-template-columns: 1.3fr 1fr 1fr 1fr 1.5fr;
+}
+
+.date-step-summary-card {
+  min-width: 0;
+  min-height: 0;
+  border: 3px solid #cbd5e1;
+  border-radius: 14px;
+  background: #fff;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: clamp(8px, 1.5vh, 16px);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+
+.date-step-summary-main {
+  font-size: clamp(2.2rem, 6vw, 5rem);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.date-step-summary-unit {
+  font-size: clamp(1.4rem, 3vw, 2.6rem);
+  font-weight: 900;
+  color: #047857;
+}
+
+.date-step-summary-card--weather {
+  flex-direction: column;
+  gap: 2px;
+}
+
+.date-step-summary-card--weather img {
+  flex: 1 1 auto;
+  width: min(160px, 92%);
+  height: min(132px, 17vh);
+  object-fit: contain;
+}
+
+.date-step-summary-card--weather .date-step-summary-main {
+  flex: 0 0 auto;
+  font-size: clamp(1rem, 2.3vw, 1.8rem);
+}
+
+.date-step-choice-grid {
+  display: grid;
+  gap: 10px;
+  min-height: 0;
+  overflow: hidden;
+  align-content: center;
+}
+
+.date-step-choice-grid--year {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.date-step-choice-grid--month,
+.date-step-choice-grid--day {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.date-step-choice-grid--weekday {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.date-step-choice-grid--weather {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.date-step-multi-panel {
+  min-height: 0;
+  display: grid;
+  grid-template-rows: 0.75fr 0.75fr 1fr;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.date-step-choice-group {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(48px, 0.18fr) minmax(0, 1fr);
+  gap: 8px;
+  align-items: stretch;
+}
+
+.date-step-choice-title {
+  border-radius: 12px;
+  background: #e0f2fe;
+  color: #075985;
+  font-size: clamp(1rem, 2.2vw, 1.6rem);
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.date-step-choice {
+  min-width: 0;
+  min-height: 68px;
+  border: 2px solid #dbe3ef;
+  border-radius: 12px;
+  background: #fff;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 6px;
+  font-size: clamp(1.25rem, 3vw, 2.2rem);
+  font-weight: 900;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.date-step-choice.is-selected {
+  border-color: #f59e0b;
+  background: #fef3c7;
+  box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.20);
+}
+
+.date-step-choice--image {
+  flex-direction: column;
+  min-height: clamp(118px, 17vh, 150px);
+  font-size: clamp(0.72rem, 1.25vw, 0.95rem);
+  gap: 3px;
+}
+
+.date-step-choice--image img {
+  flex: 1 1 auto;
+  width: min(110px, 92%);
+  height: min(96px, 13vh);
+  object-fit: contain;
+}
+
+.date-step-choice--image span {
+  flex: 0 0 auto;
+  line-height: 1;
+}
+
+.date-step-date-board {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.date-step-date-board .date-step-drop-slot {
+  aspect-ratio: 1 / 1;
+  min-height: clamp(108px, 18vh, 180px);
+  align-self: center;
+}
+
+.date-step-date-board .date-puzzle-slot-main {
+  font-size: clamp(2.4rem, 6vw, 5.4rem);
+}
+
+.date-step-date-board .date-puzzle-slot-unit {
+  font-size: clamp(1.45rem, 3.4vw, 2.8rem);
+}
+
+.date-step--date .date-puzzle-card-grid--month,
+.date-step--date .date-puzzle-card-grid--day {
+  max-width: 520px;
+  margin-inline: auto;
+}
+
+.date-step--date .date-puzzle-card-grid--month .date-drag-card,
+.date-step--date .date-puzzle-card-grid--day .date-drag-card,
+.date-step--date .date-puzzle-card-grid--weekday .date-drag-card {
+  aspect-ratio: 1 / 1;
+  min-height: clamp(78px, 13vh, 132px);
+  font-size: clamp(1.8rem, 4.4vw, 4rem);
+}
+
+.date-step--date .date-puzzle-card-grid--weekday .date-drag-card {
+  font-size: clamp(1rem, 2.1vw, 1.55rem);
+}
+
+.date-step-final-board {
+  grid-template-columns: 1.4fr 1fr 1fr 1fr 1.4fr;
+}
+
+.date-step-drag-groups {
+  min-height: 0;
+  display: grid;
+  grid-template-rows: 0.8fr 0.8fr 1fr;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.date-step-drag-group {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(48px, 0.18fr) minmax(0, 1fr);
+  gap: 8px;
+  align-items: stretch;
+}
+
+.date-step-drag-grid {
+  min-height: 0;
+}
+
+.date-step-drag-grid--month,
+.date-step-drag-grid--day {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.date-step-drag-grid--weekday {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.date-step-drag-grid--weekday .date-drag-card {
+  font-size: clamp(0.9rem, 1.9vw, 1.35rem);
+}
+
+.date-step-sentence {
+  min-height: clamp(58px, 8vh, 78px);
+  border: 2px solid #bfdbfe;
+  border-radius: 16px;
+  background: #eff6ff;
+  color: #1e3a8a;
+  font-size: clamp(1rem, 2.2vw, 1.45rem);
+  font-weight: 900;
+  padding: 10px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+/* Friendly date entry screens. */
+.date-mode-select {
+  grid-template-columns: repeat(3, minmax(0, 245px)) !important;
+  justify-content: center;
+  justify-items: center;
+  align-content: center;
+  gap: clamp(12px, 1.8vh, 18px);
+  width: 100%;
+  max-width: 780px;
+  margin-inline: auto;
+}
+
+.date-mode-card {
+  width: min(100%, 245px);
+  max-width: 245px;
+  aspect-ratio: 1 / 1;
+  min-height: 0;
+  border: 1px solid rgba(255, 255, 255, 0.86);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.48) 100%),
+    linear-gradient(135deg, #ff78a9 0%, #ffbd72 100%);
+  color: #ffffff;
+  padding: clamp(12px, 2vh, 18px);
+  box-shadow: 0 16px 34px rgba(76, 111, 174, 0.15);
+}
+
+.date-mode-card:nth-child(3n + 2) {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.76) 0%, rgba(255, 255, 255, 0.46) 100%),
+    linear-gradient(135deg, #4f8cff 0%, #11c5d8 100%);
+}
+
+.date-mode-card:nth-child(3n) {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.50) 100%),
+    linear-gradient(135deg, #9f8cff 0%, #ff9ed7 100%);
+}
+
+.date-mode-icon {
+  width: min(118px, 58%);
+  aspect-ratio: 1 / 1;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.74);
+  color: #23437f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(2rem, 5vh, 3.4rem);
+  font-weight: 900;
+  text-shadow: none;
+}
+
+.date-mode-title {
+  color: #ffffff;
+  font-size: clamp(1.15rem, 2.4vh, 1.55rem);
+  line-height: 1.05;
+  text-shadow: 0 2px 10px rgba(37, 52, 86, 0.22);
+}
+
+.date-mode-sub {
+  color: rgba(255, 255, 255, 0.94);
+  font-size: clamp(0.78rem, 1.55vh, 0.95rem);
+  line-height: 1.18;
+  text-shadow: 0 2px 8px rgba(37, 52, 86, 0.18);
+}
+
+.date-board {
+  align-content: center;
+  justify-content: center;
+  gap: clamp(12px, 1.8vh, 18px);
+}
+
+.date-card-board {
+  grid-template-columns: repeat(5, minmax(0, 150px)) !important;
+  justify-content: center;
+  gap: clamp(10px, 1.6vh, 14px);
+  padding: clamp(10px, 1.8vh, 16px);
+}
+
+.date-field {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 6px;
+  min-width: 0;
+}
+
+.date-field-label {
+  min-height: 32px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+  color: #31528f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(1rem, 2vh, 1.25rem);
+  font-weight: 900;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92);
+}
+
+.date-field .date-slot {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  min-height: 0;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.date-field .date-slot-main {
+  font-size: clamp(2.3rem, 6vh, 4rem);
+  line-height: 1;
+}
+
+.date-field--weekday .date-slot-main,
+.date-field--weather .date-slot-main {
+  font-size: clamp(1.25rem, 2.7vh, 1.65rem);
+}
+
+.date-field--weather img {
+  width: min(92px, 82%);
+  height: min(72px, 42%);
+  object-fit: contain;
+}
+
+.date-option-panel {
+  width: min(100%, 900px);
+  justify-self: center;
+}
+
+.date-option-title {
+  font-size: clamp(1.05rem, 2vh, 1.35rem);
+  font-weight: 900;
+  text-align: center;
+}
+
+.date-option-grid {
+  justify-content: center;
+}
+
+.date-option-card {
+  font-size: clamp(1.5rem, 3.5vh, 2.35rem);
+  font-weight: 900;
+}
+
+.date-option-card span {
+  line-height: 1.05;
+}
+
+@media (max-width: 900px) {
+  .date-mode-select {
+    grid-template-columns: repeat(2, minmax(0, 245px)) !important;
+    max-width: 520px;
+  }
+
+  .date-card-board {
+    grid-template-columns: repeat(3, minmax(0, 150px)) !important;
+  }
+}
+
+/* Final override: version 4 uses the same large card language as version 5. */
+.date-action-row--reset {
+  grid-template-columns: 1fr 1fr 1.2fr !important;
+  width: min(100%, 1080px) !important;
+  justify-self: center !important;
+}
+
+.date-step .date-step-focus-card,
+.date-step .date-step-date-board,
+.date-step .date-step-final-board {
+  width: min(100%, 1080px) !important;
+  border: 2px solid rgba(255, 255, 255, 0.92) !important;
+  border-radius: 14px !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(255, 255, 255, 0.62)),
+    linear-gradient(135deg, rgba(255, 120, 169, 0.1), rgba(17, 197, 216, 0.14)),
+    #f8fbff !important;
+  box-shadow: 0 22px 54px rgba(76, 111, 174, 0.18) !important;
+  padding: clamp(14px, 2.2vh, 22px) !important;
+  justify-content: center !important;
+  align-content: center !important;
+}
+
+.date-step .date-step-focus-card {
+  min-height: clamp(260px, 36vh, 380px) !important;
+}
+
+.date-step .date-step-date-board {
+  grid-template-columns: repeat(3, minmax(0, 170px)) !important;
+}
+
+.date-step .date-step-final-board {
+  grid-template-columns: repeat(5, minmax(0, 150px)) !important;
+}
+
+.date-step .date-puzzle-slot::before {
+  display: none !important;
+}
+
+.date-step .date-puzzle-slot {
+  width: min(100%, 170px) !important;
+  max-width: 170px !important;
+  aspect-ratio: 1 / 1 !important;
+  min-height: 0 !important;
+  border: 3px dashed rgba(49, 82, 143, 0.34) !important;
+  border-radius: 8px !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.48) 100%),
+    linear-gradient(135deg, #4f8cff 0%, #11c5d8 100%) !important;
+  color: #ffffff !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  text-shadow: 0 2px 10px rgba(37, 52, 86, 0.24) !important;
+  overflow: hidden !important;
+}
+
+.date-step .date-step-focus-card .date-puzzle-slot {
+  width: min(82vw, 310px) !important;
+  max-width: 310px !important;
+}
+
+.date-step--year .date-step-focus-card .date-puzzle-slot {
+  width: min(82vw, 360px) !important;
+  max-width: 360px !important;
+  aspect-ratio: 1.75 / 1 !important;
+}
+
+.date-step .date-puzzle-slot-main {
+  color: #ffffff !important;
+  font-size: clamp(2.4rem, 5.8vw, 4.1rem) !important;
+  line-height: 1 !important;
+}
+
+.date-step--year .date-puzzle-slot-main {
+  font-size: clamp(3.7rem, 8.8vh, 6.2rem) !important;
+}
+
+.date-step .date-puzzle-tray {
+  width: min(100%, 1080px) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.88) !important;
+  border-radius: 8px !important;
+  background: rgba(255, 255, 255, 0.78) !important;
+  box-shadow: 0 18px 44px rgba(76, 111, 174, 0.13) !important;
+  padding: clamp(14px, 2vh, 20px) !important;
+}
+
+.date-step .date-puzzle-card-grid {
+  grid-template-columns: repeat(auto-fit, minmax(132px, 170px)) !important;
+  justify-content: center !important;
+  gap: clamp(12px, 1.8vh, 18px) !important;
+}
+
+.date-step .date-drag-card {
+  width: min(100%, 170px) !important;
+  max-width: 170px !important;
+  aspect-ratio: 1 / 1 !important;
+  border-radius: 8px !important;
+  font-size: clamp(2rem, 4.4vh, 3rem) !important;
+}
+
+.date-step .date-drag-card--weather {
+  font-size: clamp(1rem, 2vh, 1.3rem) !important;
+}
+
+.date-step .date-drag-card--weather img {
+  width: min(110px, 84%) !important;
+  height: min(84px, 50%) !important;
+}
+
+@media (max-width: 760px) {
+  .date-action-row--reset {
+    grid-template-columns: 1fr !important;
+  }
+
+  .date-step .date-step-date-board,
+  .date-step .date-step-final-board {
+    grid-template-columns: repeat(2, minmax(0, 150px)) !important;
+  }
+}
+
+/* Version 4 visual match: keep the step flow, style it like version 5. */
+.date-action-row--reset {
+  grid-template-columns: 1fr 1fr 1.2fr !important;
+  width: min(100%, 1080px);
+  justify-self: center;
+}
+
+.date-step {
+  gap: clamp(12px, 1.8vh, 18px) !important;
+  align-content: center !important;
+  justify-items: center !important;
+}
+
+.date-step .date-step-focus-card,
+.date-step .date-step-date-board,
+.date-step .date-step-final-board {
+  width: min(100%, 1080px) !important;
+  border: 2px solid rgba(255, 255, 255, 0.92) !important;
+  border-radius: 14px !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(255, 255, 255, 0.62)),
+    linear-gradient(135deg, rgba(255, 120, 169, 0.1), rgba(17, 197, 216, 0.14)),
+    #f8fbff !important;
+  box-shadow: 0 22px 54px rgba(76, 111, 174, 0.18) !important;
+  padding: clamp(14px, 2.2vh, 22px) !important;
+  justify-content: center !important;
+  align-content: center !important;
+}
+
+.date-step .date-step-focus-card {
+  min-height: clamp(260px, 36vh, 380px) !important;
+}
+
+.date-step .date-step-date-board {
+  grid-template-columns: repeat(3, minmax(0, 170px)) !important;
+}
+
+.date-step .date-step-final-board {
+  grid-template-columns: repeat(5, minmax(0, 150px)) !important;
+}
+
+.date-step .date-puzzle-slot::before {
+  display: none !important;
+}
+
+.date-step .date-puzzle-slot {
+  width: min(100%, 170px) !important;
+  max-width: 170px !important;
+  aspect-ratio: 1 / 1 !important;
+  min-height: 0 !important;
+  border: 3px dashed rgba(49, 82, 143, 0.34) !important;
+  border-radius: 8px !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.48) 100%),
+    linear-gradient(135deg, #4f8cff 0%, #11c5d8 100%) !important;
+  color: #ffffff !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  text-shadow: 0 2px 10px rgba(37, 52, 86, 0.24) !important;
+  overflow: hidden !important;
+}
+
+.date-step .date-step-focus-card .date-puzzle-slot {
+  width: min(82vw, 310px) !important;
+  max-width: 310px !important;
+}
+
+.date-step--year .date-step-focus-card .date-puzzle-slot {
+  width: min(82vw, 360px) !important;
+  max-width: 360px !important;
+  aspect-ratio: 1.75 / 1 !important;
+}
+
+.date-step .date-puzzle-slot.is-active,
+.date-step .date-puzzle-slot.is-ready {
+  border-style: solid !important;
+  border-color: #ffd24a !important;
+  box-shadow:
+    0 0 0 5px rgba(255, 210, 74, 0.28),
+    0 16px 34px rgba(76, 111, 174, 0.16) !important;
+}
+
+.date-step .date-puzzle-slot-main {
+  color: #ffffff !important;
+  font-size: clamp(2.4rem, 5.8vw, 4.1rem) !important;
+  line-height: 1 !important;
+}
+
+.date-step--year .date-puzzle-slot-main {
+  font-size: clamp(3.7rem, 8.8vh, 6.2rem) !important;
+}
+
+.date-step .date-puzzle-slot--weather {
+  gap: 6px !important;
+}
+
+.date-step .date-puzzle-slot--weather img {
+  width: min(110px, 70%) !important;
+  height: min(84px, 46%) !important;
+  object-fit: contain;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.74);
+}
+
+.date-step .date-puzzle-tray {
+  width: min(100%, 1080px) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.88);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 18px 44px rgba(76, 111, 174, 0.13);
+  padding: clamp(14px, 2vh, 20px) !important;
+}
+
+.date-step .date-puzzle-card-grid {
+  grid-template-columns: repeat(auto-fit, minmax(132px, 170px)) !important;
+  justify-content: center !important;
+  gap: clamp(12px, 1.8vh, 18px) !important;
+}
+
+.date-step .date-drag-card {
+  width: min(100%, 170px) !important;
+  max-width: 170px !important;
+  aspect-ratio: 1 / 1 !important;
+  border-radius: 8px !important;
+  font-size: clamp(2rem, 4.4vh, 3rem) !important;
+}
+
+.date-step .date-drag-card--weather {
+  font-size: clamp(1rem, 2vh, 1.3rem) !important;
+}
+
+.date-step .date-drag-card--weather img {
+  width: min(110px, 84%) !important;
+  height: min(84px, 50%) !important;
+}
+
+@media (max-width: 760px) {
+  .date-action-row--reset {
+    grid-template-columns: 1fr;
+  }
+
+  .date-step .date-step-date-board,
+  .date-step .date-step-final-board {
+    grid-template-columns: repeat(2, minmax(0, 150px)) !important;
+  }
+}
+
+/* Version 5 clean board: use the photo as structure only, with straight drag/drop cards. */
+.date-board-fill {
+  grid-template-rows: minmax(300px, 1fr) auto auto !important;
+  align-content: center;
+}
+
+.date-board-fill-board {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: clamp(10px, 1.7vh, 16px);
+  padding: clamp(12px, 2vh, 18px);
+  max-height: 430px !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(255, 255, 255, 0.62)),
+    linear-gradient(135deg, rgba(255, 120, 169, 0.1), rgba(17, 197, 216, 0.14)),
+    #f8fbff !important;
+}
+
+.date-board-fill-pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(74px, 0.62fr);
+  gap: clamp(8px, 1.4vh, 12px);
+  min-width: 0;
+  min-height: 0;
+}
+
+.date-board-fill-pair--year {
+  grid-column: 1 / span 2;
+  grid-template-columns: minmax(0, 2fr) minmax(94px, 0.7fr);
+}
+
+.date-board-fill-pair--month {
+  grid-column: 3;
+}
+
+.date-board-fill-pair--day {
+  grid-column: 1;
+}
+
+.date-board-fill-pair--weekday {
+  grid-column: 2;
+}
+
+.date-board-fill-pair--weather {
+  grid-column: 3;
+}
+
+.date-board-fill-slot,
+.date-board-fill-fixed,
+.date-board-fill-slot--year,
+.date-board-fill-fixed--year,
+.date-board-fill-slot--month,
+.date-board-fill-fixed--month,
+.date-board-fill-slot--day,
+.date-board-fill-fixed--day,
+.date-board-fill-slot--weekday,
+.date-board-fill-fixed--weekday,
+.date-board-fill-slot--weather,
+.date-board-fill-fixed--weather {
+  position: static !important;
+  inset: auto !important;
+  left: auto !important;
+  top: auto !important;
+  width: auto !important;
+  height: auto !important;
+  transform: none !important;
+}
+
+.date-board-fill-slot,
+.date-board-fill-fixed {
+  min-width: 0;
+  min-height: 0;
+  border-radius: 8px !important;
+}
+
+.date-board-fill-slot {
+  border: 3px dashed rgba(49, 82, 143, 0.34) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.48) 100%),
+    linear-gradient(135deg, #4f8cff 0%, #11c5d8 100%) !important;
+  color: #ffffff !important;
+  text-shadow: 0 2px 10px rgba(37, 52, 86, 0.24);
+}
+
+.date-board-fill-slot.is-active,
+.date-board-fill-slot.is-ready {
+  border-style: solid !important;
+  border-color: #ffd24a !important;
+  box-shadow:
+    0 0 0 5px rgba(255, 210, 74, 0.28),
+    0 16px 34px rgba(76, 111, 174, 0.16) !important;
+}
+
+.date-board-fill-slot.is-filled {
+  border-style: solid !important;
+}
+
+.date-board-fill-fixed {
+  border: 1px solid rgba(255, 255, 255, 0.86) !important;
+  background: rgba(255, 255, 255, 0.86) !important;
+  color: #047857 !important;
+  box-shadow: 0 16px 34px rgba(76, 111, 174, 0.13) !important;
+  font-size: clamp(1.35rem, 4vh, 3.3rem) !important;
+  text-shadow: none;
+}
+
+.date-board-fill-slot--year .date-board-fill-main {
+  color: #ffffff !important;
+  font-size: clamp(3rem, 8vh, 5.8rem) !important;
+}
+
+.date-board-fill-main {
+  font-size: clamp(2.2rem, 6vh, 4.4rem) !important;
+}
+
+.date-board-fill-slot--weekday .date-board-fill-main,
+.date-board-fill-slot--weather .date-board-fill-main {
+  font-size: clamp(1.3rem, 3.2vh, 2rem) !important;
+}
+
+.date-board-fill-card.is-dragging,
+.date-board-fill-card--ghost {
+  opacity: 0.9;
+  transform: scale(1.04);
+}
+
+@media (max-width: 900px), (max-height: 700px) {
+  .date-board-fill-board {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+    max-height: 440px !important;
+  }
+
+  .date-board-fill-pair--year,
+  .date-board-fill-pair--month,
+  .date-board-fill-pair--day,
+  .date-board-fill-pair--weekday,
+  .date-board-fill-pair--weather {
+    grid-column: auto;
+  }
+
+  .date-board-fill-pair--year {
+    grid-column: 1 / span 2;
+  }
+}
+
+/* Date version 5: physical board style, with large empty slots to fill. */
+.date-board-fill {
+  display: grid;
+  grid-template-rows: minmax(300px, 1fr) auto auto;
+  gap: clamp(8px, 1.3vh, 14px);
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  width: 100%;
+}
+
+.date-board-fill-board {
+  position: relative;
+  justify-self: center;
+  align-self: stretch;
+  width: min(100%, 920px);
+  height: 100%;
+  max-height: 440px;
+  min-height: 300px;
+  border: 2px solid rgba(255, 255, 255, 0.92);
+  border-radius: 14px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(255, 255, 255, 0.54)),
+    repeating-linear-gradient(0deg, rgba(148, 163, 184, 0.16) 0 1px, transparent 1px 92px),
+    repeating-linear-gradient(90deg, rgba(148, 163, 184, 0.13) 0 1px, transparent 1px 138px),
+    #f8fafc;
+  box-shadow: 0 22px 54px rgba(76, 111, 174, 0.18);
+  overflow: hidden;
+}
+
+.date-board-fill-slot,
+.date-board-fill-fixed {
+  position: absolute;
+  border-radius: 8px;
+  border: 2px solid rgba(100, 116, 139, 0.44);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(8px, 1.6vh, 14px);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.date-board-fill-slot {
+  color: #0f172a;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.date-board-fill-fixed {
+  color: #047857;
+  pointer-events: none;
+}
+
+.date-board-fill-main {
+  color: inherit;
+  font-size: clamp(2.4rem, 6.4vh, 4.9rem);
+}
+
+.date-board-fill-slot--year .date-board-fill-main {
+  color: #b91c1c;
+  font-size: clamp(3rem, 8vh, 6.1rem);
+}
+
+.date-board-fill-slot--weekday .date-board-fill-main,
+.date-board-fill-slot--weather .date-board-fill-main {
+  font-size: clamp(1.25rem, 3vh, 2.15rem);
+}
+
+.date-board-fill-slot.is-active {
+  border-color: #ffd24a;
+  box-shadow:
+    0 0 0 5px rgba(255, 210, 74, 0.34),
+    0 18px 44px rgba(76, 111, 174, 0.2);
+}
+
+.date-board-fill-slot.is-filled {
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.date-board-fill-slot--weather {
+  flex-direction: column;
+  gap: 6px;
+}
+
+.date-board-fill-slot--weather img {
+  width: min(92px, 72%);
+  height: min(74px, 48%);
+  object-fit: contain;
+  border-radius: 8px;
+  background: rgba(231, 244, 255, 0.92);
+}
+
+.date-board-fill-slot--year {
+  left: 27%;
+  top: 8%;
+  width: 38%;
+  height: 22%;
+}
+
+.date-board-fill-fixed--year {
+  left: 69%;
+  top: 7%;
+  width: 14%;
+  height: 23%;
+  font-size: clamp(2rem, 5.6vh, 4rem);
+}
+
+.date-board-fill-slot--month {
+  left: 9%;
+  top: 37%;
+  width: 15%;
+  height: 25%;
+  transform: rotate(-12deg);
+}
+
+.date-board-fill-fixed--month {
+  left: 31%;
+  top: 35%;
+  width: 15%;
+  height: 25%;
+  font-size: clamp(2rem, 5.4vh, 3.8rem);
+}
+
+.date-board-fill-slot--day {
+  left: 60%;
+  top: 33%;
+  width: 15%;
+  height: 25%;
+}
+
+.date-board-fill-fixed--day {
+  left: 78%;
+  top: 35%;
+  width: 15%;
+  height: 25%;
+  transform: rotate(8deg);
+  font-size: clamp(2rem, 5.4vh, 3.8rem);
+}
+
+.date-board-fill-slot--weekday {
+  left: 27%;
+  top: 72%;
+  width: 18%;
+  height: 22%;
+  transform: rotate(4deg);
+}
+
+.date-board-fill-fixed--weekday {
+  left: 47%;
+  top: 72%;
+  width: 17%;
+  height: 22%;
+  font-size: clamp(1.45rem, 4vh, 2.8rem);
+}
+
+.date-board-fill-slot--weather {
+  left: 63%;
+  top: 72%;
+  width: 17%;
+  height: 22%;
+  transform: rotate(-4deg);
+}
+
+.date-board-fill-fixed--weather {
+  left: 81%;
+  top: 70%;
+  width: 16%;
+  height: 22%;
+  font-size: clamp(1.25rem, 3.4vh, 2.35rem);
+}
+
+.date-board-fill-tray {
+  justify-self: center;
+  width: min(100%, 920px);
+  border: 1.5px solid rgba(255, 255, 255, 0.88);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 18px 44px rgba(76, 111, 174, 0.13);
+  padding: clamp(10px, 1.6vh, 14px);
+  overflow: hidden;
+}
+
+.date-board-fill-title {
+  color: #31528f;
+  font-size: clamp(1rem, 1.9vh, 1.3rem);
+  font-weight: 900;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.date-board-fill-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(108px, 142px));
+  justify-content: center;
+  gap: clamp(8px, 1.3vh, 12px);
+}
+
+.date-board-fill-card {
+  width: min(100%, 142px);
+  aspect-ratio: 1 / 1;
+  border: 1px solid rgba(255, 255, 255, 0.86);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.48) 100%),
+    linear-gradient(135deg, #4f8cff 0%, #11c5d8 100%);
+  color: #ffffff;
+  box-shadow: 0 16px 34px rgba(76, 111, 174, 0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px;
+  font-size: clamp(1.7rem, 3.8vh, 2.5rem);
+  font-weight: 900;
+  text-shadow: 0 2px 10px rgba(37, 52, 86, 0.22);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.date-board-fill-card:nth-child(3n + 1) {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.48) 100%),
+    linear-gradient(135deg, #ff78a9 0%, #ffbd72 100%);
+}
+
+.date-board-fill-card:nth-child(3n) {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.5) 100%),
+    linear-gradient(135deg, #9f8cff 0%, #ff9ed7 100%);
+}
+
+.date-board-fill-card--image {
+  font-size: clamp(0.85rem, 1.7vh, 1.05rem);
+}
+
+.date-board-fill-card img {
+  width: min(92px, 82%);
+  height: min(72px, 48%);
+  object-fit: contain;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.74);
+}
+
+@media (max-width: 760px), (max-height: 680px) {
+  .date-board-fill {
+    grid-template-rows: minmax(260px, 1fr) auto auto;
+  }
+
+  .date-board-fill-board {
+    min-height: 260px;
+    max-height: 380px;
+  }
+
+  .date-board-fill-cards {
+    grid-template-columns: repeat(auto-fit, minmax(88px, 112px));
+  }
+
+  .date-board-fill-card {
+    width: min(100%, 112px);
+    font-size: clamp(1.35rem, 3.5vh, 2rem);
+  }
+}
+
+/* Keep version 5 straight and card-like. This wins over the earlier physical-board sketch. */
+.date-board-fill-board {
+  --date-board-square: clamp(110px, 12.2vw, 132px);
+  --date-board-year: clamp(220px, 23vw, 252px);
+  display: grid !important;
+  grid-template-columns: var(--date-board-year) repeat(5, var(--date-board-square)) !important;
+  grid-template-rows: repeat(2, var(--date-board-square)) !important;
+  gap: clamp(12px, 1.9vh, 18px) !important;
+  padding: clamp(14px, 2.2vh, 22px) !important;
+  justify-content: center !important;
+  align-content: center !important;
+  align-self: center !important;
+  width: min(100%, 1080px) !important;
+  height: auto !important;
+  min-height: auto !important;
+  max-height: 520px !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(255, 255, 255, 0.62)),
+    linear-gradient(135deg, rgba(255, 120, 169, 0.1), rgba(17, 197, 216, 0.14)),
+    #f8fbff !important;
+}
+
+.date-board-fill-pair {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: clamp(10px, 1.6vh, 14px) !important;
+  min-width: 0;
+  min-height: 0;
+}
+
+.date-board-fill-pair--year {
+  grid-column: 1 / span 2 !important;
+  grid-row: 1 !important;
+  grid-template-columns: var(--date-board-year) var(--date-board-square) !important;
+}
+
+.date-board-fill-pair--month {
+  grid-column: 3 / span 2 !important;
+  grid-row: 1 !important;
+}
+
+.date-board-fill-pair--day {
+  grid-column: 5 / span 2 !important;
+  grid-row: 1 !important;
+}
+
+.date-board-fill-pair--weekday {
+  grid-column: 2 / span 2 !important;
+  grid-row: 2 !important;
+}
+
+.date-board-fill-pair--weather {
+  grid-column: 4 / span 2 !important;
+  grid-row: 2 !important;
+}
+
+.date-board-fill-slot,
+.date-board-fill-fixed,
+.date-board-fill-slot--year,
+.date-board-fill-fixed--year,
+.date-board-fill-slot--month,
+.date-board-fill-fixed--month,
+.date-board-fill-slot--day,
+.date-board-fill-fixed--day,
+.date-board-fill-slot--weekday,
+.date-board-fill-fixed--weekday,
+.date-board-fill-slot--weather,
+.date-board-fill-fixed--weather {
+  position: static !important;
+  inset: auto !important;
+  left: auto !important;
+  top: auto !important;
+  width: auto !important;
+  height: auto !important;
+  transform: none !important;
+}
+
+.date-board-fill-slot,
+.date-board-fill-fixed {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  border-radius: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  overflow: hidden !important;
+}
+
+.date-board-fill-slot {
+  border: 3px dashed rgba(49, 82, 143, 0.34) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.48) 100%),
+    linear-gradient(135deg, #4f8cff 0%, #11c5d8 100%) !important;
+  color: #ffffff !important;
+  text-shadow: 0 2px 10px rgba(37, 52, 86, 0.24) !important;
+}
+
+.date-board-fill-slot.is-active,
+.date-board-fill-slot.is-ready {
+  border-style: solid !important;
+  border-color: #ffd24a !important;
+  box-shadow:
+    0 0 0 5px rgba(255, 210, 74, 0.28),
+    0 16px 34px rgba(76, 111, 174, 0.16) !important;
+}
+
+.date-board-fill-slot.is-filled {
+  border-style: solid !important;
+}
+
+.date-board-fill-fixed {
+  border: 1px solid rgba(255, 255, 255, 0.86) !important;
+  background: rgba(255, 255, 255, 0.86) !important;
+  color: #047857 !important;
+  box-shadow: 0 16px 34px rgba(76, 111, 174, 0.13) !important;
+  font-size: clamp(1.5rem, 3.3vw, 2.55rem) !important;
+  text-shadow: none !important;
+}
+
+.date-board-fill-main {
+  color: #ffffff !important;
+  font-size: clamp(2.4rem, 5.8vw, 4.1rem) !important;
+  line-height: 1 !important;
+}
+
+.date-board-fill-slot--year .date-board-fill-main {
+  color: #ffffff !important;
+  font-size: clamp(3.7rem, 8.8vh, 6.2rem) !important;
+}
+
+.date-board-fill-slot--weekday .date-board-fill-main,
+.date-board-fill-slot--weather .date-board-fill-main {
+  font-size: clamp(1.45rem, 3vw, 2.25rem) !important;
+}
+
+.date-board-fill-slot--weather {
+  gap: 4px !important;
+}
+
+.date-board-fill-slot--weather img {
+  width: min(70px, 60%) !important;
+  height: min(54px, 44%) !important;
+}
+
+.date-board-fill-tray {
+  width: min(100%, 1080px) !important;
+  padding: clamp(14px, 2vh, 20px) !important;
+}
+
+.date-board-fill-cards {
+  grid-template-columns: repeat(auto-fit, minmax(132px, 170px)) !important;
+  gap: clamp(12px, 1.8vh, 18px) !important;
+}
+
+.date-board-fill-card {
+  width: min(100%, 170px) !important;
+  font-size: clamp(2rem, 4.4vh, 3rem) !important;
+}
+
+.date-board-fill-card--image {
+  font-size: clamp(1rem, 2vh, 1.3rem) !important;
+}
+
+.date-board-fill-card img {
+  width: min(110px, 84%) !important;
+  height: min(84px, 50%) !important;
+}
+
+.date-board-fill-card.is-dragging,
+.date-board-fill-card--ghost {
+  opacity: 0.9;
+  transform: scale(1.04);
+}
+
+@media (max-width: 760px) {
+  .date-board-fill-board {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-template-rows: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  .date-board-fill-pair--year,
+  .date-board-fill-pair--month,
+  .date-board-fill-pair--day,
+  .date-board-fill-pair--weekday,
+  .date-board-fill-pair--weather {
+    grid-column: auto !important;
+  }
+
+  .date-board-fill-pair--year {
+    grid-column: 1 / span 2 !important;
+  }
+}
+
+/* Date activity internals: square AAC cards with fixed unit labels. */
+.date-puzzle-board,
+.date-step-summary-grid,
+.date-step-date-board,
+.date-step-final-board {
+  justify-content: center;
+  justify-items: center;
+  gap: clamp(10px, 1.6vh, 14px);
+}
+
+.date-puzzle-board,
+.date-step-final-board,
+.date-step-summary-grid--final {
+  grid-template-columns: repeat(5, minmax(0, 150px)) !important;
+}
+
+.date-step-summary-grid--three,
+.date-step-date-board {
+  grid-template-columns: repeat(3, minmax(0, 150px)) !important;
+}
+
+.date-step-focus-card {
+  align-items: center;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.date-step-focus-card .date-puzzle-slot,
+.date-step-focus-card .date-step-summary-card {
+  width: min(245px, 100%) !important;
+  max-width: 245px !important;
+  aspect-ratio: 1 / 1 !important;
+}
+
+.date-puzzle-slot,
+.date-step-summary-card {
+  position: relative;
+  width: min(100%, 150px) !important;
+  max-width: 150px !important;
+  aspect-ratio: 1 / 1 !important;
+  min-height: 0 !important;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.86) !important;
+  border-radius: 8px !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.48) 100%),
+    linear-gradient(135deg, #4f8cff 0%, #11c5d8 100%) !important;
+  box-shadow: 0 16px 34px rgba(76, 111, 174, 0.15) !important;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(12px, 2vh, 18px);
+}
+
+.date-puzzle-slot:nth-child(3n + 1),
+.date-step-summary-card:nth-child(3n + 1) {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.48) 100%),
+    linear-gradient(135deg, #ff78a9 0%, #ffbd72 100%) !important;
+}
+
+.date-puzzle-slot:nth-child(3n),
+.date-step-summary-card:nth-child(3n) {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.50) 100%),
+    linear-gradient(135deg, #9f8cff 0%, #ff9ed7 100%) !important;
+}
+
+.date-puzzle-slot::before,
+.date-step-summary-card::before {
+  content: attr(data-label);
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  min-width: 42px;
+  min-height: 30px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  color: #31528f;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(0.92rem, 1.8vh, 1.08rem);
+  font-weight: 900;
+  line-height: 1;
+  text-shadow: none;
+}
+
+.date-puzzle-slot-main,
+.date-step-summary-main {
+  color: #ffffff !important;
+  font-size: clamp(2.5rem, 6vh, 4.4rem) !important;
+  line-height: 1;
+  text-shadow: 0 2px 10px rgba(37, 52, 86, 0.22);
+}
+
+.date-puzzle-slot-unit,
+.date-step-summary-unit {
+  display: none !important;
+}
+
+.date-puzzle-slot--weather img,
+.date-step-summary-card--weather img {
+  width: min(110px, 82%) !important;
+  height: min(88px, 48%) !important;
+  object-fit: contain;
+  margin-top: 18px;
+  background: rgba(255, 255, 255, 0.74);
+}
+
+.date-puzzle-slot--weather .date-puzzle-slot-main,
+.date-step-summary-card--weather .date-step-summary-main {
+  font-size: clamp(1.1rem, 2.2vh, 1.45rem) !important;
+}
+
+.date-puzzle-tray {
+  justify-self: center;
+  width: min(100%, 900px);
+}
+
+.date-puzzle-card-grid,
+.date-step-choice-grid {
+  justify-content: center;
+  justify-items: center;
+  gap: clamp(10px, 1.6vh, 14px);
+}
+
+.date-puzzle-card-grid--year,
+.date-puzzle-card-grid--month,
+.date-puzzle-card-grid--day,
+.date-step-choice-grid--year,
+.date-step-choice-grid--month,
+.date-step-choice-grid--day {
+  grid-template-columns: repeat(auto-fit, minmax(120px, 150px)) !important;
+}
+
+.date-puzzle-card-grid--weekday,
+.date-step-choice-grid--weekday {
+  grid-template-columns: repeat(auto-fit, minmax(92px, 118px)) !important;
+}
+
+.date-puzzle-card-grid--weather,
+.date-step-choice-grid--weather {
+  grid-template-columns: repeat(auto-fit, minmax(110px, 132px)) !important;
+}
+
+.date-drag-card,
+.date-step-choice,
+.date-option-card {
+  width: min(100%, 150px) !important;
+  max-width: 150px !important;
+  aspect-ratio: 1 / 1 !important;
+  min-height: 0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.86) !important;
+  border-radius: 8px !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.48) 100%),
+    linear-gradient(135deg, #4f8cff 0%, #11c5d8 100%) !important;
+  color: #ffffff !important;
+  font-size: clamp(1.8rem, 4vh, 2.7rem) !important;
+  text-shadow: 0 2px 10px rgba(37, 52, 86, 0.22);
+}
+
+.date-drag-card:nth-child(3n + 1),
+.date-step-choice:nth-child(3n + 1),
+.date-option-card:nth-child(3n + 1) {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.48) 100%),
+    linear-gradient(135deg, #ff78a9 0%, #ffbd72 100%) !important;
+}
+
+.date-drag-card:nth-child(3n),
+.date-step-choice:nth-child(3n),
+.date-option-card:nth-child(3n) {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.50) 100%),
+    linear-gradient(135deg, #9f8cff 0%, #ff9ed7 100%) !important;
+}
+
+.date-drag-card--weather,
+.date-step-choice--image,
+.date-option-card--weather {
+  font-size: clamp(0.85rem, 1.7vh, 1.05rem) !important;
+}
+
+.date-drag-card--weather img,
+.date-step-choice--image img,
+.date-option-card--weather img {
+  width: min(92px, 82%) !important;
+  height: min(72px, 48%) !important;
+  object-fit: contain;
+  background: rgba(255, 255, 255, 0.74);
+}
+
+@media (max-width: 900px) {
+  .date-puzzle-board,
+  .date-step-final-board,
+  .date-step-summary-grid--final {
+    grid-template-columns: repeat(3, minmax(0, 145px)) !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .date-mode-select {
+    grid-template-columns: repeat(2, minmax(0, 160px)) !important;
+  }
+
+  .date-mode-card {
+    width: min(100%, 160px);
+  }
+
+  .date-card-board {
+    grid-template-columns: repeat(2, minmax(0, 140px)) !important;
+  }
+}
+
+.date-puzzle {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) minmax(0, 0.95fr) auto;
+  gap: clamp(8px, 1.4vh, 12px);
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  width: 100%;
+}
+
+.date-puzzle-board {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr 1.4fr;
+  gap: clamp(6px, 1.2vh, 12px);
+  min-height: 0;
+  padding: clamp(8px, 1.5vh, 14px);
+  border: 2px solid #d7dee9;
+  border-radius: 18px;
+  background: #f8fafc;
+}
+
+.date-puzzle-slot {
+  min-width: 0;
+  min-height: 78px;
+  border: 3px solid #cbd5e1;
+  border-radius: 14px;
+  background: #fff;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 8px;
+  touch-action: none;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+
+.date-puzzle-slot.is-ready {
+  border-color: #16a34a;
+  background: #ecfdf5;
+  box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.16);
+}
+
+.date-puzzle-slot.is-active {
+  border-color: #f59e0b;
+  background: #fef3c7;
+  box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.22);
+}
+
+.date-puzzle-slot-main {
+  font-size: clamp(2rem, 5.4vw, 4.8rem);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.date-puzzle-slot-unit {
+  font-size: clamp(1.25rem, 3vw, 2.4rem);
+  font-weight: 900;
+  color: #047857;
+}
+
+.date-puzzle-slot--wide .date-puzzle-slot-main {
+  font-size: clamp(1.8rem, 4.4vw, 4.2rem);
+}
+
+.date-puzzle-slot--weather {
+  flex-direction: column;
+  gap: 2px;
+}
+
+.date-puzzle-slot--weather img {
+  flex: 1 1 auto;
+  width: min(118px, 92%);
+  height: min(104px, 14vh);
+  object-fit: contain;
+}
+
+.date-puzzle-slot--weather .date-puzzle-slot-main {
+  flex: 0 0 auto;
+  font-size: clamp(1rem, 2.2vw, 1.7rem);
+}
+
+.date-puzzle-tray {
+  min-height: 0;
+  border: 1px solid #dbe3ef;
+  border-radius: 16px;
+  padding: clamp(6px, 1vh, 10px);
+  background: #fff;
+  overflow: hidden;
+}
+
+.date-puzzle-tray-title {
+  font-size: 0.82rem;
+  font-weight: 900;
+  color: #475569;
+  margin-bottom: 6px;
+}
+
+.date-puzzle-card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(8px, 1.3vh, 12px);
+  max-height: 100%;
+  overflow: hidden;
+  align-content: center;
+  justify-content: center;
+}
+
+.date-puzzle-card-grid--year,
+.date-puzzle-card-grid--month,
+.date-puzzle-card-grid--day {
+  grid-template-columns: repeat(2, minmax(0, min(19vh, 190px)));
+  max-width: 430px;
+  margin-inline: auto;
+}
+
+.date-puzzle-card-grid--year {
+  grid-template-columns: minmax(0, min(21vh, 210px));
+}
+
+.date-puzzle-card-grid--weekday {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.date-puzzle-card-grid--weather {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.date-drag-card {
+  min-width: 0;
+  aspect-ratio: 1 / 1;
+  min-height: 0;
+  border: 2px solid #dbe3ef;
+  border-radius: 10px;
+  background: #fff;
+  color: #0f172a;
+  font-size: clamp(1.25rem, 3vw, 2rem);
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 3px;
+  cursor: grab;
+  touch-action: none;
+}
+
+.date-drag-card:active,
+.date-drag-card.is-dragging {
+  cursor: grabbing;
+  opacity: 0.55;
+}
+
+.date-drag-card--ghost {
+  opacity: 0.95 !important;
+  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.28);
+  transform: scale(1.05);
+}
+
+.date-drag-card--weather {
+  flex-direction: column;
+  font-size: clamp(0.72rem, 1.25vw, 0.95rem);
+  gap: 3px;
+}
+
+.date-drag-card--weather img {
+  flex: 1 1 auto;
+  width: min(96px, 92%);
+  height: min(88px, 12vh);
+  object-fit: contain;
+}
+
+.date-drag-card--weather span {
+  flex: 0 0 auto;
+  line-height: 1;
+}
+
+@media (max-width: 760px) {
+  .date-mode-select {
+    grid-template-columns: 1fr;
+  }
+  .date-mode-card {
+    min-height: 120px;
+  }
+  .date-card-board {
+    grid-template-columns: 1.2fr 0.9fr 0.9fr;
+  }
+  .date-slot--wide {
+    grid-column: span 3;
+  }
+  .date-option-grid,
+  .date-option-panel--year .date-option-grid,
+  .date-option-panel--weekday .date-option-grid,
+  .date-option-panel--weather .date-option-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .date-option-panel--day .date-option-grid {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    max-height: min(34vh, 240px);
+  }
+  .date-option-grid {
+    max-height: min(30vh, 190px);
+  }
+  .date-puzzle-board {
+    grid-template-columns: 1.2fr 0.9fr 0.9fr;
+  }
+  .date-puzzle-slot--wide {
+    grid-column: span 3;
+  }
+  .date-puzzle-card-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .date-puzzle-card-grid--year,
+  .date-puzzle-card-grid--month,
+  .date-puzzle-card-grid--day {
+    grid-template-columns: repeat(2, minmax(0, min(20vw, 140px)));
+  }
+  .date-puzzle-card-grid--year {
+    grid-template-columns: minmax(0, min(26vw, 150px));
+  }
+  .date-puzzle-card-grid--weekday,
+  .date-puzzle-card-grid--weather {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.tile {
+  width: min(42vw, 26vh, 270px);
+  aspect-ratio: 1 / 1;
+  border-radius: 18px;
+  border: 2px solid var(--border);
+  background: #fff;
+  padding: clamp(8px, 1.5vh, 16px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(6px, 1vh, 10px);
+  cursor: pointer;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.10);
+  transition: transform 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+  /* 터치 감도 향상: 최소 터치 크기 보장 */
+  min-width: 80px;
+  min-height: 80px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(37, 99, 235, 0.15);
+  /* 터치 영역 외부 확장 (보이지 않는 영역까지 터치 인식) */
+  position: relative;
+}
+
+.tile::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  pointer-events: none;
+}
+
+.tile:active {
+  transform: scale(1.04);
+  border-color: var(--main);
+  box-shadow: 0 14px 34px rgba(37, 99, 235, 0.18);
+}
+
+.tile img {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  border-radius: 16px;
+  object-fit: cover;
+  background: #e2e8f0;
+}
+
+.tile-label {
+  font-size: clamp(0.82rem, 1.6vh, 1rem);
+  font-weight: 800;
+  color: #0f172a;
+  text-align: center;
+  line-height: 1.1;
+}
+
+.tile--weather-choice {
+  gap: 4px;
+  padding: clamp(8px, 1.4vh, 12px);
+}
+
+.tile--weather-choice img {
+  object-fit: contain;
+  background: #f8fafc;
+  min-height: 0;
+}
+
+.tile--weather-choice .tile-label {
+  flex: 0 0 auto;
+  font-size: clamp(0.72rem, 1.35vh, 0.9rem);
+  line-height: 1;
+}
+
+.tile--has-video {
+  gap: clamp(4px, 0.8vh, 8px);
+}
+
+.tile--has-video img {
+  min-height: 0;
+}
+
+.tile-video-btn {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #23437f;
+  font-size: clamp(0.78rem, 1.45vh, 0.95rem);
+  font-weight: 900;
+  line-height: 1;
+  text-shadow: none;
+  box-shadow: 0 8px 18px rgba(76, 111, 174, 0.12);
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  touch-action: manipulation;
+}
+
+.tile.is-selected {
+  border-color: #16a34a;
+  box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.16);
+  position: relative;
+}
+
+.tile-check {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #16a34a;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 900;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* "다음/이전"처럼 7번째(또는 마지막) 버튼이 있어도
+   기존 6개 타일 크기를 흐트러뜨리지 않도록 작은 형태로 표시 */
+.tile-nav {
+  width: min(180px, 55%);
+  aspect-ratio: auto;
+  min-height: 56px;
+  padding: 10px 12px;
+  gap: 0;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+}
+
+.tile-nav img {
+  display: none;
+}
+
+.tile-nav .tile-label {
+  font-size: 1rem;
+}
+
+.tile-art {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(2rem, 6vw, 3.6rem);
+  background: linear-gradient(135deg, #dbeafe, #e0f2fe);
+}
+
+.btn {
+  min-height: 96px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  font-size: clamp(1rem, 2vw, 1.35rem);
+  font-weight: 700;
+  color: #0f172a;
+  cursor: pointer;
+  padding: 18px;
+  line-height: 1.25;
+  box-shadow: 0 2px 8px rgba(31, 41, 55, 0.06);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(37, 99, 235, 0.15);
+}
+
+.btn.main {
+  min-height: 130px;
+  color: #fff;
+  border: none;
+  background: linear-gradient(135deg, var(--main), var(--accent));
+  font-size: clamp(1.1rem, 2.3vw, 1.55rem);
+}
+
+.btn.hero {
+  min-height: 140px;
+  color: #fff;
+  border: none;
+  background: linear-gradient(135deg, #0f766e, #22c55e);
+  font-size: clamp(1.1rem, 2.3vw, 1.6rem);
+}
+
+.btn.selected {
+  border: 2px solid var(--main);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.16);
+}
+
+.player-wrap {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 8px;
+}
+
+.player {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  border-radius: 10px;
+  background: #000;
+}
+
+.muted {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #475569;
+}
+
+/* 일일 스케줄 등에서 문구 없을 때 세로 공간 절약 */
+#helperText:empty {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .grid:not(.detail):not(.media) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: 100%;
+    margin-inline: auto;
+  }
+
+  .grid:not(.detail):not(.media) .tile {
+    width: min(30vw, 29vh, 260px);
+  }
+}
+
+@media (max-width: 760px) {
+  .grid.detail,
+  .grid.media {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .grid.detail .tile,
+  .grid.media .tile {
+    width: min(42vw, 26vh, 240px);
+  }
+}
+
+/* ── 집 스케줄 ─────────────────────────────────────────────────────────── */
+.home-runner-grid {
+  align-content: start;
+}
+
+/* 현재 할 일 (첫 번째 항목) 강조 */
+.home-runner-current {
+  grid-column: 1 / -1;
+  width: 100% !important;
+  max-width: 100% !important;
+  aspect-ratio: auto !important;
+  min-height: 130px;
+  border: 3px solid var(--main) !important;
+  background: #eff6ff !important;
+  box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.14) !important;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding: 14px 20px;
+  gap: 16px;
+}
+
+.home-runner-current img {
+  width: 90px !important;
+  height: 90px !important;
+  flex: none !important;
+  border-radius: 14px;
+}
+
+.home-runner-current .tile-art {
+  font-size: 3.8rem;
+  width: 90px;
+  height: 90px;
+  flex: none;
+}
+
+.home-runner-current .tile-label {
+  font-size: 1.5rem;
+  text-align: left;
+  flex: 1;
+}
+
+/* 완료 애니메이션 */
+@keyframes home-runner-done {
+  0%   { transform: scale(1);    opacity: 1; }
+  30%  { transform: scale(1.07); opacity: 0.9; }
+  100% { transform: scale(0.5);  opacity: 0; }
+}
+
+.home-runner-done-anim {
+  animation: home-runner-done 0.38s ease-in forwards;
+  pointer-events: none;
+}
+
+/* 모두 완료 화면 */
+.home-runner-complete {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 20px 32px;
+  gap: 12px;
+  text-align: center;
+}
+
+.home-runner-complete-emoji {
+  font-size: 5rem;
+  line-height: 1;
+}
+
+.home-runner-complete-text {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--main);
+}
+
+.home-runner-complete-sub {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+/* ── 주간 스케줄 ─────────────────────────────────────────────────────────── */
+.weekly-outer {
+  display: flex !important;
+  flex-direction: column;
+  gap: 10px;
+  grid-template-columns: unset;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  align-self: stretch;
+  box-sizing: border-box;
+}
+
+/* 7일 가로 나열 (가로 스크롤 허용) */
+.weekly-view {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 2px 1px 6px;
+  scroll-snap-type: x proximity;
+}
+
+.weekly-col {
+  flex: 1;
+  min-width: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  scroll-snap-align: start;
+}
+
+/* 요일 헤더 */
+.weekly-hdr {
+  background: var(--main);
+  color: #fff;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 800;
+  padding: 8px 4px;
+  border-radius: 10px;
+  letter-spacing: 0.03em;
+}
+
+/* 활동 타일 */
+.weekly-tile {
+  width: 100%;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  background: #fff;
+  padding: 8px 5px 7px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 88px;
+  transition: transform 0.07s, box-shadow 0.07s;
+  position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.weekly-tile:active {
+  transform: scale(0.90);
+  box-shadow: 0 0 0 2.5px var(--main);
+  background: #eff6ff;
+}
+
+.weekly-tile-img {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 9px;
+}
+
+.weekly-tile-art {
+  font-size: 2.1rem;
+  line-height: 1;
+}
+
+.weekly-tile-lbl {
+  font-size: 0.6rem;
+  font-weight: 800;
+  text-align: center;
+  color: #1f2937;
+  line-height: 1.2;
+  word-break: keep-all;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.weekly-tile-empty {
+  min-height: 32px;
+  border: 1.5px dashed #dbe3ef;
+  background: #f8fafc;
+  cursor: default;
+}
+.weekly-tile-empty:active { transform: none; box-shadow: none; background: #f8fafc; }
+
+/* 얼굴 사진 */
+.weekly-faces {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 1px;
+}
+
+.weekly-face {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+  margin-left: -6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+}
+.weekly-face:first-child { margin-left: 0; }
+
+/* 편집 버튼 */
+.weekly-edit-btn {
+  border: 1.5px solid var(--border);
+  background: #f1f5f9;
+  color: #475569;
+  border-radius: 14px;
+  padding: 14px 20px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  width: 100%;
+  text-align: center;
+  transition: background 0.1s;
+}
+.weekly-edit-btn:active { background: #e2e8f0; }
+
+.weekly-edit-btn--primary,
+.weekly-edit-btn.primary {
+  background: var(--main);
+  color: #fff;
+  border-color: var(--main);
+  margin-top: 4px;
+}
+.weekly-edit-btn--primary:active,
+.weekly-edit-btn.primary:active { background: #1d4ed8; }
+
+.weekly-reset-btn {
+  background: #fff1f2;
+  color: #e11d48;
+  border-color: #fca5a5;
+  width: auto;
+  flex: 1;
+}
+.weekly-reset-btn:active { background: #ffe4e6; }
+
+/* 편집 모드 - 요일 탭 */
+.weekly-tab-row {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
+.weekly-tab {
+  flex: 1;
+  padding: 11px 4px;
+  border-radius: 10px;
+  border: 1.5px solid var(--border);
+  background: #fff;
+  font-size: 0.95rem;
+  font-weight: 800;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  color: #475569;
+  transition: background 0.1s, color 0.1s;
+}
+.weekly-tab--active {
+  background: var(--main);
+  color: #fff;
+  border-color: var(--main);
+}
+
+/* 편집 모드 - 섹션 제목 */
+.weekly-edit-heading {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1e40af;
+  padding: 4px 2px;
+}
+
+/* 편집 모드 - 활동 행 */
+.weekly-act-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.weekly-act-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 8px 10px 8px 6px;
+  touch-action: manipulation;
+}
+
+.weekly-act-row--checked {
+  border-color: var(--main);
+  background: #eff6ff;
+}
+
+.weekly-act-toggle {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  padding: 4px 0;
+  min-height: 44px;
+}
+
+.weekly-act-checkmark {
+  font-size: 1.4rem;
+  line-height: 1;
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+.weekly-act-row--checked .weekly-act-checkmark { color: var(--main); }
+
+.weekly-act-img {
+  width: 38px;
+  height: 38px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.weekly-act-art {
+  font-size: 1.7rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.weekly-act-lbl {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+/* 사람 선택 버튼 */
+.weekly-act-faces-btn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px dashed #94a3b8;
+  border-radius: 10px;
+  padding: 5px 8px;
+  background: transparent;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  gap: 2px;
+  min-width: 44px;
+  min-height: 40px;
+  flex-shrink: 0;
+  transition: border-color 0.1s;
+}
+.weekly-act-faces-btn:active { border-color: var(--main); }
+
+/* 편집 모드 - 사람 격자 */
+.weekly-person-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.weekly-person-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 8px;
+  background: #fff;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+  transition: border-color 0.1s, background 0.1s;
+}
+.weekly-person-btn.is-selected {
+  border-color: var(--main);
+  background: #eff6ff;
+}
+.weekly-person-btn:active { transform: scale(0.93); }
+
+.weekly-person-btn img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
+
+.weekly-person-lbl {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-align: center;
+  color: #1f2937;
+}
+
+/* 태블릿에서 더 넓게 */
+@media (min-width: 768px) {
+  .weekly-col { min-width: 130px; }
+  .weekly-tile { min-height: 105px; padding: 10px 6px 8px; }
+  .weekly-tile-img { width: 68px; height: 68px; }
+  .weekly-tile-art { font-size: 3rem; }
+  .weekly-tile-lbl { font-size: 0.76rem; }
+  .weekly-hdr { font-size: 1.15rem; padding: 10px 6px; }
+  .weekly-person-btn img { width: 72px; height: 72px; }
+}
+
+/* ── 주간 시각 스케줄 그리드 (참고 이미지 스타일) ─────────────────────────── */
+
+/* 시간대×요일 그리드 컨테이너 */
+.wt-grid {
+  display: grid;
+  /* 첫 열: 시간대 레이블, 나머지 7열: 요일 (최소 너비 보장 — 좁으면 가로 스크롤) */
+  grid-template-columns: 42px repeat(7, minmax(88px, 1fr));
+  gap: 5px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+  padding: 0 0 8px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* 좌상단 빈 코너 */
+.wt-corner {
+  background: transparent;
+}
+
+/* 요일 헤더 */
+.wt-dayhdr {
+  text-align: center;
+  font-size: clamp(0.8rem, 2.2vw, 1.05rem);
+  font-weight: 900;
+  padding: 8px 2px;
+  border-radius: 12px;
+  border: 2.5px solid transparent;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+/* 시간대 레이블 셀 */
+.wt-period {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  font-weight: 800;
+  color: #64748b;
+  text-align: center;
+  line-height: 1.3;
+  background: #f1f5f9;
+  border-radius: 8px;
+  padding: 3px 1px;
+  word-break: keep-all;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+/* 활동 카드 타일 */
+.wt-tile {
+  width: 100%;
+  min-height: 100px;
+  border-radius: 12px;
+  border: 2.5px solid var(--day-border, #dbe3ef);
+  background: #fff;
+  padding: 8px 4px 7px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: transform 0.07s, background 0.07s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  position: relative;
+}
+
+.wt-tile:active {
+  transform: scale(0.87);
+  background: var(--day-bg, #eff6ff);
+  box-shadow: none;
+}
+
+/* 활동 이미지 */
+.wt-img {
+  width: clamp(50px, 9vw, 68px);
+  height: clamp(50px, 9vw, 68px);
+  object-fit: cover;
+  border-radius: 9px;
+  flex-shrink: 0;
+}
+
+/* 이모지 대체 */
+.wt-art {
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  line-height: 1;
+}
+
+/* 활동 레이블 */
+.wt-lbl {
+  font-size: clamp(0.62rem, 1.6vw, 0.78rem);
+  font-weight: 800;
+  text-align: center;
+  color: #1f2937;
+  line-height: 1.2;
+  word-break: keep-all;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  width: 100%;
+}
+
+/* 빈 셀 */
+.wt-empty {
+  width: 100%;
+  min-height: 100px;
+  border: 2px dashed #e2e8f0;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+/* 시간대 편집 */
+.weekly-periods-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.weekly-period-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+.weekly-period-num {
+  width: 28px;
+  height: 28px;
+  background: var(--main);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.weekly-period-input {
+  flex: 1;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1f2937;
+  outline: none;
+  font-family: inherit;
+}
+.weekly-period-input:focus { border-color: var(--main); }
+
+/* ── 주간 스케줄 상세 페이지 ─────────────────────────────────────────────── */
+.wdetail-outer {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  grid-template-columns: unset;
+  padding-top: 8px;
+}
+
+/* 활동 히어로 카드 */
+.wdetail-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 28px 32px;
+  background: #fff;
+  border: none;
+  border-radius: 28px;
+  box-shadow: 0 8px 32px rgba(37, 99, 235, 0.10);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  width: 100%;
+  max-width: 420px;
+  transition: transform 0.08s;
+}
+.wdetail-hero:active { transform: scale(0.96); }
+
+.wdetail-hero-img {
+  width: min(180px, 55vw);
+  height: min(180px, 55vw);
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.10);
+}
+
+.wdetail-hero-art {
+  font-size: 7rem;
+  line-height: 1;
+}
+
+.wdetail-hero-lbl {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #1f2937;
+  letter-spacing: 0.02em;
+}
+
+/* 함께하는 사람 섹션 제목 */
+.wdetail-heading {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #64748b;
+  align-self: flex-start;
+  padding-left: 2px;
+}
+
+/* 사람 가로 나열 */
+.wdetail-people-row {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+/* 개별 사람 버튼 */
+.wdetail-person-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  border: none;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  padding: 18px 20px;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.08s;
+  min-width: 100px;
+}
+.wdetail-person-btn:active { transform: scale(0.90); }
+
+/* 사람 아바타 크기 (상세 페이지) */
+.person-avatar.wdetail-avatar {
+  width: 100px;
+  height: 100px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+}
+.person-avatar.wdetail-avatar img {
+  width: 100px;
+  height: 100px;
+}
+.person-avatar.wdetail-avatar .person-avatar-emoji {
+  font-size: 3.5rem;
+}
+
+.wdetail-person-lbl {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #1f2937;
+  text-align: center;
+}
+
+/* 사람 선택기 섹션 헤더 */
+.weekly-person-section-hdr-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid #e2e8f0;
+  padding: 10px 2px 4px;
+  margin-bottom: 6px;
+  gap: 8px;
+}
+
+.weekly-person-section-hdr {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #1e40af;
+  flex: 1;
+}
+
+.section-select-all-btn {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  border: 1.5px solid #3b82f6;
+  background: #eff6ff;
+  color: #1d4ed8;
+  cursor: pointer;
+  white-space: nowrap;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.15s, color 0.15s;
+}
+.section-select-all-btn.is-all-selected {
+  background: #1d4ed8;
+  color: #fff;
+  border-color: #1d4ed8;
+}
+
+.weekly-person-section-note {
+  font-size: 0.72rem;
+  color: #94a3b8;
+  padding: 0 2px 6px;
+  line-height: 1.4;
+}
+
+/* 사람 아바타 (이미지 or emoji 원형) */
+.person-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #f1f5f9;
+  flex-shrink: 0;
+}
+
+.person-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.person-avatar-emoji {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+/* 아바타가 weekly-face로 쓰일 때 */
+.person-avatar.weekly-face {
+  width: 22px;
+  height: 22px;
+  border: 2px solid #fff;
+  margin-left: -6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+}
+.person-avatar.weekly-face:first-child { margin-left: 0; }
+.person-avatar.weekly-face .person-avatar-emoji { font-size: 0.9rem; }
+
+/* 사람 선택 버튼 아바타 크기 */
+.weekly-person-avatar-img {
+  width: 64px;
+  height: 64px;
+}
+.weekly-person-avatar-img .person-avatar-emoji { font-size: 2.2rem; }
+
+/* 비활성(maxed) 상태 */
+.weekly-person-btn.is-maxed {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.weekly-period-del {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1.5px solid #fca5a5;
+  background: #fee2e2;
+  color: #dc2626;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  touch-action: manipulation;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* 태블릿에서 더 크게 */
+@media (min-width: 768px) {
+  .wt-grid {
+    grid-template-columns: 46px repeat(7, minmax(130px, 1fr));
+    gap: 7px;
+  }
+  .wt-corner { min-width: 46px; }
+  .wt-period { min-width: 46px; font-size: 0.72rem; }
+  .wt-tile { min-height: 115px; padding: 10px 5px 8px; }
+  .wt-empty { min-height: 115px; }
+  .wt-img { width: 70px; height: 70px; }
+  .wt-art { font-size: 2.8rem; }
+  .wt-lbl { font-size: 0.78rem; }
+  .wt-dayhdr { font-size: 1.1rem; padding: 10px 4px; }
+}
+
+/* ── 요일 헤더 버튼 ── */
+.wt-dayhdr--btn {
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  font-weight: 700;
+  transition: opacity 0.15s, transform 0.1s;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.wt-dayhdr--btn:active { opacity: 0.75; transform: scale(0.96); }
+
+.weekly-day-actions {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.weekly-day-actions .weekly-edit-btn {
+  width: min(100%, 460px);
+  min-height: 54px;
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+}
+
+.weekly-day-picker {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(12px, 2vw, 22px);
+  width: 100%;
+  align-self: stretch;
+  padding: clamp(8px, 1.4vw, 18px);
+  box-sizing: border-box;
+}
+
+.weekly-day-card {
+  position: relative;
+  min-width: 0;
+  min-height: clamp(128px, 18vh, 210px);
+  aspect-ratio: 1.45 / 1;
+  border: 2px solid var(--day-border, #dbeafe);
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--day-bg, #eff6ff), #ffffff);
+  color: var(--day-text, #25395f);
+  box-shadow: 0 16px 36px rgba(76, 111, 174, 0.14);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 18px;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.weekly-day-card:active {
+  transform: scale(0.98);
+}
+
+.weekly-day-card-title {
+  font-size: clamp(1.45rem, 3vw, 2.45rem);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: 0;
+}
+
+.weekly-day-card-badge {
+  width: clamp(42px, 6vw, 64px);
+  height: clamp(42px, 6vw, 64px);
+  border-radius: 999px;
+  background: #ffffff;
+  border: 2px solid var(--day-border, #dbeafe);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--day-text, #25395f);
+  font-size: clamp(1rem, 2vw, 1.4rem);
+  font-weight: 900;
+  box-shadow: 0 6px 14px rgba(76, 111, 174, 0.12);
+}
+
+.weekly-day-card-count {
+  font-size: clamp(0.92rem, 1.4vw, 1.1rem);
+  font-weight: 800;
+  color: #5b6f96;
+}
+
+@media (min-width: 768px) {
+  .weekly-day-picker {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* ── 하루 스케줄 페이지 ── */
+.wday-outer {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 4px 2px 24px;
+  max-width: 600px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.wday-empty {
+  text-align: center;
+  color: #888;
+  font-size: 1.1rem;
+  padding: 40px 16px;
+}
+
+.wday-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #fff;
+  border: 2.5px solid var(--day-border, #ddd);
+  border-radius: 20px;
+  padding: 16px 16px 14px;
+  gap: 10px;
+  width: 100%;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+.wday-card:active { transform: scale(0.97); box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+.wday-card--editable {
+  border-style: dashed;
+  border-width: 2.5px;
+}
+.wday-card--editable::after {
+  content: "▶";
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.wday-badge {
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.02em;
+}
+
+.wday-img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 16px;
+  margin-top: 14px;
+}
+
+.wday-art {
+  font-size: 4rem;
+  line-height: 1;
+  margin-top: 14px;
+}
+
+.wday-lbl {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #222;
+}
+
+.wday-faces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  padding-top: 4px;
+  border-top: 1.5px solid #f0f0f0;
+  width: 100%;
+}
+
+.wday-face-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.person-avatar.wday-face {
+  width: 52px;
+  height: 52px;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+}
+.person-avatar.wday-face .person-avatar-emoji { font-size: 1.6rem; }
+
+.wday-face-lbl {
+  font-size: 0.65rem;
+  color: #555;
+  text-align: center;
+  max-width: 56px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ══════════════════════════════════════════════════
+   일일 시각 스케줄 (Daily Visual Schedule)
+══════════════════════════════════════════════════ */
+.dv-outer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 4px 0 24px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  align-self: stretch;
+  box-sizing: border-box;
+  background: transparent;
+}
+
+/* 날짜 헤더 */
+.dv-date-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #fbbf24;
+  border-radius: 20px;
+  padding: 14px 22px;
+  box-shadow: 0 3px 10px rgba(251,191,36,0.35);
+}
+
+.dv-date-num {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #1e293b;
+  letter-spacing: 0;
+}
+
+.dv-day-badge {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: #fff;
+  background: #f59e0b;
+  border-radius: 50%;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  flex-shrink: 0;
+}
+
+.dv-empty {
+  background: #fffbeb;
+  border: 2px dashed #fcd34d;
+  border-radius: 16px;
+  padding: 18px 20px;
+  text-align: center;
+  color: #92400e;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.dv-empty:empty {
+  min-height: 12px;
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
+/* 카드 그리드: 기본 1열, 가로화면/태블릿 2열 */
+.dv-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  width: 100%;
+}
+
+@media (min-width: 600px) {
+  .dv-grid:not(.dv-grid--flow) {
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+}
+
+/* 개별 카드 */
+/* ── 카드: 세로 배치 ── */
+.dv-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  border: 3px solid #fbbf24;
+  border-radius: 22px;
+  padding: 20px 16px 20px;
+  box-shadow: 0 3px 12px rgba(251,191,36,0.2);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  text-align: center;
+  width: 100%;
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+.dv-card:active {
+  transform: scale(0.97);
+  box-shadow: 0 1px 4px rgba(251,191,36,0.15);
+}
+
+/* 번호 배지: 왼쪽 위 고정 */
+.dv-num {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #fbbf24;
+  color: #1e293b;
+  font-size: 1.6rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  z-index: 1;
+}
+
+/* 이미지 영역: 카드 너비에 맞게 유연하게 (고정 240px은 좁은 열에서 넘침) */
+.dv-img-wrap {
+  flex-shrink: 0;
+  width: min(240px, calc(100% - 8px));
+  aspect-ratio: 1 / 1;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.dv-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.dv-art {
+  font-size: 9rem;
+  line-height: 1;
+}
+
+/* 활동 이름 */
+.dv-lbl {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #1e293b;
+  line-height: 1.2;
+  text-align: center;
+}
+
+/* 사람 얼굴 행 */
+.dv-faces {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  padding-top: 8px;
+  border-top: 2px solid #fef3c7;
+  width: 100%;
+}
+
+.dv-face-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+/* 얼굴 사진: 3배 */
+.person-avatar.dv-face {
+  width: 90px;
+  height: 90px;
+  border: 3px solid #fbbf24;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+}
+.person-avatar.dv-face .person-avatar-emoji { font-size: 3rem; }
+
+.dv-face-lbl {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #475569;
+  text-align: center;
+  max-width: 90px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dv-text-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+/* 일일·요일별 스케줄: 한 화면에 맞추기 + 가로 흐름 (아이패드는 내부 스크롤 없음) */
+.dv-outer--fit {
+  padding-top: 0;
+  padding-bottom: 4px;
+  gap: 12px;
+}
+
+.dv-outer--fit .dv-date-bar {
+  padding: 5px 12px 5px 14px;
+  border-radius: 14px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(251, 191, 36, 0.28);
+}
+.dv-outer--fit .dv-date-num {
+  font-size: 1.1rem;
+  line-height: 1.1;
+  letter-spacing: 0;
+}
+.dv-outer--fit .dv-day-badge {
+  width: 34px;
+  height: 34px;
+  font-size: 0.95rem;
+}
+
+/* 일일 스케줄: 날짜·요일이 들어가는 노란 박스 세로(위아래) 약 1/2 */
+.dv-outer--fit.dv-outer--daily .dv-date-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 10px 2px 12px;
+  border-radius: 10px;
+  min-height: 0;
+  line-height: 1;
+  box-shadow: 0 1px 4px rgba(251, 191, 36, 0.28);
+}
+.dv-outer--fit.dv-outer--daily .dv-date-num {
+  font-size: 0.88rem;
+  line-height: 1.1;
+  padding: 0;
+  margin: 0;
+}
+.dv-outer--fit.dv-outer--daily .dv-day-badge {
+  width: 24px;
+  height: 24px;
+  font-size: 0.7rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.dv-grid--flow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  align-items: stretch;
+  gap: clamp(10px, 1.6vw, 18px);
+  width: 100%;
+  max-width: 100%;
+  min-height: 0;
+  max-height: none;
+  overflow: visible;
+}
+
+/* 좁은 폰만: 카드가 많을 때 이 영역만 스크롤 */
+@media (max-width: 767px) {
+  .dv-outer--fit .dv-grid--flow {
+    max-height: min(60vh, calc(100dvh - 160px));
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+.dv-outer--fit .dv-card {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: clamp(12px, 1.8vw, 18px);
+  gap: 8px;
+  border-radius: 16px;
+  border-width: 2px;
+}
+
+.dv-outer--fit .dv-num {
+  width: 30px;
+  height: 30px;
+  font-size: 0.82rem;
+  top: 4px;
+  left: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+.dv-outer--fit .dv-num--wide {
+  width: auto;
+  min-width: 32px;
+  max-width: 4.5em;
+  height: auto;
+  min-height: 30px;
+  border-radius: 9px;
+  font-size: 0.6rem;
+  padding: 3px 4px;
+  line-height: 1.1;
+  white-space: normal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.dv-outer--fit .dv-img-wrap {
+  width: min(150px, 72%);
+  max-height: none;
+  margin-top: 0;
+  border-radius: 12px;
+}
+.dv-outer--fit .dv-art {
+  font-size: clamp(1.35rem, 4.5vw, 2.1rem);
+  line-height: 1;
+}
+.dv-outer--fit .dv-lbl {
+  font-size: clamp(1rem, 1.7vw, 1.3rem);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-top: 2px;
+}
+.dv-outer--fit .dv-text-block {
+  gap: 6px;
+}
+
+/* 아이패드·태블릿: 날짜+1·2·3·4를 한 눈에, 스크롤 없이 */
+@media (min-width: 768px) {
+  .dv-outer--fit {
+    gap: 14px;
+  }
+  .dv-outer--fit .dv-date-bar {
+    padding: 4px 14px;
+  }
+  .dv-outer--fit .dv-date-num {
+    font-size: 1.05rem;
+  }
+  .dv-outer--fit .dv-day-badge {
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+  }
+  .dv-outer--fit .dv-grid--flow {
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  }
+  .dv-outer--fit .dv-card {
+    min-height: clamp(210px, 25vh, 280px);
+    padding: clamp(14px, 1.8vw, 22px);
+  }
+  .dv-outer--fit .dv-img-wrap {
+    width: min(150px, 70%);
+  }
+  .dv-outer--fit .dv-lbl {
+    font-size: clamp(1.08rem, 1.5vw, 1.35rem);
+  }
+  .dv-outer--fit .dv-num {
+    width: 28px;
+    height: 28px;
+    font-size: 0.75rem;
+    top: 3px;
+    left: 3px;
+  }
+}
+
+/* ══════════════════════════════════════════════════
+   iPad 가로 (Landscape) 최적화
+   기준: min-width 1024px (iPad Air/Pro 가로)
+         min-width 1200px (iPad Pro 12.9" 가로)
+══════════════════════════════════════════════════ */
+
+/* ── 공통: 앱 컨테이너 가로 패딩 확대 ── */
+@media (min-width: 1024px) {
+  .app {
+    padding: 24px 40px;
+    gap: 16px;
+    justify-content: flex-start;
+  }
+
+  .topbar {
+    padding-bottom: 4px;
+  }
+
+  /* 상단 버튼 크기 업 */
+  .home-btn,
+  .back-btn {
+    padding: 14px 22px;
+    font-size: 1.1rem;
+  }
+
+  /* 날씨 선택: 항상 6열 */
+  .date-weather-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  /* 날짜 카드: 가로에서 패딩 줄이기 */
+  .date-card {
+    padding: 20px 28px 16px;
+  }
+
+  /* 날짜 드럼 피커: 가로 배치로 전환 */
+  .date-home-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+
+  /* 날짜 카드 (드럼 포함) - 왼쪽 열 전체 차지 */
+  .date-card {
+    grid-row: 1 / 2;
+  }
+
+  /* 날씨 + 문장 읽기 - 오른쪽 열 */
+  .date-weather-section {
+    padding: 16px 20px;
+  }
+
+  /* 드럼 숫자 크기 조정: 넓은 화면에서 너무 크지 않게 */
+  .date-drum-number {
+    font-size: clamp(4rem, 8vw, 7rem);
+  }
+  .date-drum-unit {
+    font-size: clamp(3rem, 6.5vw, 5.5rem);
+  }
+  .date-drum-number--wd {
+    font-size: clamp(2.8rem, 6vw, 5rem);
+  }
+  .date-drum-unit--wd {
+    font-size: clamp(2.2rem, 4.5vw, 4rem);
+  }
+
+  /* 일일 시각 스케줄: 3열 (가로 줄바꿈 레이아웃 제외) */
+  .dv-grid:not(.dv-grid--flow) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  /* 예전 그리드형 일일 스케줄만 — fit(한 화면) 레이아웃은 건드리지 않음 */
+  .dv-outer:not(.dv-outer--fit) .dv-img-wrap {
+    width: min(180px, calc(100% - 8px));
+  }
+  .dv-outer:not(.dv-outer--fit) .dv-art {
+    font-size: 7rem;
+  }
+  .dv-outer:not(.dv-outer--fit) .dv-lbl {
+    font-size: 1.3rem;
+  }
+  .dv-outer:not(.dv-outer--fit) .dv-num {
+    width: 44px;
+    height: 44px;
+    font-size: 1.35rem;
+  }
+  .dv-outer:not(.dv-outer--fit) .person-avatar.dv-face {
+    width: 72px;
+    height: 72px;
+  }
+
+  /* fit(일일/요일): 1024px 이상 — 한 화면 밀도 유지(스크롤 없음 목표) */
+  .dv-outer--fit .dv-grid--flow {
+    max-height: none;
+    overflow: visible;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: clamp(14px, 1.8vw, 24px);
+  }
+  .dv-outer--fit .dv-card {
+    min-width: 0;
+    max-width: none;
+    min-height: clamp(230px, 28vh, 330px);
+  }
+  .dv-outer--fit .dv-img-wrap {
+    width: min(170px, 70%);
+    max-height: none;
+  }
+
+  /* 주간 스케줄 컬럼 최소 너비 업 */
+  .weekly-col { min-width: 150px; }
+  .weekly-tile { min-height: 120px; }
+  .weekly-tile-img { width: 80px; height: 80px; border-radius: 11px; }
+  .weekly-tile-art { font-size: 3.5rem; }
+  .weekly-tile-lbl { font-size: 0.84rem; }
+  .weekly-hdr { font-size: 1.25rem; padding: 12px 6px; }
+
+  /* 주간 타임테이블 타일 */
+  .wt-grid {
+    grid-template-columns: 52px repeat(7, minmax(150px, 1fr));
+    gap: 8px;
+  }
+  .wt-corner, .wt-period { min-width: 52px; }
+  .wt-period { font-size: 0.78rem; }
+  .wt-tile { min-height: 130px; padding: 12px 6px 10px; }
+  .wt-empty { min-height: 130px; }
+  .wt-img { width: 84px; height: 84px; border-radius: 11px; }
+  .wt-art { font-size: 3.4rem; }
+  .wt-lbl { font-size: 0.85rem; }
+  .wt-dayhdr { font-size: 1.25rem; padding: 12px 6px; }
+
+  /* 외출하기 요약 타일 */
+  .grid.outing-summary-tiles {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  /* 하루 스케줄 상세 페이지 최대 너비 넓히기 */
+  .wday-outer {
+    max-width: 900px;
+  }
+  .wday-img {
+    width: 130px;
+    height: 130px;
+  }
+  .wday-art {
+    font-size: 5rem;
+  }
+  .wday-lbl {
+    font-size: 1.45rem;
+  }
+
+  /* 활동 상세(wdetail) 최대 너비 */
+  .wdetail-outer {
+    max-width: 700px;
+    margin-inline: auto;
+  }
+  .wdetail-hero {
+    max-width: 560px;
+  }
+  .wdetail-hero-img {
+    width: min(220px, 30vw);
+    height: min(220px, 30vw);
+  }
+
+  /* 사람 선택 그리드: 4열 */
+  .weekly-person-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .weekly-person-btn img {
+    width: 80px;
+    height: 80px;
+  }
+
+  /* 집 스케줄 현재 항목 */
+  .home-runner-current {
+    min-height: 110px;
+  }
+  .home-runner-current img {
+    width: 80px !important;
+    height: 80px !important;
+  }
+  .home-runner-current .tile-label {
+    font-size: 1.4rem;
+  }
+
+  /* 스포트라이트 버튼 크기 */
+  .spotlight-button {
+    width: min(55vw, 560px);
+  }
+}
+
+/* ── iPad Pro 12.9" 가로 (1200px+) 추가 최적화 ── */
+@media (min-width: 1200px) {
+  .app {
+    padding: 20px 56px;
+  }
+
+  /* 일일 스케줄: 4열 (flow 제외) */
+  .dv-grid:not(.dv-grid--flow) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  .dv-outer:not(.dv-outer--fit) .dv-img-wrap {
+    width: min(150px, calc(100% - 8px));
+  }
+  .dv-outer:not(.dv-outer--fit) .dv-art {
+    font-size: 5.5rem;
+  }
+  .dv-outer:not(.dv-outer--fit) .dv-lbl {
+    font-size: 1.15rem;
+  }
+}
+
+/* ══════════════════════════════════════════════════
+   Product polish layer: calmer, clearer tablet UI
+══════════════════════════════════════════════════ */
+:root {
+  --bg: #f4f7fb;
+  --card: #ffffff;
+  --text: #111827;
+  --main: #2f63d7;
+  --accent: #00a88f;
+  --warm: #f5a524;
+  --coral: #ef6f61;
+  --border: #d7e0ec;
+  --surface: #ffffff;
+  --surface-soft: #f8fbff;
+  --shadow-soft: 0 10px 28px rgba(15, 23, 42, 0.08);
+  --shadow-lift: 0 16px 36px rgba(15, 23, 42, 0.12);
+}
+
+body {
+  background:
+    linear-gradient(180deg, #f8fbff 0%, #eef6f4 48%, #f5f7fb 100%);
+}
+
+.app {
+  padding: max(12px, env(safe-area-inset-top)) clamp(14px, 2.4vw, 34px) max(12px, env(safe-area-inset-bottom));
+  gap: clamp(8px, 1.4vh, 14px);
+}
+
+.topbar {
+  min-height: 64px;
+  padding: 10px 12px;
+  border: 1px solid rgba(215, 224, 236, 0.9);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: var(--shadow-soft);
+}
+
+.title {
+  font-size: 1.18rem;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.crumb,
+.muted {
+  color: #546179;
+  font-weight: 800;
+}
+
+.muted {
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+  padding: 0 2px;
+}
+
+.home-btn,
+.back-btn,
+.weekly-edit-btn,
+.section-select-all-btn,
+.weekly-period-del,
+.date-action-btn,
+.date-sentence-btn,
+.date-step-sentence {
+  border-radius: 8px;
+  font-weight: 900;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+}
+
+.home-btn,
+.date-action-btn--primary,
+.weekly-edit-btn--primary,
+.weekly-edit-btn.primary {
+  background: linear-gradient(180deg, #3d73ed 0%, var(--main) 100%);
+  border-color: transparent;
+}
+
+.back-btn,
+.date-action-btn,
+.weekly-edit-btn {
+  background: #ffffff;
+  border: 1.5px solid var(--border);
+}
+
+.grid {
+  gap: clamp(10px, 1.8vh, 18px);
+  padding: 2px;
+}
+
+.tile,
+.grid.outing-summary-tiles .outing-summary-tile,
+.date-mode-card,
+.date-card-board,
+.date-slot,
+.date-option-card,
+.date-step-choice,
+.date-puzzle-slot,
+.date-drag-card,
+.weekly-tile,
+.weekly-act-row,
+.weekly-person-btn,
+.wday-card,
+.wdetail-hero,
+.wdetail-person-btn,
+.dv-date-bar,
+.dv-empty,
+.dv-card {
+  border-radius: 8px;
+  border-color: var(--border);
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+  box-shadow: var(--shadow-soft);
+}
+
+.tile {
+  padding: clamp(8px, 1.2vh, 14px);
+  border: 1.5px solid rgba(215, 224, 236, 0.95);
+  box-shadow: var(--shadow-soft);
+  isolation: isolate;
+}
+
+.tile img {
+  border-radius: 6px;
+  object-fit: contain;
+  padding: clamp(4px, 0.9vh, 8px);
+  background: linear-gradient(180deg, #f8fbff 0%, #eef6ff 100%);
+}
+
+.tile-art {
+  border-radius: 6px;
+  background: linear-gradient(135deg, #e7f8f3 0%, #eaf1ff 54%, #fff4d8 100%);
+  color: #0f766e;
+}
+
+.tile-label {
+  color: #111827;
+  font-size: 0.98rem;
+  line-height: 1.16;
+  min-height: 2.25em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  word-break: keep-all;
+}
+
+.tile:active,
+.btn:active,
+.weekly-tile:active,
+.weekly-person-btn:active,
+.date-drag-card:active,
+.date-option-card:active,
+.date-step-choice:active {
+  transform: scale(0.97);
+  border-color: var(--main);
+  box-shadow: 0 0 0 4px rgba(47, 99, 215, 0.16), var(--shadow-soft);
+}
+
+.tile.is-selected,
+.weekly-person-btn.is-selected,
+.date-option-card.is-selected,
+.date-step-choice.is-selected,
+.date-puzzle-slot.is-active {
+  border-color: var(--warm);
+  background: #fff8e8;
+  box-shadow: 0 0 0 4px rgba(245, 165, 36, 0.22), var(--shadow-soft);
+}
+
+.tile-check {
+  background: var(--accent);
+  box-shadow: 0 6px 16px rgba(0, 168, 143, 0.28);
+}
+
+.tile-nav {
+  border-color: #c7d2fe;
+  background: #eef3ff;
+}
+
+.date-card {
+  border-radius: 8px;
+  background: linear-gradient(140deg, #2563eb 0%, #00a88f 100%);
+  box-shadow: 0 18px 42px rgba(37, 99, 235, 0.24);
+}
+
+.date-card::before,
+.date-card::after {
+  display: none;
+}
+
+.date-weather-section,
+.date-option-panel,
+.date-step-focus-card,
+.date-step-summary-grid,
+.date-puzzle-board,
+.date-puzzle-tray,
+.player-wrap {
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: var(--shadow-soft);
+}
+
+.date-weather-tile,
+.date-option-card,
+.date-drag-card {
+  border-radius: 8px;
+  border-width: 1.5px;
+}
+
+.date-puzzle-slot.is-ready {
+  border-color: var(--accent);
+  background: #e8fbf5;
+  box-shadow: 0 0 0 4px rgba(0, 168, 143, 0.18), var(--shadow-soft);
+}
+
+.date-puzzle-slot-main,
+.date-step-summary-main,
+.date-slot-main {
+  color: #0b1220;
+}
+
+.date-puzzle-slot-unit,
+.date-step-summary-unit,
+.date-slot-unit {
+  color: #00806e;
+}
+
+.date-puzzle-tray-title,
+.date-option-title {
+  color: #334155;
+  font-size: 0.9rem;
+}
+
+.date-drag-card--weather img,
+.date-puzzle-slot--weather img,
+.date-weather-tile img {
+  border-radius: 6px;
+  background: #e7f4ff;
+}
+
+.home-runner-current {
+  border-color: var(--accent) !important;
+  background: linear-gradient(180deg, #ecfdf7 0%, #ffffff 100%) !important;
+  box-shadow: 0 0 0 4px rgba(0, 168, 143, 0.18), var(--shadow-lift) !important;
+}
+
+.home-runner-current .tile-label {
+  color: #065f52;
+}
+
+.home-runner-complete-text {
+  color: var(--accent);
+}
+
+.weekly-outer,
+.dv-outer {
+  background: rgba(255, 255, 255, 0.58);
+  border: 1px solid rgba(215, 224, 236, 0.72);
+  border-radius: 8px;
+  padding: clamp(6px, 1vh, 12px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.78);
+}
+
+.weekly-hdr,
+.wt-dayhdr {
+  border-radius: 8px;
+  background: #eaf1ff;
+  color: #1746a2;
+  border: 1px solid #cddcff;
+}
+
+.weekly-tile,
+.wt-tile,
+.dv-card {
+  border-width: 1.5px;
+}
+
+.weekly-tile-img,
+.weekly-act-img,
+.wday-img,
+.wdetail-hero-img,
+.dv-img,
+.dv-img-wrap img {
+  border-radius: 6px;
+}
+
+.dv-date-bar {
+  background: linear-gradient(180deg, #ffe8a3 0%, #ffd166 100%);
+  box-shadow: 0 8px 20px rgba(245, 165, 36, 0.20);
+}
+
+.dv-date-num {
+  color: #1f2937;
+  letter-spacing: 0;
+}
+
+.dv-day-badge,
+.dv-num {
+  background: #ffffff;
+  color: #9a5a00;
+  border: 1.5px solid #f6c34f;
+}
+
+.dv-card {
+  border-color: #f3d48a;
+}
+
+.dv-img-wrap {
+  border-radius: 8px;
+  background: #fffaf0;
+}
+
+.dv-img {
+  object-fit: contain;
+  padding: 4px;
+}
+
+.wdetail-hero {
+  border: 1.5px solid var(--border);
+}
+
+.wdetail-person-btn {
+  border: 1.5px solid var(--border);
+}
+
+.wdetail-heading {
+  color: #546179;
+  font-weight: 900;
+}
+
+.weekly-act-row--checked {
+  border-color: var(--accent);
+  background: #eafbf6;
+}
+
+.weekly-act-row--checked .weekly-act-checkmark {
+  color: var(--accent);
+}
+
+.weekly-person-section-hdr {
+  color: #1746a2;
+}
+
+.person-avatar,
+.weekly-person-btn img {
+  background: #edf5ff;
+}
+
+.return-hint {
+  border-radius: 8px;
+  background: #fff8e8;
+  border-color: #f7c66d;
+}
+
+@media (hover: hover) {
+  .tile:hover,
+  .date-drag-card:hover,
+  .weekly-tile:hover,
+  .weekly-person-btn:hover,
+  .date-option-card:hover,
+  .date-step-choice:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lift);
+  }
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 1.32rem;
+  }
+
+  .grid:not(.detail):not(.media) .tile {
+    width: min(29vw, 28vh, 250px);
+  }
+
+  .tile-label {
+    font-size: 1.05rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .app {
+    padding: 18px 44px;
+    gap: 12px;
+  }
+
+  .topbar {
+    min-height: 68px;
+  }
+
+  .grid:not(.detail):not(.media) .tile {
+    width: min(28vw, 27vh, 246px);
+  }
+
+  .grid.detail .tile,
+  .grid.media .tile {
+    width: min(28vw, 26vh, 230px);
+  }
+
+  .weekly-view {
+    gap: 8px;
+  }
+}
+
+@media (max-width: 760px) {
+  .app {
+    padding-inline: 12px;
+  }
+
+  .topbar {
+    align-items: flex-start;
+    min-height: 58px;
+    padding: 8px;
+  }
+
+  .topbar-btns {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .home-btn,
+  .back-btn {
+    min-width: 0;
+    padding: 10px 12px;
+  }
+
+  .tile-label {
+    font-size: 0.9rem;
+  }
+}
+
+/* ══════════════════════════════════════════════════
+   Soft playful theme: pastel, cute, friendly
+══════════════════════════════════════════════════ */
+:root {
+  --bg: #eef6ff;
+  --main: #3f7df4;
+  --accent: #14c8c5;
+  --warm: #ffd24a;
+  --coral: #ff6f9d;
+  --berry: #ef4f8f;
+  --violet: #8067ff;
+  --mint: #52d6a7;
+  --border: #d8e7fb;
+  --shadow-soft: 0 18px 44px rgba(73, 112, 178, 0.14);
+  --shadow-lift: 0 24px 54px rgba(73, 112, 178, 0.20);
+}
+
+body {
+  background: linear-gradient(145deg, #eaf3ff 0%, #f7fbff 42%, #eff7ff 100%);
+}
+
+.app {
+  max-width: 1360px;
+}
+
+.topbar {
+  border: 1px solid rgba(255, 255, 255, 0.84);
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 18px 46px rgba(77, 111, 166, 0.13);
+}
+
+.title {
+  color: #ef4f8f;
+  font-weight: 900;
+}
+
+.crumb,
+.muted {
+  color: #7a8aa6;
+}
+
+.home-btn {
+  background: linear-gradient(135deg, #18c6d3 0%, #3f7df4 100%);
+}
+
+.back-btn {
+  color: #31528f;
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.tile {
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.86);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.58) 100%),
+    linear-gradient(135deg, #ff78a9 0%, #ffbd72 100%);
+  box-shadow: 0 16px 34px rgba(76, 111, 174, 0.15);
+}
+
+.tile:nth-child(3n + 1) {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.48) 100%),
+    linear-gradient(135deg, #ff6f9d 0%, #ffb56f 100%);
+}
+
+.tile:nth-child(3n + 2) {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.76) 0%, rgba(255, 255, 255, 0.46) 100%),
+    linear-gradient(135deg, #4f8cff 0%, #11c5d8 100%);
+}
+
+.tile:nth-child(3n) {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.50) 100%),
+    linear-gradient(135deg, #9f8cff 0%, #ff9ed7 100%);
+}
+
+.tile img {
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.90);
+}
+
+.tile img.tile-img--cover {
+  object-fit: cover;
+  padding: 0;
+  background: transparent;
+}
+
+.dv-outer:not(.dv-outer--daily) {
+  justify-content: flex-start;
+}
+
+.tile-art {
+  background: rgba(255, 255, 255, 0.76);
+  color: #31528f;
+}
+
+.tile-label {
+  color: #ffffff;
+  font-weight: 900;
+  text-shadow: 0 2px 10px rgba(37, 52, 86, 0.22);
+}
+
+.tile-nav {
+  background: #ffffff;
+}
+
+.tile-nav .tile-label,
+.tile--weather-choice .tile-label {
+  color: #23437f;
+  text-shadow: none;
+}
+
+.tile.is-selected {
+  border-color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(255, 210, 74, 0.55), 0 18px 44px rgba(76, 111, 174, 0.18);
+}
+
+.date-card {
+  background: linear-gradient(145deg, #4095ff 0%, #6276f7 55%, #7d67f7 100%);
+  box-shadow: 0 24px 60px rgba(67, 119, 239, 0.30);
+}
+
+.date-card-badge,
+.date-card-weather {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.date-weather-section,
+.date-option-panel,
+.date-step-focus-card,
+.date-step-summary-grid,
+.date-puzzle-board,
+.date-puzzle-tray,
+.weekly-outer,
+.dv-outer,
+.player-wrap {
+  border-color: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 18px 44px rgba(76, 111, 174, 0.13);
+}
+
+.date-weather-tile,
+.date-option-card,
+.date-step-choice,
+.date-puzzle-slot,
+.date-drag-card,
+.weekly-tile,
+.weekly-act-row,
+.weekly-person-btn,
+.wday-card,
+.wdetail-hero,
+.wdetail-person-btn,
+.dv-card {
+  border-color: #dbeafe;
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.date-puzzle-slot.is-active,
+.date-slot.is-active,
+.weekly-person-btn.is-selected,
+.date-option-card.is-selected,
+.date-step-choice.is-selected {
+  border-color: #ffd24a;
+  background: #fff9df;
+  box-shadow: 0 0 0 4px rgba(255, 210, 74, 0.34), 0 18px 44px rgba(76, 111, 174, 0.15);
+}
+
+.date-puzzle-slot.is-ready {
+  border-color: #14c8c5;
+  background: #e9fffb;
+}
+
+.date-action-btn--primary,
+.weekly-edit-btn--primary,
+.weekly-edit-btn.primary,
+.date-sentence-btn,
+.date-step-sentence {
+  color: #ffffff;
+  background: linear-gradient(135deg, #4f8cff 0%, #6f6df7 100%);
+  border-color: transparent;
+}
+
+.date-action-btn,
+.weekly-edit-btn {
+  color: #31528f;
+}
+
+.weekly-hdr,
+.wt-dayhdr {
+  color: #ffffff;
+  border-color: transparent;
+  background: linear-gradient(135deg, #4f8cff 0%, #22c6d8 100%);
+  box-shadow: 0 8px 20px rgba(79, 140, 255, 0.22);
+}
+
+.weekly-tile-lbl,
+.weekly-act-lbl,
+.weekly-person-lbl,
+.wday-lbl,
+.wdetail-hero-lbl,
+.wdetail-person-lbl,
+.dv-lbl {
+  color: #25395f;
+}
+
+.home-runner-current {
+  background: linear-gradient(135deg, #e9fffb 0%, #ffffff 100%) !important;
+  border-color: #14c8c5 !important;
+}
+
+.dv-date-bar {
+  background: linear-gradient(135deg, #ffe66d 0%, #ffb86f 100%);
+}
+
+.dv-card {
+  border-color: #ffe1a8;
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.person-avatar,
+.weekly-person-btn img,
+.weekly-tile-img,
+.wday-img,
+.wdetail-hero-img,
+.dv-img-wrap {
+  background: rgba(255, 255, 255, 0.80);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.96);
+}
+
+@media (min-width: 768px) {
+  .grid:not(.detail):not(.media) .tile {
+    width: min(28vw, 27vh, 252px);
+  }
+}
+
+/* Home schedule: six square choices per page, then three-step runner. */
+.grid.home-activity-picker {
+  grid-template-columns: repeat(3, minmax(0, 245px)) !important;
+  width: 100%;
+  max-width: 780px;
+  margin-inline: auto;
+  align-content: start;
+  justify-content: center;
+  justify-items: center;
+  gap: clamp(12px, 1.8vh, 18px);
+}
+
+.grid.home-activity-picker > .tile {
+  width: 100% !important;
+  max-width: 245px !important;
+  aspect-ratio: 1 / 1 !important;
+  min-height: 0 !important;
+  padding: clamp(8px, 1.2vh, 12px);
+}
+
+.grid.home-activity-picker > .tile img {
+  object-fit: contain;
+  padding: clamp(5px, 0.9vh, 8px);
+}
+
+.grid.home-activity-picker > .tile .tile-label {
+  flex: 0 0 auto;
+  min-height: 2em;
+  font-size: clamp(0.88rem, 1.65vh, 1.05rem);
+}
+
+.grid.home-activity-picker > .tile-nav {
+  width: 100% !important;
+  aspect-ratio: 1 / 1 !important;
+  min-height: 0 !important;
+  flex-direction: column;
+}
+
+.grid.home-activity-picker > .btn {
+  grid-column: 1 / -1;
+  min-height: 48px;
+}
+
+.home-activity-actions {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(10px, 1.6vh, 14px);
+  justify-self: center;
+  width: min(100%, 520px);
+  margin-top: clamp(4px, 1vh, 10px);
+}
+
+.home-activity-actions .btn {
+  min-height: 58px;
+  font-size: clamp(1.05rem, 2.1vh, 1.35rem);
+}
+
+.grid.home-runner-grid {
+  grid-template-columns: 1fr !important;
+  width: 100%;
+  max-width: 100%;
+  min-height: min(70vh, 620px);
+  margin-inline: auto;
+  align-content: center;
+  justify-content: center;
+  justify-items: center;
+  gap: clamp(14px, 2vh, 22px);
+}
+
+.grid.home-runner-grid .home-runner-tile {
+  width: min(82vw, 58vh, 560px) !important;
+  max-width: 560px !important;
+  aspect-ratio: 1 / 1 !important;
+  min-height: 0 !important;
+  padding: clamp(14px, 2.2vh, 24px) !important;
+}
+
+.grid.home-runner-grid .home-runner-current {
+  grid-column: auto !important;
+  grid-row: auto !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  border: 4px solid #14c8c5 !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.56) 100%),
+    linear-gradient(135deg, #35d6d2 0%, #4f8cff 100%) !important;
+  box-shadow: 0 0 0 5px rgba(20, 200, 197, 0.18), 0 20px 48px rgba(76, 111, 174, 0.22) !important;
+  overflow: hidden;
+}
+
+.grid.home-runner-grid .home-runner-next {
+  border: 2px solid rgba(255, 255, 255, 0.92) !important;
+  opacity: 0.9;
+}
+
+.grid.home-runner-grid .home-runner-current img,
+.grid.home-runner-grid .home-runner-next img {
+  width: 100% !important;
+  height: clamp(260px, 48vh, 430px) !important;
+  min-height: 0 !important;
+  flex: 1 1 auto !important;
+  object-fit: contain !important;
+  border-radius: 10px !important;
+}
+
+.grid.home-runner-grid .home-runner-current img {
+  max-height: 78% !important;
+  padding: 0 !important;
+  transform: none;
+  margin-inline: auto;
+}
+
+.grid.home-runner-grid .home-runner-next img {
+  max-height: 46% !important;
+}
+
+.grid.home-runner-grid .home-runner-current .tile-art,
+.grid.home-runner-grid .home-runner-next .tile-art {
+  width: 100% !important;
+  flex: 1 1 auto !important;
+}
+
+.grid.home-runner-grid .home-runner-current .tile-art {
+  font-size: clamp(6rem, 18vh, 10rem) !important;
+}
+
+.grid.home-runner-grid .home-runner-next .tile-art {
+  font-size: clamp(2.8rem, 8vh, 5rem) !important;
+}
+
+.grid.home-runner-grid .home-runner-current .tile-label {
+  flex: 0 0 auto !important;
+  min-height: auto;
+  width: 100%;
+  color: #ffffff !important;
+  font-size: clamp(1.65rem, 4vh, 2.35rem) !important;
+  line-height: 1.08;
+  text-align: center !important;
+}
+
+.grid.home-runner-grid .home-runner-next .tile-label {
+  flex: 0 0 auto !important;
+  min-height: 2em;
+  font-size: clamp(0.95rem, 2vh, 1.18rem) !important;
+}
+
+.grid.home-runner-grid > .btn {
+  grid-column: 1 / -1 !important;
+  width: min(82vw, 360px);
+  justify-self: center;
+}
+
+@media (max-width: 720px) {
+  .grid.home-activity-picker {
+    grid-template-columns: repeat(2, minmax(0, 245px)) !important;
+  }
+
+  .grid.home-runner-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .grid.home-runner-grid .home-runner-current {
+    width: min(88vw, 500px) !important;
+  }
+}
+
+/* Main screen pager: keep six tiles together and put page navigation beside them. */
+.grid.grid--side-pager {
+  grid-template-columns: repeat(3, minmax(0, min(23vw, 245px))) minmax(0, min(23vw, 245px)) !important;
+  justify-content: center;
+  align-content: center;
+  gap: clamp(10px, 1.6vh, 16px);
+  max-width: 1040px;
+  margin-inline: auto;
+}
+
+.grid.grid--side-pager > .tile {
+  width: min(100%, 245px) !important;
+  max-width: 245px !important;
+}
+
+.grid.grid--side-pager > .tile:nth-of-type(1) { grid-column: 1; grid-row: 1; }
+.grid.grid--side-pager > .tile:nth-of-type(2) { grid-column: 2; grid-row: 1; }
+.grid.grid--side-pager > .tile:nth-of-type(3) { grid-column: 3; grid-row: 1; }
+.grid.grid--side-pager > .tile:nth-of-type(4) { grid-column: 1; grid-row: 2; }
+.grid.grid--side-pager > .tile:nth-of-type(5) { grid-column: 2; grid-row: 2; }
+.grid.grid--side-pager > .tile:nth-of-type(6) { grid-column: 3; grid-row: 2; }
+
+.grid.grid--side-pager > .tile.tile-side-slot {
+  grid-column: 4;
+  grid-row: 1 / span 2;
+  align-self: center;
+  justify-self: center;
+  width: min(100%, 245px) !important;
+  max-width: 245px !important;
+  aspect-ratio: 1 / 1 !important;
+}
+
+.grid.grid--side-pager > .tile.quick-toilet-side {
+  grid-column: 4;
+  grid-row: 1;
+  align-self: center;
+  justify-self: center;
+  width: min(100%, 245px) !important;
+  max-width: 245px !important;
+  aspect-ratio: 1 / 1 !important;
+}
+
+.grid.grid--side-pager-with-toilet:not(.grid--side-pager-triple) .tile-nav-arrow {
+  grid-row: 2;
+}
+
+.grid.grid--side-pager-triple .tile-nav-arrow--prev {
+  grid-row: 2;
+}
+
+.grid.grid--side-pager-triple .tile-nav-arrow--next {
+  grid-row: 3;
+}
+
+.grid.grid--side-pager-triple > .tile.quick-toilet-side {
+  grid-row: 1;
+}
+
+.quick-toilet-tile {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.58) 100%),
+    linear-gradient(135deg, #d8b4fe 0%, #f9a8d4 100%);
+}
+
+.quick-toilet-tile img {
+  object-fit: contain;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.tile-nav-arrow {
+  grid-column: 4;
+  grid-row: 1 / span 2;
+  align-self: center;
+  justify-self: center;
+  width: min(100%, 245px);
+  max-width: 245px;
+  aspect-ratio: 1 / 1;
+  border: 2px solid rgba(255, 255, 255, 0.86);
+  border-radius: 18px;
+  color: #ffffff;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.76) 0%, rgba(255, 255, 255, 0.46) 100%),
+    linear-gradient(135deg, #4f8cff 0%, #11c5d8 100%);
+  box-shadow: 0 16px 34px rgba(76, 111, 174, 0.15);
+  font-size: clamp(1.35rem, 2.8vh, 2rem);
+  font-weight: 900;
+  line-height: 1.1;
+  text-shadow: 0 2px 10px rgba(37, 52, 86, 0.22);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: clamp(10px, 1.7vh, 16px);
+  padding: clamp(8px, 1.5vh, 16px);
+  text-align: center;
+}
+
+.tile-nav-arrow::before {
+  content: "▶";
+  width: clamp(58px, 8vh, 86px);
+  height: clamp(58px, 8vh, 86px);
+  border-radius: 999px;
+  background:
+    linear-gradient(135deg, #ff9ed7 0%, #8bc8ff 52%, #48ddd6 100%);
+  box-shadow:
+    0 12px 26px rgba(76, 111, 174, 0.22),
+    inset 0 -5px 14px rgba(37, 52, 86, 0.10);
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(1.7rem, 4.2vh, 2.6rem);
+  line-height: 1;
+  padding-left: 0.16em;
+  text-shadow: 0 3px 8px rgba(37, 52, 86, 0.22);
+}
+
+.tile-nav-arrow::after {
+  content: none;
+}
+
+.tile-nav-arrow--prev::before {
+  content: "◀";
+  padding-left: 0;
+  padding-right: 0.12em;
+}
+
+.grid.grid--side-pager-double .tile-nav-arrow--prev {
+  grid-row: 1;
+  align-self: center;
+}
+
+.grid.grid--side-pager-double .tile-nav-arrow--next {
+  grid-row: 2;
+  align-self: center;
+}
+
+.grid.grid--side-pager-with-toilet:not(.grid--side-pager-triple) .tile-nav-arrow {
+  grid-row: 2;
+}
+
+.grid.grid--side-pager-triple .tile-nav-arrow--prev {
+  grid-row: 2;
+}
+
+.grid.grid--side-pager-triple .tile-nav-arrow--next {
+  grid-row: 3;
+}
+
+.tile-nav-arrow:active {
+  transform: scale(0.96);
+}
+
+@media (max-width: 760px) {
+  .grid.grid--side-pager {
+    grid-template-columns: repeat(2, minmax(0, 210px)) minmax(0, 210px) !important;
+    max-width: 100%;
+  }
+
+  .grid.grid--side-pager > .tile {
+    width: min(100%, 210px) !important;
+  }
+
+  .grid.grid--side-pager > .tile:nth-of-type(1) { grid-column: 1; grid-row: 1; }
+  .grid.grid--side-pager > .tile:nth-of-type(2) { grid-column: 2; grid-row: 1; }
+  .grid.grid--side-pager > .tile:nth-of-type(3) { grid-column: 1; grid-row: 2; }
+  .grid.grid--side-pager > .tile:nth-of-type(4) { grid-column: 2; grid-row: 2; }
+  .grid.grid--side-pager > .tile:nth-of-type(5) { grid-column: 1; grid-row: 3; }
+  .grid.grid--side-pager > .tile:nth-of-type(6) { grid-column: 2; grid-row: 3; }
+
+  .grid.grid--side-pager > .tile.tile-side-slot {
+    grid-column: 3;
+    grid-row: 1 / span 3;
+    width: min(100%, 210px) !important;
+  }
+
+  .grid.grid--side-pager > .tile.quick-toilet-side {
+    grid-column: 3;
+    grid-row: 1;
+    width: min(100%, 210px) !important;
+    max-width: 210px !important;
+  }
+
+  .grid.grid--side-pager-triple > .tile.quick-toilet-side {
+    grid-row: 1;
+  }
+
+  .tile-nav-arrow {
+    grid-column: 3;
+    grid-row: 1 / span 3;
+    width: min(100%, 210px);
+    max-width: 210px;
+  }
+
+  .grid.grid--side-pager-double .tile-nav-arrow--prev {
+    grid-row: 1;
+    align-self: center;
+  }
+
+  .grid.grid--side-pager-double .tile-nav-arrow--next {
+    grid-row: 2;
+    align-self: center;
+  }
+
+  .grid.grid--side-pager-with-toilet:not(.grid--side-pager-triple) .tile-nav-arrow {
+    grid-row: 2;
+  }
+
+  .grid.grid--side-pager-triple .tile-nav-arrow--prev {
+    grid-row: 2;
+  }
+
+  .grid.grid--side-pager-triple .tile-nav-arrow--next {
+    grid-row: 3;
+  }
+}
+
+/* Keep normal menu tiles the same size as the main menu tiles. */
+.grid.detail,
+.grid.media,
+.grid:not(.detail):not(.media):not(.grid--side-pager):not(.home-activity-picker):not(.home-runner-grid):not(.outing-summary-tiles) {
+  grid-template-columns: repeat(3, minmax(0, 245px)) !important;
+  justify-content: center;
+  justify-items: center;
+  max-width: 780px;
+  margin-inline: auto;
+}
+
+.grid.detail > .tile,
+.grid.media > .tile,
+.grid:not(.detail):not(.media):not(.grid--side-pager):not(.home-activity-picker):not(.home-runner-grid):not(.outing-summary-tiles) > .tile {
+  width: min(100%, 245px) !important;
+  max-width: 245px !important;
+}
+
+.grid.grid--meal-drink > .tile:nth-of-type(2) {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+}
+
+.grid.grid--meal-drink > .tile:nth-of-type(5) {
+  grid-column: 2 !important;
+  grid-row: 2 !important;
+}
+
+.grid.grid--meal-drink > .tile img {
+  object-fit: contain;
+}
+
+@media (max-width: 760px) {
+  .grid.detail,
+  .grid.media,
+  .grid:not(.detail):not(.media):not(.grid--side-pager):not(.home-activity-picker):not(.home-runner-grid):not(.outing-summary-tiles) {
+    grid-template-columns: repeat(2, minmax(0, 210px)) !important;
+    max-width: 100%;
+  }
+
+  .grid.detail > .tile,
+  .grid.media > .tile,
+  .grid:not(.detail):not(.media):not(.grid--side-pager):not(.home-activity-picker):not(.home-runner-grid):not(.outing-summary-tiles) > .tile {
+    width: min(100%, 210px) !important;
+    max-width: 210px !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .grid.grid--mobile-main-menu {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    align-content: start;
+    justify-content: stretch;
+    justify-items: stretch;
+    gap: 10px;
+    width: 100%;
+    max-width: 100%;
+    padding: 2px 4px max(18px, env(safe-area-inset-bottom));
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .grid.grid--mobile-main-menu > .tile {
+    width: 100% !important;
+    max-width: none !important;
+    min-height: 136px;
+    aspect-ratio: 1 / 1;
+  }
+
+  .grid.grid--mobile-main-menu > .tile img,
+  .grid.grid--mobile-main-menu > .tile .tile-art {
+    width: min(54%, 86px);
+    height: min(54%, 86px);
+  }
+
+  .grid.grid--mobile-main-menu > .tile .tile-label {
+    font-size: clamp(0.92rem, 4vw, 1.08rem);
+    line-height: 1.15;
+  }
+}
+
+/* Final date polish: match main menu scale and keep units outside value cards. */
+.date-mode-select {
+  grid-template-columns: repeat(3, minmax(0, 245px)) !important;
+  justify-content: center !important;
+  justify-items: center !important;
+  max-width: 780px;
+  margin-inline: auto;
+}
+
+.date-mode-card {
+  width: min(100%, 245px) !important;
+  max-width: 245px !important;
+  aspect-ratio: 1 / 1 !important;
+  min-height: 0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.86) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.48) 100%),
+    linear-gradient(135deg, #ff78a9 0%, #ffbd72 100%) !important;
+  color: #ffffff !important;
+}
+
+.date-mode-card:nth-child(3n + 2) {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.76) 0%, rgba(255, 255, 255, 0.46) 100%),
+    linear-gradient(135deg, #4f8cff 0%, #11c5d8 100%) !important;
+}
+
+.date-mode-card:nth-child(3n) {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.50) 100%),
+    linear-gradient(135deg, #9f8cff 0%, #ff9ed7 100%) !important;
+}
+
+.date-mode-icon {
+  color: #23437f;
+  text-shadow: none;
+}
+
+.date-mode-title,
+.date-mode-sub {
+  color: #ffffff !important;
+}
+
+.date-card-board {
+  grid-template-columns: repeat(5, minmax(0, 150px)) !important;
+  justify-content: center;
+}
+
+.date-field-label {
+  color: #31528f;
+}
+
+.date-field .date-slot {
+  width: 100% !important;
+  aspect-ratio: 1 / 1 !important;
+}
+
+.date-field .date-slot-main {
+  font-size: clamp(2.3rem, 6vh, 4rem) !important;
+}
+
+.date-field--weekday .date-slot-main,
+.date-field--weather .date-slot-main {
+  font-size: clamp(1.25rem, 2.7vh, 1.65rem) !important;
+}
+
+@media (max-width: 900px) {
+  .date-mode-select {
+    grid-template-columns: repeat(2, minmax(0, 245px)) !important;
+    max-width: 520px;
+  }
+
+  .date-card-board {
+    grid-template-columns: repeat(3, minmax(0, 150px)) !important;
+  }
+}

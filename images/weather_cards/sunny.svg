@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360" role="img" aria-label="sunny weather">
+  <rect width="480" height="360" rx="28" fill="#B9E7FF"/>
+  <circle cx="240" cy="178" r="78" fill="#FFD84D" stroke="#F5A400" stroke-width="12"/>
+  <g stroke="#F5A400" stroke-width="18" stroke-linecap="round">
+    <path d="M240 46v48"/>
+    <path d="M240 262v52"/>
+    <path d="M108 178h50"/>
+    <path d="M322 178h50"/>
+    <path d="M146 84l36 36"/>
+    <path d="M298 236l36 36"/>
+    <path d="M334 84l-36 36"/>
+    <path d="M182 236l-36 36"/>
+  </g>
+  <circle cx="214" cy="168" r="9" fill="#7A4A00"/>
+  <circle cx="266" cy="168" r="9" fill="#7A4A00"/>
+  <path d="M212 202c18 18 39 18 56 0" fill="none" stroke="#7A4A00" stroke-width="10" stroke-linecap="round"/>
+</svg>

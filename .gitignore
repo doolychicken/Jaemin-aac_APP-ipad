@@ -1,0 +1,17 @@
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Editor
+.vscode/
+*.swp
+*~
+
+# Saved-page / screenshot dumps and other machine-local clutter (not referenced by index.html)
+_local/
+*_files/
+commit_msg.txt
+
+# Editor or script backups next to the real file
+*.backup.html

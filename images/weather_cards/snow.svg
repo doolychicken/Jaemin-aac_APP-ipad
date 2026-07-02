@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360" role="img" aria-label="snowy weather">
+  <rect width="480" height="360" rx="28" fill="#DDF4FF"/>
+  <circle cx="176" cy="134" r="50" fill="#FFFFFF"/>
+  <circle cx="238" cy="110" r="66" fill="#FFFFFF"/>
+  <circle cx="310" cy="144" r="54" fill="#FFFFFF"/>
+  <rect x="136" y="142" width="224" height="70" rx="35" fill="#FFFFFF"/>
+  <g stroke="#52A8E8" stroke-width="10" stroke-linecap="round">
+    <path d="M240 232v76"/>
+    <path d="M207 251l66 38"/>
+    <path d="M273 251l-66 38"/>
+  </g>
+  <g fill="#FFFFFF" stroke="#52A8E8" stroke-width="6">
+    <circle cx="150" cy="262" r="16"/>
+    <circle cx="332" cy="264" r="16"/>
+  </g>
+</svg>

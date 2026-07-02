@@ -1,0 +1,491 @@
+/* Date activity final overrides. Loaded after app.css. */
+.date-action-row--reset {
+  grid-template-columns: 1fr 1fr 1.2fr !important;
+  width: min(100%, 1080px) !important;
+  justify-self: center !important;
+}
+
+.date-step .date-action-row--reset {
+  grid-template-columns: repeat(3, minmax(72px, 96px)) !important;
+  width: auto !important;
+  justify-self: end !important;
+  gap: 8px !important;
+}
+
+.date-step .date-action-row--reset .date-action-btn {
+  min-height: 40px !important;
+  padding: 6px 10px !important;
+  font-size: 0.88rem !important;
+  border-radius: 8px !important;
+}
+
+.date-step {
+  gap: clamp(12px, 1.8vh, 18px) !important;
+  align-content: center !important;
+  justify-items: center !important;
+}
+
+.date-step--summary {
+  grid-template-rows: auto auto auto auto !important;
+  align-content: center !important;
+  gap: clamp(8px, 1.2vh, 12px) !important;
+}
+
+.date-step .date-step-focus-card,
+.date-step .date-step-date-board,
+.date-step .date-step-final-board {
+  width: min(100%, 1080px) !important;
+  border: 2px solid rgba(255, 255, 255, 0.92) !important;
+  border-radius: 14px !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(255, 255, 255, 0.62)),
+    linear-gradient(135deg, rgba(255, 120, 169, 0.1), rgba(17, 197, 216, 0.14)),
+    #f8fbff !important;
+  box-shadow: 0 22px 54px rgba(76, 111, 174, 0.18) !important;
+  padding: clamp(14px, 2.2vh, 22px) !important;
+  justify-content: center !important;
+  align-content: center !important;
+}
+
+.date-step .date-step-focus-card {
+  min-height: clamp(260px, 36vh, 380px) !important;
+}
+
+.date-step .date-step-date-board {
+  grid-template-columns: repeat(3, minmax(0, 260px)) !important;
+}
+
+.date-step .date-step-final-board {
+  grid-template-columns: minmax(0, 390px) minmax(0, 230px) minmax(0, 230px) !important;
+  grid-template-rows: repeat(2, auto) !important;
+  gap: clamp(10px, 1.5vh, 16px) clamp(12px, 1.8vw, 18px) !important;
+  align-items: center !important;
+  justify-items: center !important;
+  padding-block: clamp(10px, 1.6vh, 16px) !important;
+}
+
+.date-step .date-step-final-board .date-step-unit-pair--year {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  grid-template-columns: auto auto !important;
+  gap: clamp(6px, 1vw, 10px) !important;
+  justify-content: center !important;
+}
+
+.date-step .date-step-final-board .date-step-unit-pair--year .date-puzzle-slot {
+  width: clamp(220px, 22vw, 270px) !important;
+  max-width: 270px !important;
+  aspect-ratio: 1.75 / 1 !important;
+}
+
+.date-step .date-step-final-board .date-step-unit-pair--month {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+}
+
+.date-step .date-step-final-board .date-step-unit-pair--day {
+  grid-column: 3 !important;
+  grid-row: 1 !important;
+}
+
+.date-step .date-step-final-board .date-step-unit-pair--weekday {
+  grid-column: 1 !important;
+  grid-row: 2 !important;
+}
+
+.date-step .date-step-final-board .date-step-unit-pair--weather {
+  grid-column: 2 / span 2 !important;
+  grid-row: 2 !important;
+}
+
+.date-step-unit-pair {
+  display: grid;
+  grid-template-columns: minmax(0, 170px) auto;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 1.4vh, 14px);
+  min-width: 0;
+}
+
+.date-step-unit-pair--year {
+  grid-template-columns: minmax(0, 310px) auto;
+}
+
+.date-step-unit-pair--weather {
+  grid-template-columns: auto minmax(0, 170px);
+}
+
+.date-step--year .date-step-unit-pair--year {
+  grid-template-columns: minmax(0, 360px) auto;
+}
+
+.date-step-unit-label {
+  color: #047857;
+  font-size: clamp(1.8rem, 4.4vh, 3.4rem);
+  font-weight: 900;
+  line-height: 1;
+  white-space: nowrap;
+  text-shadow: none;
+}
+
+.date-step .date-puzzle-slot::before {
+  display: none !important;
+}
+
+.date-step .date-puzzle-slot {
+  width: min(100%, 170px) !important;
+  max-width: 170px !important;
+  aspect-ratio: 1 / 1 !important;
+  min-height: 0 !important;
+  border: 3px dashed rgba(49, 82, 143, 0.34) !important;
+  border-radius: 8px !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.48) 100%),
+    linear-gradient(135deg, #4f8cff 0%, #11c5d8 100%) !important;
+  color: #ffffff !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  text-shadow: 0 2px 10px rgba(37, 52, 86, 0.24) !important;
+  overflow: hidden !important;
+}
+
+.date-step .date-step-focus-card .date-puzzle-slot {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+.date-step--year .date-step-focus-card .date-puzzle-slot {
+  width: 100% !important;
+  max-width: none !important;
+  aspect-ratio: 1.75 / 1 !important;
+}
+
+.date-step .date-puzzle-slot.is-active,
+.date-step .date-puzzle-slot.is-ready {
+  border-style: solid !important;
+  border-color: #ffd24a !important;
+  box-shadow:
+    0 0 0 5px rgba(255, 210, 74, 0.28),
+    0 16px 34px rgba(76, 111, 174, 0.16) !important;
+}
+
+.date-step .date-puzzle-slot-main {
+  color: #ffffff !important;
+  font-size: clamp(2.4rem, 5.8vw, 4.1rem) !important;
+  line-height: 1 !important;
+}
+
+.date-step--year .date-puzzle-slot-main {
+  font-size: clamp(3.7rem, 8.8vh, 6.2rem) !important;
+}
+
+.date-step .date-puzzle-slot--weather {
+  gap: 6px !important;
+}
+
+.date-step .date-puzzle-slot--weather img {
+  width: min(110px, 70%) !important;
+  height: min(84px, 46%) !important;
+  object-fit: contain;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.74);
+}
+
+.date-step .date-puzzle-tray {
+  width: min(100%, 1080px) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.88) !important;
+  border-radius: 8px !important;
+  background: rgba(255, 255, 255, 0.78) !important;
+  box-shadow: 0 18px 44px rgba(76, 111, 174, 0.13) !important;
+  padding: clamp(14px, 2vh, 20px) !important;
+}
+
+.date-step--summary .date-puzzle-tray {
+  padding: clamp(8px, 1.1vh, 12px) !important;
+  align-self: start !important;
+}
+
+.date-step .date-puzzle-tray-title {
+  display: none !important;
+}
+
+.date-step .date-puzzle-card-grid {
+  grid-template-columns: repeat(auto-fit, minmax(132px, 170px)) !important;
+  justify-content: center !important;
+  gap: clamp(12px, 1.8vh, 18px) !important;
+}
+
+.date-step--summary .date-puzzle-card-grid {
+  align-content: center !important;
+}
+
+.date-step .date-puzzle-card-grid--weekday {
+  grid-template-columns: repeat(auto-fit, minmax(132px, 170px)) !important;
+}
+
+.date-step .date-drag-card {
+  width: min(100%, 170px) !important;
+  max-width: 170px !important;
+  aspect-ratio: 1 / 1 !important;
+  border-radius: 8px !important;
+  font-size: clamp(2rem, 4.4vh, 3rem) !important;
+}
+
+.date-step .date-puzzle-card-grid--weekday .date-drag-card {
+  width: min(100%, 170px) !important;
+  max-width: 170px !important;
+  font-size: clamp(2rem, 4.4vh, 3rem) !important;
+}
+
+.date-step .date-drag-card.is-used {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.date-step .date-drag-card--weather {
+  font-size: clamp(1rem, 2vh, 1.3rem) !important;
+}
+
+.date-step .date-drag-card--weather img {
+  width: min(110px, 84%) !important;
+  height: min(84px, 50%) !important;
+}
+
+.date-step .date-step-sentence--complete {
+  width: min(100%, 720px) !important;
+  justify-self: center !important;
+  margin-top: clamp(4px, 1vh, 10px) !important;
+}
+
+@media (max-width: 760px) {
+  .date-action-row--reset {
+    grid-template-columns: 1fr !important;
+  }
+
+  .date-step .date-action-row--reset {
+    grid-template-columns: repeat(3, minmax(64px, 88px)) !important;
+  }
+
+  .date-step .date-step-date-board,
+  .date-step .date-step-final-board {
+    grid-template-columns: repeat(2, minmax(0, 240px)) !important;
+  }
+
+  .date-step .date-step-final-board .date-step-unit-pair--year,
+  .date-step .date-step-final-board .date-step-unit-pair--month,
+  .date-step .date-step-final-board .date-step-unit-pair--day,
+  .date-step .date-step-final-board .date-step-unit-pair--weekday,
+  .date-step .date-step-final-board .date-step-unit-pair--weather {
+    grid-column: auto !important;
+    grid-row: auto !important;
+  }
+
+  .date-step-unit-pair,
+  .date-step-unit-pair--year,
+  .date-step-unit-pair--weather,
+  .date-step--year .date-step-unit-pair--year {
+    grid-template-columns: minmax(0, 150px) auto;
+  }
+
+  .date-step-unit-label {
+    font-size: clamp(1.35rem, 4vh, 2.25rem);
+  }
+
+  .date-step .date-step-final-board .date-step-unit-pair--year {
+    grid-template-columns: auto auto !important;
+  }
+
+  .date-step .date-step-final-board .date-step-unit-pair--year .date-puzzle-slot {
+    width: clamp(190px, 52vw, 240px) !important;
+    max-width: 240px !important;
+    aspect-ratio: 1.65 / 1 !important;
+  }
+
+  .date-step .date-puzzle-card-grid--weekday {
+    grid-template-columns: repeat(auto-fit, minmax(118px, 150px)) !important;
+  }
+
+  .date-step .date-puzzle-card-grid--weekday .date-drag-card {
+    width: min(100%, 150px) !important;
+    max-width: 150px !important;
+  }
+}
+
+/* Version 4: larger Gulim-like matching cards and separated weekday step. */
+.date-step {
+  font-family: Gulim, "굴림", "Malgun Gothic", sans-serif !important;
+  grid-template-rows: auto auto auto !important;
+  align-content: center !important;
+  gap: clamp(14px, 2vh, 22px) !important;
+}
+
+.date-step--date .date-step-date-board {
+  grid-template-columns: repeat(2, minmax(0, 330px)) !important;
+}
+
+.date-step .date-step-focus-card,
+.date-step .date-step-date-board {
+  min-height: clamp(220px, 30vh, 305px) !important;
+}
+
+.date-step--weekday .date-step-focus-card,
+.date-step--weather .date-step-focus-card {
+  min-height: clamp(220px, 30vh, 305px) !important;
+}
+
+.date-step .date-puzzle-tray {
+  min-height: clamp(210px, 27vh, 270px) !important;
+  display: grid !important;
+  place-items: center !important;
+  align-content: center !important;
+  justify-content: center !important;
+}
+
+.date-step--year .date-puzzle-tray {
+  min-height: clamp(210px, 26vh, 260px) !important;
+}
+
+.date-step .date-puzzle-card-grid {
+  width: fit-content !important;
+  max-width: 100% !important;
+  align-items: center !important;
+  justify-items: center !important;
+  align-content: center !important;
+}
+
+.date-step-unit-pair {
+  grid-template-columns: minmax(0, 190px) auto !important;
+  gap: clamp(10px, 1.6vw, 18px) !important;
+}
+
+.date-step-unit-pair--year,
+.date-step--year .date-step-unit-pair--year {
+  grid-template-columns: minmax(0, 390px) auto !important;
+}
+
+.date-step-unit-pair--weather {
+  grid-template-columns: auto minmax(0, 190px) !important;
+}
+
+.date-step-unit-label {
+  color: #00735f !important;
+  font-family: Gulim, "굴림", "Malgun Gothic", sans-serif !important;
+  font-size: clamp(3rem, 7.2vh, 5.1rem) !important;
+  font-weight: 900 !important;
+  letter-spacing: 0 !important;
+  line-height: 0.95 !important;
+}
+
+.date-step-unit-pair--weather .date-step-unit-label,
+.date-step-unit-pair--weekday .date-step-unit-label {
+  font-size: clamp(2.75rem, 6.6vh, 4.7rem) !important;
+}
+
+.date-step .date-puzzle-slot {
+  width: min(100%, 190px) !important;
+  max-width: 190px !important;
+  font-family: Gulim, "굴림", "Malgun Gothic", sans-serif !important;
+  font-weight: 900 !important;
+}
+
+.date-step .date-step-focus-card .date-puzzle-slot {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+.date-step--year .date-step-focus-card .date-puzzle-slot {
+  aspect-ratio: 1.9 / 1 !important;
+}
+
+.date-step .date-puzzle-slot-main {
+  font-family: Gulim, "굴림", "Malgun Gothic", sans-serif !important;
+  font-size: clamp(3.4rem, 8vh, 5.8rem) !important;
+  font-weight: 900 !important;
+}
+
+.date-step--year .date-puzzle-slot-main {
+  font-size: clamp(4.1rem, 9.8vh, 6.8rem) !important;
+}
+
+.date-step .date-puzzle-slot--weather .date-puzzle-slot-main {
+  font-size: clamp(2.8rem, 6.4vh, 4.6rem) !important;
+}
+
+.date-step .date-puzzle-slot--weather img {
+  width: min(116px, 76%) !important;
+  height: min(80px, 42%) !important;
+}
+
+.date-step .date-puzzle-card-grid {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 190px)) !important;
+}
+
+.date-step .date-puzzle-card-grid--month,
+.date-step .date-puzzle-card-grid--day {
+  grid-template-columns: repeat(2, minmax(150px, 190px)) !important;
+  width: min(100%, 410px) !important;
+}
+
+.date-step .date-puzzle-card-grid--weekday {
+  grid-template-columns: repeat(7, minmax(118px, 140px)) !important;
+}
+
+.date-step .date-puzzle-card-grid--weather {
+  grid-template-columns: repeat(4, minmax(150px, 190px)) !important;
+}
+
+.date-step .date-drag-card {
+  width: min(100%, 190px) !important;
+  max-width: 190px !important;
+  font-family: Gulim, "굴림", "Malgun Gothic", sans-serif !important;
+  font-size: clamp(3.4rem, 8vh, 5.8rem) !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+}
+
+.date-step .date-puzzle-card-grid--year .date-drag-card {
+  font-size: clamp(3rem, 7vh, 5rem) !important;
+}
+
+.date-step .date-puzzle-card-grid--weekday .date-drag-card {
+  width: min(100%, 140px) !important;
+  max-width: 140px !important;
+  font-size: clamp(3.25rem, 7.4vh, 5.2rem) !important;
+}
+
+.date-step .date-drag-card--weather {
+  width: min(100%, 190px) !important;
+  max-width: 190px !important;
+  font-size: clamp(1.8rem, 4vh, 2.7rem) !important;
+}
+
+.date-step .date-drag-card--weather img {
+  width: min(128px, 82%) !important;
+  height: min(92px, 48%) !important;
+}
+
+@media (max-width: 760px) {
+  .date-step--date .date-step-date-board {
+    grid-template-columns: repeat(2, minmax(0, 240px)) !important;
+  }
+
+  .date-step-unit-label,
+  .date-step-unit-pair--weather .date-step-unit-label,
+  .date-step-unit-pair--weekday .date-step-unit-label {
+    font-size: clamp(2.25rem, 6vh, 3.6rem) !important;
+  }
+
+  .date-step-unit-pair,
+  .date-step-unit-pair--year,
+  .date-step-unit-pair--weather,
+  .date-step--year .date-step-unit-pair--year {
+    grid-template-columns: minmax(0, 150px) auto !important;
+  }
+
+  .date-step .date-puzzle-card-grid--weekday,
+  .date-step .date-puzzle-card-grid--weather {
+    grid-template-columns: repeat(auto-fit, minmax(112px, 138px)) !important;
+  }
+}
