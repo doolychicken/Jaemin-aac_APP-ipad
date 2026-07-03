@@ -50,7 +50,7 @@
         .map((slot, index) => ({ slot, index }))
         .slice(pageStart, isPagedPuzzle ? pageStart + pageSize : slots.length);
       const visibleValues = new Set(visibleSlotEntries.map(({ slot }) => String(slot.value)));
-      const visiblePieces = isPagedPuzzle
+      let visiblePieces = isPagedPuzzle
         ? pieces.filter((piece) => visibleValues.has(String(piece.value)))
         : pieces;
     
@@ -63,12 +63,19 @@
       gridEl.innerHTML = "";
       const useNumberPresentation = puzzle.presentation === "number" || slots.length > 6;
       const isShortNumberPuzzle = useNumberPresentation && visibleSlotEntries.length <= 4;
-      gridEl.className = `study-puzzle${useNumberPresentation ? " study-puzzle--number" : " study-puzzle--name"}${isShortNumberPuzzle ? " study-puzzle--number-short" : ""}`;
+      const puzzleThemeClass = puzzle.theme ? ` study-puzzle--${String(puzzle.theme).replace(/[^a-z0-9-]/gi, "")}` : "";
+      gridEl.className = `study-puzzle${useNumberPresentation ? " study-puzzle--number" : " study-puzzle--name"}${isShortNumberPuzzle ? " study-puzzle--number-short" : ""}${puzzleThemeClass}`;
       gridEl.style.setProperty("--study-visible-count", String(Math.max(1, visibleSlotEntries.length)));
       helperEl.textContent = screen.helper || "카드를 끌어서 같은 빈칸에 맞춰요.";
       helperEl.style.display = "";
     
       const matchedValues = new Set(Object.values(state.matches));
+      const trayBatchSize = Number(puzzle.trayBatchSize || 0);
+      if (!isPagedPuzzle && trayBatchSize > 0) {
+        visiblePieces = pieces
+          .filter((piece) => !matchedValues.has(String(piece.value)))
+          .slice(0, trayBatchSize);
+      }
     
       function pieceByValue(value) {
         return pieces.find((piece) => String(piece.value) === String(value))
@@ -662,6 +669,32 @@
       speakBtn.addEventListener("click", () => speak(puzzle.completeSpeech || puzzle.title || screen.title));
       actions.appendChild(speakBtn);
       gridEl.appendChild(actions);
+
+      if (isComplete() && puzzle.successOverlay) {
+        const overlay = document.createElement("section");
+        overlay.className = "study-puzzle-success";
+        const panel = document.createElement("div");
+        panel.className = "study-puzzle-success-panel";
+        const title = document.createElement("div");
+        title.className = "study-puzzle-success-title";
+        title.textContent = "성공";
+        const star = document.createElement("div");
+        star.className = "study-puzzle-success-star";
+        star.textContent = "★";
+        const doneBtn = document.createElement("button");
+        doneBtn.type = "button";
+        doneBtn.className = "study-puzzle-success-button";
+        doneBtn.textContent = "완료";
+        doneBtn.addEventListener("click", () => {
+          speak("완료");
+          overlay.remove();
+        });
+        panel.appendChild(title);
+        panel.appendChild(star);
+        panel.appendChild(doneBtn);
+        overlay.appendChild(panel);
+        gridEl.appendChild(overlay);
+      }
     }
     
 

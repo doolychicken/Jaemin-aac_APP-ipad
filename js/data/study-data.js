@@ -136,6 +136,7 @@ function buildStudyScreensMap() {
     hero: [],
     items: [
       { label: "숫자 퍼즐", nav: "studyNumberPuzzle", image: "./images/knobpuzzle_numbers.png" },
+      { label: "숫자 퍼즐 2", nav: "studyNumberPuzzle2", image: "./images/knobpuzzle_numbers2.png" },
       { label: "숫자 카드", nav: "studySticker_6", image: "./images/stickerbook_number.png" }
     ],
     layout: "main",
@@ -173,6 +174,47 @@ function buildStudyScreensMap() {
         { label: "6", value: "6", speech: "육" },
         { label: "7", value: "7", speech: "칠" },
         { label: "8", value: "8", speech: "팔" },
+        { label: "9", value: "9", speech: "구" },
+        { label: "10", value: "10", speech: "십" }
+      ]
+    }
+  };
+
+  rest.studyNumberPuzzle2 = {
+    title: "숫자 퍼즐 2",
+    helper: "아래 숫자를 끌어서 나무판의 같은 숫자 자리에 맞춰요.",
+    hero: [],
+    items: [],
+    layout: "studyPuzzle",
+    showPlayer: false,
+    puzzle: {
+      title: "숫자 퍼즐 2",
+      presentation: "number",
+      theme: "wood",
+      trayBatchSize: 3,
+      successOverlay: true,
+      completeSpeech: "숫자 퍼즐 2 완료! 정말 잘했어요!",
+      slots: [
+        { label: "1", value: "1", speech: "일" },
+        { label: "2", value: "2", speech: "이" },
+        { label: "3", value: "3", speech: "삼" },
+        { label: "4", value: "4", speech: "사" },
+        { label: "5", value: "5", speech: "오" },
+        { label: "6", value: "6", speech: "육" },
+        { label: "7", value: "7", speech: "칠" },
+        { label: "8", value: "8", speech: "팔" },
+        { label: "9", value: "9", speech: "구" },
+        { label: "10", value: "10", speech: "십" }
+      ],
+      pieces: [
+        { label: "3", value: "3", speech: "삼" },
+        { label: "2", value: "2", speech: "이" },
+        { label: "1", value: "1", speech: "일" },
+        { label: "4", value: "4", speech: "사" },
+        { label: "5", value: "5", speech: "오" },
+        { label: "6", value: "6", speech: "육" },
+        { label: "8", value: "8", speech: "팔" },
+        { label: "7", value: "7", speech: "칠" },
         { label: "9", value: "9", speech: "구" },
         { label: "10", value: "10", speech: "십" }
       ]

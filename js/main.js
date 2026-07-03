@@ -139,6 +139,7 @@ let preferredKoVoice = null;
 let ttsWarmedUp = false;
 let sharedAudioCtx = null;
 let ttsRequestId = 0;
+const APP_SOUND_GAIN = 2.5;
 const isAppleMobile = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
   (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 const useDirectYoutubeOpen = true;
@@ -304,8 +305,9 @@ function speak(text) {
       } else {
         u.lang = "ko-KR";
       }
-      u.rate = isAndroid ? 1.0 : 1.15;
+      u.rate = isAndroid ? 1.0 : (isAppleMobile ? 0.92 : 1.15);
       u.pitch = 1.0;
+      u.volume = 1.0;
       try { window.speechSynthesis.resume(); } catch (_) {}
       try { window.speechSynthesis.speak(u); } catch (_) { finish(); }
     };
@@ -335,7 +337,7 @@ function playPuzzleSound(kind = "success") {
       : [{ f: 220, t: 0 }, { f: 165, t: 0.12 }];
 
     gain.gain.setValueAtTime(0.0001, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.14, ctx.currentTime + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.14 * APP_SOUND_GAIN, ctx.currentTime + 0.02);
     gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.36);
 
     notes.forEach((note) => {
@@ -361,7 +363,7 @@ function playWeatherSound(label = "") {
     const now = ctx.currentTime;
     const master = ctx.createGain();
     master.gain.setValueAtTime(0.0001, now);
-    master.gain.exponentialRampToValueAtTime(1, now + 0.02);
+    master.gain.exponentialRampToValueAtTime(APP_SOUND_GAIN, now + 0.02);
     master.connect(ctx.destination);
 
     function tone(freq, start, duration, type = "sine", volume = 0.12) {
