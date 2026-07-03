@@ -412,9 +412,9 @@
 
 .study-puzzle--people {
   grid-template-rows:
-    clamp(92px, 14vh, 124px)
-    clamp(148px, 22vh, 190px)
-    clamp(118px, 18vh, 148px)
+    clamp(120px, 18vh, 168px)
+    clamp(150px, 21vh, 188px)
+    clamp(150px, 21vh, 188px)
     clamp(50px, 7vh, 58px);
   gap: clamp(6px, 0.9vh, 9px);
 }
@@ -424,10 +424,10 @@
 }
 
 .study-puzzle--people .study-puzzle-photo {
-  width: clamp(78px, 12vh, 112px);
-  height: clamp(78px, 12vh, 112px);
-  padding: 6px;
-  border-radius: 16px;
+  width: clamp(112px, 17vh, 160px);
+  height: clamp(112px, 17vh, 160px);
+  padding: 8px;
+  border-radius: 18px;
 }
 
 .study-puzzle--people .study-puzzle-header-name {
@@ -435,22 +435,32 @@
 }
 
 .study-puzzle--people .study-puzzle-board {
+  grid-row: 2;
   align-self: stretch;
   min-height: 0;
   padding: clamp(8px, 1.2vh, 14px);
 }
 
+.study-puzzle--people.is-complete .study-puzzle-board {
+  grid-row: 2 / 4;
+}
+
 .study-puzzle--people .study-puzzle-slot {
-  min-width: min(100%, 360px);
-  min-height: clamp(72px, 10vh, 98px);
+  aspect-ratio: auto;
+  min-width: min(100%, 520px);
+  min-height: clamp(92px, 13vh, 128px);
+  padding: 0 clamp(16px, 2vw, 28px);
 }
 
 .study-puzzle--people .study-puzzle-slot-main {
-  font-size: clamp(1.7rem, 4vw, 2.8rem);
-  line-height: 1.1;
+  font-size: clamp(1.85rem, 3.4vw, 3.1rem);
+  line-height: 1.08;
+  white-space: nowrap;
+  word-break: keep-all;
 }
 
 .study-puzzle--people .study-puzzle-tray {
+  grid-row: 3;
   align-self: stretch;
   min-height: 0;
   padding: clamp(8px, 1.1vh, 12px) clamp(12px, 1.6vw, 18px);
@@ -463,7 +473,7 @@
 
 .study-puzzle--people .study-puzzle-card-grid {
   grid-template-columns: repeat(3, minmax(210px, min(25vw, 280px)));
-  grid-auto-rows: clamp(86px, 13vh, 118px);
+  grid-auto-rows: clamp(104px, 15vh, 136px);
   width: min(100%, 920px);
   height: 100%;
   margin: 0 auto;
@@ -717,6 +727,7 @@
 }
 
 .study-puzzle--people .study-puzzle-actions {
+  grid-row: 4;
   width: min(100%, 560px);
   align-self: center;
 }

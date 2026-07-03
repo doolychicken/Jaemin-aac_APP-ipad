@@ -63,8 +63,11 @@
       gridEl.innerHTML = "";
       const useNumberPresentation = puzzle.presentation === "number" || slots.length > 6;
       const isShortNumberPuzzle = useNumberPresentation && visibleSlotEntries.length <= 4;
-      const puzzleThemeClass = puzzle.theme ? ` study-puzzle--${String(puzzle.theme).replace(/[^a-z0-9-]/gi, "")}` : "";
+      const sanitizedTheme = puzzle.theme ? String(puzzle.theme).replace(/[^a-z0-9-]/gi, "") : "";
+      const puzzleThemeClass = sanitizedTheme ? ` study-puzzle--${sanitizedTheme}` : "";
+      const hideTrayWhenComplete = !!puzzle.hideTrayWhenComplete;
       gridEl.className = `study-puzzle${useNumberPresentation ? " study-puzzle--number" : " study-puzzle--name"}${isShortNumberPuzzle ? " study-puzzle--number-short" : ""}${puzzleThemeClass}`;
+      if (isComplete()) gridEl.classList.add("is-complete");
       gridEl.style.setProperty("--study-visible-count", String(Math.max(1, visibleSlotEntries.length)));
       helperEl.textContent = screen.helper || "카드를 끌어서 같은 빈칸에 맞춰요.";
       helperEl.style.display = "";
@@ -424,7 +427,7 @@
           if (pieceColor) slotEl.style.setProperty("--piece-color", pieceColor);
           if (pieceColor) state.matchColors[index] = pieceColor;
           const main = slotEl.querySelector(".study-puzzle-slot-main");
-          if (main) main.textContent = slot.label;
+          if (main) main.textContent = slot.completeLabel || slot.label;
           sourceEl?.classList.remove("is-snapping");
           sourceEl?.classList.add("is-used");
           sourceEl?.setAttribute("disabled", "true");
@@ -470,7 +473,7 @@
         if (filled && state.matchColors[index]) btn.style.setProperty("--piece-color", state.matchColors[index]);
         btn.dataset.index = String(index);
         btn.dataset.value = String(slot.value);
-        btn.addEventListener("click", () => speak(filled ? (slot.speech || slot.label) : `${slot.placeholder || slot.label} 자리`));
+        btn.addEventListener("click", () => speak(filled ? (slot.completeSpeech || slot.completeLabel || slot.speech || slot.label) : `${slot.placeholder || slot.label} 자리`));
         btn.addEventListener("dragover", (e) => {
           e.preventDefault();
           btn.classList.add("is-ready");
@@ -488,7 +491,7 @@
     
         const main = document.createElement("span");
         main.className = "study-puzzle-slot-main";
-        main.textContent = filled ? slot.label : (slot.placeholder || slot.label);
+        main.textContent = filled ? (slot.completeLabel || slot.label) : (slot.placeholder || slot.label);
         btn.appendChild(main);
         return btn;
       }
@@ -607,20 +610,22 @@
       visibleSlotEntries.forEach(({ slot, index }) => board.appendChild(makeSlot(slot, index)));
       gridEl.appendChild(board);
     
-      const tray = document.createElement("section");
-      tray.className = "study-puzzle-tray";
-      const trayTitle = document.createElement("div");
-      trayTitle.className = "study-puzzle-tray-title";
-      trayTitle.textContent = isComplete()
-        ? "다 맞췄어요!"
-        : (isPagedPuzzle ? `퍼즐 조각 ${state.page + 1}/${totalPages}` : "퍼즐 조각");
-      tray.appendChild(trayTitle);
-      const cardGrid = document.createElement("div");
-      cardGrid.className = "study-puzzle-card-grid";
-      visiblePieces
-        .forEach((piece) => cardGrid.appendChild(makeCard(piece, matchedValues.has(String(piece.value)))));
-      tray.appendChild(cardGrid);
-      gridEl.appendChild(tray);
+      if (!(hideTrayWhenComplete && isComplete())) {
+        const tray = document.createElement("section");
+        tray.className = "study-puzzle-tray";
+        const trayTitle = document.createElement("div");
+        trayTitle.className = "study-puzzle-tray-title";
+        trayTitle.textContent = isComplete()
+          ? "다 맞췄어요!"
+          : (isPagedPuzzle ? `퍼즐 조각 ${state.page + 1}/${totalPages}` : "퍼즐 조각");
+        tray.appendChild(trayTitle);
+        const cardGrid = document.createElement("div");
+        cardGrid.className = "study-puzzle-card-grid";
+        visiblePieces
+          .forEach((piece) => cardGrid.appendChild(makeCard(piece, matchedValues.has(String(piece.value)))));
+        tray.appendChild(cardGrid);
+        gridEl.appendChild(tray);
+      }
     
       const actions = document.createElement("div");
       actions.className = "study-puzzle-actions";
