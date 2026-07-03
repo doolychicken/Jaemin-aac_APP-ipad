@@ -96,7 +96,7 @@ function buildStudyScreensMap() {
   ];
 
   const studyPeopleProfiles = [
-    { key: "me", label: "나", name: "홍재민", relation: "나", age: "0살", image: "./images/outing_person_me.png", speech: "나는 홍재민이야. 나는 0살이야" },
+    { key: "me", label: "나", name: "홍재민", relation: "나", age: "13", image: "./images/outing_person_me.png", speech: "나는 홍재민이야. 나는 13살이야" },
     { key: "mom", label: "엄마", name: "김주리", relation: "엄마", image: "./images/outing_person_mom.png", speech: "엄마야. 엄마 이름은 김주리야" },
     { key: "dad", label: "아빠", name: "홍진혁", relation: "아빠", image: "./images/outing_person_dad.png", speech: "아빠야. 아빠 이름은 홍진혁이야" },
     { key: "activitySupportTeacher", label: "활동보조 선생님", relation: "선생님", image: "./images/outing_person_activity_support.png" },
@@ -121,7 +121,7 @@ function buildStudyScreensMap() {
 
   const studyPeopleNameChoices = ["홍재민", "김주리", "홍진혁", "건민", "동하", "승우", "윤희", "하린"];
   const studyPeopleRelationChoices = ["나", "엄마", "아빠", "선생님", "친구", "할머니", "할아버지", "큰엄마", "큰아빠", "가족"];
-  const studyPeopleAgeChoices = ["0살", "1살", "2살", "3살", "4살", "5살"];
+  const studyPeopleAgeChoices = ["10", "11", "12", "13", "14", "15"];
 
   function choicePieces(choices) {
     return choices.map((label) => ({ label, value: label, speech: label }));
@@ -453,9 +453,9 @@ function buildStudyScreensMap() {
           image: person.image,
           imageLabel: person.label,
           presentation: "number",
-          completeSpeech: `나는 ${person.age}이야`,
+          completeSpeech: `나는 ${person.age}살이야`,
           slots: [
-            { label: person.age, value: person.age, speech: person.age, placeholder: "몇 살" }
+            { label: person.age, value: person.age, speech: `${person.age}살`, placeholder: "몇 살" }
           ],
           pieces: choicePieces(studyPeopleAgeChoices)
         }
