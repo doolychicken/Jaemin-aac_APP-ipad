@@ -413,6 +413,7 @@ function buildStudyScreensMap() {
         title: `${person.label} 이름 맞추기`,
         image: person.image,
         imageLabel: person.label,
+        trayBatchSize: 3,
         completeSpeech: person.key === "me" ? `내 이름은 ${targetName}이야` : `${person.label} 이름은 ${targetName}이야`,
         slots: [
           { label: targetName, value: targetName, speech: targetName, placeholder: "이름" }
@@ -432,6 +433,7 @@ function buildStudyScreensMap() {
         title: `${person.label} 누구인지 맞추기`,
         image: person.image,
         imageLabel: person.label,
+        trayBatchSize: 3,
         completeSpeech: personRelationSpeech(person),
         slots: [
           { label: person.relation, value: person.relation, speech: person.relation, placeholder: "누구" }
@@ -453,6 +455,7 @@ function buildStudyScreensMap() {
           image: person.image,
           imageLabel: person.label,
           presentation: "number",
+          trayBatchSize: 3,
           completeSpeech: `나는 ${person.age}살이야`,
           slots: [
             { label: person.age, value: person.age, speech: `${person.age}살`, placeholder: "몇 살" }
