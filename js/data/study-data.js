@@ -119,9 +119,9 @@ function buildStudyScreensMap() {
     { key: "raon", label: "라온이", relation: "가족", image: "./images/person/raon.png" }
   ];
 
-  const studyPeopleNameChoices = ["홍재민", "김주리", "홍진혁", "건민", "동하", "승우", "윤희", "하린"];
-  const studyPeopleRelationChoices = ["나", "엄마", "아빠", "선생님", "친구", "할머니", "할아버지", "큰엄마", "큰아빠", "가족"];
-  const studyPeopleAgeChoices = ["10", "11", "12", "13", "14", "15"];
+  const studyPeopleNameChoices = ["김주리", "홍재민", "홍진혁"];
+  const studyPeopleRelationChoices = ["엄마", "나", "아빠"];
+  const studyPeopleAgeChoices = ["12", "13", "14"];
 
   function choicePieces(choices) {
     return choices.map((label) => ({ label, value: label, speech: label }));
@@ -129,6 +129,11 @@ function buildStudyScreensMap() {
 
   function personTargetName(person) {
     return person.name || person.label;
+  }
+
+  function threeChoices(target, choices) {
+    const fallback = choices.filter((choice) => choice !== target);
+    return [fallback[0] || target, target, fallback[1] || target].filter((choice, index, arr) => arr.indexOf(choice) === index);
   }
 
   function personRelationSpeech(person) {
@@ -383,8 +388,8 @@ function buildStudyScreensMap() {
   studyPeopleProfiles.forEach((person) => {
     const screenKey = `studyPerson_${person.key}`;
     const targetName = personTargetName(person);
-    const nameChoices = Array.from(new Set([targetName, ...studyPeopleNameChoices]));
-    const relationChoices = Array.from(new Set([person.relation, ...studyPeopleRelationChoices]));
+    const nameChoices = threeChoices(targetName, studyPeopleNameChoices);
+    const relationChoices = threeChoices(person.relation, studyPeopleRelationChoices);
     const menuItems = [
       { label: "이름 맞추기", nav: `${screenKey}_name`, image: person.image, icon: person.icon, imageFit: person.imageFit },
       { label: "누구인지 맞추기", nav: `${screenKey}_relation`, image: person.image, icon: person.icon, imageFit: person.imageFit }
@@ -413,7 +418,7 @@ function buildStudyScreensMap() {
         title: `${person.label} 이름 맞추기`,
         image: person.image,
         imageLabel: person.label,
-        trayBatchSize: 3,
+        theme: "people",
         completeSpeech: person.key === "me" ? `내 이름은 ${targetName}이야` : `${person.label} 이름은 ${targetName}이야`,
         slots: [
           { label: targetName, value: targetName, speech: targetName, placeholder: "이름" }
@@ -433,7 +438,7 @@ function buildStudyScreensMap() {
         title: `${person.label} 누구인지 맞추기`,
         image: person.image,
         imageLabel: person.label,
-        trayBatchSize: 3,
+        theme: "people",
         completeSpeech: personRelationSpeech(person),
         slots: [
           { label: person.relation, value: person.relation, speech: person.relation, placeholder: "누구" }
@@ -454,8 +459,7 @@ function buildStudyScreensMap() {
           title: `${person.label} 나이 맞추기`,
           image: person.image,
           imageLabel: person.label,
-          presentation: "number",
-          trayBatchSize: 3,
+          theme: "people",
           completeSpeech: `나는 ${person.age}살이야`,
           slots: [
             { label: person.age, value: person.age, speech: `${person.age}살`, placeholder: "몇 살" }
