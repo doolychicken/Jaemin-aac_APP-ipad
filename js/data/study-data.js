@@ -207,14 +207,14 @@ function buildStudyScreensMap() {
         { label: "10", value: "10", speech: "십" }
       ],
       pieces: [
-        { label: "3", value: "3", speech: "삼" },
-        { label: "2", value: "2", speech: "이" },
         { label: "1", value: "1", speech: "일" },
+        { label: "2", value: "2", speech: "이" },
+        { label: "3", value: "3", speech: "삼" },
         { label: "4", value: "4", speech: "사" },
         { label: "5", value: "5", speech: "오" },
         { label: "6", value: "6", speech: "육" },
-        { label: "8", value: "8", speech: "팔" },
         { label: "7", value: "7", speech: "칠" },
+        { label: "8", value: "8", speech: "팔" },
         { label: "9", value: "9", speech: "구" },
         { label: "10", value: "10", speech: "십" }
       ]
