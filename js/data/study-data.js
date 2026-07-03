@@ -468,7 +468,7 @@ function buildStudyScreensMap() {
           imageLabel: person.label,
           theme: "people",
           hideTrayWhenComplete: true,
-          completeSpeech: `나는 ${person.age}살이야`,
+          completeSpeech: `내 나이는 ${person.age}살이야`,
           slots: [
             { label: `${person.age}살`, value: person.age, speech: `${person.age}살`, placeholder: "몇 살", completeLabel: `내 나이는 ${person.age}살이야` }
           ],

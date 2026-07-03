@@ -443,6 +443,7 @@
 
 .study-puzzle--people.is-complete .study-puzzle-board {
   grid-row: 2 / 4;
+  align-content: center;
 }
 
 .study-puzzle--people .study-puzzle-slot {
@@ -452,11 +453,24 @@
   padding: 0 clamp(16px, 2vw, 28px);
 }
 
+.study-puzzle--people.is-complete .study-puzzle-slot {
+  width: min(92%, 780px);
+  min-width: 0;
+  min-height: clamp(132px, 21vh, 184px);
+  padding: clamp(14px, 2vh, 22px) clamp(28px, 4vw, 48px);
+}
+
 .study-puzzle--people .study-puzzle-slot-main {
   font-size: clamp(1.85rem, 3.4vw, 3.1rem);
   line-height: 1.08;
   white-space: nowrap;
   word-break: keep-all;
+}
+
+.study-puzzle--people.is-complete .study-puzzle-slot-main {
+  font-size: clamp(1.75rem, 3vw, 2.7rem);
+  line-height: 1.12;
+  max-width: 100%;
 }
 
 .study-puzzle--people .study-puzzle-tray {
