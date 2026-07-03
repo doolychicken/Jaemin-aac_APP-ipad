@@ -119,7 +119,7 @@ function buildStudyScreensMap() {
     { key: "raon", label: "라온이", relation: "가족", image: "./images/person/raon.png" }
   ];
 
-  const studyPeopleNameChoices = ["김주리", "홍재민", "홍진혁"];
+  const studyPeopleNameChoices = ["홍재민", "김주리", "홍진혁"];
   const studyPeopleRelationChoices = ["엄마", "나", "아빠"];
   const studyPeopleAgeChoices = ["12", "13", "14"];
 
@@ -132,6 +132,7 @@ function buildStudyScreensMap() {
   }
 
   function threeChoices(target, choices) {
+    if (choices.includes(target)) return choices;
     const fallback = choices.filter((choice) => choice !== target);
     return [fallback[0] || target, target, fallback[1] || target].filter((choice, index, arr) => arr.indexOf(choice) === index);
   }
