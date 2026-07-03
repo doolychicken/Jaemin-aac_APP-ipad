@@ -412,11 +412,11 @@
 
 .study-puzzle--people {
   grid-template-rows:
-    clamp(82px, 13vh, 116px)
-    clamp(128px, 20vh, 178px)
-    clamp(96px, 15vh, 126px)
-    clamp(48px, 7vh, 56px);
-  gap: clamp(5px, 0.7vh, 7px);
+    clamp(92px, 14vh, 124px)
+    clamp(148px, 22vh, 190px)
+    clamp(118px, 18vh, 148px)
+    clamp(50px, 7vh, 58px);
+  gap: clamp(6px, 0.9vh, 9px);
 }
 
 .study-puzzle--people .study-puzzle-header {
@@ -437,7 +437,7 @@
 .study-puzzle--people .study-puzzle-board {
   align-self: stretch;
   min-height: 0;
-  padding: clamp(6px, 1vh, 12px);
+  padding: clamp(8px, 1.2vh, 14px);
 }
 
 .study-puzzle--people .study-puzzle-slot {
@@ -453,7 +453,7 @@
 .study-puzzle--people .study-puzzle-tray {
   align-self: stretch;
   min-height: 0;
-  padding: clamp(7px, 1vh, 10px) clamp(8px, 1.4vw, 14px);
+  padding: clamp(8px, 1.1vh, 12px) clamp(12px, 1.6vw, 18px);
   overflow: hidden;
 }
 
@@ -462,27 +462,30 @@
 }
 
 .study-puzzle--people .study-puzzle-card-grid {
-  grid-template-columns: repeat(3, minmax(180px, min(24vw, 260px)));
-  grid-auto-rows: clamp(72px, 11vh, 92px);
-  width: min(100%, 860px);
+  grid-template-columns: repeat(3, minmax(210px, min(25vw, 280px)));
+  grid-auto-rows: clamp(86px, 13vh, 118px);
+  width: min(100%, 920px);
   height: 100%;
   margin: 0 auto;
-  gap: clamp(10px, 2vw, 22px);
+  gap: clamp(14px, 2.2vw, 28px);
   align-content: center;
 }
 
 .study-puzzle--people .study-puzzle-card {
+  aspect-ratio: auto;
   height: 100%;
+  width: 100%;
   min-width: 0;
-  padding: clamp(7px, 0.9vh, 10px) clamp(10px, 1.5vw, 18px);
+  padding: clamp(10px, 1.2vh, 14px) clamp(14px, 1.8vw, 22px);
   overflow: visible;
   align-items: center;
   justify-content: center;
+  border-radius: 14px;
 }
 
 .study-puzzle--people .study-puzzle-card span {
-  font-size: clamp(1.35rem, 2.8vw, 2.2rem);
-  line-height: 1.14;
+  font-size: clamp(1.55rem, 3vw, 2.45rem);
+  line-height: 1.08;
   max-width: 100%;
   white-space: nowrap;
   word-break: keep-all;
@@ -876,7 +879,7 @@
 
   .study-puzzle--people .study-puzzle-card-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    grid-auto-rows: clamp(64px, 9vh, 80px);
+    grid-auto-rows: clamp(76px, 10.5vh, 96px);
     width: 100%;
     gap: clamp(6px, 1.5vw, 10px);
   }
@@ -886,8 +889,8 @@
   }
 
   .study-puzzle--people .study-puzzle-card span {
-    font-size: clamp(0.95rem, 3.4vw, 1.3rem);
-    line-height: 1.14;
+    font-size: clamp(1rem, 3.4vw, 1.42rem);
+    line-height: 1.08;
   }
 
   .study-puzzle-slot-main,
@@ -901,8 +904,8 @@
   }
 
   .study-puzzle--people .study-puzzle-card span {
-    font-size: clamp(0.95rem, 3.4vw, 1.3rem);
-    line-height: 1.14;
+    font-size: clamp(1rem, 3.4vw, 1.42rem);
+    line-height: 1.08;
   }
 
   .study-puzzle--number .study-puzzle-actions {
