@@ -25,7 +25,7 @@
 }
 
 .study-puzzle--wood {
-  --study-number-size: clamp(9.4rem, 20vh, 16rem);
+  --study-number-size: clamp(7.2rem, 15.2vh, 11.8rem);
   grid-template-columns: minmax(0, 1fr);
   grid-template-rows: minmax(0, 1fr) auto auto;
   gap: clamp(8px, 1.25vh, 14px);
@@ -397,9 +397,9 @@
 }
 
 .study-puzzle--wood .study-puzzle-card-grid {
-  grid-template-columns: repeat(3, minmax(156px, min(20vw, 230px)));
-  grid-auto-rows: clamp(158px, 22vh, 226px);
-  width: min(100%, 900px);
+  grid-template-columns: repeat(3, minmax(128px, min(16vw, 188px)));
+  grid-auto-rows: clamp(124px, 17vh, 176px);
+  width: min(100%, 760px);
   height: auto;
   align-content: center;
   justify-content: center;
@@ -490,20 +490,20 @@
 .study-puzzle--wood .study-puzzle-card--number-ghost span {
   font-size: var(--study-number-size) !important;
   font-weight: 1000;
-  line-height: 0.82;
-  transform: scaleX(1.08);
-  -webkit-text-stroke: 0.09em rgba(255, 255, 255, 0.96);
+  line-height: 0.9;
+  transform: scaleX(1);
+  -webkit-text-stroke: 0.035em rgba(255, 255, 255, 0.96);
   text-shadow:
-    0 2px 0 rgba(255, 255, 255, 0.92),
-    0 0 0.08em rgba(255, 255, 255, 0.95),
-    0 8px 12px rgba(73, 31, 25, 0.26);
+    0 1px 0 rgba(255, 255, 255, 0.9),
+    0 0 0.035em rgba(255, 255, 255, 0.95),
+    0 8px 12px rgba(73, 31, 25, 0.22);
 }
 
 .study-puzzle--wood .study-puzzle-slot-main {
   font-size: var(--study-number-size) !important;
   font-weight: 1000 !important;
-  line-height: 0.82;
-  transform: scaleX(1.08);
+  line-height: 0.9;
+  transform: scaleX(1);
 }
 
 .study-puzzle-card:active,
@@ -779,7 +779,7 @@
 
   .study-puzzle--wood .study-puzzle-card-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    grid-auto-rows: clamp(126px, 19vh, 176px);
+    grid-auto-rows: clamp(104px, 15vh, 142px);
     width: 100%;
   }
 
