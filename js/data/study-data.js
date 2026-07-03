@@ -127,6 +127,10 @@ function buildStudyScreensMap() {
     return choices.map((label) => ({ label, value: label, speech: label }));
   }
 
+  function ageChoicePieces(choices) {
+    return choices.map((age) => ({ label: `${age}살`, value: age, speech: `${age}살` }));
+  }
+
   function personTargetName(person) {
     return person.name || person.label;
   }
@@ -463,9 +467,9 @@ function buildStudyScreensMap() {
           theme: "people",
           completeSpeech: `나는 ${person.age}살이야`,
           slots: [
-            { label: person.age, value: person.age, speech: `${person.age}살`, placeholder: "몇 살" }
+            { label: `${person.age}살`, value: person.age, speech: `${person.age}살`, placeholder: "몇 살" }
           ],
-          pieces: choicePieces(studyPeopleAgeChoices)
+          pieces: ageChoicePieces(studyPeopleAgeChoices)
         }
       };
     }
