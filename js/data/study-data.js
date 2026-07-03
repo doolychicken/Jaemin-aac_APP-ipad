@@ -147,6 +147,13 @@ function buildStudyScreensMap() {
       : `${person.label}은 ${person.relation}이야`;
   }
 
+  function personRelationCompleteParts(person) {
+    if (person.label === person.relation) {
+      return { prefix: "", answer: person.relation, suffix: "야" };
+    }
+    return { prefix: `${person.label}은 `, answer: person.relation, suffix: "이야" };
+  }
+
   const vehicleStudyItems = [
     { label: "자동차", image: "./images/transport_car.png" },
     { label: "아빠 차", image: "./images/dad car.png" },
@@ -395,6 +402,7 @@ function buildStudyScreensMap() {
     const targetName = personTargetName(person);
     const nameChoices = threeChoices(targetName, studyPeopleNameChoices);
     const relationChoices = threeChoices(person.relation, studyPeopleRelationChoices);
+    const relationParts = personRelationCompleteParts(person);
     const menuItems = [
       { label: "이름 맞추기", nav: `${screenKey}_name`, image: person.image, icon: person.icon, imageFit: person.imageFit },
       { label: "누구인지 맞추기", nav: `${screenKey}_relation`, image: person.image, icon: person.icon, imageFit: person.imageFit }
@@ -427,7 +435,16 @@ function buildStudyScreensMap() {
         hideTrayWhenComplete: true,
         completeSpeech: person.key === "me" ? `내 이름은 ${targetName}이야` : `${person.label} 이름은 ${targetName}이야`,
         slots: [
-          { label: targetName, value: targetName, speech: targetName, placeholder: "이름", completeLabel: person.key === "me" ? `내 이름은 ${targetName}이야` : `${person.label} 이름은 ${targetName}이야` }
+          {
+            label: targetName,
+            value: targetName,
+            speech: targetName,
+            placeholder: "이름",
+            completeLabel: person.key === "me" ? `내 이름은 ${targetName}이야` : `${person.label} 이름은 ${targetName}이야`,
+            completePrefix: person.key === "me" ? "내 이름은 " : `${person.label} 이름은 `,
+            completeAnswer: targetName,
+            completeSuffix: "이야"
+          }
         ],
         pieces: choicePieces(nameChoices)
       }
@@ -448,7 +465,16 @@ function buildStudyScreensMap() {
         hideTrayWhenComplete: true,
         completeSpeech: personRelationSpeech(person),
         slots: [
-          { label: person.relation, value: person.relation, speech: person.relation, placeholder: "누구", completeLabel: personRelationSpeech(person) }
+          {
+            label: person.relation,
+            value: person.relation,
+            speech: person.relation,
+            placeholder: "누구",
+            completeLabel: personRelationSpeech(person),
+            completePrefix: relationParts.prefix,
+            completeAnswer: relationParts.answer,
+            completeSuffix: relationParts.suffix
+          }
         ],
         pieces: choicePieces(relationChoices)
       }
@@ -470,7 +496,16 @@ function buildStudyScreensMap() {
           hideTrayWhenComplete: true,
           completeSpeech: `내 나이는 ${person.age}살이야`,
           slots: [
-            { label: `${person.age}살`, value: person.age, speech: `${person.age}살`, placeholder: "몇 살", completeLabel: `내 나이는 ${person.age}살이야` }
+            {
+              label: `${person.age}살`,
+              value: person.age,
+              speech: `${person.age}살`,
+              placeholder: "몇 살",
+              completeLabel: `내 나이는 ${person.age}살이야`,
+              completePrefix: "내 나이는 ",
+              completeAnswer: `${person.age}살`,
+              completeSuffix: "이야"
+            }
           ],
           pieces: ageChoicePieces(studyPeopleAgeChoices)
         }

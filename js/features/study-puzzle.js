@@ -403,6 +403,30 @@
         });
       }
     
+      function renderSlotText(target, slotData, isFilled) {
+        target.textContent = "";
+        if (!isFilled || !slotData.completeAnswer) {
+          target.textContent = isFilled ? (slotData.completeLabel || slotData.label) : (slotData.placeholder || slotData.label);
+          return;
+        }
+        if (slotData.completePrefix) {
+          const prefix = document.createElement("span");
+          prefix.className = "study-puzzle-slot-muted";
+          prefix.textContent = slotData.completePrefix;
+          target.appendChild(prefix);
+        }
+        const answer = document.createElement("span");
+        answer.className = "study-puzzle-slot-answer";
+        answer.textContent = slotData.completeAnswer;
+        target.appendChild(answer);
+        if (slotData.completeSuffix) {
+          const suffix = document.createElement("span");
+          suffix.className = "study-puzzle-slot-muted";
+          suffix.textContent = slotData.completeSuffix;
+          target.appendChild(suffix);
+        }
+      }
+
       function setMatched(value, slotEl, sourceEl, movingEl = sourceEl) {
         if (!slotEl) {
           return returnMiss(movingEl, sourceEl);
@@ -427,7 +451,7 @@
           if (pieceColor) slotEl.style.setProperty("--piece-color", pieceColor);
           if (pieceColor) state.matchColors[index] = pieceColor;
           const main = slotEl.querySelector(".study-puzzle-slot-main");
-          if (main) main.textContent = slot.completeLabel || slot.label;
+          if (main) renderSlotText(main, slot, true);
           sourceEl?.classList.remove("is-snapping");
           sourceEl?.classList.add("is-used");
           sourceEl?.setAttribute("disabled", "true");
@@ -491,7 +515,7 @@
     
         const main = document.createElement("span");
         main.className = "study-puzzle-slot-main";
-        main.textContent = filled ? (slot.completeLabel || slot.label) : (slot.placeholder || slot.label);
+        renderSlotText(main, slot, filled);
         btn.appendChild(main);
         return btn;
       }

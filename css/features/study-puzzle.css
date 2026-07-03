@@ -471,6 +471,26 @@
   font-size: clamp(1.75rem, 3vw, 2.7rem);
   line-height: 1.12;
   max-width: 100%;
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: clamp(8px, 1.2vw, 16px);
+}
+
+.study-puzzle--people .study-puzzle-slot-muted {
+  color: #0f3b82;
+  font-size: 0.78em;
+  font-weight: 900;
+  text-shadow: 0 3px 10px rgba(37, 52, 86, 0.16);
+}
+
+.study-puzzle--people .study-puzzle-slot-answer {
+  color: #e11d48;
+  font-size: 1.22em;
+  font-weight: 1000;
+  text-shadow:
+    0 2px 0 rgba(255, 255, 255, 0.95),
+    0 10px 18px rgba(225, 29, 72, 0.22);
 }
 
 .study-puzzle--people .study-puzzle-tray {
