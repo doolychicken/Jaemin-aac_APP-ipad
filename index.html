@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <link rel="preconnect" href="https://www.youtube.com" />
@@ -11,7 +14,7 @@
   <link rel="preconnect" href="https://i.ytimg.com" />
   <title>AAC 앱</title>
   <link rel="stylesheet" href="./css/app.css?v=231" />
-  <link rel="stylesheet" href="./css/features/study-puzzle.css?v=238" />
+  <link rel="stylesheet" href="./css/features/study-puzzle.css?v=239" />
   <link rel="stylesheet" href="./css/date-overrides.css?v=231" />
 </head>
 <body>
@@ -51,11 +54,11 @@
     <section id="buttonGrid" class="grid"></section>
   </main>
 
-  <script src="./js/data/study-data.js?v=238"></script>
+  <script src="./js/data/study-data.js?v=239"></script>
   <script src="./js/data/app-data.js?v=231"></script>
   <script src="./js/core/pager.js?v=231"></script>
   <script src="./js/features/schedule.js?v=231"></script>
-  <script src="./js/features/study-puzzle.js?v=238"></script>
+  <script src="./js/features/study-puzzle.js?v=239"></script>
   <script src="./js/main.js?v=231"></script>
   <script>
     if ('serviceWorker' in navigator) {
@@ -67,7 +70,7 @@
       });
       window.addEventListener('load', () => {
         /* sw.js에도 v를 붙이지 않으면 Safari가 옛 서비스 워커를 붙잡는 경우가 있음 */
-        navigator.serviceWorker.register('./sw.js?v=238', { updateViaCache: 'none' })
+        navigator.serviceWorker.register('./sw.js?v=239', { updateViaCache: 'none' })
           .then(function (reg) {
             if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
             reg.addEventListener('updatefound', function () {
