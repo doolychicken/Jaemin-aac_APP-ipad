@@ -470,7 +470,7 @@
         if (filled && state.matchColors[index]) btn.style.setProperty("--piece-color", state.matchColors[index]);
         btn.dataset.index = String(index);
         btn.dataset.value = String(slot.value);
-        btn.addEventListener("click", () => speak(filled ? (slot.speech || slot.label) : `${slot.label} 자리`));
+        btn.addEventListener("click", () => speak(filled ? (slot.speech || slot.label) : `${slot.placeholder || slot.label} 자리`));
         btn.addEventListener("dragover", (e) => {
           e.preventDefault();
           btn.classList.add("is-ready");
@@ -488,7 +488,7 @@
     
         const main = document.createElement("span");
         main.className = "study-puzzle-slot-main";
-        main.textContent = slot.label;
+        main.textContent = filled ? slot.label : (slot.placeholder || slot.label);
         btn.appendChild(main);
         return btn;
       }

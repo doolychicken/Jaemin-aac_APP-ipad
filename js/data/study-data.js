@@ -71,6 +71,7 @@ function buildStudyScreensMap() {
     { label: "숫자",   nav: "studyNumbers",    image: "./images/stickerbook_number.png" },
     { label: "한글",   nav: "studyHangul",     image: "./images/stickerbook_language.png" },
     { label: "이름",   nav: "studyNames",      image: "./images/person/me.png" },
+    { label: "사람",   nav: "studyPeople",     image: "./images/outing_person_me.png" },
     { label: "과일",   nav: "studySticker_2",  image: "./images/stickerbook_fruit.png" },
     { label: "우리집", nav: "studySticker_3",  image: "./images/stickerbook_myhome.png" },
     { label: "동물",   nav: "studySticker_4",  image: "./images/stickerbook_animal.png" },
@@ -93,6 +94,48 @@ function buildStudyScreensMap() {
     { label: "엄마 김주리 버전1", nav: "studyNamePuzzleMom", image: "./images/person/mom.png", speech: "엄마 이름은 김주리야" },
     { label: "엄마 김주리 버전2", nav: "studyNamePuzzleMomV2", image: "./images/knobpuzzle_numbers.png", speech: "엄마 이름은 김주리야" }
   ];
+
+  const studyPeopleProfiles = [
+    { key: "me", label: "나", name: "홍재민", relation: "나", age: "0살", image: "./images/outing_person_me.png", speech: "나는 홍재민이야. 나는 0살이야" },
+    { key: "mom", label: "엄마", name: "김주리", relation: "엄마", image: "./images/outing_person_mom.png", speech: "엄마야. 엄마 이름은 김주리야" },
+    { key: "dad", label: "아빠", name: "홍진혁", relation: "아빠", image: "./images/outing_person_dad.png", speech: "아빠야. 아빠 이름은 홍진혁이야" },
+    { key: "activitySupportTeacher", label: "활동보조 선생님", relation: "선생님", image: "./images/outing_person_activity_support.png" },
+    { key: "homeroomTeacher", label: "담임선생님", relation: "선생님", image: "./images/school_homeroom_teacher.png" },
+    { key: "assistantTeacher", label: "실무사 선생님", relation: "선생님", icon: "👩‍🏫" },
+    { key: "communicationTeacher", label: "사람과소통 김지은 선생님", relation: "선생님", image: "./images/person/사람과소통 김지은선생님1.png", imageFit: "cover" },
+    { key: "bigTreeTeacher", label: "큰나무병원 선생님", relation: "선생님", image: "./images/therapy_class_cognitive.png" },
+    { key: "severanceTeacher", label: "세브란스 병원 선생님", relation: "선생님", image: "./images/therapy_center_severance.png" },
+    { key: "geonmin", label: "건민", relation: "친구", image: "./images/school_friends_건민.png" },
+    { key: "dongha", label: "동하", relation: "친구", image: "./images/school_friends_동하.png" },
+    { key: "seungwoo", label: "승우", relation: "친구", image: "./images/school_friends_승우.png" },
+    { key: "yunhee", label: "윤희", relation: "친구", image: "./images/school_friends_윤희.png" },
+    { key: "yunhee2", label: "윤희 2", relation: "친구", image: "./images/school_friends_윤희1.png" },
+    { key: "harin", label: "하린", relation: "친구", image: "./images/school_friends_하린.png" },
+    { key: "grandma", label: "할머니", relation: "할머니", image: "./images/outing_person_grandma.png" },
+    { key: "grandpa", label: "할아버지", relation: "할아버지", image: "./images/outing_person_grandpa.png" },
+    { key: "aunt", label: "큰엄마", relation: "큰엄마", icon: "👩" },
+    { key: "uncle", label: "큰아빠", relation: "큰아빠", icon: "👨" },
+    { key: "rahee", label: "라희", relation: "가족", image: "./images/person/rahee.png" },
+    { key: "raon", label: "라온이", relation: "가족", image: "./images/person/raon.png" }
+  ];
+
+  const studyPeopleNameChoices = ["홍재민", "김주리", "홍진혁", "건민", "동하", "승우", "윤희", "하린"];
+  const studyPeopleRelationChoices = ["나", "엄마", "아빠", "선생님", "친구", "할머니", "할아버지", "큰엄마", "큰아빠", "가족"];
+  const studyPeopleAgeChoices = ["0살", "1살", "2살", "3살", "4살", "5살"];
+
+  function choicePieces(choices) {
+    return choices.map((label) => ({ label, value: label, speech: label }));
+  }
+
+  function personTargetName(person) {
+    return person.name || person.label;
+  }
+
+  function personRelationSpeech(person) {
+    return person.label === person.relation
+      ? `${person.label}야`
+      : `${person.label}은 ${person.relation}이야`;
+  }
 
   const vehicleStudyItems = [
     { label: "자동차", image: "./images/transport_car.png" },
@@ -320,6 +363,105 @@ function buildStudyScreensMap() {
     layout: "main",
     showPlayer: false
   };
+
+  rest.studyPeople = {
+    title: "사람",
+    helper: "사람을 골라 이름과 관계를 배워요.",
+    hero: [],
+    items: studyPeopleProfiles.map((person) => ({
+      label: person.label,
+      nav: `studyPerson_${person.key}`,
+      image: person.image,
+      icon: person.icon,
+      imageFit: person.imageFit,
+      speech: person.speech || person.label
+    })),
+    layout: "main",
+    showPlayer: false
+  };
+
+  studyPeopleProfiles.forEach((person) => {
+    const screenKey = `studyPerson_${person.key}`;
+    const targetName = personTargetName(person);
+    const nameChoices = Array.from(new Set([targetName, ...studyPeopleNameChoices]));
+    const relationChoices = Array.from(new Set([person.relation, ...studyPeopleRelationChoices]));
+    const menuItems = [
+      { label: "이름 맞추기", nav: `${screenKey}_name`, image: person.image, icon: person.icon, imageFit: person.imageFit },
+      { label: "누구인지 맞추기", nav: `${screenKey}_relation`, image: person.image, icon: person.icon, imageFit: person.imageFit }
+    ];
+    if (person.age) {
+      menuItems.splice(1, 0, { label: "나이 맞추기", nav: `${screenKey}_age`, image: "./images/stickerbook_number.png" });
+    }
+
+    rest[screenKey] = {
+      title: person.label,
+      helper: "무엇을 배울지 골라요.",
+      hero: [],
+      items: menuItems,
+      layout: "main",
+      showPlayer: false
+    };
+
+    rest[`${screenKey}_name`] = {
+      title: `${person.label} 이름`,
+      helper: person.key === "me" ? "나의 이름은 누구야?" : `${person.label} 이름은 누구야?`,
+      hero: [],
+      items: [],
+      layout: "studyPuzzle",
+      showPlayer: false,
+      puzzle: {
+        title: `${person.label} 이름 맞추기`,
+        image: person.image,
+        imageLabel: person.label,
+        completeSpeech: person.key === "me" ? `내 이름은 ${targetName}이야` : `${person.label} 이름은 ${targetName}이야`,
+        slots: [
+          { label: targetName, value: targetName, speech: targetName, placeholder: "이름" }
+        ],
+        pieces: choicePieces(nameChoices)
+      }
+    };
+
+    rest[`${screenKey}_relation`] = {
+      title: `${person.label} 누구`,
+      helper: `${person.label}은 누구야?`,
+      hero: [],
+      items: [],
+      layout: "studyPuzzle",
+      showPlayer: false,
+      puzzle: {
+        title: `${person.label} 누구인지 맞추기`,
+        image: person.image,
+        imageLabel: person.label,
+        completeSpeech: personRelationSpeech(person),
+        slots: [
+          { label: person.relation, value: person.relation, speech: person.relation, placeholder: "누구" }
+        ],
+        pieces: choicePieces(relationChoices)
+      }
+    };
+
+    if (person.age) {
+      rest[`${screenKey}_age`] = {
+        title: `${person.label} 나이`,
+        helper: "내 나이는 몇 살이야?",
+        hero: [],
+        items: [],
+        layout: "studyPuzzle",
+        showPlayer: false,
+        puzzle: {
+          title: `${person.label} 나이 맞추기`,
+          image: person.image,
+          imageLabel: person.label,
+          presentation: "number",
+          completeSpeech: `나는 ${person.age}이야`,
+          slots: [
+            { label: person.age, value: person.age, speech: person.age, placeholder: "몇 살" }
+          ],
+          pieces: choicePieces(studyPeopleAgeChoices)
+        }
+      };
+    }
+  });
 
   rest.studyNamePuzzleJaemin = {
     title: "홍재민",
