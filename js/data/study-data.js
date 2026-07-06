@@ -78,6 +78,7 @@ function buildStudyScreensMap() {
     { label: "이름",   nav: "studyNames",      image: "./images/person/me.png" },
     { label: "사람",   nav: "studyPeople",     image: "./images/outing_person_me.png" },
     { label: "상징 매칭", nav: "studySymbolMatching", image: emojiImage("🎂") },
+    { label: "상징 매칭 2", nav: "studySymbolMatchingV2", image: emojiImage("🧩") },
     { label: "과일",   nav: "studySticker_2",  image: "./images/stickerbook_fruit.png" },
     { label: "우리집", nav: "studySticker_3",  image: "./images/stickerbook_myhome.png" },
     { label: "동물",   nav: "studySticker_4",  image: "./images/stickerbook_animal.png" },
@@ -467,6 +468,33 @@ function buildStudyScreensMap() {
       }
     };
   });
+
+  rest.studySymbolMatchingV2 = {
+    title: "상징 매칭 2",
+    helper: "위의 상징 칸에 맞는 말 카드를 끌어다 놓아요.",
+    hero: [],
+    items: [],
+    layout: "studyPuzzle",
+    showPlayer: false,
+    puzzle: {
+      title: "상징 매칭 2",
+      theme: "symbol-grid",
+      pageSize: 4,
+      completeSpeech: "상징 매칭 2 완료! 정말 잘했어요!",
+      slots: symbolMatchingItems.map((item) => ({
+        label: item.symbol,
+        value: item.answer,
+        image: item.image,
+        speech: item.symbol,
+        completeLabel: item.answer
+      })),
+      pieces: symbolMatchingItems.map((item) => ({
+        label: item.answer,
+        value: item.answer,
+        speech: item.answer
+      }))
+    }
+  };
 
   studyPeopleProfiles.forEach((person) => {
     const screenKey = `studyPerson_${person.key}`;

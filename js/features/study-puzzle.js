@@ -405,6 +405,20 @@
     
       function renderSlotText(target, slotData, isFilled) {
         target.textContent = "";
+        if (!isFilled && slotData.image) {
+          const wrap = document.createElement("span");
+          wrap.className = "study-puzzle-slot-symbol";
+          const img = document.createElement("img");
+          img.src = slotData.image;
+          img.alt = slotData.label || "";
+          setupImageElement(img, true);
+          wrap.appendChild(img);
+          const label = document.createElement("span");
+          label.textContent = slotData.label;
+          wrap.appendChild(label);
+          target.appendChild(wrap);
+          return;
+        }
         if (!isFilled || !slotData.completeAnswer) {
           target.textContent = isFilled ? (slotData.completeLabel || slotData.label) : (slotData.placeholder || slotData.label);
           return;
