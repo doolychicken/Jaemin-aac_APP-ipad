@@ -131,11 +131,16 @@ function buildStudyScreensMap() {
 
   const symbolMatchingItems = [
     { key: "cake", symbol: "케이크", answer: "생일축하", image: emojiImage("🎂"), choices: ["생일축하", "물 마셔요", "버스 타요"] },
-    { key: "water", symbol: "물", answer: "물 마셔요", image: "./images/water.png", choices: ["밥 먹어요", "물 마셔요", "생일축하"] },
-    { key: "toilet", symbol: "화장실", answer: "화장실 가요", image: "./images/pee.png", choices: ["화장실 가요", "유튜브 봐요", "버스 타요"] },
+    { key: "carKey", symbol: "차키", answer: "자동차", image: "./images/dad_carkey.png", choices: ["자동차", "생일축하", "카트"] },
+    { key: "spoon", symbol: "수저", answer: "밥", image: emojiImage("🥄"), choices: ["밥", "칫솔", "밖에 나가자"] },
+    { key: "toothpaste", symbol: "치약", answer: "칫솔", image: emojiImage("🪥"), choices: ["칫솔", "자동차", "빵가게"] },
+    { key: "shoes", symbol: "신발", answer: "밖에 나가자", image: emojiImage("👟"), choices: ["밖에 나가자", "밥", "카트"] },
+    { key: "eggTart", symbol: "에그타르트", answer: "빵가게", image: "./images/meal_eggtart.png", choices: ["빵가게", "칫솔", "자동차"] },
+    { key: "mart", symbol: "마트", answer: "카트", image: "./images/outing_mart1.png", choices: ["카트", "생일축하", "밖에 나가자"] },
+    { key: "water", symbol: "물", answer: "물 마셔요", image: "./images/water.png", choices: ["밥", "물 마셔요", "생일축하"] },
+    { key: "toilet", symbol: "화장실", answer: "화장실 가요", image: "./images/pee.png", choices: ["화장실 가요", "유튜브 봐요", "자동차"] },
     { key: "bus", symbol: "버스", answer: "버스 타요", image: "./images/bus.png", choices: ["생일축하", "버스 타요", "물 마셔요"] },
-    { key: "rice", symbol: "밥", answer: "밥 먹어요", image: "./images/meal_rice.png", choices: ["밥 먹어요", "화장실 가요", "유튜브 봐요"] },
-    { key: "youtube", symbol: "유튜브", answer: "유튜브 봐요", image: "./images/youtube.png", choices: ["물 마셔요", "밥 먹어요", "유튜브 봐요"] }
+    { key: "youtube", symbol: "유튜브", answer: "유튜브 봐요", image: "./images/youtube.png", choices: ["물 마셔요", "밥", "유튜브 봐요"] }
   ];
 
   function choicePieces(choices) {
