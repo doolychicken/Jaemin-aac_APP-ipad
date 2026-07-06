@@ -61,9 +61,9 @@
       heroEl.className = "hero";
       gridEl.style.display = "";
       gridEl.innerHTML = "";
-      const useNumberPresentation = puzzle.presentation === "number" || slots.length > 6;
-      const isShortNumberPuzzle = useNumberPresentation && visibleSlotEntries.length <= 4;
       const sanitizedTheme = puzzle.theme ? String(puzzle.theme).replace(/[^a-z0-9-]/gi, "") : "";
+      const useNumberPresentation = puzzle.presentation === "number" || (slots.length > 6 && sanitizedTheme !== "symbol-grid");
+      const isShortNumberPuzzle = useNumberPresentation && visibleSlotEntries.length <= 4;
       const puzzleThemeClass = sanitizedTheme ? ` study-puzzle--${sanitizedTheme}` : "";
       const hideTrayWhenComplete = !!puzzle.hideTrayWhenComplete;
       gridEl.className = `study-puzzle${useNumberPresentation ? " study-puzzle--number" : " study-puzzle--name"}${isShortNumberPuzzle ? " study-puzzle--number-short" : ""}${puzzleThemeClass}`;
