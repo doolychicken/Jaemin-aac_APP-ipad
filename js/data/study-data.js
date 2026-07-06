@@ -29,6 +29,11 @@ function buildStudyScreensMap() {
     { label: "탈것", image: "./images/knobpuzzle_vehicles.png" }
   ];
 
+  function emojiImage(emoji) {
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160"><rect width="160" height="160" rx="28" fill="#fff7ed"/><text x="80" y="104" text-anchor="middle" font-size="86">${emoji}</text></svg>`;
+    return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+  }
+
   const defs = [
     {
       key: "studyPeg",
@@ -72,6 +77,7 @@ function buildStudyScreensMap() {
     { label: "한글",   nav: "studyHangul",     image: "./images/stickerbook_language.png" },
     { label: "이름",   nav: "studyNames",      image: "./images/person/me.png" },
     { label: "사람",   nav: "studyPeople",     image: "./images/outing_person_me.png" },
+    { label: "상징 매칭", nav: "studySymbolMatching", image: emojiImage("🎂") },
     { label: "과일",   nav: "studySticker_2",  image: "./images/stickerbook_fruit.png" },
     { label: "우리집", nav: "studySticker_3",  image: "./images/stickerbook_myhome.png" },
     { label: "동물",   nav: "studySticker_4",  image: "./images/stickerbook_animal.png" },
@@ -123,6 +129,15 @@ function buildStudyScreensMap() {
   const studyPeopleRelationChoices = ["엄마", "나", "아빠"];
   const studyPeopleAgeChoices = ["12", "13", "14"];
 
+  const symbolMatchingItems = [
+    { key: "cake", symbol: "케이크", answer: "생일축하", image: emojiImage("🎂"), choices: ["생일축하", "물 마셔요", "버스 타요"] },
+    { key: "water", symbol: "물", answer: "물 마셔요", image: "./images/water.png", choices: ["밥 먹어요", "물 마셔요", "생일축하"] },
+    { key: "toilet", symbol: "화장실", answer: "화장실 가요", image: "./images/pee.png", choices: ["화장실 가요", "유튜브 봐요", "버스 타요"] },
+    { key: "bus", symbol: "버스", answer: "버스 타요", image: "./images/bus.png", choices: ["생일축하", "버스 타요", "물 마셔요"] },
+    { key: "rice", symbol: "밥", answer: "밥 먹어요", image: "./images/meal_rice.png", choices: ["밥 먹어요", "화장실 가요", "유튜브 봐요"] },
+    { key: "youtube", symbol: "유튜브", answer: "유튜브 봐요", image: "./images/youtube.png", choices: ["물 마셔요", "밥 먹어요", "유튜브 봐요"] }
+  ];
+
   function choicePieces(choices) {
     return choices.map((label) => ({ label, value: label, speech: label }));
   }
@@ -152,6 +167,10 @@ function buildStudyScreensMap() {
       return { prefix: "", answer: person.relation, suffix: "야" };
     }
     return { prefix: `${person.label}은 `, answer: person.relation, suffix: "이야" };
+  }
+
+  function symbolCompleteLabel(item) {
+    return `${item.symbol}는 ${item.answer}`;
   }
 
   const vehicleStudyItems = [
@@ -396,6 +415,53 @@ function buildStudyScreensMap() {
     layout: "main",
     showPlayer: false
   };
+
+  rest.studySymbolMatching = {
+    title: "상징 매칭",
+    helper: "그림을 보고 맞는 말을 골라요.",
+    hero: [],
+    items: symbolMatchingItems.map((item) => ({
+      label: item.symbol,
+      nav: `studySymbolMatch_${item.key}`,
+      image: item.image,
+      speech: item.answer
+    })),
+    layout: "main",
+    showPlayer: false
+  };
+
+  symbolMatchingItems.forEach((item) => {
+    const completeLabel = symbolCompleteLabel(item);
+    rest[`studySymbolMatch_${item.key}`] = {
+      title: item.symbol,
+      helper: `${item.symbol} 그림은 무슨 말이야?`,
+      hero: [],
+      items: [],
+      layout: "studyPuzzle",
+      showPlayer: false,
+      puzzle: {
+        title: `${item.symbol} 상징 매칭`,
+        image: item.image,
+        imageLabel: item.symbol,
+        theme: "people",
+        hideTrayWhenComplete: true,
+        completeSpeech: completeLabel,
+        slots: [
+          {
+            label: item.answer,
+            value: item.answer,
+            speech: item.answer,
+            placeholder: "무슨 말?",
+            completeLabel,
+            completePrefix: `${item.symbol}는 `,
+            completeAnswer: item.answer,
+            completeSuffix: ""
+          }
+        ],
+        pieces: choicePieces(item.choices)
+      }
+    };
+  });
 
   studyPeopleProfiles.forEach((person) => {
     const screenKey = `studyPerson_${person.key}`;
