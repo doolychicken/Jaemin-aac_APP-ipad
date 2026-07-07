@@ -104,7 +104,7 @@ const DATA = {
       items: [
         { label: "사람",      nav: "peopleHome",   image: "./images/outing_person_me.png" },
         { label: "날씨",      nav: "weatherHome",  image: "./images/weather.png" },
-        { label: "화장실",    nav: "toilet",       image: "./images/pee.png" },
+        { label: "화장실2",   nav: "toilet2",      image: "./images/toilet.png" },
         { label: "이전",      nav: "main_p2",      image: "./images/home.png" },
         { label: "다음",      nav: "main",         image: "./images/outing.png" }
       ],
@@ -802,6 +802,19 @@ const DATA = {
 
     toilet: {
       title: "화장실",
+      helper: "원하는 것을 선택하세요.",
+      hero: [],
+      items: [
+        { label: "물소리", image: "./images/wash_hands.png", videoUrl: "https://www.youtube.com/watch?v=M3R5JHsL3ic", directOpen: true, silent: true },
+        { label: "똥싸고 싶어요",   image: "./images/poo.png" },
+        { label: "오줌싸고 싶어요", image: "./images/pee.png" }
+      ],
+      layout: "media",
+      showPlayer: false
+    },
+
+    toilet2: {
+      title: "화장실2",
       helper: "원하는 것을 선택하세요.",
       hero: [],
       items: [
