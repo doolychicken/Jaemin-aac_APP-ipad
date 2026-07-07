@@ -565,21 +565,27 @@
           const numberPuzzle = isNumberPuzzle();
           const rect = numberPuzzle ? getPuzzleTextRect(btn) : btn.getBoundingClientRect();
           let didMove = false;
-          const ghost = numberPuzzle ? buildNumberFloater(btn, rect) : btn.cloneNode(true);
-          if (!numberPuzzle) {
-            ghost.classList.add("study-puzzle-card--ghost");
-            Object.assign(ghost.style, {
-              position: "fixed",
-              left: `${rect.left}px`,
-              top: `${rect.top}px`,
-              width: `${rect.width}px`,
-              height: `${rect.height}px`,
-              zIndex: "9999",
-              pointerEvents: "none",
-              margin: "0"
-            });
+          let ghost = null;
+
+          function createGhost() {
+            if (ghost) return ghost;
+            ghost = numberPuzzle ? buildNumberFloater(btn, rect) : btn.cloneNode(true);
+            if (!numberPuzzle) {
+              ghost.classList.add("study-puzzle-card--ghost");
+              Object.assign(ghost.style, {
+                position: "fixed",
+                left: `${rect.left}px`,
+                top: `${rect.top}px`,
+                width: `${rect.width}px`,
+                height: `${rect.height}px`,
+                zIndex: "9999",
+                pointerEvents: "none",
+                margin: "0"
+              });
+            }
+            document.body.appendChild(ghost);
+            return ghost;
           }
-          document.body.appendChild(ghost);
           btn.setPointerCapture(e.pointerId);
           btn.classList.add("is-dragging");
           e.preventDefault();
@@ -588,9 +594,11 @@
             const dx = ev.clientX - e.clientX;
             const dy = ev.clientY - e.clientY;
             if ((dx * dx) + (dy * dy) > 196) didMove = true;
-            ghost.style.left = `${rect.left + dx}px`;
-            ghost.style.top = `${rect.top + dy}px`;
-            if (didMove) highlightDropSlot(piece.value, ev.clientX, ev.clientY, ghost);
+            if (!didMove) return;
+            const dragGhost = createGhost();
+            dragGhost.style.left = `${rect.left + dx}px`;
+            dragGhost.style.top = `${rect.top + dy}px`;
+            highlightDropSlot(piece.value, ev.clientX, ev.clientY, dragGhost);
           }
     
           function up(ev) {
@@ -603,7 +611,6 @@
             document.querySelectorAll(".study-puzzle-slot.is-ready").forEach((el) => el.classList.remove("is-ready"));
             suppressNextClick = true;
             if (!didMove) {
-              ghost.remove();
               speakPiece();
             } else if (target) {
               setMatched(piece.value, target, btn, ghost);
@@ -618,7 +625,7 @@
             btn.removeEventListener("pointerup", up);
             btn.removeEventListener("pointercancel", cancel);
             btn.classList.remove("is-dragging");
-            animatePuzzleReturn(ghost, btn);
+            if (ghost) animatePuzzleReturn(ghost, btn);
             document.querySelectorAll(".study-puzzle-slot.is-ready").forEach((el) => el.classList.remove("is-ready"));
             activePuzzleCard = null;
           }
@@ -635,6 +642,14 @@
           speakPiece();
         });
     
+        if (piece.image) {
+          btn.classList.add("study-puzzle-card--with-image");
+          const img = document.createElement("img");
+          img.src = piece.image;
+          img.alt = piece.label || "";
+          setupImageElement(img, true);
+          btn.appendChild(img);
+        }
         const text = document.createElement("span");
         text.textContent = piece.label;
         btn.appendChild(text);

@@ -429,6 +429,90 @@ function playWeatherSound(label = "") {
   } catch (_e) {}
 }
 
+let waterSoundState = null;
+
+function stopWaterSound() {
+  if (!waterSoundState) return;
+  const { ctx, sources, gain } = waterSoundState;
+  waterSoundState = null;
+  try {
+    const now = ctx.currentTime;
+    gain.gain.cancelScheduledValues(now);
+    gain.gain.setValueAtTime(Math.max(0.0001, gain.gain.value || 0.0001), now);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.35);
+    sources.forEach((source) => {
+      try { source.stop(now + 0.4); } catch (_) {}
+    });
+    window.setTimeout(() => ctx.close().catch(() => {}), 700);
+  } catch (_e) {
+    try { ctx.close().catch(() => {}); } catch (_) {}
+  }
+}
+
+function toggleWaterSound() {
+  if (waterSoundState) {
+    stopWaterSound();
+    return;
+  }
+  try {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) {
+      speak("물소리를 재생할 수 없어요");
+      return;
+    }
+    const ctx = new AudioCtx();
+    if (ctx.state === "suspended") ctx.resume().catch(() => {});
+    const master = ctx.createGain();
+    const low = ctx.createBiquadFilter();
+    const high = ctx.createBiquadFilter();
+    const now = ctx.currentTime;
+    const sources = [];
+
+    master.gain.setValueAtTime(0.0001, now);
+    master.gain.exponentialRampToValueAtTime(0.42 * APP_SOUND_GAIN, now + 0.18);
+    low.type = "lowpass";
+    low.frequency.setValueAtTime(2600, now);
+    high.type = "highpass";
+    high.frequency.setValueAtTime(80, now);
+    high.connect(low);
+    low.connect(master);
+    master.connect(ctx.destination);
+
+    function makeNoise(duration, gainValue, filterFreq, q = 0.8) {
+      const buffer = ctx.createBuffer(1, Math.floor(ctx.sampleRate * duration), ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      let last = 0;
+      for (let i = 0; i < data.length; i += 1) {
+        const raw = Math.random() * 2 - 1;
+        last = (last * 0.72) + (raw * 0.28);
+        data[i] = last * (0.75 + Math.random() * 0.25);
+      }
+      const source = ctx.createBufferSource();
+      const filter = ctx.createBiquadFilter();
+      const gain = ctx.createGain();
+      source.buffer = buffer;
+      source.loop = true;
+      filter.type = "bandpass";
+      filter.frequency.setValueAtTime(filterFreq, now);
+      filter.Q.setValueAtTime(q, now);
+      gain.gain.setValueAtTime(gainValue, now);
+      source.connect(filter);
+      filter.connect(gain);
+      gain.connect(high);
+      source.start(now);
+      sources.push(source);
+    }
+
+    makeNoise(1.1, 0.9, 460, 0.55);
+    makeNoise(0.7, 0.5, 1600, 0.7);
+    makeNoise(1.6, 0.28, 3200, 0.9);
+    waterSoundState = { ctx, sources, gain: master };
+  } catch (_e) {
+    waterSoundState = null;
+    speak("물소리를 재생할 수 없어요");
+  }
+}
+
 function warmupTTS() {
   if (ttsWarmedUp) return;
   ttsWarmedUp = true;
@@ -495,6 +579,7 @@ function youtubeSearchUrl(query) {
 }
 
 function resolveYoutube(item) {
+  if (item.videoUrl) return item.videoUrl;
   if (!item.youtube) return "";
   return DATA.youtube[item.youtube] || "";
 }
@@ -2945,7 +3030,7 @@ function renderButtons(items, layout) {
   const visibleItems = sideNavItems.length
     ? pageInfo.items.filter((item) => item.label !== "다음" && item.label !== "이전")
     : pageInfo.items;
-  const extraGridClass = `${currentKey() === "mealDrink" ? " grid--meal-drink" : ""}${compactMainMenu ? " grid--mobile-main-menu" : ""}`;
+  const extraGridClass = `${currentKey() === "mealDrink" ? " grid--meal-drink" : ""}${currentKey() === "toilet" ? " grid--toilet" : ""}${compactMainMenu ? " grid--mobile-main-menu" : ""}`;
   const autoSideNavCount = usesSideFrame && pageInfo.paged
     ? Number(pageInfo.page > 0) + Number(pageInfo.page < pageInfo.totalPages - 1)
     : 0;
@@ -2973,6 +3058,16 @@ function renderButtons(items, layout) {
   function activateItem(item) {
     const yUrl = resolveYoutube(item);
     const speechText = item.speech || item.label;
+
+    if (item.action === "waterSound") {
+      toggleWaterSound();
+      return;
+    }
+
+    if (item.directOpen && yUrl) {
+      window.location.href = yUrl;
+      return;
+    }
 
     if (currentKey() === "dateMonthPicker") {
       dateSelection.month = Number(item.label.replace("월", ""));
@@ -3020,7 +3115,7 @@ function renderButtons(items, layout) {
       }
     }, 70);
 
-    const speechDone = Promise.resolve(speak(speechText));
+    const speechDone = item.silent ? Promise.resolve() : Promise.resolve(speak(speechText));
     if (item.label === "다음" || item.label === "이전") {
       speechDone.finally(moveAfterSpeech);
     } else {
@@ -3200,6 +3295,7 @@ function renderTeachingAidEmptyComplete(screen) {
 function render() {
   const key    = currentKey();
   const screen = DATA.screens[key] || DATA.screens.main;
+  if (key !== "toilet") stopWaterSound();
   const isMain = key === "main";
   backBtn.style.display = isMain ? "none" : "inline-flex";
   homeBtn.style.display = isMain ? "none" : "inline-flex";

@@ -4,7 +4,7 @@
  * On first visit, pre-caches all images so subsequent loads are instant.
  */
 
-const CACHE_VERSION = 'v252';
+const CACHE_VERSION = 'v276';
 const CACHE_NAME = `jaemin-aac-${CACHE_VERSION}`;
 
 self.addEventListener('message', (event) => {
@@ -28,11 +28,17 @@ const PRECACHE_ASSETS = [
   './images/bannana.png',
   './images/brush.png',
   './images/bus.png',
+  './images/birthday.png',
+  './images/cake.jpg',
+  './images/chocomilk.jpg',
+  './images/cofee.png',
   './images/dad car.png',
   './images/dadcar.png',
   './images/dad_carkey.png',
   './images/eggs.png',
   './images/edia_cafe.png',
+  './images/fire truck.png',
+  './images/fire_station.png',
   './images/grape.png',
   './images/grape1.png',
   './images/home.png',
@@ -63,6 +69,7 @@ const PRECACHE_ASSETS = [
   './images/knobpuzzle_vehicles.png',
   './images/meal.png',
   './images/meal_rice.png',
+  './images/meal_rice1.png',
   './images/meal_juice.png',
   './images/meal_milk.png',
   './images/meal_soymilk.png',
@@ -86,8 +93,11 @@ const PRECACHE_ASSETS = [
   './images/person/rahee.png',
   './images/person/raon.png',
   './images/outing_school1.png',
+  './images/paris_baguatte.png',
   './images/pee.png',
   './images/pineapple.png',
+  './images/policecar.png',
+  './images/policestation.png',
   './images/poo.png',
   './images/pororo.png',
   './images/pororo.jpg',
@@ -124,6 +134,7 @@ const PRECACHE_ASSETS = [
   './images/stickerbook_pet.png',
   './images/stickerbook_shape.png',
   './images/stickerbook_vehicle.png',
+  './images/spoon.jpg',
   './images/strawberry.png',
   './images/study.png',
   './images/study_color_pencil.png',
@@ -136,6 +147,8 @@ const PRECACHE_ASSETS = [
   './images/therapy_class_swallowing.png',
   './images/toilet.png',
   './images/tomato.png',
+  './images/toothbush.png',
+  './images/toothpaste.png',
   './images/transport_bike.png',
   './images/transport_bus.png',
   './images/transport_calltaxi.png',

@@ -804,6 +804,7 @@ const DATA = {
       helper: "원하는 것을 선택하세요.",
       hero: [],
       items: [
+        { label: "물소리", image: "./images/water.png", videoUrl: "https://www.youtube.com/watch?v=M3R5JHsL3ic", directOpen: true, silent: true },
         { label: "똥싸고 싶어요",   image: "./images/poo.png" },
         { label: "오줌싸고 싶어요", image: "./images/pee.png" },
         { label: "양치",           image: "./images/brush.png" },

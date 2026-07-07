@@ -131,18 +131,59 @@ function buildStudyScreensMap() {
   const studyPeopleAgeChoices = ["12", "13", "14"];
 
   const symbolMatchingItems = [
-    { key: "cake", symbol: "케이크", answer: "생일축하", image: emojiImage("🎂"), choices: ["생일축하", "물 마셔요", "버스 타요"] },
+    { key: "cake", symbol: "케이크", answer: "생일축하", image: "./images/cake.jpg", choices: ["생일축하", "물 마셔요", "버스 타요"] },
     { key: "carKey", symbol: "차키", answer: "자동차", image: "./images/dad_carkey.png", choices: ["자동차", "생일축하", "카트"] },
-    { key: "spoon", symbol: "수저", answer: "밥", image: emojiImage("🥄"), choices: ["밥", "칫솔", "밖에 나가자"] },
-    { key: "toothpaste", symbol: "치약", answer: "칫솔", image: emojiImage("🪥"), choices: ["칫솔", "자동차", "빵가게"] },
-    { key: "shoes", symbol: "신발", answer: "밖에 나가자", image: emojiImage("👟"), choices: ["밖에 나가자", "밥", "카트"] },
+    { key: "spoon", symbol: "수저", answer: "밥", image: "./images/spoon.jpg", choices: ["밥", "칫솔", "밖에 나가자"] },
+    { key: "toothpaste", symbol: "치약", answer: "칫솔", image: "./images/toothpaste.png", choices: ["칫솔", "자동차", "빵가게"] },
+    { key: "shoes", symbol: "신발", answer: "밖에 나가자", image: "./images/school_shoe_locker.png", choices: ["밖에 나가자", "밥", "카트"] },
     { key: "eggTart", symbol: "에그타르트", answer: "빵가게", image: "./images/meal_eggtart.png", choices: ["빵가게", "칫솔", "자동차"] },
-    { key: "mart", symbol: "마트", answer: "카트", image: "./images/outing_mart1.png", choices: ["카트", "생일축하", "밖에 나가자"] },
+    { key: "mart", symbol: "마트", answer: "초코우유", image: "./images/outing_mart1.png", choices: ["초코우유", "생일축하", "밖에 나가자"] },
     { key: "water", symbol: "물", answer: "물 마셔요", image: "./images/water.png", choices: ["밥", "물 마셔요", "생일축하"] },
-    { key: "toilet", symbol: "화장실", answer: "화장실 가요", image: "./images/pee.png", choices: ["화장실 가요", "유튜브 봐요", "자동차"] },
+    { key: "toilet", symbol: "화장실", answer: "소변", image: "./images/toilet.png", choices: ["소변", "유튜브 봐요", "자동차"] },
     { key: "bus", symbol: "버스", answer: "버스 타요", image: "./images/bus.png", choices: ["생일축하", "버스 타요", "물 마셔요"] },
-    { key: "youtube", symbol: "유튜브", answer: "유튜브 봐요", image: "./images/youtube.png", choices: ["물 마셔요", "밥", "유튜브 봐요"] }
+    { key: "youtube", symbol: "유튜브", answer: "유튜브 봐요", image: "./images/youtube.png", choices: ["물 마셔요", "밥", "유튜브 봐요"] },
+    { key: "fireStation", symbol: "소방서", answer: "소방차", image: "./images/fire_station.png", choices: ["소방차", "경찰차", "버스 타요"] },
+    { key: "policeStation", symbol: "경찰서", answer: "경찰차", image: "./images/policestation.png", choices: ["경찰차", "소방차", "자동차"] },
+    { key: "coffee", symbol: "커피", answer: "커피숍", image: "./images/cofee.png", choices: ["커피숍", "빵가게", "물 마셔요"] }
   ];
+
+  function symbolPieceImage(item) {
+    if (item.key === "cake") return "./images/birthday.png";
+    if (item.key === "carKey") return "./images/dadcar.png";
+    if (item.key === "spoon") return "./images/meal_rice1.png";
+    if (item.key === "toothpaste") return "./images/toothbush.png";
+    if (item.key === "shoes") return "./images/school_shoe_locker.png";
+    if (item.key === "eggTart") return "./images/paris_baguatte.png";
+    if (item.key === "mart") return "./images/chocomilk.jpg";
+    if (item.key === "fireStation") return "./images/fire truck.png";
+    if (item.key === "policeStation") return "./images/policecar.png";
+    if (item.key === "coffee") return "./images/edia_cafe.png";
+    if (item.key === "toilet") return "./images/pee.png";
+    return "";
+  }
+
+  function symbolChoicePieces(choices) {
+    return choices.map((label) => {
+      let image = "";
+      if (label === "생일축하") image = "./images/birthday.png";
+      if (label === "자동차") image = "./images/dadcar.png";
+      if (label === "밥") image = "./images/meal_rice1.png";
+      if (label === "칫솔") image = "./images/toothbush.png";
+      if (label === "밖에 나가자") image = "./images/school_shoe_locker.png";
+      if (label === "빵가게") image = "./images/paris_baguatte.png";
+      if (label === "카트") image = "./images/outing_mart1.png";
+      if (label === "초코우유") image = "./images/chocomilk.jpg";
+      if (label === "물 마셔요") image = "./images/water.png";
+      if (label === "소변") image = "./images/pee.png";
+      if (label === "화장실 가요") image = "./images/pee.png";
+      if (label === "유튜브 봐요") image = "./images/youtube.png";
+      if (label === "버스 타요") image = "./images/bus.png";
+      if (label === "소방차") image = "./images/fire truck.png";
+      if (label === "경찰차") image = "./images/policecar.png";
+      if (label === "커피숍") image = "./images/edia_cafe.png";
+      return { label, value: label, speech: label, image };
+    });
+  }
 
   function choicePieces(choices) {
     return choices.map((label) => ({ label, value: label, speech: label }));
@@ -464,7 +505,7 @@ function buildStudyScreensMap() {
             completeSuffix: ""
           }
         ],
-        pieces: choicePieces(item.choices)
+        pieces: symbolChoicePieces(item.choices)
       }
     };
   });
@@ -491,7 +532,8 @@ function buildStudyScreensMap() {
       pieces: symbolMatchingItems.map((item) => ({
         label: item.answer,
         value: item.answer,
-        speech: item.answer
+        speech: item.answer,
+        image: symbolPieceImage(item)
       }))
     }
   };

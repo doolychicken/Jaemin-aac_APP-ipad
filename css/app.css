@@ -5550,6 +5550,17 @@ body {
   aspect-ratio: 1 / 1 !important;
 }
 
+.grid.grid--toilet.grid--side-pager {
+  grid-template-columns: repeat(3, minmax(0, 260px)) minmax(0, 92px) !important;
+  max-width: 900px;
+  column-gap: clamp(12px, 1.7vw, 18px);
+}
+
+.grid.grid--toilet.grid--side-pager > .tile {
+  width: min(100%, 260px) !important;
+  max-width: 260px !important;
+}
+
 .grid.grid--side-pager-with-toilet:not(.grid--side-pager-triple) .tile-nav-arrow {
   grid-row: 2;
 }
@@ -5690,6 +5701,16 @@ body {
     grid-row: 1;
     width: min(100%, 210px) !important;
     max-width: 210px !important;
+  }
+
+  .grid.grid--toilet.grid--side-pager {
+    grid-template-columns: repeat(2, minmax(0, 220px)) minmax(0, 72px) !important;
+    max-width: 540px;
+  }
+
+  .grid.grid--toilet.grid--side-pager > .tile {
+    width: min(100%, 220px) !important;
+    max-width: 220px !important;
   }
 
   .grid.grid--side-pager-triple > .tile.quick-toilet-side {
