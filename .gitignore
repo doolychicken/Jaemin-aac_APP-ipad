@@ -15,3 +15,7 @@ commit_msg.txt
 
 # Editor or script backups next to the real file
 *.backup.html
+
+# Windows Explorer copy artifacts
+* - 복사본.*
+* - 복사본/
