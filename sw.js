@@ -4,7 +4,7 @@
  * On first visit, pre-caches all images so subsequent loads are instant.
  */
 
-const CACHE_VERSION = 'v276';
+const CACHE_VERSION = 'v277';
 const CACHE_NAME = `jaemin-aac-${CACHE_VERSION}`;
 
 self.addEventListener('message', (event) => {
@@ -124,6 +124,7 @@ const PRECACHE_ASSETS = [
   './images/seouldrive.png',
   './images/shower.png',
   './images/sing.png',
+  './images/shoes.png',
   './images/stickerbook_animal.png',
   './images/stickerbook_eyenosemouth.png',
   './images/stickerbook_fruit.png',

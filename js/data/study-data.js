@@ -135,7 +135,7 @@ function buildStudyScreensMap() {
     { key: "carKey", symbol: "차키", answer: "자동차", image: "./images/dad_carkey.png", choices: ["자동차", "생일축하", "카트"] },
     { key: "spoon", symbol: "수저", answer: "밥", image: "./images/spoon.jpg", choices: ["밥", "칫솔", "밖에 나가자"] },
     { key: "toothpaste", symbol: "치약", answer: "칫솔", image: "./images/toothpaste.png", choices: ["칫솔", "자동차", "빵가게"] },
-    { key: "shoes", symbol: "신발", answer: "밖에 나가자", image: "./images/school_shoe_locker.png", choices: ["밖에 나가자", "밥", "카트"] },
+    { key: "shoes", symbol: "신발", answer: "밖에 나가자", image: "./images/shoes.png", choices: ["밖에 나가자", "밥", "카트"] },
     { key: "eggTart", symbol: "에그타르트", answer: "빵가게", image: "./images/meal_eggtart.png", choices: ["빵가게", "칫솔", "자동차"] },
     { key: "mart", symbol: "마트", answer: "초코우유", image: "./images/outing_mart1.png", choices: ["초코우유", "생일축하", "밖에 나가자"] },
     { key: "water", symbol: "물", answer: "물 마셔요", image: "./images/water.png", choices: ["밥", "물 마셔요", "생일축하"] },
@@ -152,7 +152,7 @@ function buildStudyScreensMap() {
     if (item.key === "carKey") return "./images/dadcar.png";
     if (item.key === "spoon") return "./images/meal_rice1.png";
     if (item.key === "toothpaste") return "./images/toothbush.png";
-    if (item.key === "shoes") return "./images/school_shoe_locker.png";
+    if (item.key === "shoes") return "./images/shoes.png";
     if (item.key === "eggTart") return "./images/paris_baguatte.png";
     if (item.key === "mart") return "./images/chocomilk.jpg";
     if (item.key === "fireStation") return "./images/fire truck.png";
@@ -169,7 +169,7 @@ function buildStudyScreensMap() {
       if (label === "자동차") image = "./images/dadcar.png";
       if (label === "밥") image = "./images/meal_rice1.png";
       if (label === "칫솔") image = "./images/toothbush.png";
-      if (label === "밖에 나가자") image = "./images/school_shoe_locker.png";
+      if (label === "밖에 나가자") image = "./images/shoes.png";
       if (label === "빵가게") image = "./images/paris_baguatte.png";
       if (label === "카트") image = "./images/outing_mart1.png";
       if (label === "초코우유") image = "./images/chocomilk.jpg";
