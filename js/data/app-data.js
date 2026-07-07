@@ -70,7 +70,7 @@ const DATA = {
         { label: "밥 먹기",   nav: "meal",         image: "./images/meal.png" },
         { label: "화장실",    nav: "toilet",       image: "./images/pee.png" },
         { label: "외출",      nav: "scheduleHomeOuting", image: "./images/outing.png" },
-        { label: "차타고싶어", nav: "outingPlace",  image: "./images/dadcar.png" },
+        { label: "잠자고 싶어", image: "./images/sleep.png", speech: "잠자고 싶어" },
         { label: "공부하기",  nav: "studyHome",    image: "./images/study.png" },
         { label: "다음",      nav: "main_p2",      image: "./images/outing.png" }
       ],
@@ -83,6 +83,7 @@ const DATA = {
       hero: [],
       items: [
         { label: "교통수단사람장소 외출", nav: "outingHome", image: "./images/outing.png" },
+        { label: "차타고싶어", nav: "outingPlace", image: "./images/dadcar.png" },
         { label: "학교",      nav: "outingSchool", image: "./images/outing_school1.png" },
         { label: "화장실",    nav: "toilet",       image: "./images/pee.png" },
         { label: "요일별 스케줄", nav: "scheduleWeekly", image: "./images/app_schedule.svg" },
