@@ -47,7 +47,11 @@
 
     function paginate(items, suffix, options = {}) {
       const list = items || [];
-      const pageSize = Math.max(1, getPageSize(options.layout || "main") - (options.reserveSlots || 0));
+      const requestedPageSize = Number(getPageSize(options.layout || "main"));
+      const basePageSize = Number.isFinite(requestedPageSize) && requestedPageSize > 0
+        ? requestedPageSize
+        : getDefaultPageSize();
+      const pageSize = Math.max(1, basePageSize - (options.reserveSlots || 0));
       const key = stateKey(suffix || "");
 
       if (list.length <= pageSize || hasManualPager(list)) {

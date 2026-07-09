@@ -38,6 +38,7 @@ function breadcrumbText() {
 }
 const mainPager = window.createTilePager({
   getScopeKey: () => navStack.map((x) => x.key).join("/"),
+  getPageSize: (layout) => currentKey() === "toilet" ? 3 : undefined,
   render,
   speak
 });
