@@ -60,11 +60,16 @@
       }
 
       if (options.sidePager) {
-        const totalPages = Math.ceil(list.length / pageSize);
+        const firstPageSize = Math.max(1, Number(options.firstPageSize || pageSize));
+        const remainingCount = Math.max(0, list.length - firstPageSize);
+        const totalPages = remainingCount
+          ? 1 + Math.ceil(remainingCount / pageSize)
+          : 1;
         const page = Math.min(pageByKey[key] || 0, totalPages - 1);
         pageByKey[key] = page;
-        const start = page * pageSize;
-        return { items: list.slice(start, start + pageSize), page, totalPages, key, paged: true };
+        const start = page === 0 ? 0 : firstPageSize + ((page - 1) * pageSize);
+        const end = page === 0 ? firstPageSize : start + pageSize;
+        return { items: list.slice(start, end), page, totalPages, key, paged: true };
       }
 
       const firstPageCapacity = Math.max(1, pageSize - 1);

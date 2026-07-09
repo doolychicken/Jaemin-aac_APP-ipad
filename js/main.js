@@ -38,7 +38,6 @@ function breadcrumbText() {
 }
 const mainPager = window.createTilePager({
   getScopeKey: () => navStack.map((x) => x.key).join("/"),
-  getPageSize: (layout) => currentKey() === "toilet" ? 3 : undefined,
   render,
   speak
 });
@@ -3022,7 +3021,10 @@ function renderButtons(items, layout) {
     ? { items: listItems, page: 0, totalPages: 1, key: "", paged: false }
     : (usesSideFrame && manualSideNavItems.length)
       ? paginateItems(manualContentItems, layout, `manual-${currentKey()}`, 0, { sidePager: true })
-      : paginateItems(listItems, layout, "", 0, { sidePager: usesSideFrame });
+      : paginateItems(listItems, layout, "", 0, {
+          sidePager: usesSideFrame,
+          firstPageSize: currentKey() === "toilet" ? 4 : undefined
+        });
   const sideNavItems = usesSideFrame
     ? (manualSideNavItems.length
         ? (pageInfo.paged && pageInfo.page > 0 ? [] : manualSideNavItems)

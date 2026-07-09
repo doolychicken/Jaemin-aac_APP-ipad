@@ -808,10 +808,10 @@ const DATA = {
         { label: "물소리", image: "./images/wash_hands.png", videoUrl: "https://www.youtube.com/watch?v=M3R5JHsL3ic", directOpen: true, silent: true },
         { label: "똥싸고 싶어요",   image: "./images/poo.png" },
         { label: "오줌싸고 싶어요", image: "./images/pee.png" },
+        { label: "양치",           image: "./images/brush.png" },
         { label: "손씻기",         image: "./images/wash_hands.png" },
         { label: "세수하기",       image: "./images/wash_face.png" },
-        { label: "샤워하기",       image: "./images/shower.png" },
-        { label: "양치",           image: "./images/brush.png" }
+        { label: "샤워하기",       image: "./images/shower.png" }
       ],
       layout: "media",
       showPlayer: false
