@@ -673,7 +673,7 @@ const DATA = {
       helper: "원하는 카테고리를 선택하세요.",
       hero: [],
       items: [
-        { label: "밥",   nav: "mealRice",      image: "./images/meal_rice.png" },
+        { label: "밥",   nav: "mealRice",      image: "./images/meal.png" },
         { label: "간식", nav: "mealSnack",     image: "./images/meal_eggtart.png" },
         { label: "과일", nav: "mealFruit",     image: "./images/apple.png" },
         { label: "야채", nav: "mealVegetable", image: "./images/tomato.png" },
