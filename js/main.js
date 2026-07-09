@@ -3023,7 +3023,7 @@ function renderButtons(items, layout) {
       ? paginateItems(manualContentItems, layout, `manual-${currentKey()}`, 0, { sidePager: true })
       : paginateItems(listItems, layout, "", 0, {
           sidePager: usesSideFrame,
-          firstPageSize: currentKey() === "toilet" ? 4 : undefined
+          firstPageSize: currentKey() === "toilet" ? 3 : undefined
         });
   const sideNavItems = usesSideFrame
     ? (manualSideNavItems.length
