@@ -54,12 +54,12 @@
     <section id="buttonGrid" class="grid"></section>
   </main>
 
-  <script src="./js/data/study-data.js?v=288"></script>
-  <script src="./js/data/app-data.js?v=288"></script>
-  <script src="./js/core/pager.js?v=288"></script>
+  <script src="./js/data/study-data.js?v=289"></script>
+  <script src="./js/data/app-data.js?v=289"></script>
+  <script src="./js/core/pager.js?v=289"></script>
   <script src="./js/features/schedule.js?v=231"></script>
   <script src="./js/features/study-puzzle.js?v=277"></script>
-  <script src="./js/main.js?v=288"></script>
+  <script src="./js/main.js?v=289"></script>
   <script>
     if ('serviceWorker' in navigator) {
       let refreshing = false;
@@ -70,7 +70,7 @@
       });
       window.addEventListener('load', () => {
         /* sw.js에도 v를 붙이지 않으면 Safari가 옛 서비스 워커를 붙잡는 경우가 있음 */
-        navigator.serviceWorker.register('./sw.js?v=288', { updateViaCache: 'none' })
+        navigator.serviceWorker.register('./sw.js?v=289', { updateViaCache: 'none' })
           .then(function (reg) {
             if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
             reg.addEventListener('updatefound', function () {
