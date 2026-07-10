@@ -430,6 +430,38 @@ function playWeatherSound(label = "") {
 }
 
 let waterSoundState = null;
+let mediaSoundState = null;
+
+function stopMediaSound() {
+  if (!mediaSoundState) return;
+  const audio = mediaSoundState.audio;
+  mediaSoundState = null;
+  try {
+    audio.pause();
+    audio.currentTime = 0;
+  } catch (_e) {}
+}
+
+function toggleMediaSound(src, loop) {
+  if (!src) return;
+  if (mediaSoundState && mediaSoundState.src === src) {
+    stopMediaSound();
+    return;
+  }
+  stopMediaSound();
+  stopWaterSound();
+  const audio = new Audio(src);
+  mediaSoundState = { audio, src };
+  audio.loop = !!loop;
+  audio.volume = Math.max(0, Math.min(1, APP_SOUND_GAIN));
+  audio.addEventListener("ended", () => {
+    if (mediaSoundState && mediaSoundState.audio === audio) mediaSoundState = null;
+  }, { once: true });
+  audio.play().catch(() => {
+    stopMediaSound();
+    speak("소리를 재생할 수 없어요");
+  });
+}
 
 function stopWaterSound() {
   if (!waterSoundState) return;
@@ -454,6 +486,7 @@ function toggleWaterSound() {
     stopWaterSound();
     return;
   }
+  stopMediaSound();
   try {
     const AudioCtx = window.AudioContext || window.webkitAudioContext;
     if (!AudioCtx) {
@@ -3064,6 +3097,11 @@ function renderButtons(items, layout) {
 
     if (item.action === "waterSound") {
       toggleWaterSound();
+      return;
+    }
+
+    if (item.audioUrl) {
+      toggleMediaSound(item.audioUrl, item.loopAudio);
       return;
     }
 
