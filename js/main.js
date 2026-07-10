@@ -3234,6 +3234,30 @@ function renderButtons(items, layout) {
     gridEl.appendChild(btn);
   });
 
+  if (currentKey() === "studyTeachingAids") {
+    const resetBtn = document.createElement("button");
+    resetBtn.type = "button";
+    resetBtn.className = "tile";
+    resetBtn.setAttribute("aria-label", "처음부터 다시");
+
+    const art = document.createElement("div");
+    art.className = "tile-art";
+    art.textContent = "↻";
+
+    const label = document.createElement("div");
+    label.className = "tile-label";
+    label.textContent = "처음부터 다시";
+
+    resetBtn.appendChild(art);
+    resetBtn.appendChild(label);
+    resetBtn.addEventListener("click", () => {
+      resetTeachingAidProgress();
+      speak("처음부터 다시");
+      render();
+    });
+    gridEl.appendChild(resetBtn);
+  }
+
   sideNavItems.forEach((item) => {
     const btn = document.createElement("button");
     btn.className = `tile-nav-arrow tile-nav-arrow--${item.label === "이전" ? "prev" : "next"}`;
