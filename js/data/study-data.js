@@ -83,7 +83,8 @@ function buildStudyScreensMap() {
     { label: "우리집", nav: "studySticker_3",  image: "./images/stickerbook_myhome.png" },
     { label: "동물",   nav: "studySticker_4",  image: "./images/stickerbook_animal.png" },
     { label: "탈것",   nav: "studyVehicles",   image: "./images/stickerbook_vehicle.png" },
-    { label: "색깔",   nav: "studySticker_10", image: "./images/stickerbook_shape.png" }
+    { label: "색깔",   nav: "studySticker_10", image: "./images/stickerbook_shape.png" },
+    { label: "분리수거", nav: "studyRecyclingGame", image: "./images/recycling_station.png" }
   ];
 
   const hangulLetterItems = [
@@ -254,6 +255,36 @@ function buildStudyScreensMap() {
     items: appStudyItems,
     layout: "main",
     showPlayer: false
+  };
+
+  rest.studyRecyclingGame = {
+    title: "분리수거 게임",
+    helper: "물건을 맞는 분리수거통에 넣어보세요.",
+    hero: [],
+    items: [],
+    layout: "recyclingGame",
+    showPlayer: false,
+    recycling: {
+      bins: [
+        { label: "캔", kind: "can", icon: "🥫" },
+        { label: "종이", kind: "paper", icon: "📄" },
+        { label: "병", kind: "glass", icon: "🍾" },
+        { label: "플라스틱", kind: "plastic", icon: "🧴" },
+        { label: "스티로폼", kind: "foam", icon: "□" }
+      ],
+      items: [
+        { label: "캔", kind: "can", icon: "🥫" },
+        { label: "종이", kind: "paper", icon: "📄" },
+        { label: "병", kind: "glass", icon: "🍾" },
+        { label: "플라스틱병", kind: "plastic", icon: "🧴", speech: "플라스틱 병" },
+        { label: "스티로폼", kind: "foam", icon: "□" },
+        { label: "우유팩", kind: "paper", icon: "🥛" },
+        { label: "음료캔", kind: "can", icon: "🥤" },
+        { label: "유리병", kind: "glass", icon: "🍶" },
+        { label: "샴푸통", kind: "plastic", icon: "🧴" },
+        { label: "스티로폼 상자", kind: "foam", icon: "□" }
+      ]
+    }
   };
 
   rest.studyNumbers = {

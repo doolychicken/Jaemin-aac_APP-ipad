@@ -234,6 +234,18 @@ const studyPuzzleFeature = window.createStudyPuzzleFeature({
   render
 });
 
+const recyclingGameFeature = window.createRecyclingGameFeature({
+  appMainEl,
+  spotlightViewEl,
+  spotlightBtnEl,
+  heroEl,
+  gridEl,
+  helperEl,
+  playPuzzleSound,
+  speak,
+  render
+});
+
 // ── 1. 한국어 목소리 선택 (fallback: default 목소리) ─────────────────────────
 function pickPreferredKoVoice() {
   if (!("speechSynthesis" in window)) return null;
@@ -3439,6 +3451,8 @@ function render() {
     scheduleFeature.render(key, screen);
   } else if (screen.layout === "studyPuzzle") {
     studyPuzzleFeature.render(screen);
+  } else if (screen.layout === "recyclingGame") {
+    recyclingGameFeature.render({ ...screen, key });
   } else if (isSpotlight) {
     appMainEl.classList.add("app--spotlight");
     spotlightViewEl.style.display = "flex";
@@ -3510,6 +3524,7 @@ homeBtn.addEventListener("click", () => {
   outingPlannerMode = "";
   scheduleFeature.resetToHome();
   studyPuzzleFeature.clear();
+  recyclingGameFeature.clear();
   selectedYoutube = "";
   resetPageState();
   render();
