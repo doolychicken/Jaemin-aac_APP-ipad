@@ -101,8 +101,11 @@
       object.setAttribute("tabindex", "0");
       object.setAttribute("aria-label", currentItem.label);
       object.dataset.kind = currentItem.kind;
+      const objectVisual = currentItem.image
+        ? `<img class="recycling-object-image" src="${currentItem.image}" alt="${currentItem.label}">`
+        : `<div class="recycling-object-icon">${currentItem.icon}</div>`;
       object.innerHTML = `
-        <div class="recycling-object-icon">${currentItem.icon}</div>
+        ${objectVisual}
         <div class="recycling-object-label">${currentItem.label}</div>
       `;
       object.addEventListener("click", () => speak(currentItem.speech || currentItem.label));
@@ -140,9 +143,12 @@
         btn.type = "button";
         btn.className = `recycling-bin recycling-bin--${bin.kind}`;
         btn.dataset.kind = bin.kind;
+        const binVisual = bin.image
+          ? `<img class="recycling-bin-image" src="${bin.image}" alt="${bin.label}">`
+          : `<div class="recycling-bin-icon">${bin.icon}</div>`;
         btn.innerHTML = `
           <div class="recycling-bin-lid"></div>
-          <div class="recycling-bin-icon">${bin.icon}</div>
+          ${binVisual}
           <div class="recycling-bin-label">${bin.label}</div>
         `;
         btn.addEventListener("click", () => checkBin(bin));

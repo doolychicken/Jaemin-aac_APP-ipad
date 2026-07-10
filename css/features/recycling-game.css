@@ -53,6 +53,15 @@
   line-height: 1;
 }
 
+.recycling-object-image {
+  width: min(78%, 190px);
+  height: min(68%, 170px);
+  object-fit: contain;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 10px 24px rgba(76, 111, 174, 0.16);
+}
+
 .recycling-object-label {
   color: #0f3b82;
   font-size: clamp(1.6rem, 4vh, 2.5rem);
@@ -105,6 +114,15 @@
 .recycling-bin-icon {
   font-size: clamp(2.8rem, 8vh, 5.2rem);
   line-height: 1;
+}
+
+.recycling-bin-image {
+  width: min(82%, 112px);
+  height: clamp(70px, 12vh, 112px);
+  object-fit: contain;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 8px 18px rgba(76, 111, 174, 0.14);
 }
 
 .recycling-bin-label {

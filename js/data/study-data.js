@@ -266,23 +266,23 @@ function buildStudyScreensMap() {
     showPlayer: false,
     recycling: {
       bins: [
-        { label: "캔", kind: "can", icon: "🥫" },
-        { label: "종이", kind: "paper", icon: "📄" },
-        { label: "병", kind: "glass", icon: "🍾" },
-        { label: "플라스틱", kind: "plastic", icon: "🧴" },
-        { label: "스티로폼", kind: "foam", icon: "□" }
+        { label: "캔", kind: "can", icon: "🥫", image: "./images/recycling_can.jpg" },
+        { label: "종이", kind: "paper", icon: "📄", image: "./images/recycling_paper.jpg" },
+        { label: "병", kind: "glass", icon: "🍾", image: "./images/recycling_glass.png" },
+        { label: "플라스틱", kind: "plastic", icon: "🧴", image: "./images/recycling_plastic.jpg" },
+        { label: "스티로폼", kind: "foam", icon: "□", image: "./images/recycling_foam.jpg" }
       ],
       items: [
-        { label: "캔", kind: "can", icon: "🥫" },
-        { label: "종이", kind: "paper", icon: "📄" },
-        { label: "병", kind: "glass", icon: "🍾" },
-        { label: "플라스틱병", kind: "plastic", icon: "🧴", speech: "플라스틱 병" },
-        { label: "스티로폼", kind: "foam", icon: "□" },
-        { label: "우유팩", kind: "paper", icon: "🥛" },
-        { label: "음료캔", kind: "can", icon: "🥤" },
-        { label: "유리병", kind: "glass", icon: "🍶" },
-        { label: "샴푸통", kind: "plastic", icon: "🧴" },
-        { label: "스티로폼 상자", kind: "foam", icon: "□" }
+        { label: "캔", kind: "can", icon: "🥫", image: "./images/recycling_can.jpg" },
+        { label: "종이", kind: "paper", icon: "📄", image: "./images/recycling_paper.jpg" },
+        { label: "병", kind: "glass", icon: "🍾", image: "./images/recycling_glass.png" },
+        { label: "플라스틱병", kind: "plastic", icon: "🧴", image: "./images/recycling_plastic.jpg", speech: "플라스틱 병" },
+        { label: "스티로폼", kind: "foam", icon: "□", image: "./images/recycling_foam.jpg" },
+        { label: "우유팩", kind: "paper", icon: "🥛", image: "./images/recycling_paper.jpg" },
+        { label: "음료캔", kind: "can", icon: "🥤", image: "./images/recycling_can.jpg" },
+        { label: "유리병", kind: "glass", icon: "🍶", image: "./images/recycling_glass.png" },
+        { label: "샴푸통", kind: "plastic", icon: "🧴", image: "./images/recycling_plastic.jpg" },
+        { label: "스티로폼 상자", kind: "foam", icon: "□", image: "./images/recycling_foam.jpg" }
       ]
     }
   };
