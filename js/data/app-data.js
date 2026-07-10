@@ -809,7 +809,7 @@ const DATA = {
       helper: "원하는 것을 선택하세요.",
       hero: [],
       items: [
-        { label: "물소리", image: "./images/watersound.png", audioUrl: "./audio/watersound.mp3", loopAudio: true, silent: true },
+        { label: "물소리", nav: "toiletWaterVideo", image: "./images/watersound.png", immediateNav: true, silent: true },
         { label: "똥싸고 싶어요",   image: "./images/poo.png" },
         { label: "오줌싸고 싶어요", image: "./images/pee.png" },
         { label: "양치",           image: "./images/brush.png" },
@@ -819,6 +819,20 @@ const DATA = {
       ],
       layout: "media",
       showPlayer: false
+    },
+
+    toiletWaterVideo: {
+      title: "물소리",
+      helper: "물소리 영상을 봐요.",
+      hero: [],
+      items: [],
+      layout: "localVideo",
+      showPlayer: false,
+      video: {
+        src: "./video/watersound.mp4",
+        poster: "./images/watersound.png",
+        label: "물소리"
+      }
     },
 
     // ── 외출하기 ──────────────────────────────────────────────────────────────

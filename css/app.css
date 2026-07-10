@@ -164,6 +164,27 @@ body {
   font-weight: 900;
 }
 
+.local-video-view {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(8px, 1.5vh, 16px);
+}
+
+.local-video-player {
+  width: min(100%, 960px);
+  max-height: min(68vh, 620px);
+  aspect-ratio: 16 / 9;
+  border: 3px solid #bfdbfe;
+  border-radius: 18px;
+  background: #000;
+  box-shadow: 0 22px 48px rgba(76, 111, 174, 0.18);
+  object-fit: contain;
+}
+
 @media (min-width: 768px) {
   .spotlight-button {
     width: min(60vw, 520px); /* 메인 타일(30vw/260)의 2배 */
