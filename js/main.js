@@ -79,11 +79,10 @@ function teachingAidCurrentCompletionId(item = null) {
 
 function filterCompletedTeachingAidItems(items) {
   if (!isInTeachingAidFlow()) return items || [];
+  if (currentKey() === "studyTeachingAids") return items || [];
   return (items || []).filter((item) => {
     if (item.label === "다음" || item.label === "이전") return true;
-    const completionId = currentKey() === "studyTeachingAids"
-      ? (item.teachingAidId || teachingAidItemCompletionId(item))
-      : teachingAidItemCompletionId(item);
+    const completionId = teachingAidItemCompletionId(item);
     return !completionId || !isTeachingAidComplete(completionId);
   });
 }
