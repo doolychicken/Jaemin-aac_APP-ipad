@@ -57,6 +57,7 @@ const DATA = {
     bebefinChannel: "https://www.youtube.com/@%EB%B2%A0%EB%B2%A0%ED%95%80",
     pororoChannel: "https://www.youtube.com/@%EB%BD%80%EB%A1%9C%EB%A1%9C%EA%B3%B5%EC%8B%9D%EC%B1%84%EB%84%90",
     ukuleleSearch: "https://www.youtube.com/results?search_query=%EC%9A%B0%EC%BF%A0%EB%A0%90%EB%A0%88+%EC%97%B0%EC%A3%BC",
+    pianoSearch: "https://www.youtube.com/results?search_query=%ED%94%BC%EC%95%84%EB%85%B8+%EC%97%B0%EC%A3%BC",
     mealRiceYoutube: "https://www.youtube.com/watch?v=7IPlzOBDxSc&list=RD7IPlzOBDxSc&start_radio=1"
   },
 
@@ -575,6 +576,7 @@ const DATA = {
         { label: "베베핀", youtube: "bebefinChannel", image: "./images/bebefinn.png" },
         { label: "뽀로로", youtube: "pororoChannel", image: "./images/pororo.png" },
         { label: "우쿠렐레", youtube: "ukuleleSearch", image: "./images/ukulele.png" },
+        { label: "피아노", youtube: "pianoSearch", image: "./images/piano.png" },
         { label: "노래",      nav: "ipadMusic",    image: "./images/sing.png" }
       ],
       layout: "main",
