@@ -1,0 +1,483 @@
+.mart-cart-game {
+  width: 100%;
+  min-height: min(74vh, 660px);
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fae5ec;
+  box-shadow: inset 0 0 0 2px #ffd2df;
+}
+
+.mart-cart-top {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 14px;
+  background: #352b35;
+  color: #fff;
+  font-weight: 900;
+  box-sizing: border-box;
+}
+
+.mart-cart-back-chip {
+  width: 42px;
+  height: 34px;
+  border: none;
+  border-radius: 999px;
+  background: #4b3d4c;
+  color: #fbbf24;
+  font-size: 2rem;
+  line-height: 1;
+  font-weight: 900;
+}
+
+.mart-cart-mode {
+  color: #8af05e;
+  background: #241f29;
+  border-radius: 999px;
+  padding: 5px 16px;
+  font-size: clamp(0.95rem, 1.5vw, 1.25rem);
+}
+
+.mart-cart-title-chip {
+  background: #4a3447;
+  border-radius: 999px;
+  padding: 5px 16px;
+  font-size: clamp(0.95rem, 1.5vw, 1.25rem);
+}
+
+.mart-cart-round {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #f3e8ff;
+  color: #4a334a;
+  font-size: 1rem;
+}
+
+.mart-cart-stars {
+  color: #fbbf24;
+  letter-spacing: 2px;
+  font-size: 1rem;
+}
+
+.mart-cart-awning {
+  height: clamp(44px, 7vh, 72px);
+  background:
+    radial-gradient(circle at 50% 100%, #12a8c9 0 48%, transparent 50%) 0 0 / 10% 100% repeat-x,
+    linear-gradient(90deg, #47c7dc 0 50%, #0284a7 50% 100%);
+  filter: drop-shadow(0 8px 8px rgba(76, 42, 58, 0.12));
+}
+
+.mart-cart-scene {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.36), rgba(255, 255, 255, 0) 38%),
+    #fae5ec;
+}
+
+.mart-cart-speech {
+  position: absolute;
+  left: clamp(42px, 11vw, 150px);
+  top: clamp(42px, 8vh, 92px);
+  min-width: clamp(260px, 38vw, 480px);
+  min-height: clamp(72px, 10vh, 104px);
+  border: none;
+  border-radius: 32px;
+  background: #fff;
+  color: #372333;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 34px;
+  font-size: clamp(1.55rem, 3vw, 2.45rem);
+  font-weight: 900;
+  box-shadow: 0 10px 24px rgba(85, 47, 62, 0.1);
+  z-index: 3;
+}
+
+.mart-cart-speech::after {
+  content: "";
+  position: absolute;
+  right: 74px;
+  bottom: -32px;
+  width: 64px;
+  height: 42px;
+  background: #fff;
+  clip-path: polygon(0 0, 100% 0, 18% 100%);
+}
+
+.mart-cart-speaker {
+  width: clamp(42px, 5vw, 58px);
+  height: clamp(42px, 5vw, 58px);
+  border-radius: 50%;
+  background: #a36b42;
+  color: #dbeafe;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  box-shadow: inset 0 0 0 4px #e9d0b9;
+  font-size: clamp(1.25rem, 2vw, 1.65rem);
+}
+
+.mart-cart-shelf {
+  position: absolute;
+  right: clamp(42px, 7vw, 96px);
+  top: clamp(70px, 11vh, 126px);
+  width: clamp(430px, 49vw, 720px);
+  height: clamp(170px, 24vh, 238px);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: end;
+  gap: clamp(18px, 3vw, 42px);
+  padding: 0 clamp(18px, 3vw, 42px) 32px;
+  box-sizing: border-box;
+  z-index: 4;
+}
+
+.mart-cart-shelf::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 18px;
+  height: clamp(30px, 4vh, 44px);
+  border-radius: 6px;
+  background: linear-gradient(180deg, #c9893e, #a96728);
+  box-shadow: 0 18px 0 rgba(185, 121, 60, 0.15);
+  z-index: -1;
+}
+
+.mart-cart-item {
+  position: relative;
+  height: clamp(108px, 16vh, 160px);
+  border: none;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  cursor: grab;
+  touch-action: none;
+  transition: transform 0.14s ease, opacity 0.14s ease;
+}
+
+.mart-cart-item:active,
+.mart-cart-item.is-dragging {
+  transform: scale(0.96);
+  cursor: grabbing;
+}
+
+.mart-cart-item.is-picked {
+  opacity: 0.25;
+  transform: scale(0.72) translateY(36px);
+}
+
+.mart-cart-item.is-wrong {
+  animation: mart-cart-shake 0.34s ease-in-out;
+}
+
+.mart-cart-item--ghost {
+  opacity: 0.92;
+  transform: scale(1.06);
+  filter: drop-shadow(0 24px 28px rgba(67, 41, 53, 0.24));
+}
+
+.mart-cart-item-visual {
+  width: clamp(86px, 10vw, 138px);
+  height: clamp(86px, 10vw, 138px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(4.2rem, 8vw, 7.5rem);
+  line-height: 1;
+}
+
+.mart-cart-item-visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 10px 10px rgba(86, 50, 32, 0.14));
+}
+
+.mart-cart-item-label {
+  position: absolute;
+  bottom: -24px;
+  color: #6b4758;
+  font-size: 0.95rem;
+  font-weight: 900;
+  opacity: 0;
+}
+
+.mart-cart-mascot {
+  position: absolute;
+  left: clamp(22px, 8vw, 92px);
+  bottom: clamp(-58px, -4vh, -24px);
+  width: clamp(260px, 31vw, 430px);
+  height: clamp(310px, 43vh, 500px);
+  z-index: 2;
+}
+
+.mart-cart-mascot-body {
+  position: absolute;
+  left: 24%;
+  bottom: 0;
+  width: 50%;
+  height: 58%;
+  border-radius: 48% 48% 12% 12%;
+  background: #6fd235;
+}
+
+.mart-cart-mascot-belly {
+  position: absolute;
+  left: 43%;
+  bottom: 7%;
+  width: 22%;
+  height: 42%;
+  border-radius: 45%;
+  background: #e7e27d;
+}
+
+.mart-cart-mascot-face {
+  position: absolute;
+  left: 18%;
+  top: 17%;
+  width: 70%;
+  height: 36%;
+  border-radius: 45% 58% 55% 42%;
+  background: #78d83b;
+  transform: rotate(2deg);
+}
+
+.mart-cart-mascot-face::after {
+  content: "";
+  position: absolute;
+  right: -14%;
+  top: 34%;
+  width: 42%;
+  height: 42%;
+  border-radius: 46%;
+  background: #78d83b;
+}
+
+.mart-cart-mascot-eye {
+  position: absolute;
+  top: 12%;
+  width: 16%;
+  height: 16%;
+  border-radius: 50%;
+  background: #8de24c;
+  z-index: 2;
+}
+
+.mart-cart-mascot-eye::after {
+  content: "";
+  position: absolute;
+  left: 34%;
+  top: 34%;
+  width: 34%;
+  height: 34%;
+  border-radius: 50%;
+  background: #1f2937;
+  box-shadow: 4px -4px 0 #fff;
+}
+
+.mart-cart-mascot-eye--left { left: 31%; }
+.mart-cart-mascot-eye--right { left: 49%; }
+
+.mart-cart-mascot-mouth {
+  position: absolute;
+  left: 48%;
+  top: 39%;
+  width: 32%;
+  height: 12%;
+  border-radius: 0 0 999px 999px;
+  background: #ef7b6f;
+  z-index: 3;
+  transform: rotate(-4deg);
+}
+
+.mart-cart-cart {
+  position: absolute;
+  left: clamp(320px, 34vw, 520px);
+  bottom: clamp(14px, 3vh, 34px);
+  width: clamp(300px, 39vw, 520px);
+  height: clamp(120px, 17vh, 180px);
+  border: none;
+  background: transparent;
+  z-index: 5;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform 0.14s ease;
+}
+
+.mart-cart-cart.is-over,
+.mart-cart-cart.is-success {
+  transform: scale(1.04);
+}
+
+.mart-cart-cart.is-wrong {
+  animation: mart-cart-shake 0.34s ease-in-out;
+}
+
+.mart-cart-cart-basket {
+  position: absolute;
+  left: 20%;
+  right: 0;
+  bottom: 22%;
+  height: 62%;
+  border-radius: 8px 8px 18px 18px;
+  background: #df2347;
+  box-shadow: inset 0 -18px 0 rgba(142, 24, 46, 0.24), 0 14px 22px rgba(81, 39, 54, 0.14);
+}
+
+.mart-cart-cart-basket::before {
+  content: "";
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  top: 20%;
+  height: 28%;
+  background: repeating-linear-gradient(90deg, #fbe4e8 0 12%, transparent 12% 20%);
+  opacity: 0.95;
+}
+
+.mart-cart-cart-handle {
+  position: absolute;
+  left: 5%;
+  bottom: 52%;
+  width: 24%;
+  height: 44%;
+  border-left: clamp(10px, 1.4vw, 16px) solid #b8b9ca;
+  border-top: clamp(10px, 1.4vw, 16px) solid #b8b9ca;
+  border-radius: 20px 0 0 0;
+}
+
+.mart-cart-cart-wheel {
+  position: absolute;
+  bottom: 10%;
+  width: clamp(24px, 3vw, 38px);
+  height: clamp(24px, 3vw, 38px);
+  border-radius: 50%;
+  background: #33313b;
+  box-shadow: inset 0 0 0 6px #696777;
+}
+
+.mart-cart-cart-wheel--left { left: 34%; }
+.mart-cart-cart-wheel--right { right: 12%; }
+
+.mart-cart-cart-items {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: -34%;
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  min-height: 70px;
+  justify-content: center;
+}
+
+.mart-cart-mini {
+  width: clamp(42px, 5vw, 64px);
+  height: clamp(42px, 5vw, 64px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+}
+
+.mart-cart-mini-visual,
+.mart-cart-mini-visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.mart-cart-complete {
+  align-self: center;
+  justify-self: center;
+  width: min(560px, 86vw);
+  min-height: 360px;
+  border-radius: 8px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  box-shadow: 0 22px 50px rgba(61, 83, 131, 0.14);
+}
+
+.mart-cart-complete-mark {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #22c55e, #14b8a6);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.8rem;
+  font-weight: 900;
+}
+
+.mart-cart-complete-title {
+  color: #073b4c;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 900;
+}
+
+.mart-cart-complete-score {
+  color: #64748b;
+  font-size: clamp(1.15rem, 2vw, 1.45rem);
+  font-weight: 800;
+}
+
+.mart-cart-again {
+  min-width: 240px;
+}
+
+@keyframes mart-cart-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  50% { transform: translateX(8px); }
+  75% { transform: translateX(-5px); }
+}
+
+@media (max-width: 900px) {
+  .mart-cart-game {
+    min-height: 72vh;
+  }
+
+  .mart-cart-speech {
+    left: 24px;
+    min-width: 300px;
+  }
+
+  .mart-cart-shelf {
+    right: 20px;
+    width: 55vw;
+    gap: 14px;
+  }
+
+  .mart-cart-mascot {
+    left: 0;
+    width: 280px;
+  }
+
+  .mart-cart-cart {
+    left: 260px;
+    width: 360px;
+  }
+}

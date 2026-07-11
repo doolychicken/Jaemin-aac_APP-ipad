@@ -84,7 +84,8 @@ function buildStudyScreensMap() {
     { label: "동물",   nav: "studySticker_4",  image: "./images/stickerbook_animal.png" },
     { label: "탈것",   nav: "studyVehicles",   image: "./images/stickerbook_vehicle.png" },
     { label: "색깔",   nav: "studySticker_10", image: "./images/stickerbook_shape.png" },
-    { label: "분리수거", nav: "studyRecyclingGame", image: "./images/recycling_station.png" }
+    { label: "분리수거", nav: "studyRecyclingGame", image: "./images/recycling_station.png" },
+    { label: "마트카트", nav: "studyMartCartGame", image: "./images/stickerbook_mart.png" }
   ];
 
   const hangulLetterItems = [
@@ -283,6 +284,34 @@ function buildStudyScreensMap() {
         { label: "유리병", kind: "glass", icon: "🍶", image: "./images/recycling_glass.png" },
         { label: "샴푸통", kind: "plastic", icon: "🧴", image: "./images/recycling_plastic.jpg" },
         { label: "스티로폼 상자", kind: "foam", icon: "□", image: "./images/recycling_foam.jpg" }
+      ]
+    }
+  };
+
+  rest.studyMartCartGame = {
+    title: "마트카트",
+    helper: "말풍선에 맞는 물건을 카트에 담아보세요.",
+    hero: [],
+    items: [],
+    layout: "martCartGame",
+    showPlayer: false,
+    martCart: {
+      items: [
+        { id: "carrot", label: "당근", icon: "🥕" },
+        { id: "tomato", label: "토마토", image: "./images/tomato.png", icon: "🍅" },
+        { id: "pepper", label: "피망", icon: "🫑" },
+        { id: "chocomilk", label: "초코우유", image: "./images/chocomilk.jpg", icon: "🥛" },
+        { id: "milk", label: "우유", image: "./images/meal_milk.png", icon: "🥛" },
+        { id: "apple", label: "사과", image: "./images/apple.png", icon: "🍎" },
+        { id: "strawberry", label: "딸기", image: "./images/strawberry.png", icon: "🍓" },
+        { id: "pineapple", label: "파인애플", image: "./images/pineapple.png", icon: "🍍" }
+      ],
+      missions: [
+        { id: "carrot", label: "당근", icon: "🥕" },
+        { id: "tomato", label: "토마토", image: "./images/tomato.png", icon: "🍅" },
+        { id: "pepper", label: "피망", icon: "🫑" },
+        { id: "chocomilk", label: "초코우유", image: "./images/chocomilk.jpg", icon: "🥛" },
+        { id: "milk", label: "우유", image: "./images/meal_milk.png", icon: "🥛" }
       ]
     }
   };
