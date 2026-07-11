@@ -48,6 +48,17 @@ function paginateItems(items, layout = "main", suffix = "", reserveSlots = 0, op
 }
 function appendPagerButtons(container, pageInfo, options = {}) { mainPager.append(container, pageInfo, options); }
 
+function weekdayColorClass(value) {
+  const text = String(value || "").trim();
+  return text.startsWith("토") || text.startsWith("일") ? "weekday-text--weekend" : "weekday-text--weekday";
+}
+
+function applyWeekdayTextColor(el, value) {
+  if (!el) return;
+  el.classList.remove("weekday-text--weekday", "weekday-text--weekend");
+  el.classList.add(weekdayColorClass(value));
+}
+
 function loadCompletedTeachingAids() {
   try {
     const raw = localStorage.getItem(TEACHING_AID_PROGRESS_KEY);
@@ -1101,6 +1112,7 @@ function renderDateHome() {
     function dispWd(idx, off = 0) {
       curIdx = ci(idx);
       wdNameEl.textContent = WDAY_FULL[curIdx].replace("요일", "");
+      applyWeekdayTextColor(wdNameEl, WDAY_FULL[curIdx]);
       wdRow.style.transform = off ? `translateY(${off * 0.38}px)` : "";
       wdRow.style.opacity   = off ? String(Math.max(0.45, 1 - Math.abs(off) * 0.007)) : "";
     }
@@ -1245,6 +1257,7 @@ function renderDateHome() {
     const main = document.createElement("span");
     main.className = "date-slot-main";
     main.textContent = value || "?";
+    if (kind === "weekday") applyWeekdayTextColor(main, value);
     btn.appendChild(main);
 
     if (unit) {
@@ -1273,6 +1286,7 @@ function renderDateHome() {
 
     const text = document.createElement("span");
     text.textContent = label;
+    if (options.weekday) applyWeekdayTextColor(text, label);
     btn.appendChild(text);
     btn.addEventListener("click", () => {
       onPick();
@@ -1309,7 +1323,7 @@ function renderDateHome() {
       return weekdayChoices.map((weekday) => makeOptionCard(weekday.replace("요일", ""), () => {
         dateSelection.weekday = weekday;
         dateCardFocus = "weather";
-      }, { selected: dateSelection.weekday === weekday }));
+      }, { selected: dateSelection.weekday === weekday, weekday: true }));
     }
 
     return weatherItems.map((item) => makeOptionCard(item.label, () => {
@@ -1509,6 +1523,7 @@ function renderDateCardPicker() {
     const main = document.createElement("span");
     main.className = "date-slot-main";
     main.textContent = value || "?";
+    if (kind === "weekday") applyWeekdayTextColor(main, value);
     btn.appendChild(main);
     field.appendChild(btn);
     return field;
@@ -1527,6 +1542,7 @@ function renderDateCardPicker() {
     }
     const text = document.createElement("span");
     text.textContent = label;
+    if (options.weekday) applyWeekdayTextColor(text, label);
     btn.appendChild(text);
     btn.addEventListener("click", () => {
       onPick();
@@ -1560,7 +1576,7 @@ function renderDateCardPicker() {
       return weekdayChoices.map((weekday) => makeOptionCard(weekday.replace("요일", ""), () => {
         dateSelection.weekday = weekday;
         dateCardFocus = "weather";
-      }, { selected: dateSelection.weekday === weekday }));
+      }, { selected: dateSelection.weekday === weekday, weekday: true }));
     }
     return weatherItems.map((item) => makeOptionCard(item.label, () => {
       dateSelection.weather = item.label;
@@ -1672,6 +1688,7 @@ function renderDateStepFlow() {
     const main = document.createElement("span");
     main.className = "date-step-summary-main";
     main.textContent = value || kind;
+    if (kind === "weekday") applyWeekdayTextColor(main, value);
     card.appendChild(main);
     if (unit && value) {
       const suffix = document.createElement("span");
@@ -1759,7 +1776,8 @@ function renderDateStepFlow() {
         className: "date-step-choice-grid--weekday",
         choices: weekdayChoices,
         selected: (value) => dateSelection.weekday === value,
-        pick: (value) => { dateSelection.weekday = value; }
+        pick: (value) => { dateSelection.weekday = value; },
+        weekday: true
       }
     ];
     groups.forEach((group) => {
@@ -1773,7 +1791,7 @@ function renderDateStepFlow() {
       choiceGrid.className = `date-step-choice-grid ${group.className}`;
       group.choices.forEach((value) => {
         const text = typeof value === "number" ? String(value) : value.replace("요일", "");
-        choiceGrid.appendChild(choiceButton(text, group.selected(value), () => group.pick(value)));
+        choiceGrid.appendChild(choiceButton(text, group.selected(value), () => group.pick(value), { weekday: group.weekday }));
       });
       wrap.appendChild(choiceGrid);
       panel.appendChild(wrap);
@@ -1912,6 +1930,7 @@ function renderDateStepFlowDrag() {
     const main = targetEl.querySelector(".date-puzzle-slot-main");
     const suffix = targetEl.querySelector(".date-puzzle-slot-unit");
     if (main) main.textContent = kind === "weekday" ? String(value).replace("요일", "") : String(value);
+    if (kind === "weekday" && main) applyWeekdayTextColor(main, value);
     targetEl.dataset.speechValue = String(value);
     if (suffix) {
       suffix.textContent = kind === "year" ? "년" :
@@ -2032,6 +2051,7 @@ function renderDateStepFlowDrag() {
     const main = document.createElement("span");
     main.className = "date-puzzle-slot-main";
     main.textContent = value || "?";
+    if (kind === "weekday") applyWeekdayTextColor(main, value);
     slot.appendChild(main);
 
     const suffix = document.createElement("span");
@@ -2159,6 +2179,7 @@ function renderDateStepFlowDrag() {
     }
     const text = document.createElement("span");
     text.textContent = label;
+    if (kind === "weekday") applyWeekdayTextColor(text, value);
     card.appendChild(text);
     return card;
   }
@@ -2484,6 +2505,7 @@ function renderDateBoardFill() {
     const main = document.createElement("span");
     main.className = "date-board-fill-main";
     main.textContent = formatValue(kind, value);
+    if (kind === "weekday") applyWeekdayTextColor(main, value);
     slot.appendChild(main);
     return slot;
   }
@@ -2587,6 +2609,7 @@ function renderDateBoardFill() {
     }
     const text = document.createElement("span");
     text.textContent = item.label;
+    if (item.kind === "weekday") applyWeekdayTextColor(text, item.value);
     btn.appendChild(text);
     btn.addEventListener("click", () => {
       if (item.kind === "weather") playWeatherSound(item.value);
@@ -2787,6 +2810,7 @@ function renderDatePuzzle() {
     const main = document.createElement("span");
     main.className = "date-puzzle-slot-main";
     main.textContent = value || "?";
+    if (kind === "weekday") applyWeekdayTextColor(main, value);
     slot.appendChild(main);
 
     const suffix = document.createElement("span");
@@ -2875,6 +2899,7 @@ function renderDatePuzzle() {
 
     const text = document.createElement("span");
     text.textContent = label;
+    if (kind === "weekday") applyWeekdayTextColor(text, value);
     card.appendChild(text);
     return card;
   }

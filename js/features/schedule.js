@@ -154,17 +154,21 @@ function saveWeeklySchedule() {
 }
 
 const WEEKLY_DAY_COLORS = [
-  { bg: "#fef9c3", border: "#fbbf24", text: "#713f12" }, // 월 - 노랑
-  { bg: "#ffedd5", border: "#fb923c", text: "#7c2d12" }, // 화 - 주황
-  { bg: "#dcfce7", border: "#4ade80", text: "#14532d" }, // 수 - 초록
-  { bg: "#dbeafe", border: "#60a5fa", text: "#1e3a8a" }, // 목 - 파랑
-  { bg: "#ede9fe", border: "#a78bfa", text: "#4c1d95" }, // 금 - 보라
-  { bg: "#fce7f3", border: "#f472b6", text: "#831843" }, // 토 - 핑크
-  { bg: "#fee2e2", border: "#f87171", text: "#7f1d1d" }, // 일 - 빨강
+  { bg: "#fef9c3", border: "#fbbf24", text: "#111827" }, // 월 - 노랑
+  { bg: "#ffedd5", border: "#fb923c", text: "#111827" }, // 화 - 주황
+  { bg: "#dcfce7", border: "#4ade80", text: "#111827" }, // 수 - 초록
+  { bg: "#dbeafe", border: "#60a5fa", text: "#111827" }, // 목 - 파랑
+  { bg: "#ede9fe", border: "#a78bfa", text: "#111827" }, // 금 - 보라
+  { bg: "#fce7f3", border: "#f472b6", text: "#dc2626" }, // 토 - 핑크
+  { bg: "#fee2e2", border: "#f87171", text: "#dc2626" }, // 일 - 빨강
 ];
 
 function formatScheduleDayLabel(day) {
   return `${day}요일`;
+}
+
+function scheduleDayTextColor(day) {
+  return day === "토" || day === "일" ? "#dc2626" : "#111827";
 }
 
 function loadWeeklyPeriods() {
@@ -1386,7 +1390,7 @@ function renderWeeklyDayPicker() {
     card.className = "weekly-day-card";
     card.style.setProperty("--day-bg", c.bg);
     card.style.setProperty("--day-border", c.border);
-    card.style.setProperty("--day-text", day === "토" || day === "일" ? "#dc2626" : "#111827");
+    card.style.setProperty("--day-text", scheduleDayTextColor(day));
     card.setAttribute("aria-label", `${formatScheduleDayLabel(day)} 스케줄 보기`);
 
     const label = document.createElement("div");
@@ -1498,6 +1502,7 @@ function renderDailyVisual() {
   const dayBadge = document.createElement("span");
   dayBadge.className = "dv-day-badge";
   dayBadge.textContent = `${todayDay}`;
+  dayBadge.style.color = scheduleDayTextColor(todayDay);
   dateBar.appendChild(dayBadge);
 
   gridEl.appendChild(dateBar);
@@ -1541,6 +1546,7 @@ function renderWeeklyDaySchedule() {
   const dayBadge = document.createElement("span");
   dayBadge.className = "dv-day-badge";
   dayBadge.textContent = day;
+  dayBadge.style.color = scheduleDayTextColor(day);
   dateBar.appendChild(dayBadge);
   gridEl.appendChild(dateBar);
 

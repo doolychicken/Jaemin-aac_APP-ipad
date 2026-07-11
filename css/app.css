@@ -737,6 +737,14 @@ body {
   box-shadow: 0 4px 14px rgba(0,0,0,0.18);
 }
 
+.weekday-text--weekday {
+  color: #111827 !important;
+}
+
+.weekday-text--weekend {
+  color: #dc2626 !important;
+}
+
 /* 날씨 선택 섹션 */
 .date-weather-section {
   background: #fff;
