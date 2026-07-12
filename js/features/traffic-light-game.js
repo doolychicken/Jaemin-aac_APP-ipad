@@ -168,6 +168,11 @@
       const road = document.createElement("div");
       road.className = "traffic-road";
 
+      const direction = document.createElement("div");
+      direction.className = "traffic-crossing-direction";
+      direction.setAttribute("aria-hidden", "true");
+      direction.textContent = "↑";
+
       const car = document.createElement("div");
       car.className = "traffic-car";
       if (config.carImage) car.appendChild(makeImage(config.carImage, "자동차", "traffic-car-photo"));
@@ -201,6 +206,7 @@
       scene.appendChild(top);
       scene.appendChild(signal);
       scene.appendChild(speech);
+      road.appendChild(direction);
       road.appendChild(car);
       road.appendChild(people);
       road.appendChild(jaemin);
