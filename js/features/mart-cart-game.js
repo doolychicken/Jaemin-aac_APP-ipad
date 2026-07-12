@@ -70,6 +70,17 @@
       return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
     }
 
+    function pointInCartArea(x, y, cart, driver) {
+      if (pointInElement(x, y, cart)) return true;
+      if (!driver) return false;
+      const rect = driver.getBoundingClientRect();
+      const cartLeft = rect.left + rect.width * 0.44;
+      const cartRight = rect.left + rect.width * 0.98;
+      const cartTop = rect.top + rect.height * 0.38;
+      const cartBottom = rect.top + rect.height * 0.9;
+      return x >= cartLeft && x <= cartRight && y >= cartTop && y <= cartBottom;
+    }
+
     function renderGame(screen) {
       const config = screen.martCart || {};
       const pool = config.items || [];
@@ -205,8 +216,18 @@
       }
 
       function tryItem(item, sourceEl) {
-        if (item.id === current.id) success(item, sourceEl);
+        if (String(item.id) === String(current.id)) success(item, sourceEl);
         else fail(item, sourceEl);
+      }
+
+      function missCart(sourceEl) {
+        if (state.locked) return;
+        sourceEl?.classList.add("is-wrong");
+        playPuzzleSound("fail");
+        speak("카트에 넣어주세요");
+        window.setTimeout(() => {
+          sourceEl?.classList.remove("is-wrong");
+        }, 520);
       }
 
       choices.forEach((item) => {
@@ -257,7 +278,7 @@
             if ((dx * dx) + (dy * dy) > 64) moved = true;
             ghost.style.left = `${rect.left + dx}px`;
             ghost.style.top = `${rect.top + dy}px`;
-            cart.classList.toggle("is-over", pointInElement(ev.clientX, ev.clientY, cart));
+            cart.classList.toggle("is-over", pointInCartArea(ev.clientX, ev.clientY, cart, driver));
           }
 
           function up(ev) {
@@ -272,8 +293,8 @@
               return;
             }
             suppressClick = true;
-            if (pointInElement(ev.clientX, ev.clientY, cart)) tryItem(item, btn);
-            else fail(item, btn);
+            if (pointInCartArea(ev.clientX, ev.clientY, cart, driver)) tryItem(item, btn);
+            else missCart(btn);
           }
 
           function cancel() {
