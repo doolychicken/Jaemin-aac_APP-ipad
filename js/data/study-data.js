@@ -85,7 +85,8 @@ function buildStudyScreensMap() {
     { label: "탈것",   nav: "studyVehicles",   image: "./images/stickerbook_vehicle.png" },
     { label: "색깔",   nav: "studySticker_10", image: "./images/stickerbook_shape.png" },
     { label: "분리수거", nav: "studyRecyclingGame", image: "./images/recycling_station.png" },
-    { label: "마트카트", nav: "studyMartCartGame", image: "./images/stickerbook_mart.png" }
+    { label: "마트카트", nav: "studyMartCartGame", image: "./images/stickerbook_mart.png" },
+    { label: "신호등", nav: "studyTrafficLightGame", image: "./images/traffic_game/traffic_tile.jpg" }
   ];
 
   const hangulLetterItems = [
@@ -315,6 +316,21 @@ function buildStudyScreensMap() {
         { id: "milk", label: "우유", section: "우유 코너", image: "./images/mart_items/milk.png", icon: "🥛" },
         { id: "apple", label: "사과", section: "과일 코너", image: "./images/mart_items/apple.png", icon: "🍎" }
       ]
+    }
+  };
+
+  rest.studyTrafficLightGame = {
+    title: "신호등",
+    helper: "초록불에는 건너고 빨간불에는 멈춰요.",
+    hero: [],
+    items: [],
+    layout: "trafficLightGame",
+    showPlayer: false,
+    trafficLight: {
+      walkerImage: "./images/mart_cart_jaemin.png",
+      crosswalkImage: "./images/traffic_game/crosswalk.jpg",
+      trafficLightImage: "./images/traffic_game/traffic_light.jpg",
+      carImage: "./images/traffic_game/car.jpg"
     }
   };
 

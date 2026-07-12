@@ -4,7 +4,7 @@
  * On first visit, pre-caches all images so subsequent loads are instant.
  */
 
-const CACHE_VERSION = 'v301';
+const CACHE_VERSION = 'v302';
 const CACHE_NAME = `jaemin-aac-${CACHE_VERSION}`;
 
 self.addEventListener('message', (event) => {
@@ -18,6 +18,7 @@ const PRECACHE_ASSETS = [
   './css/features/study-puzzle.css',
   './css/features/recycling-game.css',
   './css/features/mart-cart-game.css',
+  './css/features/traffic-light-game.css',
   './css/date-overrides.css',
   './js/data/study-data.js',
   './js/data/app-data.js',
@@ -26,6 +27,7 @@ const PRECACHE_ASSETS = [
   './js/features/study-puzzle.js',
   './js/features/recycling-game.js',
   './js/features/mart-cart-game.js',
+  './js/features/traffic-light-game.js',
   './js/main.js',
   './audio/watersound.mp3',
   './video/watersound.mp4',
@@ -61,6 +63,10 @@ const PRECACHE_ASSETS = [
   './images/mart_items/pineapple.png',
   './images/mart_items/strawberry.png',
   './images/mart_items/tomato.png',
+  './images/traffic_game/car.jpg',
+  './images/traffic_game/crosswalk.jpg',
+  './images/traffic_game/traffic_light.jpg',
+  './images/traffic_game/traffic_tile.jpg',
   './images/app_schedule.svg',
   './images/app_date.svg',
   './images/bebefinn.png',
