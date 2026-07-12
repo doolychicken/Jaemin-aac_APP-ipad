@@ -298,21 +298,21 @@ function buildStudyScreensMap() {
     martCart: {
       driverImage: "./images/mart_cart_jaemin.png",
       items: [
-        { id: "carrot", label: "당근", icon: "🥕" },
-        { id: "tomato", label: "토마토", image: "./images/tomato.png", icon: "🍅" },
-        { id: "pepper", label: "피망", icon: "🫑" },
-        { id: "chocomilk", label: "초코우유", image: "./images/chocomilk.jpg", icon: "🥛" },
-        { id: "milk", label: "우유", image: "./images/meal_milk.png", icon: "🥛" },
-        { id: "apple", label: "사과", image: "./images/apple.png", icon: "🍎" },
-        { id: "strawberry", label: "딸기", image: "./images/strawberry.png", icon: "🍓" },
-        { id: "pineapple", label: "파인애플", image: "./images/pineapple.png", icon: "🍍" }
+        { id: "carrot", label: "당근", image: "./images/mart_items/carrot.png", icon: "🥕" },
+        { id: "tomato", label: "토마토", image: "./images/mart_items/tomato.png", icon: "🍅" },
+        { id: "pepper", label: "피망", image: "./images/mart_items/pepper.png", icon: "🫑" },
+        { id: "chocomilk", label: "초코우유", image: "./images/mart_items/chocomilk.png", icon: "🥛" },
+        { id: "milk", label: "우유", image: "./images/mart_items/milk.png", icon: "🥛" },
+        { id: "apple", label: "사과", image: "./images/mart_items/apple.png", icon: "🍎" },
+        { id: "strawberry", label: "딸기", image: "./images/mart_items/strawberry.png", icon: "🍓" },
+        { id: "pineapple", label: "파인애플", image: "./images/mart_items/pineapple.png", icon: "🍍" }
       ],
       missions: [
-        { id: "carrot", label: "당근", icon: "🥕" },
-        { id: "tomato", label: "토마토", image: "./images/tomato.png", icon: "🍅" },
-        { id: "pepper", label: "피망", icon: "🫑" },
-        { id: "chocomilk", label: "초코우유", image: "./images/chocomilk.jpg", icon: "🥛" },
-        { id: "milk", label: "우유", image: "./images/meal_milk.png", icon: "🥛" }
+        { id: "carrot", label: "당근", image: "./images/mart_items/carrot.png", icon: "🥕" },
+        { id: "tomato", label: "토마토", image: "./images/mart_items/tomato.png", icon: "🍅" },
+        { id: "pepper", label: "피망", image: "./images/mart_items/pepper.png", icon: "🫑" },
+        { id: "chocomilk", label: "초코우유", image: "./images/mart_items/chocomilk.png", icon: "🥛" },
+        { id: "milk", label: "우유", image: "./images/mart_items/milk.png", icon: "🥛" }
       ]
     }
   };
