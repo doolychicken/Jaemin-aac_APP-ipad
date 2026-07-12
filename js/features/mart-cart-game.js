@@ -202,6 +202,7 @@
         const btn = document.createElement("button");
         btn.type = "button";
         btn.className = "mart-cart-item";
+        btn.draggable = false;
         btn.dataset.id = item.id;
         btn.setAttribute("aria-label", item.label);
         btn.appendChild(makeVisual(item, "mart-cart-item"));
@@ -210,9 +211,16 @@
         label.textContent = item.label;
         btn.appendChild(label);
 
-        btn.addEventListener("click", () => tryItem(item, btn));
+        let suppressClick = false;
+        btn.addEventListener("click", () => {
+          if (suppressClick) {
+            suppressClick = false;
+            return;
+          }
+          tryItem(item, btn);
+        });
         btn.addEventListener("pointerdown", (event) => {
-          if (state.locked || event.pointerType === "mouse") return;
+          if (state.locked) return;
           const rect = btn.getBoundingClientRect();
           const ghost = btn.cloneNode(true);
           ghost.classList.add("mart-cart-item--ghost");
@@ -250,9 +258,9 @@
             ghost.remove();
             cart.classList.remove("is-over");
             if (!moved) {
-              speak(item.label);
               return;
             }
+            suppressClick = true;
             if (pointInElement(ev.clientX, ev.clientY, cart)) tryItem(item, btn);
             else fail(item, btn);
           }

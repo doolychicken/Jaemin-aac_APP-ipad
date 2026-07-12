@@ -3041,6 +3041,7 @@ function shouldHideQuickToiletOnScreen() {
   const key = currentKey();
   return isMainMenuScreenKey()
     || key === "studyTeachingAids"
+    || key === "studyAppLearning"
     || key.startsWith("schedule")
     || key.startsWith("date")
     || key.startsWith("weather")

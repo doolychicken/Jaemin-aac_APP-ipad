@@ -309,10 +309,10 @@
 
 .mart-cart-cart {
   position: absolute;
-  left: clamp(320px, 34vw, 520px);
-  bottom: clamp(14px, 3vh, 34px);
-  width: clamp(300px, 39vw, 520px);
-  height: clamp(120px, 17vh, 180px);
+  left: clamp(330px, 36vw, 560px);
+  bottom: clamp(18px, 3.4vh, 38px);
+  width: clamp(330px, 38vw, 500px);
+  height: clamp(150px, 20vh, 210px);
   border: none;
   background: transparent;
   z-index: 5;
@@ -332,13 +332,17 @@
 
 .mart-cart-cart-basket {
   position: absolute;
-  left: 20%;
-  right: 0;
-  bottom: 22%;
-  height: 62%;
-  border-radius: 8px 8px 18px 18px;
-  background: #df2347;
-  box-shadow: inset 0 -18px 0 rgba(142, 24, 46, 0.24), 0 14px 22px rgba(81, 39, 54, 0.14);
+  left: 19%;
+  right: 4%;
+  bottom: 24%;
+  height: 58%;
+  border: clamp(8px, 1vw, 12px) solid #bd1f3c;
+  border-top-width: clamp(12px, 1.4vw, 18px);
+  border-radius: 10px 10px 22px 22px;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 15%, rgba(255, 255, 255, 0.72) 15% 23%),
+    linear-gradient(180deg, #fb5570 0%, #df2347 64%, #b81735 100%);
+  box-shadow: inset 0 -18px 0 rgba(142, 24, 46, 0.18), 0 14px 22px rgba(81, 39, 54, 0.14);
 }
 
 .mart-cart-cart-basket::before {
@@ -346,21 +350,45 @@
   position: absolute;
   left: 6%;
   right: 6%;
-  top: 20%;
-  height: 28%;
-  background: repeating-linear-gradient(90deg, #fbe4e8 0 12%, transparent 12% 20%);
-  opacity: 0.95;
+  top: 44%;
+  height: clamp(10px, 1.2vw, 16px);
+  border-radius: 999px;
+  background: rgba(138, 20, 42, 0.42);
+}
+
+.mart-cart-cart-basket::after {
+  content: "";
+  position: absolute;
+  left: 7%;
+  right: 7%;
+  top: 13%;
+  height: clamp(18px, 2.4vw, 30px);
+  border-radius: 8px;
+  background: repeating-linear-gradient(90deg, #fff3f6 0 12%, transparent 12% 20%);
+  opacity: 0.9;
 }
 
 .mart-cart-cart-handle {
   position: absolute;
-  left: 5%;
-  bottom: 52%;
-  width: 24%;
-  height: 44%;
-  border-left: clamp(10px, 1.4vw, 16px) solid #b8b9ca;
-  border-top: clamp(10px, 1.4vw, 16px) solid #b8b9ca;
-  border-radius: 20px 0 0 0;
+  left: 4%;
+  bottom: 54%;
+  width: 25%;
+  height: 34%;
+  border-left: clamp(10px, 1.2vw, 15px) solid #b7bbc9;
+  border-top: clamp(10px, 1.2vw, 15px) solid #b7bbc9;
+  border-radius: 26px 0 0 0;
+}
+
+.mart-cart-cart-handle::before {
+  content: "";
+  position: absolute;
+  left: -22px;
+  top: -20px;
+  width: clamp(46px, 5vw, 66px);
+  height: clamp(18px, 2vw, 28px);
+  border-radius: 999px;
+  background: #ef4444;
+  box-shadow: inset 0 -5px 0 rgba(127, 29, 29, 0.18);
 }
 
 .mart-cart-cart-wheel {
@@ -373,14 +401,14 @@
   box-shadow: inset 0 0 0 6px #696777;
 }
 
-.mart-cart-cart-wheel--left { left: 34%; }
-.mart-cart-cart-wheel--right { right: 12%; }
+.mart-cart-cart-wheel--left { left: 31%; }
+.mart-cart-cart-wheel--right { right: 13%; }
 
 .mart-cart-cart-items {
   position: absolute;
-  left: 8%;
+  left: 9%;
   right: 8%;
-  top: -34%;
+  top: -44%;
   display: flex;
   align-items: flex-end;
   gap: 5px;
