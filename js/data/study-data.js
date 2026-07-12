@@ -308,11 +308,12 @@ function buildStudyScreensMap() {
         { id: "pineapple", label: "파인애플", image: "./images/mart_items/pineapple.png", icon: "🍍" }
       ],
       missions: [
-        { id: "carrot", label: "당근", image: "./images/mart_items/carrot.png", icon: "🥕" },
-        { id: "tomato", label: "토마토", image: "./images/mart_items/tomato.png", icon: "🍅" },
-        { id: "pepper", label: "피망", image: "./images/mart_items/pepper.png", icon: "🫑" },
-        { id: "chocomilk", label: "초코우유", image: "./images/mart_items/chocomilk.png", icon: "🥛" },
-        { id: "milk", label: "우유", image: "./images/mart_items/milk.png", icon: "🥛" }
+        { id: "carrot", label: "당근", section: "채소 코너", image: "./images/mart_items/carrot.png", icon: "🥕" },
+        { id: "tomato", label: "토마토", section: "채소 코너", image: "./images/mart_items/tomato.png", icon: "🍅" },
+        { id: "pepper", label: "피망", section: "채소 코너", image: "./images/mart_items/pepper.png", icon: "🫑" },
+        { id: "chocomilk", label: "초코우유", section: "우유 코너", image: "./images/mart_items/chocomilk.png", icon: "🥛" },
+        { id: "milk", label: "우유", section: "우유 코너", image: "./images/mart_items/milk.png", icon: "🥛" },
+        { id: "apple", label: "사과", section: "과일 코너", image: "./images/mart_items/apple.png", icon: "🍎" }
       ]
     }
   };
