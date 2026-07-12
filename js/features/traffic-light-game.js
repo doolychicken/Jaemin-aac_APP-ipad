@@ -172,6 +172,14 @@
       car.className = "traffic-car";
       if (config.carImage) car.appendChild(makeImage(config.carImage, "자동차", "traffic-car-photo"));
 
+      const people = document.createElement("div");
+      people.className = "traffic-people";
+      ["1", "2", "3", "4"].forEach((idx) => {
+        const person = document.createElement("span");
+        person.className = `traffic-person traffic-person--${idx}`;
+        people.appendChild(person);
+      });
+
       const jaemin = document.createElement("div");
       jaemin.className = "traffic-jaemin";
       if (config.walkerImage) jaemin.appendChild(makeImage(config.walkerImage, "재민이", "traffic-jaemin-photo"));
@@ -194,6 +202,7 @@
       scene.appendChild(signal);
       scene.appendChild(speech);
       road.appendChild(car);
+      road.appendChild(people);
       road.appendChild(jaemin);
       scene.appendChild(road);
       scene.appendChild(controls);

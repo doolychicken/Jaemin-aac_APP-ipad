@@ -327,7 +327,7 @@ function buildStudyScreensMap() {
     layout: "trafficLightGame",
     showPlayer: false,
     trafficLight: {
-      walkerImage: "./images/mart_cart_jaemin.png",
+      walkerImage: "./images/traffic_game/jaemin_walk.png",
       crosswalkImage: "./images/traffic_game/crosswalk.jpg",
       trafficLightImage: "./images/traffic_game/traffic_light.jpg",
       carImage: "./images/traffic_game/car.jpg"
