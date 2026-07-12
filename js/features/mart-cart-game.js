@@ -32,7 +32,8 @@
           round: 0,
           score: 0,
           locked: false,
-          picked: [],
+          cartItem: null,
+          promptedRound: null,
           sequence: shuffle(screen.martCart?.missions || [])
         };
       }
@@ -77,6 +78,7 @@
       state.sequence = missions;
       const isComplete = state.round >= missions.length;
       const current = missions[state.round];
+      const driverImage = config.driverImage || "./images/mart_cart_jaemin.png";
 
       appMainEl.classList.remove("app--spotlight");
       spotlightViewEl.style.display = "none";
@@ -148,37 +150,46 @@
       cart.type = "button";
       cart.className = "mart-cart-cart";
       cart.setAttribute("aria-label", "카트");
-      cart.innerHTML = `
-        <div class="mart-cart-cart-basket">
-          <div class="mart-cart-cart-items"></div>
-        </div>
-        <div class="mart-cart-cart-handle"></div>
-        <div class="mart-cart-cart-wheel mart-cart-cart-wheel--left"></div>
-        <div class="mart-cart-cart-wheel mart-cart-cart-wheel--right"></div>
-      `;
 
-      const cartItems = cart.querySelector(".mart-cart-cart-items");
-      state.picked.slice(-4).forEach((picked) => {
+      const driver = document.createElement("div");
+      driver.className = "mart-cart-driver";
+      const driverImg = document.createElement("img");
+      driverImg.src = driverImage;
+      driverImg.alt = "재민이가 카트를 밀어요";
+      setupImageElement(driverImg, true);
+      driver.appendChild(driverImg);
+
+      const cartItems = document.createElement("div");
+      cartItems.className = "mart-cart-cart-items";
+      if (state.cartItem) {
         const mini = document.createElement("div");
         mini.className = "mart-cart-mini";
-        mini.appendChild(makeVisual(picked, "mart-cart-mini"));
+        mini.appendChild(makeVisual(state.cartItem, "mart-cart-mini"));
         cartItems.appendChild(mini);
-      });
+      }
+      driver.appendChild(cartItems);
 
       function success(item, sourceEl) {
         if (state.locked) return;
         state.locked = true;
         state.score += 1;
-        state.picked.push(item);
+        state.cartItem = item;
+        cartItems.innerHTML = "";
+        const mini = document.createElement("div");
+        mini.className = "mart-cart-mini";
+        mini.appendChild(makeVisual(item, "mart-cart-mini"));
+        cartItems.appendChild(mini);
         sourceEl?.classList.add("is-picked");
         cart.classList.add("is-success");
+        scene.classList.add("is-driving");
         playPuzzleSound("success");
         speak(`맞아요, ${item.label}`);
         window.setTimeout(() => {
           state.round += 1;
           state.locked = false;
+          state.cartItem = null;
           render();
-        }, 780);
+        }, 1500);
       }
 
       function fail(item, sourceEl) {
@@ -217,7 +228,7 @@
             suppressClick = false;
             return;
           }
-          tryItem(item, btn);
+          speak(item.label);
         });
         btn.addEventListener("pointerdown", (event) => {
           if (state.locked) return;
@@ -281,24 +292,20 @@
         shelf.appendChild(btn);
       });
 
-      const mascot = document.createElement("div");
-      mascot.className = "mart-cart-mascot";
-      mascot.innerHTML = `
-        <div class="mart-cart-mascot-eye mart-cart-mascot-eye--left"></div>
-        <div class="mart-cart-mascot-eye mart-cart-mascot-eye--right"></div>
-        <div class="mart-cart-mascot-face"></div>
-        <div class="mart-cart-mascot-mouth"></div>
-        <div class="mart-cart-mascot-body"></div>
-        <div class="mart-cart-mascot-belly"></div>
-      `;
-
       scene.appendChild(speech);
       scene.appendChild(shelf);
-      scene.appendChild(mascot);
+      scene.appendChild(driver);
       scene.appendChild(cart);
       gridEl.appendChild(top);
       gridEl.appendChild(awning);
       gridEl.appendChild(scene);
+
+      if (state.promptedRound !== state.round) {
+        state.promptedRound = state.round;
+        window.setTimeout(() => {
+          if (!state.locked) speak(`${current.label}을 주세요`);
+        }, 450);
+      }
     }
 
     return { render: renderGame, clear };

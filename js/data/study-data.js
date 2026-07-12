@@ -296,6 +296,7 @@ function buildStudyScreensMap() {
     layout: "martCartGame",
     showPlayer: false,
     martCart: {
+      driverImage: "./images/mart_cart_jaemin.png",
       items: [
         { id: "carrot", label: "당근", icon: "🥕" },
         { id: "tomato", label: "토마토", image: "./images/tomato.png", icon: "🍅" },

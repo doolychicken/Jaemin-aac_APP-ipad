@@ -83,6 +83,11 @@
     #fae5ec;
 }
 
+.mart-cart-scene.is-driving .mart-cart-driver,
+.mart-cart-scene.is-driving .mart-cart-cart {
+  animation: mart-cart-drive-away 1.35s cubic-bezier(0.22, 0.82, 0.28, 1) forwards;
+}
+
 .mart-cart-speech {
   position: absolute;
   left: clamp(42px, 11vw, 150px);
@@ -219,111 +224,45 @@
   opacity: 0;
 }
 
-.mart-cart-mascot {
+.mart-cart-driver {
   position: absolute;
-  left: clamp(22px, 8vw, 92px);
-  bottom: clamp(-58px, -4vh, -24px);
-  width: clamp(260px, 31vw, 430px);
-  height: clamp(310px, 43vh, 500px);
+  left: clamp(16px, 6vw, 84px);
+  bottom: clamp(-18px, -1.5vh, -8px);
+  width: clamp(600px, 59vw, 830px);
+  height: clamp(315px, 43vh, 470px);
   z-index: 2;
+  pointer-events: none;
+  filter: drop-shadow(0 20px 20px rgba(86, 48, 62, 0.14));
 }
 
-.mart-cart-mascot-body {
-  position: absolute;
-  left: 24%;
-  bottom: 0;
-  width: 50%;
-  height: 58%;
-  border-radius: 48% 48% 12% 12%;
-  background: #6fd235;
-}
-
-.mart-cart-mascot-belly {
-  position: absolute;
-  left: 43%;
-  bottom: 7%;
-  width: 22%;
-  height: 42%;
-  border-radius: 45%;
-  background: #e7e27d;
-}
-
-.mart-cart-mascot-face {
-  position: absolute;
-  left: 18%;
-  top: 17%;
-  width: 70%;
-  height: 36%;
-  border-radius: 45% 58% 55% 42%;
-  background: #78d83b;
-  transform: rotate(2deg);
-}
-
-.mart-cart-mascot-face::after {
-  content: "";
-  position: absolute;
-  right: -14%;
-  top: 34%;
-  width: 42%;
-  height: 42%;
-  border-radius: 46%;
-  background: #78d83b;
-}
-
-.mart-cart-mascot-eye {
-  position: absolute;
-  top: 12%;
-  width: 16%;
-  height: 16%;
-  border-radius: 50%;
-  background: #8de24c;
-  z-index: 2;
-}
-
-.mart-cart-mascot-eye::after {
-  content: "";
-  position: absolute;
-  left: 34%;
-  top: 34%;
-  width: 34%;
-  height: 34%;
-  border-radius: 50%;
-  background: #1f2937;
-  box-shadow: 4px -4px 0 #fff;
-}
-
-.mart-cart-mascot-eye--left { left: 31%; }
-.mart-cart-mascot-eye--right { left: 49%; }
-
-.mart-cart-mascot-mouth {
-  position: absolute;
-  left: 48%;
-  top: 39%;
-  width: 32%;
-  height: 12%;
-  border-radius: 0 0 999px 999px;
-  background: #ef7b6f;
-  z-index: 3;
-  transform: rotate(-4deg);
+.mart-cart-driver img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: left bottom;
+  display: block;
 }
 
 .mart-cart-cart {
   position: absolute;
-  left: clamp(330px, 36vw, 560px);
-  bottom: clamp(18px, 3.4vh, 38px);
-  width: clamp(330px, 38vw, 500px);
-  height: clamp(150px, 20vh, 210px);
-  border: none;
-  background: transparent;
+  left: clamp(440px, 42vw, 650px);
+  bottom: clamp(86px, 12vh, 136px);
+  width: clamp(250px, 29vw, 390px);
+  height: clamp(102px, 13vh, 150px);
+  border: 3px dashed rgba(34, 197, 94, 0);
+  border-radius: 16px;
+  background: rgba(34, 197, 94, 0);
   z-index: 5;
   cursor: pointer;
-  touch-action: manipulation;
-  transition: transform 0.14s ease;
+  touch-action: none;
+  transition: transform 0.14s ease, background 0.14s ease, border-color 0.14s ease;
 }
 
 .mart-cart-cart.is-over,
 .mart-cart-cart.is-success {
   transform: scale(1.04);
+  border-color: rgba(34, 197, 94, 0.55);
+  background: rgba(220, 252, 231, 0.16);
 }
 
 .mart-cart-cart.is-wrong {
@@ -331,18 +270,7 @@
 }
 
 .mart-cart-cart-basket {
-  position: absolute;
-  left: 19%;
-  right: 4%;
-  bottom: 24%;
-  height: 58%;
-  border: clamp(8px, 1vw, 12px) solid #bd1f3c;
-  border-top-width: clamp(12px, 1.4vw, 18px);
-  border-radius: 10px 10px 22px 22px;
-  background:
-    repeating-linear-gradient(90deg, transparent 0 15%, rgba(255, 255, 255, 0.72) 15% 23%),
-    linear-gradient(180deg, #fb5570 0%, #df2347 64%, #b81735 100%);
-  box-shadow: inset 0 -18px 0 rgba(142, 24, 46, 0.18), 0 14px 22px rgba(81, 39, 54, 0.14);
+  display: none;
 }
 
 .mart-cart-cart-basket::before {
@@ -369,14 +297,7 @@
 }
 
 .mart-cart-cart-handle {
-  position: absolute;
-  left: 4%;
-  bottom: 54%;
-  width: 25%;
-  height: 34%;
-  border-left: clamp(10px, 1.2vw, 15px) solid #b7bbc9;
-  border-top: clamp(10px, 1.2vw, 15px) solid #b7bbc9;
-  border-radius: 26px 0 0 0;
+  display: none;
 }
 
 .mart-cart-cart-handle::before {
@@ -392,13 +313,7 @@
 }
 
 .mart-cart-cart-wheel {
-  position: absolute;
-  bottom: 10%;
-  width: clamp(24px, 3vw, 38px);
-  height: clamp(24px, 3vw, 38px);
-  border-radius: 50%;
-  background: #33313b;
-  box-shadow: inset 0 0 0 6px #696777;
+  display: none;
 }
 
 .mart-cart-cart-wheel--left { left: 31%; }
@@ -406,14 +321,16 @@
 
 .mart-cart-cart-items {
   position: absolute;
-  left: 9%;
-  right: 8%;
-  top: -44%;
+  left: 54%;
+  bottom: 32%;
+  width: clamp(210px, 25vw, 320px);
+  height: clamp(70px, 10vh, 112px);
   display: flex;
   align-items: flex-end;
   gap: 5px;
-  min-height: 70px;
   justify-content: center;
+  z-index: 6;
+  pointer-events: none;
 }
 
 .mart-cart-mini {
@@ -483,6 +400,12 @@
   75% { transform: translateX(-5px); }
 }
 
+@keyframes mart-cart-drive-away {
+  0% { transform: translateX(0); opacity: 1; }
+  74% { transform: translateX(46vw); opacity: 1; }
+  100% { transform: translateX(62vw); opacity: 0; }
+}
+
 @media (max-width: 900px) {
   .mart-cart-game {
     min-height: 72vh;
@@ -499,13 +422,13 @@
     gap: 14px;
   }
 
-  .mart-cart-mascot {
-    left: 0;
-    width: 280px;
+  .mart-cart-driver {
+    left: -18px;
+    width: 590px;
   }
 
   .mart-cart-cart {
-    left: 260px;
-    width: 360px;
+    left: 330px;
+    width: 260px;
   }
 }
