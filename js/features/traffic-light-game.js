@@ -173,9 +173,15 @@
       direction.setAttribute("aria-hidden", "true");
       direction.textContent = "↑";
 
-      const car = document.createElement("div");
-      car.className = "traffic-car";
-      if (config.carImage) car.appendChild(makeImage(config.carImage, "자동차", "traffic-car-photo"));
+      const trafficCars = document.createElement("div");
+      trafficCars.className = "traffic-cars";
+      const carImages = config.carImages || (config.carImage ? [config.carImage] : []);
+      carImages.slice(0, 3).forEach((src, index) => {
+        const car = document.createElement("div");
+        car.className = `traffic-car traffic-car--${index + 1}`;
+        car.appendChild(makeImage(src, "자동차", "traffic-car-photo"));
+        trafficCars.appendChild(car);
+      });
 
       const people = document.createElement("div");
       people.className = "traffic-people";
@@ -207,7 +213,7 @@
       scene.appendChild(signal);
       scene.appendChild(speech);
       road.appendChild(direction);
-      road.appendChild(car);
+      road.appendChild(trafficCars);
       road.appendChild(people);
       road.appendChild(jaemin);
       scene.appendChild(road);

@@ -245,16 +245,42 @@
   animation: traffic-direction-pulse 1.05s ease-in-out infinite;
 }
 
+.traffic-cars {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+}
+
 .traffic-car {
   position: absolute;
-  right: -80px;
-  top: 318px;
-  width: clamp(265px, 27vw, 370px);
-  z-index: 8;
+  right: -460px;
+  width: clamp(300px, 30vw, 430px);
   opacity: 0;
 }
 
-.traffic-car-photo,
+.traffic-car--1 {
+  top: 326px;
+}
+
+.traffic-car--2 {
+  top: 370px;
+  width: clamp(270px, 27vw, 390px);
+}
+
+.traffic-car--3 {
+  top: 422px;
+  width: clamp(240px, 24vw, 350px);
+}
+
+.traffic-car-photo {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 16px 14px rgba(15, 23, 42, 0.24));
+}
+
 .traffic-jaemin-photo {
   width: 100%;
   height: auto;
@@ -292,8 +318,24 @@
 
 .traffic-game.is-red .traffic-car {
   opacity: 1;
-  animation: traffic-car-pass 3.1s linear infinite;
-  animation-delay: -0.9s;
+  animation-name: traffic-car-pass;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.traffic-game.is-red .traffic-car--1 {
+  animation-duration: 3.4s;
+  animation-delay: -1.2s;
+}
+
+.traffic-game.is-red .traffic-car--2 {
+  animation-duration: 4.1s;
+  animation-delay: -2.7s;
+}
+
+.traffic-game.is-red .traffic-car--3 {
+  animation-duration: 3.7s;
+  animation-delay: -1.3s;
 }
 
 .traffic-game.is-green .traffic-car {
@@ -443,8 +485,8 @@
 }
 
 @keyframes traffic-car-pass {
-  0% { transform: translateX(300px); }
-  100% { transform: translateX(-1180px); }
+  0% { transform: translateX(420px); }
+  100% { transform: translateX(-1480px); }
 }
 
 @keyframes traffic-person-up {

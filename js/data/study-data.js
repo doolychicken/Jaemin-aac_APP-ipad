@@ -330,7 +330,11 @@ function buildStudyScreensMap() {
       walkerImage: "./images/traffic_game/jaemin_walk.png",
       crosswalkImage: "./images/traffic_game/crosswalk.jpg",
       trafficLightImage: "./images/traffic_game/traffic_light.jpg",
-      carImage: "./images/traffic_game/car.jpg"
+      carImages: [
+        "./images/traffic_game/car_silver.png",
+        "./images/traffic_game/car_blue.png",
+        "./images/traffic_game/car_red.png"
+      ]
     }
   };
 
