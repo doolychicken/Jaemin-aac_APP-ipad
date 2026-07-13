@@ -323,6 +323,23 @@
   animation-iteration-count: infinite;
 }
 
+.traffic-game.is-good.is-green .traffic-car {
+  opacity: 1;
+  animation: none;
+}
+
+.traffic-game.is-good.is-green .traffic-car--1 {
+  transform: translateX(-520px);
+}
+
+.traffic-game.is-good.is-green .traffic-car--2 {
+  transform: translateX(-260px);
+}
+
+.traffic-game.is-good.is-green .traffic-car--3 {
+  transform: translateX(40px);
+}
+
 .traffic-game.is-red .traffic-car--1 {
   animation-duration: 3.4s;
   animation-delay: -1.2s;

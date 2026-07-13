@@ -74,6 +74,7 @@
         playPuzzleSound("fail");
         speak(state.current.id === "green" ? "초록불에는 건너요" : "빨간불에는 멈춰요");
       }
+      const nextDelay = correct && action === "walk" ? 2000 : 1600;
       window.setTimeout(() => {
         state.round += 1;
         state.locked = false;
@@ -81,7 +82,7 @@
         state.result = "";
         state.current = nextSignal(state.current);
         render();
-      }, correct ? 1300 : 1200);
+      }, correct ? nextDelay : 1200);
     }
 
     function renderComplete(screen, state) {
