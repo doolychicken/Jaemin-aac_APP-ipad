@@ -228,6 +228,40 @@
   height: 62px;
 }
 
+.face-game-art--photo {
+  width: 112px;
+  height: 88px;
+}
+
+.face-game-art--photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.face-game-art--mirror img {
+  transform: scaleX(-1);
+}
+
+.face-game-art--eye.face-game-art--photo,
+.face-game-art--eyebrow.face-game-art--photo {
+  width: 112px;
+  height: 72px;
+}
+
+.face-game-art--ear.face-game-art--photo,
+.face-game-art--nose.face-game-art--photo {
+  width: 96px;
+  height: 116px;
+}
+
+.face-game-art--mouth.face-game-art--photo {
+  width: 132px;
+  height: 78px;
+}
+
 .face-game-art--eyes i {
   position: absolute;
   top: 13px;
@@ -358,6 +392,16 @@
 
 .face-game-placed .face-game-art {
   transform: scale(1.28);
+}
+
+.face-game-placed .face-game-art--photo {
+  width: 100%;
+  height: 100%;
+  transform: scale(1);
+}
+
+.face-game-placed .face-game-art--photo img {
+  object-fit: contain;
 }
 
 .face-game-placed--ears .face-game-art {

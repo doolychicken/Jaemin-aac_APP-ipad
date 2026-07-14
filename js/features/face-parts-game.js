@@ -46,7 +46,16 @@
     function makePartArt(part) {
       const art = document.createElement("span");
       art.className = `face-game-art face-game-art--${artKind(part)}`;
+      if (part.image) art.classList.add("face-game-art--photo");
+      if (part.mirror) art.classList.add("face-game-art--mirror");
       art.setAttribute("aria-hidden", "true");
+      if (part.image) {
+        const img = document.createElement("img");
+        img.src = part.image;
+        img.alt = "";
+        art.appendChild(img);
+        return art;
+      }
       if (artKind(part) === "eyes") {
         art.innerHTML = "<i></i><i></i>";
       } else if (artKind(part) === "eye") {
