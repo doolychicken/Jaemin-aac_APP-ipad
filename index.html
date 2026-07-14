@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="./css/features/recycling-game.css?v=294" />
   <link rel="stylesheet" href="./css/features/mart-cart-game.css?v=301" />
   <link rel="stylesheet" href="./css/features/traffic-light-game.css?v=307" />
+  <link rel="stylesheet" href="./css/features/face-parts-game.css?v=311" />
   <link rel="stylesheet" href="./css/date-overrides.css?v=231" />
 </head>
 <body>
@@ -57,15 +58,16 @@
     <section id="buttonGrid" class="grid"></section>
   </main>
 
-  <script src="./js/data/study-data.js?v=306"></script>
+  <script src="./js/data/study-data.js?v=311"></script>
   <script src="./js/data/app-data.js?v=294"></script>
   <script src="./js/core/pager.js?v=294"></script>
   <script src="./js/features/schedule.js?v=295"></script>
   <script src="./js/features/study-puzzle.js?v=277"></script>
   <script src="./js/features/recycling-game.js?v=294"></script>
-  <script src="./js/features/mart-cart-game.js?v=301"></script>
+  <script src="./js/features/mart-cart-game.js?v=310"></script>
   <script src="./js/features/traffic-light-game.js?v=307"></script>
-  <script src="./js/main.js?v=306"></script>
+  <script src="./js/features/face-parts-game.js?v=311"></script>
+  <script src="./js/main.js?v=311"></script>
   <script>
     if ('serviceWorker' in navigator) {
       let refreshing = false;
@@ -76,7 +78,7 @@
       });
       window.addEventListener('load', () => {
         /* sw.js에도 v를 붙이지 않으면 Safari가 옛 서비스 워커를 붙잡는 경우가 있음 */
-        navigator.serviceWorker.register('./sw.js?v=309', { updateViaCache: 'none' })
+        navigator.serviceWorker.register('./sw.js?v=311', { updateViaCache: 'none' })
           .then(function (reg) {
             if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
             reg.addEventListener('updatefound', function () {

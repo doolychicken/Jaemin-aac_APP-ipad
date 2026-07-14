@@ -77,6 +77,7 @@ function buildStudyScreensMap() {
     { label: "한글",   nav: "studyHangul",     image: "./images/stickerbook_language.png" },
     { label: "이름",   nav: "studyNames",      image: "./images/person/me.png" },
     { label: "사람",   nav: "studyPeople",     image: "./images/outing_person_me.png" },
+    { label: "얼굴 완성", nav: "studyFacePartsGame", image: emojiImage("🙂") },
     { label: "상징 매칭", nav: "studySymbolMatching", image: emojiImage("🎂") },
     { label: "상징 매칭 2", nav: "studySymbolMatchingV2", image: emojiImage("🧩") },
     { label: "과일",   nav: "studySticker_2",  image: "./images/stickerbook_fruit.png" },
@@ -289,6 +290,24 @@ function buildStudyScreensMap() {
     }
   };
 
+  rest.studyFacePartsGame = {
+    title: "얼굴 완성",
+    helper: "눈, 코, 입, 눈썹, 귀를 얼굴에 붙여보세요.",
+    hero: [],
+    items: [],
+    layout: "facePartsGame",
+    showPlayer: false,
+    faceParts: {
+      parts: [
+        { id: "eyebrows", label: "눈썹", speech: "눈썹" },
+        { id: "eyes", label: "눈", speech: "눈" },
+        { id: "ears", label: "귀", speech: "귀" },
+        { id: "nose", label: "코", speech: "코" },
+        { id: "mouth", label: "입", speech: "입" }
+      ]
+    }
+  };
+
   rest.studyMartCartGame = {
     title: "마트카트",
     helper: "말풍선에 맞는 물건을 카트에 담아보세요.",
@@ -299,22 +318,55 @@ function buildStudyScreensMap() {
     martCart: {
       driverImage: "./images/mart_cart_jaemin.png",
       items: [
-        { id: "carrot", label: "당근", image: "./images/mart_items/carrot.png", icon: "🥕" },
-        { id: "tomato", label: "토마토", image: "./images/mart_items/tomato.png", icon: "🍅" },
-        { id: "pepper", label: "피망", image: "./images/mart_items/pepper.png", icon: "🫑" },
-        { id: "chocomilk", label: "초코우유", image: "./images/mart_items/chocomilk.png", icon: "🥛" },
-        { id: "milk", label: "우유", image: "./images/mart_items/milk.png", icon: "🥛" },
-        { id: "apple", label: "사과", image: "./images/mart_items/apple.png", icon: "🍎" },
-        { id: "strawberry", label: "딸기", image: "./images/mart_items/strawberry.png", icon: "🍓" },
-        { id: "pineapple", label: "파인애플", image: "./images/mart_items/pineapple.png", icon: "🍍" }
-      ],
-      missions: [
+        { id: "yogurt", label: "요플레", section: "유제품 코너", image: "./images/mart_items/yogurt.png", icon: "🥣" },
+        { id: "yogurtDrink", label: "요구르트", section: "유제품 코너", image: "./images/mart_items/yogurt_drink.png", icon: "🥤" },
+        { id: "milk", label: "흰우유", section: "유제품 코너", image: "./images/mart_items/milk.png", icon: "🥛" },
+        { id: "strawberryMilk", label: "딸기우유", section: "유제품 코너", icon: "🍓" },
+        { id: "chocomilk", label: "초코우유", section: "유제품 코너", image: "./images/mart_items/chocomilk.png", icon: "🥛" },
+        { id: "cheese", label: "치즈", section: "유제품 코너", icon: "🧀" },
+        { id: "juice", label: "주스", section: "음료 코너", image: "./images/mart_items/juice.png", icon: "🧃" },
+        { id: "waterJelly", label: "워터젤리", section: "음료 코너", image: "./images/mart_items/water_jelly.png", icon: "🧃" },
+        { id: "soda", label: "탄산음료", section: "음료 코너", icon: "🥤" },
+        { id: "apple", label: "사과", section: "과일 코너", image: "./images/mart_items/apple.png", icon: "🍎" },
+        { id: "strawberry", label: "딸기", section: "과일 코너", image: "./images/mart_items/strawberry.png", icon: "🍓" },
+        { id: "banana", label: "바나나", section: "과일 코너", image: "./images/mart_items/banana.png", icon: "🍌" },
+        { id: "grape", label: "포도", section: "과일 코너", image: "./images/mart_items/grape.png", icon: "🍇" },
+        { id: "pineapple", label: "파인애플", section: "과일 코너", image: "./images/mart_items/pineapple.png", icon: "🍍" },
+        { id: "watermelon", label: "수박", section: "과일 코너", image: "./images/mart_items/watermelon.png", icon: "🍉" },
         { id: "carrot", label: "당근", section: "채소 코너", image: "./images/mart_items/carrot.png", icon: "🥕" },
         { id: "tomato", label: "토마토", section: "채소 코너", image: "./images/mart_items/tomato.png", icon: "🍅" },
         { id: "pepper", label: "피망", section: "채소 코너", image: "./images/mart_items/pepper.png", icon: "🫑" },
-        { id: "chocomilk", label: "초코우유", section: "우유 코너", image: "./images/mart_items/chocomilk.png", icon: "🥛" },
-        { id: "milk", label: "우유", section: "우유 코너", image: "./images/mart_items/milk.png", icon: "🥛" },
-        { id: "apple", label: "사과", section: "과일 코너", image: "./images/mart_items/apple.png", icon: "🍎" }
+        { id: "snack", label: "과자", section: "과자 코너", icon: "🍪" },
+        { id: "chips", label: "스낵", section: "과자 코너", icon: "🍟" },
+        { id: "cookie", label: "쿠키", section: "과자 코너", icon: "🍪" },
+        { id: "pork", label: "돼지고기", section: "정육 코너", icon: "🥩" },
+        { id: "chicken", label: "닭고기", section: "정육 코너", icon: "🍗" },
+        { id: "beef", label: "소고기", section: "정육 코너", icon: "🥩" },
+        { id: "egg", label: "계란", section: "정육 코너", image: "./images/mart_items/egg.png", icon: "🥚" }
+      ],
+      missions: [
+        { id: "yogurt", label: "요플레", section: "유제품 코너", image: "./images/mart_items/yogurt.png", icon: "🥣" },
+        { id: "milk", label: "흰우유", section: "유제품 코너", image: "./images/mart_items/milk.png", icon: "🥛" },
+        { id: "strawberryMilk", label: "딸기우유", section: "유제품 코너", icon: "🍓" },
+        { id: "chocomilk", label: "초코우유", section: "유제품 코너", image: "./images/mart_items/chocomilk.png", icon: "🥛" },
+        { id: "cheese", label: "치즈", section: "유제품 코너", icon: "🧀" },
+        { id: "juice", label: "주스", section: "음료 코너", image: "./images/mart_items/juice.png", icon: "🧃" },
+        { id: "waterJelly", label: "워터젤리", section: "음료 코너", image: "./images/mart_items/water_jelly.png", icon: "🧃" },
+        { id: "soda", label: "탄산음료", section: "음료 코너", icon: "🥤" },
+        { id: "apple", label: "사과", section: "과일 코너", image: "./images/mart_items/apple.png", icon: "🍎" },
+        { id: "banana", label: "바나나", section: "과일 코너", image: "./images/mart_items/banana.png", icon: "🍌" },
+        { id: "grape", label: "포도", section: "과일 코너", image: "./images/mart_items/grape.png", icon: "🍇" },
+        { id: "pineapple", label: "파인애플", section: "과일 코너", image: "./images/mart_items/pineapple.png", icon: "🍍" },
+        { id: "carrot", label: "당근", section: "채소 코너", image: "./images/mart_items/carrot.png", icon: "🥕" },
+        { id: "tomato", label: "토마토", section: "채소 코너", image: "./images/mart_items/tomato.png", icon: "🍅" },
+        { id: "pepper", label: "피망", section: "채소 코너", image: "./images/mart_items/pepper.png", icon: "🫑" },
+        { id: "snack", label: "과자", section: "과자 코너", icon: "🍪" },
+        { id: "chips", label: "스낵", section: "과자 코너", icon: "🍟" },
+        { id: "cookie", label: "쿠키", section: "과자 코너", icon: "🍪" },
+        { id: "pork", label: "돼지고기", section: "정육 코너", icon: "🥩" },
+        { id: "chicken", label: "닭고기", section: "정육 코너", icon: "🍗" },
+        { id: "beef", label: "소고기", section: "정육 코너", icon: "🥩" },
+        { id: "egg", label: "계란", section: "정육 코너", image: "./images/mart_items/egg.png", icon: "🥚" }
       ]
     }
   };

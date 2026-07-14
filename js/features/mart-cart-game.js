@@ -345,9 +345,15 @@
         }, 560);
       }
 
+      const sameSectionChoices = pool.filter((item) => (
+        item.id !== current.id && item.section && current.section && item.section === current.section
+      ));
+      const otherChoices = pool.filter((item) => (
+        item.id !== current.id && (!item.section || item.section !== current.section)
+      ));
       const choices = shuffle([
         current,
-        ...shuffle(pool.filter((item) => item.id !== current.id)).slice(0, 2)
+        ...shuffle(sameSectionChoices).concat(shuffle(otherChoices)).slice(0, 2)
       ]);
 
       choices.forEach((item) => {

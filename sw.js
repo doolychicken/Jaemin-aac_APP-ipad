@@ -4,7 +4,7 @@
  * On first visit, pre-caches all images so subsequent loads are instant.
  */
 
-const CACHE_VERSION = 'v309';
+const CACHE_VERSION = 'v311';
 const CACHE_NAME = `jaemin-aac-${CACHE_VERSION}`;
 
 self.addEventListener('message', (event) => {
@@ -19,6 +19,7 @@ const PRECACHE_ASSETS = [
   './css/features/recycling-game.css',
   './css/features/mart-cart-game.css',
   './css/features/traffic-light-game.css',
+  './css/features/face-parts-game.css',
   './css/date-overrides.css',
   './js/data/study-data.js',
   './js/data/app-data.js',
@@ -28,6 +29,7 @@ const PRECACHE_ASSETS = [
   './js/features/recycling-game.js',
   './js/features/mart-cart-game.js',
   './js/features/traffic-light-game.js',
+  './js/features/face-parts-game.js',
   './js/main.js',
   './audio/watersound.mp3',
   './video/watersound.mp4',
@@ -56,13 +58,21 @@ const PRECACHE_ASSETS = [
   './images/mapocentral_library.png',
   './images/mart_cart_jaemin.png',
   './images/mart_items/apple.png',
+  './images/mart_items/banana.png',
   './images/mart_items/carrot.png',
   './images/mart_items/chocomilk.png',
+  './images/mart_items/egg.png',
+  './images/mart_items/grape.png',
+  './images/mart_items/juice.png',
   './images/mart_items/milk.png',
   './images/mart_items/pepper.png',
   './images/mart_items/pineapple.png',
   './images/mart_items/strawberry.png',
   './images/mart_items/tomato.png',
+  './images/mart_items/water_jelly.png',
+  './images/mart_items/watermelon.png',
+  './images/mart_items/yogurt.png',
+  './images/mart_items/yogurt_drink.png',
   './images/traffic_game/car.jpg',
   './images/traffic_game/car_blue.png',
   './images/traffic_game/car_red.png',

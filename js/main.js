@@ -285,6 +285,18 @@ const trafficLightGameFeature = window.createTrafficLightGameFeature({
   render
 });
 
+const facePartsGameFeature = window.createFacePartsGameFeature({
+  appMainEl,
+  spotlightViewEl,
+  spotlightBtnEl,
+  heroEl,
+  gridEl,
+  helperEl,
+  playPuzzleSound,
+  speak,
+  render
+});
+
 // ── 1. 한국어 목소리 선택 (fallback: default 목소리) ─────────────────────────
 function pickPreferredKoVoice() {
   if (!("speechSynthesis" in window)) return null;
@@ -3546,6 +3558,8 @@ function render() {
     martCartGameFeature.render({ ...screen, key });
   } else if (screen.layout === "trafficLightGame") {
     trafficLightGameFeature.render({ ...screen, key });
+  } else if (screen.layout === "facePartsGame") {
+    facePartsGameFeature.render({ ...screen, key });
   } else if (screen.layout === "localVideo") {
     renderLocalVideo(screen);
   } else if (isSpotlight) {
@@ -3593,6 +3607,7 @@ function render() {
     && screen.layout !== "recyclingGame"
     && screen.layout !== "martCartGame"
     && screen.layout !== "trafficLightGame"
+    && screen.layout !== "facePartsGame"
     && screen.layout !== "localVideo"
     && !gridEl.classList.contains("teaching-aid-complete")
     && !gridEl.classList.contains("teaching-aid-empty-complete")
@@ -3625,6 +3640,7 @@ homeBtn.addEventListener("click", () => {
   studyPuzzleFeature.clear();
   recyclingGameFeature.clear();
   martCartGameFeature.clear();
+  facePartsGameFeature.clear();
   selectedYoutube = "";
   resetPageState();
   render();
