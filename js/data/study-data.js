@@ -320,12 +320,12 @@ function buildStudyScreensMap() {
       version: 2,
       baseImage: "./images/face_game/face_base_v2.png",
       parts: [
-        { id: "leftEyebrow", kind: "eyebrow", label: "왼쪽 눈썹", speech: "왼쪽 눈썹", image: "./images/face_game/feature_eyebrow.png" },
-        { id: "rightEyebrow", kind: "eyebrow", label: "오른쪽 눈썹", speech: "오른쪽 눈썹", image: "./images/face_game/feature_eyebrow.png", mirror: true },
-        { id: "leftEye", kind: "eye", label: "왼쪽 눈", speech: "왼쪽 눈", image: "./images/face_game/feature_eye.png" },
-        { id: "rightEye", kind: "eye", label: "오른쪽 눈", speech: "오른쪽 눈", image: "./images/face_game/feature_eye.png", mirror: true },
-        { id: "leftEar", kind: "ear", label: "왼쪽 귀", speech: "왼쪽 귀", image: "./images/face_game/feature_ear.png" },
-        { id: "rightEar", kind: "ear", label: "오른쪽 귀", speech: "오른쪽 귀", image: "./images/face_game/feature_ear.png", mirror: true },
+        { id: "leftEyebrow", kind: "eyebrow", label: "왼쪽 눈썹", speech: "왼쪽 눈썹", image: "./images/face_game/feature_left_eyebrow.png" },
+        { id: "rightEyebrow", kind: "eyebrow", label: "오른쪽 눈썹", speech: "오른쪽 눈썹", image: "./images/face_game/feature_right_eyebrow.png" },
+        { id: "leftEye", kind: "eye", label: "왼쪽 눈", speech: "왼쪽 눈", image: "./images/face_game/feature_left_eye.png" },
+        { id: "rightEye", kind: "eye", label: "오른쪽 눈", speech: "오른쪽 눈", image: "./images/face_game/feature_right_eye.png" },
+        { id: "leftEar", kind: "ear", label: "왼쪽 귀", speech: "왼쪽 귀", image: "./images/face_game/feature_left_ear.png" },
+        { id: "rightEar", kind: "ear", label: "오른쪽 귀", speech: "오른쪽 귀", image: "./images/face_game/feature_right_ear.png" },
         { id: "nose", label: "코", speech: "코", image: "./images/face_game/feature_nose.png" },
         { id: "mouth", label: "입", speech: "입", image: "./images/face_game/feature_mouth.png" }
       ]
