@@ -78,6 +78,7 @@ function buildStudyScreensMap() {
     { label: "이름",   nav: "studyNames",      image: "./images/person/me.png" },
     { label: "사람",   nav: "studyPeople",     image: "./images/outing_person_me.png" },
     { label: "얼굴 완성", nav: "studyFacePartsGame", image: emojiImage("🙂") },
+    { label: "얼굴 완성 2", nav: "studyFacePartsGameV2", image: "./images/face_game/face_base_v2.png" },
     { label: "상징 매칭", nav: "studySymbolMatching", image: emojiImage("🎂") },
     { label: "상징 매칭 2", nav: "studySymbolMatchingV2", image: emojiImage("🧩") },
     { label: "과일",   nav: "studySticker_2",  image: "./images/stickerbook_fruit.png" },
@@ -302,6 +303,29 @@ function buildStudyScreensMap() {
         { id: "eyebrows", label: "눈썹", speech: "눈썹" },
         { id: "eyes", label: "눈", speech: "눈" },
         { id: "ears", label: "귀", speech: "귀" },
+        { id: "nose", label: "코", speech: "코" },
+        { id: "mouth", label: "입", speech: "입" }
+      ]
+    }
+  };
+
+  rest.studyFacePartsGameV2 = {
+    title: "얼굴 완성 2",
+    helper: "왼쪽과 오른쪽 얼굴 부위를 각각 붙여보세요.",
+    hero: [],
+    items: [],
+    layout: "facePartsGame",
+    showPlayer: false,
+    faceParts: {
+      version: 2,
+      baseImage: "./images/face_game/face_base_v2.png",
+      parts: [
+        { id: "leftEyebrow", kind: "eyebrow", label: "왼쪽 눈썹", speech: "왼쪽 눈썹" },
+        { id: "rightEyebrow", kind: "eyebrow", label: "오른쪽 눈썹", speech: "오른쪽 눈썹" },
+        { id: "leftEye", kind: "eye", label: "왼쪽 눈", speech: "왼쪽 눈" },
+        { id: "rightEye", kind: "eye", label: "오른쪽 눈", speech: "오른쪽 눈" },
+        { id: "leftEar", kind: "ear", label: "왼쪽 귀", speech: "왼쪽 귀" },
+        { id: "rightEar", kind: "ear", label: "오른쪽 귀", speech: "오른쪽 귀" },
         { id: "nose", label: "코", speech: "코" },
         { id: "mouth", label: "입", speech: "입" }
       ]

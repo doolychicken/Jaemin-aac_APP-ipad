@@ -39,17 +39,27 @@
       return x >= rect.left - pad && x <= rect.right + pad && y >= rect.top - pad && y <= rect.bottom + pad;
     }
 
+    function artKind(part) {
+      return part.kind || part.id;
+    }
+
     function makePartArt(part) {
       const art = document.createElement("span");
-      art.className = `face-game-art face-game-art--${part.id}`;
+      art.className = `face-game-art face-game-art--${artKind(part)}`;
       art.setAttribute("aria-hidden", "true");
-      if (part.id === "eyes") {
+      if (artKind(part) === "eyes") {
         art.innerHTML = "<i></i><i></i>";
-      } else if (part.id === "eyebrows") {
+      } else if (artKind(part) === "eye") {
+        art.innerHTML = "<i></i>";
+      } else if (artKind(part) === "eyebrows") {
         art.innerHTML = "<i></i><i></i>";
-      } else if (part.id === "ears") {
+      } else if (artKind(part) === "eyebrow") {
+        art.innerHTML = "<i></i>";
+      } else if (artKind(part) === "ears") {
         art.innerHTML = "<i></i><i></i>";
-      } else if (part.id === "nose") {
+      } else if (artKind(part) === "ear") {
+        art.innerHTML = "<i></i>";
+      } else if (artKind(part) === "nose") {
         art.innerHTML = "<i></i>";
       } else {
         art.innerHTML = "<i></i>";
@@ -66,7 +76,8 @@
 
     function renderGame(screen) {
       const state = stateFor(screen);
-      const parts = screen.faceParts?.parts || [];
+      const config = screen.faceParts || {};
+      const parts = config.parts || [];
       const total = parts.length;
       const count = Object.keys(state.placed).length;
 
@@ -85,11 +96,20 @@
 
       const face = document.createElement("div");
       face.className = "face-game-face";
+      if (config.version === 2) face.classList.add("face-game-face--photo");
       face.setAttribute("aria-label", "얼굴");
-      face.innerHTML = `
-        <div class="face-game-hair"></div>
-        <div class="face-game-head"></div>
-      `;
+      if (config.baseImage) {
+        const img = document.createElement("img");
+        img.className = "face-game-base-image";
+        img.src = config.baseImage;
+        img.alt = "얼굴 바탕";
+        face.appendChild(img);
+      } else {
+        face.innerHTML = `
+          <div class="face-game-hair"></div>
+          <div class="face-game-head"></div>
+        `;
+      }
 
       const slotsLayer = document.createElement("div");
       slotsLayer.className = "face-game-slots";
