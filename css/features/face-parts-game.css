@@ -136,17 +136,17 @@
 }
 
 .face-game-face--photo .face-game-slot--eyebrows {
-  left: 25.4%;
-  top: 39.1%;
-  width: 49.5%;
-  height: 7.8%;
+  left: 25.391%;
+  top: 39.062%;
+  width: 49.479%;
+  height: 7.812%;
 }
 
 .face-game-face--photo .face-game-slot--eyes {
-  left: 26.7%;
-  top: 42.2%;
-  width: 46.9%;
-  height: 10.5%;
+  left: 26.693%;
+  top: 42.188%;
+  width: 46.875%;
+  height: 10.547%;
 }
 
 .face-game-slot--leftEyebrow,
@@ -181,26 +181,26 @@
 
 .face-game-face--photo .face-game-slot--leftEar,
 .face-game-face--photo .face-game-slot--rightEar {
-  top: 43%;
-  width: 18.4%;
-  height: 29.7%;
+  top: 42.448%;
+  width: 22.396%;
+  height: 31.771%;
 }
 
-.face-game-face--photo .face-game-slot--leftEar { left: 8.3%; }
-.face-game-face--photo .face-game-slot--rightEar { left: 74%; }
+.face-game-face--photo .face-game-slot--leftEar { left: 6.25%; }
+.face-game-face--photo .face-game-slot--rightEar { left: 71.354%; }
 
 .face-game-face--photo .face-game-slot--nose {
-  left: 42.4%;
-  top: 50.3%;
-  width: 15.9%;
-  height: 13.9%;
+  left: 42.448%;
+  top: 50.26%;
+  width: 15.885%;
+  height: 13.932%;
 }
 
 .face-game-face--photo .face-game-slot--mouth {
-  left: 39.1%;
-  top: 65.1%;
-  width: 22.4%;
-  height: 9.1%;
+  left: 39.062%;
+  top: 65.104%;
+  width: 22.396%;
+  height: 9.115%;
 }
 
 .face-game-tray {
@@ -297,14 +297,14 @@
 }
 
 .face-game-tile .face-game-art--eyes.face-game-art--photo {
-  width: 280px;
-  height: 94px;
+  width: 300px;
+  height: 92px;
   max-width: 92%;
 }
 
 .face-game-tile .face-game-art--eyebrows.face-game-art--photo {
-  width: 302px;
-  height: 82px;
+  width: 300px;
+  height: 78px;
   max-width: 92%;
 }
 
@@ -319,8 +319,8 @@
 }
 
 .face-game-tile .face-game-art--ear.face-game-art--photo {
-  width: 116px;
-  height: 172px;
+  width: 124px;
+  height: 180px;
 }
 
 .face-game-tile:has(.face-game-art--photo) {
