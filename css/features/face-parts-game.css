@@ -286,6 +286,32 @@
   height: 78px;
 }
 
+.face-game-tile .face-game-art--eyes.face-game-art--photo {
+  width: 280px;
+  height: 94px;
+  max-width: 92%;
+}
+
+.face-game-tile .face-game-art--eyebrows.face-game-art--photo {
+  width: 280px;
+  height: 68px;
+  max-width: 92%;
+}
+
+.face-game-tile .face-game-art--nose.face-game-art--photo {
+  width: 138px;
+  height: 128px;
+}
+
+.face-game-tile .face-game-art--mouth.face-game-art--photo {
+  width: 190px;
+  height: 82px;
+}
+
+.face-game-tile:has(.face-game-art--photo) {
+  min-height: 156px;
+}
+
 .face-game-art--eyes i {
   position: absolute;
   top: 13px;
