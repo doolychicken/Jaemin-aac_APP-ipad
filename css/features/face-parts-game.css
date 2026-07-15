@@ -137,16 +137,16 @@
 
 .face-game-face--photo .face-game-slot--eyebrows {
   left: 26.7%;
-  top: 33.2%;
+  top: 39.1%;
   width: 46.9%;
-  height: 11.1%;
+  height: 5.9%;
 }
 
 .face-game-face--photo .face-game-slot--eyes {
-  left: 24.7%;
-  top: 37.1%;
-  width: 50.8%;
-  height: 13.7%;
+  left: 26.7%;
+  top: 43%;
+  width: 46.9%;
+  height: 10.4%;
 }
 
 .face-game-slot--leftEyebrow,
@@ -180,17 +180,17 @@
 .face-game-slot--rightEar { left: 75.6%; }
 
 .face-game-face--photo .face-game-slot--nose {
-  left: 38.4%;
-  top: 45.6%;
-  width: 23.4%;
-  height: 21.5%;
+  left: 41.7%;
+  top: 49.5%;
+  width: 17.6%;
+  height: 14.6%;
 }
 
 .face-game-face--photo .face-game-slot--mouth {
-  left: 34.5%;
-  top: 65.8%;
-  width: 31.3%;
-  height: 13.7%;
+  left: 38.4%;
+  top: 67.7%;
+  width: 24.7%;
+  height: 8.5%;
 }
 
 .face-game-tray {
