@@ -311,7 +311,7 @@ function buildStudyScreensMap() {
 
   rest.studyFacePartsGameV2 = {
     title: "얼굴 완성 2",
-    helper: "왼쪽과 오른쪽 얼굴 부위를 각각 붙여보세요.",
+    helper: "눈썹, 눈, 코, 입을 얼굴에 붙여보세요.",
     hero: [],
     items: [],
     layout: "facePartsGame",
@@ -320,12 +320,8 @@ function buildStudyScreensMap() {
       version: 2,
       baseImage: "./images/face_game/face_base_v2.png",
       parts: [
-        { id: "leftEyebrow", kind: "eyebrow", label: "왼쪽 눈썹", speech: "왼쪽 눈썹", image: "./images/face_game/feature_left_eyebrow.png" },
-        { id: "rightEyebrow", kind: "eyebrow", label: "오른쪽 눈썹", speech: "오른쪽 눈썹", image: "./images/face_game/feature_right_eyebrow.png" },
-        { id: "leftEye", kind: "eye", label: "왼쪽 눈", speech: "왼쪽 눈", image: "./images/face_game/feature_left_eye.png" },
-        { id: "rightEye", kind: "eye", label: "오른쪽 눈", speech: "오른쪽 눈", image: "./images/face_game/feature_right_eye.png" },
-        { id: "leftEar", kind: "ear", label: "왼쪽 귀", speech: "왼쪽 귀", image: "./images/face_game/feature_left_ear.png" },
-        { id: "rightEar", kind: "ear", label: "오른쪽 귀", speech: "오른쪽 귀", image: "./images/face_game/feature_right_ear.png" },
+        { id: "eyebrows", label: "눈썹", speech: "눈썹", image: "./images/face_game/feature_eyebrows_pair.png" },
+        { id: "eyes", label: "눈", speech: "눈", image: "./images/face_game/feature_eyes_pair.png" },
         { id: "nose", label: "코", speech: "코", image: "./images/face_game/feature_nose.png" },
         { id: "mouth", label: "입", speech: "입", image: "./images/face_game/feature_mouth.png" }
       ]
