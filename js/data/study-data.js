@@ -311,7 +311,7 @@ function buildStudyScreensMap() {
 
   rest.studyFacePartsGameV2 = {
     title: "얼굴 완성 2",
-    helper: "눈썹, 눈, 코, 입을 얼굴에 붙여보세요.",
+    helper: "눈썹, 눈, 코, 입, 귀를 얼굴에 붙여보세요.",
     hero: [],
     items: [],
     layout: "facePartsGame",
@@ -323,7 +323,9 @@ function buildStudyScreensMap() {
         { id: "eyebrows", label: "눈썹", speech: "눈썹", image: "./images/face_game/jaemin_eyebrows.png" },
         { id: "eyes", label: "눈", speech: "눈", image: "./images/face_game/jaemin_eyes.png" },
         { id: "nose", label: "코", speech: "코", image: "./images/face_game/jaemin_nose.png" },
-        { id: "mouth", label: "입", speech: "입", image: "./images/face_game/jaemin_mouth.png" }
+        { id: "mouth", label: "입", speech: "입", image: "./images/face_game/jaemin_mouth.png" },
+        { id: "leftEar", kind: "ear", label: "왼쪽 귀", speech: "왼쪽 귀", image: "./images/face_game/jaemin_left_ear.png" },
+        { id: "rightEar", kind: "ear", label: "오른쪽 귀", speech: "오른쪽 귀", image: "./images/face_game/jaemin_right_ear.png" }
       ]
     }
   };

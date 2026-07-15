@@ -179,6 +179,16 @@
 .face-game-slot--leftEar { left: 17.6%; }
 .face-game-slot--rightEar { left: 75.6%; }
 
+.face-game-face--photo .face-game-slot--leftEar,
+.face-game-face--photo .face-game-slot--rightEar {
+  top: 44%;
+  width: 16.5%;
+  height: 22.4%;
+}
+
+.face-game-face--photo .face-game-slot--leftEar { left: 10.2%; }
+.face-game-face--photo .face-game-slot--rightEar { left: 74.5%; }
+
 .face-game-face--photo .face-game-slot--nose {
   left: 42.4%;
   top: 50.3%;
@@ -306,6 +316,11 @@
 .face-game-tile .face-game-art--mouth.face-game-art--photo {
   width: 182px;
   height: 62px;
+}
+
+.face-game-tile .face-game-art--ear.face-game-art--photo {
+  width: 112px;
+  height: 148px;
 }
 
 .face-game-tile:has(.face-game-art--photo) {
