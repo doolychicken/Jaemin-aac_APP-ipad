@@ -318,12 +318,12 @@ function buildStudyScreensMap() {
     showPlayer: false,
     faceParts: {
       version: 2,
-      baseImage: "./images/face_game/face_base_v2.png",
+      baseImage: "./images/face_game/jaemin_face_base.png",
       parts: [
-        { id: "eyebrows", label: "눈썹", speech: "눈썹", image: "./images/face_game/feature_eyebrows_pair.png" },
-        { id: "eyes", label: "눈", speech: "눈", image: "./images/face_game/feature_eyes_pair.png" },
-        { id: "nose", label: "코", speech: "코", image: "./images/face_game/feature_nose.png" },
-        { id: "mouth", label: "입", speech: "입", image: "./images/face_game/feature_mouth.png" }
+        { id: "eyebrows", label: "눈썹", speech: "눈썹", image: "./images/face_game/jaemin_eyebrows.png" },
+        { id: "eyes", label: "눈", speech: "눈", image: "./images/face_game/jaemin_eyes.png" },
+        { id: "nose", label: "코", speech: "코", image: "./images/face_game/jaemin_nose.png" },
+        { id: "mouth", label: "입", speech: "입", image: "./images/face_game/jaemin_mouth.png" }
       ]
     }
   };
