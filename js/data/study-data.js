@@ -74,7 +74,7 @@ function buildStudyScreensMap() {
 
   const appStudyItems = [
     { label: "숫자",   nav: "studyNumbers",    image: "./images/stickerbook_number.png" },
-    { label: "한글",   nav: "studyHangul",     image: "./images/stickerbook_language.png" },
+    { label: "날짜",   nav: "dateHome", image: "./images/app_date.svg", dateMode: "stepFlow" },
     { label: "이름",   nav: "studyNames",      image: "./images/person/me.png" },
     { label: "사람",   nav: "studyPeople",     image: "./images/outing_person_me.png" },
     { label: "얼굴", nav: "studyFacePartsMenu", image: "./images/face_game/jaemin_face_complete.png" },
@@ -84,10 +84,10 @@ function buildStudyScreensMap() {
     { label: "동물",   nav: "studySticker_4",  image: "./images/stickerbook_animal.png" },
     { label: "탈것",   nav: "studyVehicles",   image: "./images/stickerbook_vehicle.png" },
     { label: "색깔",   nav: "studySticker_10", image: "./images/stickerbook_shape.png" },
-    { label: "날짜",   nav: "dateHome", image: "./images/app_date.svg", dateMode: "stepFlow" },
     { label: "분리수거", nav: "studyRecyclingGame", image: "./images/recycling_station.png" },
     { label: "마트카트", nav: "studyMartCartGame", image: "./images/stickerbook_mart.png" },
-    { label: "신호등", nav: "studyTrafficLightGame", image: "./images/traffic_game/traffic_tile.jpg" }
+    { label: "신호등", nav: "studyTrafficLightGame", image: "./images/traffic_game/traffic_tile.jpg" },
+    { label: "한글",   nav: "studyHangul",     image: "./images/stickerbook_language.png" }
   ];
 
   const hangulLetterItems = [
