@@ -419,8 +419,8 @@ function buildStudyScreensMap() {
     helper: "숫자 공부를 선택하세요.",
     hero: [],
     items: [
-      { label: "숫자 퍼즐", nav: "studyNumberPuzzle", image: "./images/knobpuzzle_numbers.png" },
-      { label: "숫자 퍼즐 2", nav: "studyNumberPuzzle2", image: "./images/knobpuzzle_numbers2.png" },
+      { label: "숫자 퍼즐", nav: "studyNumberPuzzle", image: "./images/study_number_puzzle_icon.svg" },
+      { label: "숫자 퍼즐 2", nav: "studyNumberPuzzle2", image: "./images/study_number_puzzle2_icon.svg" },
       { label: "숫자 카드", nav: "studySticker_6", image: "./images/stickerbook_number.png" }
     ],
     layout: "main",
