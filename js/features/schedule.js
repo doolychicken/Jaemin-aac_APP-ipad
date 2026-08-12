@@ -65,7 +65,7 @@ const SCHEDULE_ACTIVITY_DEFS = [
   { type: "사람과소통", label: "사람과소통", shortLabel: "소통",    image: "./images/therapy/communication_with_people.png", emoji: "🗣️" },
   { type: "mart",       label: "마트",       shortLabel: "마트",    image: "./images/outing_mart1.png",             emoji: "🛒" },
   { type: "bakery",     label: "빵가게",     shortLabel: "빵가게",  image: "./images/outing_bakery.png",            emoji: "🥐" },
-  { type: "cafe",       label: "카페",       shortLabel: "카페",    image: "./images/outing_cafe.png",              emoji: "☕" },
+  { type: "cafe",       label: "카페",       shortLabel: "카페",    image: "./images/places/cafe_with_dad.png",     emoji: "☕" },
   { type: "park",       label: "공원",       shortLabel: "공원",    image: "./images/outing_park1.png",             emoji: "🌳" },
   { type: "calltaxi",  label: "장애인콜택시", shortLabel: "콜택시",  image: "./images/transport_calltaxi.png",       emoji: "🚕" },
   { type: "fieldtrip", label: "학교 현장학습", shortLabel: "현장학습", image: "./images/school bus.png",               emoji: "🚌" },

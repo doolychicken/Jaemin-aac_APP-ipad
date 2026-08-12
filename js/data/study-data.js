@@ -86,6 +86,7 @@ function buildStudyScreensMap() {
     { label: "동물",   nav: "studySticker_4",  image: "./images/stickerbook_animal.png" },
     { label: "탈것",   nav: "studyVehicles",   image: "./images/stickerbook_vehicle.png" },
     { label: "색깔",   nav: "studySticker_10", image: "./images/stickerbook_shape.png" },
+    { label: "날짜",   nav: "dateHome", image: "./images/app_date.svg", dateMode: "stepFlow" },
     { label: "분리수거", nav: "studyRecyclingGame", image: "./images/recycling_station.png" },
     { label: "마트카트", nav: "studyMartCartGame", image: "./images/stickerbook_mart.png" },
     { label: "신호등", nav: "studyTrafficLightGame", image: "./images/traffic_game/traffic_tile.jpg" }
@@ -149,7 +150,7 @@ function buildStudyScreensMap() {
     { key: "youtube", symbol: "유튜브", answer: "유튜브 봐요", image: "./images/youtube.png", choices: ["물 마셔요", "밥", "유튜브 봐요"] },
     { key: "fireStation", symbol: "소방서", answer: "소방차", image: "./images/fire_station.png", choices: ["소방차", "경찰차", "버스 타요"] },
     { key: "policeStation", symbol: "경찰서", answer: "경찰차", image: "./images/policestation.png", choices: ["경찰차", "소방차", "자동차"] },
-    { key: "coffee", symbol: "커피", answer: "커피숍", image: "./images/cofee.png", choices: ["커피숍", "빵가게", "물 마셔요"] }
+    { key: "coffee", symbol: "커피", answer: "커피숍", image: "./images/places/cafe_with_dad.png", choices: ["커피숍", "빵가게", "물 마셔요"] }
   ];
 
   function symbolPieceImage(item) {
@@ -162,7 +163,7 @@ function buildStudyScreensMap() {
     if (item.key === "mart") return "./images/chocomilk.jpg";
     if (item.key === "fireStation") return "./images/fire truck.png";
     if (item.key === "policeStation") return "./images/policecar.png";
-    if (item.key === "coffee") return "./images/edia_cafe.png";
+    if (item.key === "coffee") return "./images/places/cafe_with_dad.png";
     if (item.key === "toilet") return "./images/pee.png";
     return "";
   }
@@ -185,7 +186,7 @@ function buildStudyScreensMap() {
       if (label === "버스 타요") image = "./images/bus.png";
       if (label === "소방차") image = "./images/fire truck.png";
       if (label === "경찰차") image = "./images/policecar.png";
-      if (label === "커피숍") image = "./images/edia_cafe.png";
+      if (label === "커피숍") image = "./images/places/cafe_with_dad.png";
       return { label, value: label, speech: label, image };
     });
   }

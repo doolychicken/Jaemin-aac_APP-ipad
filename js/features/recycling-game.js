@@ -108,13 +108,90 @@
         ${objectVisual}
         <div class="recycling-object-label">${currentItem.label}</div>
       `;
-      object.addEventListener("click", () => speak(currentItem.speech || currentItem.label));
+      let suppressNextClick = false;
+      object.addEventListener("click", () => {
+        if (suppressNextClick) {
+          suppressNextClick = false;
+          return;
+        }
+        speak(currentItem.speech || currentItem.label);
+      });
       object.addEventListener("dragstart", (event) => {
         event.dataTransfer.setData("text/plain", currentItem.kind);
         event.dataTransfer.effectAllowed = "move";
         object.classList.add("is-dragging");
       });
       object.addEventListener("dragend", () => object.classList.remove("is-dragging"));
+
+      // Android/Galaxy Tab browsers do not reliably emit HTML5 drag events.
+      // Use Pointer Events for touch/pen input and keep the native drag path for a mouse.
+      object.addEventListener("pointerdown", (event) => {
+        if (event.pointerType === "mouse" || state.locked) return;
+        const startRect = object.getBoundingClientRect();
+        const ghost = object.cloneNode(true);
+        let moved = false;
+        ghost.classList.add("recycling-object--ghost");
+        Object.assign(ghost.style, {
+          position: "fixed",
+          left: `${startRect.left}px`,
+          top: `${startRect.top}px`,
+          width: `${startRect.width}px`,
+          height: `${startRect.height}px`,
+          margin: "0",
+          zIndex: "9999",
+          pointerEvents: "none"
+        });
+        document.body.appendChild(ghost);
+        object.classList.add("is-dragging");
+        object.setPointerCapture(event.pointerId);
+        event.preventDefault();
+
+        function clearBinHover() {
+          document.querySelectorAll(".recycling-bin.is-over").forEach((bin) => bin.classList.remove("is-over"));
+        }
+
+        function move(moveEvent) {
+          const dx = moveEvent.clientX - event.clientX;
+          const dy = moveEvent.clientY - event.clientY;
+          if ((dx * dx) + (dy * dy) > 36) moved = true;
+          ghost.style.left = `${startRect.left + dx}px`;
+          ghost.style.top = `${startRect.top + dy}px`;
+          clearBinHover();
+          const target = document.elementFromPoint(moveEvent.clientX, moveEvent.clientY)?.closest(".recycling-bin");
+          if (target) target.classList.add("is-over");
+        }
+
+        function finish(finishEvent) {
+          if (object.hasPointerCapture(event.pointerId)) object.releasePointerCapture(event.pointerId);
+          object.removeEventListener("pointermove", move);
+          object.removeEventListener("pointerup", finish);
+          object.removeEventListener("pointercancel", cancel);
+          object.classList.remove("is-dragging");
+          ghost.remove();
+          clearBinHover();
+          suppressNextClick = true;
+          const target = document.elementFromPoint(finishEvent.clientX, finishEvent.clientY)?.closest(".recycling-bin");
+          if (moved && target) {
+            const bin = bins.find((candidate) => candidate.kind === target.dataset.kind);
+            if (bin) checkBin(bin);
+          } else if (!moved) {
+            speak(currentItem.speech || currentItem.label);
+          }
+        }
+
+        function cancel() {
+          object.removeEventListener("pointermove", move);
+          object.removeEventListener("pointerup", finish);
+          object.removeEventListener("pointercancel", cancel);
+          object.classList.remove("is-dragging");
+          ghost.remove();
+          clearBinHover();
+        }
+
+        object.addEventListener("pointermove", move);
+        object.addEventListener("pointerup", finish);
+        object.addEventListener("pointercancel", cancel);
+      });
       objectWrap.appendChild(object);
 
       const binsWrap = document.createElement("div");

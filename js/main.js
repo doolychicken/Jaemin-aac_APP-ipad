@@ -141,6 +141,7 @@ const dateSelection = { year: null, month: null, day: null, weekday: null, weath
 let dateCardFocus = "year";
 let dateActivityMode = "";
 let dateStepPage = "year";
+let dateStudySingleMode = false;
 const datePuzzleBlankSelection = { year: null, month: null, day: null, weekday: null, weather: null };
 const dateStepFinalSelection = { year: null, month: null, day: null, weekday: null, weather: null };
 
@@ -2247,9 +2248,15 @@ function renderDateStepFlowDrag() {
     const back = document.createElement("button");
     back.type = "button";
     back.className = "date-action-btn";
-    back.textContent = prevStep ? "이전" : "버전 선택";
+    back.textContent = prevStep ? "이전" : (dateStudySingleMode ? "뒤로 가기" : "버전 선택");
     back.addEventListener("click", () => {
       if (prevStep) gotoStep(prevStep);
+      else if (dateStudySingleMode) {
+        dateStudySingleMode = false;
+        dateActivityMode = "";
+        popScreen();
+        render();
+      }
       else {
         dateActivityMode = "";
         render();
@@ -3171,6 +3178,43 @@ function renderButtons(items, layout) {
   function activateItem(item) {
     const yUrl = resolveYoutube(item);
     const speechText = item.speech || item.label;
+
+    if (item.nav === "dateHome") {
+      dateStudySingleMode = !!item.dateMode;
+      dateActivityMode = item.dateMode || "";
+      if (item.dateMode) {
+        dateStepPage = "year";
+        dateCardFocus = "year";
+        Object.assign(datePuzzleBlankSelection, { year: null, month: null, day: null, weekday: null, weather: null });
+        Object.assign(dateStepFinalSelection, { year: null, month: null, day: null, weekday: null, weather: null });
+      }
+    }
+
+    const imageSpotlightScreens = ["outingPlace", "placeHome", "outingHomeplus", "outingSchool", "outingSchoolFriends", "outingSchool_p2", "outingSchool_p3"];
+    const isPageControl = item.label === "다음" || item.label === "이전";
+    const keepSchoolNavigation = currentKey() === "placeHome" && item.label === "학교";
+    const keepSchoolFriendsNavigation = currentKey() === "outingSchool" && item.label === "친구들";
+    if (
+      item.image
+      && imageSpotlightScreens.includes(currentKey())
+      && !isPageControl
+      && !keepSchoolNavigation
+      && !keepSchoolFriendsNavigation
+    ) {
+      DATA.screens.imageSpotlight = {
+        title: item.label,
+        helper: `${item.label} 그림을 눌러서 들어보세요.`,
+        hero: [],
+        items: [],
+        layout: "spotlight",
+        showPlayer: false,
+        spotlight: { label: speechText, image: item.image }
+      };
+      speak(speechText);
+      pushScreen("imageSpotlight", item.label);
+      render();
+      return;
+    }
 
     if (item.action === "waterSound") {
       toggleWaterSound();
