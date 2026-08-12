@@ -577,10 +577,13 @@ const DATA = {
 
     // ── 아이패드 / 유튜브 ────────────────────────────────────────────────────
     ipadHome: {
-      title: "아이패드(유튜브)",
+      title: "아이패드",
       helper: "아이패드에서 사용할 기능을 선택하세요.",
       hero: [],
-      items: [{ label: "유튜브", nav: "ipadYouTube", image: "./images/youtube.png", icon: "▶️" }],
+      items: [
+        { label: "유튜브", nav: "ipadYouTube", image: "./images/youtube.png", icon: "▶️" },
+        { label: "앱 공부", nav: "studyAppLearning", image: "./images/stickerbook_number.png" }
+      ],
       layout: "main",
       showPlayer: false
     },
