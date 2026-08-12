@@ -105,6 +105,10 @@ const DATA = {
       hero: [],
       items: [
         { label: "내 기분", nav: "emotionFeelings", image: "./images/emotions/happy.jpg", imageFit: "cover" },
+        { label: "먹을 때", nav: "mealEmotion", image: "./images/meal_expressions/delicious.jpg", imageFit: "cover" },
+        { label: "공부할 때", nav: "emotionStudy", image: "./images/study.png" },
+        { label: "외출할 때", nav: "emotionOuting", image: "./images/outing.png" },
+        { label: "사람과 함께", nav: "emotionPeople", image: "./images/outing_person_me.png", imageFit: "cover" },
         { label: "몸 상태", nav: "emotionBody", image: "./images/emotions/hurt.jpg", imageFit: "cover" },
         { label: "도움·휴식", nav: "emotionSupport", image: "./images/emotions/help.jpg", imageFit: "cover" }
       ],
@@ -146,6 +150,54 @@ const DATA = {
       items: [
         { label: "도와주세요", image: "./images/emotions/help.jpg", imageFit: "cover" },
         { label: "쉬고 싶어요", image: "./images/sleep.png" }
+      ],
+      layout: "main",
+      showPlayer: false
+    },
+
+    emotionStudy: {
+      title: "공부할 때",
+      helper: "공부하면서 하고 싶은 말을 선택하세요.",
+      hero: [],
+      items: [
+        { label: "재미있어요", image: "./images/emotions/happy.jpg", imageFit: "cover" },
+        { label: "어려워요", image: "./images/emotions/scared.jpg", imageFit: "cover" },
+        { label: "모르겠어요", image: "./images/emotions/uncomfortable.jpg", imageFit: "cover" },
+        { label: "도와주세요", image: "./images/emotions/help.jpg", imageFit: "cover" },
+        { label: "쉬고 싶어요", image: "./images/sleep.png" },
+        { label: "다 했어요", image: "./images/emotions/happy.jpg", imageFit: "cover" }
+      ],
+      layout: "main",
+      showPlayer: false
+    },
+
+    emotionOuting: {
+      title: "외출할 때",
+      helper: "밖에서 하고 싶은 말을 선택하세요.",
+      hero: [],
+      items: [
+        { label: "좋아요", image: "./images/emotions/happy.jpg", imageFit: "cover" },
+        { label: "무서워요", image: "./images/emotions/scared.jpg", imageFit: "cover" },
+        { label: "피곤해요", image: "./images/emotions/tired.jpg", imageFit: "cover" },
+        { label: "화장실 가고 싶어요", nav: "toilet", image: "./images/pee.png", speech: "화장실 가고 싶어요" },
+        { label: "집에 가고 싶어요", image: "./images/home.png" },
+        { label: "도와주세요", image: "./images/emotions/help.jpg", imageFit: "cover" }
+      ],
+      layout: "main",
+      showPlayer: false
+    },
+
+    emotionPeople: {
+      title: "사람과 함께",
+      helper: "사람과 함께 있을 때 하고 싶은 말을 선택하세요.",
+      hero: [],
+      items: [
+        { label: "좋아요", image: "./images/emotions/happy.jpg", imageFit: "cover" },
+        { label: "싫어요", image: "./images/emotions/uncomfortable.jpg", imageFit: "cover" },
+        { label: "화나요", image: "./images/emotions/angry.jpg", imageFit: "cover" },
+        { label: "무서워요", image: "./images/emotions/scared.jpg", imageFit: "cover" },
+        { label: "도와주세요", image: "./images/emotions/help.jpg", imageFit: "cover" },
+        { label: "혼자 있고 싶어요", image: "./images/sleep.png" }
       ],
       layout: "main",
       showPlayer: false
