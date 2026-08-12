@@ -708,6 +708,7 @@ function prefetchScreenImages(screenKey) {
   if (!screen) return;
   (screen.hero || []).forEach((it) => prefetchLocalImage(it.image));
   (screen.items || []).forEach((it) => prefetchLocalImage(it.image));
+  (screen.mealExpressions || []).forEach((it) => prefetchLocalImage(it.image));
   if (screen.spotlight && screen.spotlight.image) prefetchLocalImage(screen.spotlight.image);
 }
 
@@ -3114,6 +3115,7 @@ function renderButtons(items, layout) {
   const usesSideFrame = (isMain || isMedia) && !compactMainMenu;
   const screen = DATA.screens[currentKey()] || {};
   const filteredItems = filterCompletedTeachingAidItems(items || []);
+  const mealExpressionItems = Array.isArray(screen.mealExpressions) ? screen.mealExpressions : [];
   const sideSlotItem = isMain && currentKey() === "mealRice"
     ? filteredItems.find((item) => item.sideSlot)
     : null;
@@ -3143,7 +3145,7 @@ function renderButtons(items, layout) {
   const visibleItems = sideNavItems.length
     ? pageInfo.items.filter((item) => item.label !== "다음" && item.label !== "이전")
     : pageInfo.items;
-  const extraGridClass = `${currentKey() === "mealDrink" ? " grid--meal-drink" : ""}${currentKey() === "toilet" ? " grid--toilet" : ""}${compactMainMenu ? " grid--mobile-main-menu" : ""}`;
+  const extraGridClass = `${currentKey() === "mealDrink" ? " grid--meal-drink" : ""}${currentKey() === "toilet" ? " grid--toilet" : ""}${mealExpressionItems.length ? " grid--meal-expressions" : ""}${compactMainMenu ? " grid--mobile-main-menu" : ""}`;
   const autoSideNavCount = usesSideFrame && pageInfo.paged
     ? Number(pageInfo.page > 0) + Number(pageInfo.page < pageInfo.totalPages - 1)
     : 0;
@@ -3317,6 +3319,41 @@ function renderButtons(items, layout) {
     }
     gridEl.appendChild(btn);
   });
+
+  if (mealExpressionItems.length) {
+    const panel = document.createElement("section");
+    panel.className = "meal-expression-panel";
+    panel.setAttribute("aria-label", "먹으면서 말하기");
+
+    const heading = document.createElement("h2");
+    heading.className = "meal-expression-title";
+    heading.textContent = "먹으면서 말하기";
+    panel.appendChild(heading);
+
+    mealExpressionItems.forEach((item) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "tile meal-expression-tile";
+      btn.setAttribute("aria-label", item.label);
+
+      const img = document.createElement("img");
+      img.src = item.image;
+      img.alt = item.label;
+      img.className = "tile-img--cover";
+      setupImageElement(img, true);
+
+      const label = document.createElement("div");
+      label.className = "tile-label";
+      label.textContent = item.label;
+
+      btn.appendChild(img);
+      btn.appendChild(label);
+      btn.addEventListener("click", () => activateItem(item));
+      panel.appendChild(btn);
+    });
+
+    gridEl.appendChild(panel);
+  }
 
   if (currentKey() === "studyTeachingAids") {
     const resetBtn = document.createElement("button");

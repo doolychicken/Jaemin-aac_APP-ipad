@@ -696,10 +696,15 @@ const DATA = {
         { label: "밥",       image: "./images/meal_rice.png" },
         { label: "물",       image: "./images/water.png" },
         { label: "우유",     image: "./images/meal_milk.png" },
-        { label: "맛있어요", icon: "😋" },
-        { label: "맛없어요", icon: "😖" },
-        { label: "화장실",   nav: "toilet", image: "./images/pee.png", speech: "화장실" },
-        { label: "유튜브", image: "./images/youtube.png", youtube: "mealRiceYoutube", sideSlot: true }
+        { label: "화장실",   nav: "toilet", image: "./images/pee.png", speech: "화장실" }
+      ],
+      mealExpressions: [
+        { label: "맛있어요", image: "./images/meal_expressions/delicious.jpg" },
+        { label: "맛없어요", image: "./images/meal_expressions/not_delicious.jpg" },
+        { label: "뜨거워요", image: "./images/meal_expressions/hot.jpg" },
+        { label: "차가워요", image: "./images/meal_expressions/cold.jpg" },
+        { label: "더 주세요", image: "./images/meal_expressions/more_please.jpg" },
+        { label: "그만 먹을래요", image: "./images/meal_expressions/stop_eating.jpg" }
       ],
       layout: "main"
     },

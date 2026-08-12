@@ -5617,6 +5617,96 @@ body {
   background: rgba(255, 255, 255, 0.78);
 }
 
+/* 밥을 먹는 중에 화면을 이동하지 않고 바로 표현하는 사진 패널 */
+.grid.grid--meal-expressions {
+  grid-template-columns: repeat(2, minmax(0, 220px)) minmax(440px, 520px) !important;
+  grid-template-rows: repeat(2, minmax(0, min(24vh, 220px)));
+  justify-content: center;
+  align-items: center;
+  gap: clamp(10px, 1.4vw, 16px);
+  width: 100%;
+  max-width: 1100px;
+  margin-inline: auto;
+}
+
+.grid.grid--meal-expressions > .tile {
+  width: min(21vw, 24vh, 220px) !important;
+  max-width: 220px;
+}
+
+.grid.grid--meal-expressions > .tile:nth-of-type(1) { grid-column: 1; grid-row: 1; }
+.grid.grid--meal-expressions > .tile:nth-of-type(2) { grid-column: 2; grid-row: 1; }
+.grid.grid--meal-expressions > .tile:nth-of-type(3) { grid-column: 1; grid-row: 2; }
+.grid.grid--meal-expressions > .tile:nth-of-type(4) { grid-column: 2; grid-row: 2; }
+
+.meal-expression-panel {
+  grid-column: 3;
+  grid-row: 1 / span 2;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  align-self: stretch;
+  padding: 12px;
+  border: 3px solid rgba(81, 151, 231, 0.24);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 16px 34px rgba(76, 111, 174, 0.13);
+}
+
+.meal-expression-title {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: #31528f;
+  font-size: clamp(1.05rem, 2.1vh, 1.35rem);
+  font-weight: 900;
+  text-align: center;
+}
+
+.meal-expression-panel .meal-expression-tile {
+  width: 100% !important;
+  min-width: 0;
+  min-height: 0;
+  aspect-ratio: 1 / 1.08;
+  padding: 7px;
+  gap: 5px;
+  border-radius: 15px;
+}
+
+.meal-expression-panel .meal-expression-tile img {
+  border-radius: 11px;
+}
+
+.meal-expression-panel .meal-expression-tile .tile-label {
+  min-height: 1.15em;
+  font-size: clamp(0.72rem, 1.5vh, 0.95rem);
+}
+
+@media (max-width: 900px) {
+  .grid.grid--meal-expressions {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-template-rows: auto;
+    align-content: start;
+    overflow-y: auto;
+  }
+
+  .grid.grid--meal-expressions > .tile {
+    width: min(42vw, 220px) !important;
+  }
+
+  .meal-expression-panel {
+    grid-column: 1 / -1;
+    grid-row: auto;
+    width: min(100%, 620px);
+    justify-self: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .meal-expression-panel {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 .tile-nav-arrow {
   grid-column: 4;
   grid-row: 1 / span 2;
