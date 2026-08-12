@@ -318,7 +318,7 @@ function buildStudyScreensMap() {
     showPlayer: false,
     faceParts: {
       version: 2,
-      baseImage: "./images/face_game/jaemin_face_base.png",
+      baseImage: "./images/face_game/jaemin_face_complete.png",
       parts: [
         { id: "eyebrows", label: "눈썹", speech: "눈썹", image: "./images/face_game/jaemin_eyebrows.png" },
         { id: "eyes", label: "눈", speech: "눈", image: "./images/face_game/jaemin_eyes.png" },

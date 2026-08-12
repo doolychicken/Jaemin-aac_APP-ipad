@@ -106,6 +106,7 @@
       const face = document.createElement("div");
       face.className = "face-game-face";
       if (config.version === 2) face.classList.add("face-game-face--photo");
+      if (total > 0 && count >= total) face.classList.add("is-complete");
       face.setAttribute("aria-label", "얼굴");
       if (config.baseImage) {
         const img = document.createElement("img");
