@@ -693,12 +693,12 @@ const DATA = {
       helper: "먹고 싶은 것을 선택하세요.",
       hero: [],
       items: [
-        { label: "밥",   image: "./images/meal_rice.png" },
-        { label: "물",   image: "./images/water.png" },
-        { label: "주스", image: "./images/meal_juice.png" },
-        { label: "우유", image: "./images/meal_milk.png" },
-        { label: "두유", image: "./images/meal_soymilk.png" },
-        { label: "화장실", image: "./images/pee.png", speech: "화장실" },
+        { label: "밥",       image: "./images/meal_rice.png" },
+        { label: "물",       image: "./images/water.png" },
+        { label: "우유",     image: "./images/meal_milk.png" },
+        { label: "맛있어요", icon: "😋" },
+        { label: "맛없어요", icon: "😖" },
+        { label: "화장실",   nav: "toilet", image: "./images/pee.png", speech: "화장실" },
         { label: "유튜브", image: "./images/youtube.png", youtube: "mealRiceYoutube", sideSlot: true }
       ],
       layout: "main"
