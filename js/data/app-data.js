@@ -996,7 +996,7 @@ const DATA = {
       items: [
         { label: "공원",                      image: "./images/outing_park1.png" },
         { label: "마트",                      image: "./images/outing_mart1.png" },
-        { label: "빵집",                      image: "./images/outing_bakery.png" },
+        { label: "빵가게", nav: "placeBakery", image: "./images/outing_bakery.png" },
         { label: "카페",                      image: "./images/outing_cafe.png" },
         { label: "이케아",                    image: "./images/ikea.png" },
         { label: "홈플러스", nav: "outingHomeplus", image: "./images/homeplus.png" }
@@ -1013,13 +1013,37 @@ const DATA = {
         { label: "학교", nav: "outingSchool", image: "./images/school_classroom.png" },
         { label: "공원",                      image: "./images/outing_park1.png" },
         { label: "마트",                      image: "./images/outing_mart1.png" },
-        { label: "빵집",                      image: "./images/outing_bakery.png" },
+        { label: "빵가게", nav: "placeBakery", image: "./images/outing_bakery.png" },
         { label: "카페",                      image: "./images/outing_cafe.png" },
         { label: "이케아",                    image: "./images/ikea.png" },
         { label: "홈플러스", nav: "outingHomeplus", image: "./images/homeplus.png" }
       ],
       layout: "main",
       showPlayer: false
+    },
+
+    placeBakery: {
+      title: "빵가게",
+      helper: "어느 빵가게로 갈까요?",
+      hero: [],
+      items: [
+        { label: "파리바게트", nav: "placeParisBaguette", image: "./images/paris_baguatte.png", imageFit: "cover" }
+      ],
+      layout: "main",
+      showPlayer: false
+    },
+
+    placeParisBaguette: {
+      title: "파리바게트",
+      helper: "파리바게트에서 빵을 사요.",
+      hero: [],
+      items: [],
+      layout: "main",
+      showPlayer: false,
+      spotlight: {
+        label: "파리바게트에서 빵을 사요",
+        image: "./images/places/paris_baguette_buying_bread.jpg"
+      }
     },
 
     outingHomeplus: {
