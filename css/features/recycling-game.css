@@ -3,8 +3,9 @@
   flex: 1 1 auto;
   min-height: 0;
   display: grid;
-  grid-template-rows: auto minmax(180px, 0.9fr) minmax(220px, 1fr);
+  grid-template-rows: auto auto auto;
   gap: clamp(10px, 1.8vh, 18px);
+  align-content: start;
   width: 100%;
   overflow: hidden;
 }
@@ -74,7 +75,7 @@
   display: grid;
   grid-template-columns: repeat(5, minmax(120px, 1fr));
   gap: clamp(8px, 1.5vw, 16px);
-  align-items: end;
+  align-items: start;
 }
 
 .recycling-bin {
@@ -180,10 +181,6 @@
 }
 
 @media (max-width: 900px) {
-  .recycling-game {
-    grid-template-rows: auto minmax(150px, 0.75fr) minmax(240px, 1.1fr);
-  }
-
   .recycling-bins {
     grid-template-columns: repeat(3, minmax(120px, 1fr));
   }
