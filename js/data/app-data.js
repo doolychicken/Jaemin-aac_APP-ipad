@@ -101,16 +101,49 @@ const DATA = {
 
     emotionHome: {
       title: "기분·감정",
-      helper: "지금 기분과 필요한 도움을 선택하세요.",
+      helper: "어떤 상황인지 선택하세요.",
+      hero: [],
+      items: [
+        { label: "내 기분", nav: "emotionFeelings", image: "./images/emotions/happy.jpg", imageFit: "cover" },
+        { label: "몸 상태", nav: "emotionBody", image: "./images/emotions/hurt.jpg", imageFit: "cover" },
+        { label: "도움·휴식", nav: "emotionSupport", image: "./images/emotions/help.jpg", imageFit: "cover" }
+      ],
+      layout: "main",
+      showPlayer: false
+    },
+
+    emotionFeelings: {
+      title: "내 기분",
+      helper: "지금 느끼는 기분을 선택하세요.",
       hero: [],
       items: [
         { label: "기뻐요", image: "./images/emotions/happy.jpg", imageFit: "cover" },
         { label: "슬퍼요", image: "./images/emotions/sad.jpg", imageFit: "cover" },
         { label: "화나요", image: "./images/emotions/angry.jpg", imageFit: "cover" },
-        { label: "무서워요", image: "./images/emotions/scared.jpg", imageFit: "cover" },
+        { label: "무서워요", image: "./images/emotions/scared.jpg", imageFit: "cover" }
+      ],
+      layout: "main",
+      showPlayer: false
+    },
+
+    emotionBody: {
+      title: "몸 상태",
+      helper: "지금 몸이 어떤지 선택하세요.",
+      hero: [],
+      items: [
         { label: "아파요", image: "./images/emotions/hurt.jpg", imageFit: "cover" },
         { label: "피곤해요", image: "./images/emotions/tired.jpg", imageFit: "cover" },
-        { label: "불편해요", image: "./images/emotions/uncomfortable.jpg", imageFit: "cover" },
+        { label: "불편해요", image: "./images/emotions/uncomfortable.jpg", imageFit: "cover" }
+      ],
+      layout: "main",
+      showPlayer: false
+    },
+
+    emotionSupport: {
+      title: "도움·휴식",
+      helper: "필요한 도움이나 휴식을 선택하세요.",
+      hero: [],
+      items: [
         { label: "도와주세요", image: "./images/emotions/help.jpg", imageFit: "cover" },
         { label: "쉬고 싶어요", image: "./images/sleep.png" }
       ],
