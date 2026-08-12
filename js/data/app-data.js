@@ -72,7 +72,7 @@ const DATA = {
         { label: "밥 먹기",   nav: "meal",         image: "./images/meal.png" },
         { label: "화장실",    nav: "toilet",       image: "./images/pee.png" },
         { label: "외출",      nav: "scheduleHomeOuting", image: "./images/outing.png" },
-        { label: "잠자고 싶어", image: "./images/sleep.png", speech: "잠자고 싶어" },
+        { label: "기분·감정",  nav: "emotionHome", image: "./images/emotions/happy.jpg", imageFit: "cover" },
         { label: "공부하기",  nav: "studyHome",    image: "./images/study.png" },
         { label: "다음",      nav: "main_p2",      image: "./images/outing.png" }
       ],
@@ -94,6 +94,25 @@ const DATA = {
         { label: "장소",      nav: "placeHome",    image: "./images/outing_park1.png" },
         { label: "이전",      nav: "main",         image: "./images/home.png" },
         { label: "다음",      nav: "main_p3",      image: "./images/outing.png" }
+      ],
+      layout: "main",
+      showPlayer: false
+    },
+
+    emotionHome: {
+      title: "기분·감정",
+      helper: "지금 기분과 필요한 도움을 선택하세요.",
+      hero: [],
+      items: [
+        { label: "기뻐요", image: "./images/emotions/happy.jpg", imageFit: "cover" },
+        { label: "슬퍼요", image: "./images/emotions/sad.jpg", imageFit: "cover" },
+        { label: "화나요", image: "./images/emotions/angry.jpg", imageFit: "cover" },
+        { label: "무서워요", image: "./images/emotions/scared.jpg", imageFit: "cover" },
+        { label: "아파요", image: "./images/emotions/hurt.jpg", imageFit: "cover" },
+        { label: "피곤해요", image: "./images/emotions/tired.jpg", imageFit: "cover" },
+        { label: "불편해요", image: "./images/emotions/uncomfortable.jpg", imageFit: "cover" },
+        { label: "도와주세요", image: "./images/emotions/help.jpg", imageFit: "cover" },
+        { label: "쉬고 싶어요", image: "./images/sleep.png" }
       ],
       layout: "main",
       showPlayer: false
