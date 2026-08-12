@@ -79,15 +79,15 @@ function buildStudyScreensMap() {
     { label: "사람",   nav: "studyPeople",     image: "./images/outing_person_me.png" },
     { label: "얼굴", nav: "studyFacePartsMenu", image: "./images/face_game/jaemin_face_complete.png" },
     { label: "상징 매칭", nav: "studySymbolMatchingMenu", image: "./images/birthday.png" },
-    { label: "과일",   nav: "studySticker_2",  image: "./images/mart_items/apple.png" },
-    { label: "우리집", nav: "studySticker_3",  image: "./images/home.png" },
-    { label: "동물",   nav: "studySticker_4",  image: "./images/study_animal_icon.svg" },
     { label: "탈것",   nav: "studyVehicles",   image: "./images/transport_bus.png" },
-    { label: "색깔",   nav: "studySticker_10", image: "./images/study_color_icon.svg" },
     { label: "분리수거", nav: "studyRecyclingGame", image: "./images/recycling_station.png" },
     { label: "마트카트", nav: "studyMartCartGame", image: "./images/mart_cart_jaemin.png" },
     { label: "신호등", nav: "studyTrafficLightGame", image: "./images/traffic_game/traffic_tile.jpg" },
-    { label: "한글",   nav: "studyHangul",     image: "./images/study_hangul_icon.svg" }
+    { label: "한글",   nav: "studyHangul",     image: "./images/study_hangul_icon.svg" },
+    { label: "과일",   nav: "studySticker_2",  image: "./images/mart_items/apple.png" },
+    { label: "우리집", nav: "studySticker_3",  image: "./images/home.png" },
+    { label: "동물",   nav: "studySticker_4",  image: "./images/study_animal_icon.svg" },
+    { label: "색깔",   nav: "studySticker_10", image: "./images/study_color_icon.svg" }
   ];
 
   const hangulLetterItems = [
