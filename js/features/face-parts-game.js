@@ -13,6 +13,7 @@
     } = deps;
 
     const gameState = {};
+    let pieceSizeObserver = null;
 
     function stateFor(screen) {
       const key = screen.key || "studyFacePartsGame";
@@ -27,7 +28,31 @@
     }
 
     function clear() {
+      pieceSizeObserver?.disconnect();
+      pieceSizeObserver = null;
       Object.keys(gameState).forEach((key) => delete gameState[key]);
+    }
+
+    function matchTilePiecesToSlots(face, slotsLayer, tray, parts) {
+      pieceSizeObserver?.disconnect();
+      pieceSizeObserver = null;
+
+      const sync = () => {
+        parts.forEach((part) => {
+          if (!part.image) return;
+          const slot = slotsLayer.querySelector(`[data-id="${part.id}"]`);
+          const art = tray.querySelector(`[data-id="${part.id}"] .face-game-art--photo`);
+          if (!slot || !art) return;
+          art.style.width = `${slot.clientWidth}px`;
+          art.style.height = `${slot.clientHeight}px`;
+        });
+      };
+
+      window.requestAnimationFrame(sync);
+      if (window.ResizeObserver) {
+        pieceSizeObserver = new ResizeObserver(sync);
+        pieceSizeObserver.observe(face);
+      }
     }
 
     function reset(screen) {
@@ -255,6 +280,7 @@
 
       board.appendChild(tray);
       gridEl.appendChild(board);
+      if (config.version === 2) matchTilePiecesToSlots(face, slotsLayer, tray, parts);
       gridEl.appendChild(complete);
       gridEl.appendChild(again);
 

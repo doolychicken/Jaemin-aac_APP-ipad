@@ -1,4 +1,5 @@
 .face-game {
+  --face-photo-size: min(46vw, 64vh, 560px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,11 +10,11 @@
 
 .face-game-board {
   display: grid;
-  grid-template-columns: minmax(360px, 520px) minmax(360px, 470px);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
   align-items: center;
   justify-content: center;
-  gap: 28px;
-  width: min(1040px, 100%);
+  gap: 24px;
+  width: min(1200px, 100%);
   padding: 10px 12px;
 }
 
@@ -25,7 +26,7 @@
 }
 
 .face-game-face--photo {
-  width: min(52vh, 500px);
+  width: var(--face-photo-size);
   aspect-ratio: 1 / 1;
   border-radius: 28px;
   overflow: hidden;
@@ -217,6 +218,7 @@
   grid-template-columns: repeat(2, minmax(150px, 1fr));
   gap: 14px;
   width: 100%;
+  justify-self: center;
 }
 
 .face-game-tile {
@@ -308,13 +310,13 @@
 .face-game-tile .face-game-art--eyes.face-game-art--photo {
   width: 300px;
   height: 92px;
-  max-width: 92%;
+  max-width: none;
 }
 
 .face-game-tile .face-game-art--eyebrows.face-game-art--photo {
   width: 300px;
   height: 78px;
-  max-width: 92%;
+  max-width: none;
 }
 
 .face-game-tile .face-game-art--nose.face-game-art--photo {
@@ -500,17 +502,21 @@
 }
 
 @media (max-width: 900px) {
+  .face-game {
+    --face-photo-size: min(78vw, 45vh, 360px);
+  }
+
   .face-game-board {
     grid-template-columns: 1fr;
     gap: 12px;
   }
 
   .face-game-face {
-    width: min(45vh, 360px);
+    width: var(--face-photo-size);
   }
 
   .face-game-tray {
-    grid-template-columns: repeat(5, minmax(92px, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .face-game-tile {
@@ -522,5 +528,9 @@
     width: 80px;
     height: 48px;
     transform: scale(0.82);
+  }
+
+  .face-game-tile .face-game-art--photo {
+    transform: none;
   }
 }
