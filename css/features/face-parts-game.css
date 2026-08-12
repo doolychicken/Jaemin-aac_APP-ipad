@@ -243,6 +243,20 @@
   opacity: 0.35;
 }
 
+.face-game--piece-only .face-game-tile,
+.face-game--piece-only .face-game-tile:has(.face-game-art--photo) {
+  min-height: 126px;
+  padding: 4px;
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+
+.face-game--piece-only .face-game-tile--ghost {
+  background: transparent;
+  box-shadow: none;
+}
+
 .face-game-tile.is-dragging {
   opacity: 0.45;
 }

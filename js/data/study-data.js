@@ -318,6 +318,7 @@ function buildStudyScreensMap() {
     showPlayer: false,
     faceParts: {
       version: 2,
+      pieceOnlyTiles: true,
       baseImage: "./images/face_game/jaemin_face_complete.png",
       parts: [
         { id: "eyebrows", label: "눈썹", speech: "눈썹", image: "./images/face_game/jaemin_eyebrows.png" },

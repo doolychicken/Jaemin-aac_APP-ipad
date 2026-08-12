@@ -124,6 +124,7 @@
       gridEl.style.display = "";
       gridEl.innerHTML = "";
       gridEl.className = "face-game";
+      if (config.pieceOnlyTiles) gridEl.classList.add("face-game--piece-only");
 
       const board = document.createElement("div");
       board.className = "face-game-board";
@@ -176,9 +177,11 @@
         tile.disabled = placed;
         tile.setAttribute("aria-label", part.label);
         tile.appendChild(makePartArt(part));
-        const label = document.createElement("span");
-        label.textContent = part.label;
-        tile.appendChild(label);
+        if (!config.pieceOnlyTiles) {
+          const label = document.createElement("span");
+          label.textContent = part.label;
+          tile.appendChild(label);
+        }
 
         tile.addEventListener("click", () => speak(part.speech || part.label));
         tile.addEventListener("pointerdown", (event) => {
