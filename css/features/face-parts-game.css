@@ -181,13 +181,13 @@
 
 .face-game-face--photo .face-game-slot--leftEar,
 .face-game-face--photo .face-game-slot--rightEar {
-  top: 42.448%;
-  width: 22.396%;
-  height: 31.771%;
+  top: 53.906%;
+  width: 12.760%;
+  height: 17.969%;
 }
 
-.face-game-face--photo .face-game-slot--leftEar { left: 6.25%; }
-.face-game-face--photo .face-game-slot--rightEar { left: 71.354%; }
+.face-game-face--photo .face-game-slot--leftEar { left: 14.583%; }
+.face-game-face--photo .face-game-slot--rightEar { left: 72.396%; }
 
 .face-game-face--photo .face-game-slot--nose {
   left: 42.448%;
@@ -319,8 +319,8 @@
 }
 
 .face-game-tile .face-game-art--ear.face-game-art--photo {
-  width: 124px;
-  height: 180px;
+  width: 112px;
+  height: 158px;
 }
 
 .face-game-tile:has(.face-game-art--photo) {
