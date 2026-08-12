@@ -77,10 +77,8 @@ function buildStudyScreensMap() {
     { label: "한글",   nav: "studyHangul",     image: "./images/stickerbook_language.png" },
     { label: "이름",   nav: "studyNames",      image: "./images/person/me.png" },
     { label: "사람",   nav: "studyPeople",     image: "./images/outing_person_me.png" },
-    { label: "얼굴 완성", nav: "studyFacePartsGame", image: emojiImage("🙂") },
-    { label: "얼굴 완성 2", nav: "studyFacePartsGameV2", image: "./images/face_game/face_base_v2.png" },
-    { label: "상징 매칭", nav: "studySymbolMatching", image: emojiImage("🎂") },
-    { label: "상징 매칭 2", nav: "studySymbolMatchingV2", image: emojiImage("🧩") },
+    { label: "얼굴", nav: "studyFacePartsMenu", image: "./images/face_game/jaemin_face_complete.png" },
+    { label: "상징 매칭", nav: "studySymbolMatchingMenu", image: "./images/birthday.png" },
     { label: "과일",   nav: "studySticker_2",  image: "./images/stickerbook_fruit.png" },
     { label: "우리집", nav: "studySticker_3",  image: "./images/stickerbook_myhome.png" },
     { label: "동물",   nav: "studySticker_4",  image: "./images/stickerbook_animal.png" },
@@ -308,6 +306,18 @@ function buildStudyScreensMap() {
         { id: "mouth", label: "입", speech: "입" }
       ]
     }
+  };
+
+  rest.studyFacePartsMenu = {
+    title: "얼굴",
+    helper: "얼굴 완성 활동을 선택하세요.",
+    hero: [],
+    items: [
+      { label: "얼굴 완성 1", nav: "studyFacePartsGame", image: "./images/face_game/jaemin_face_complete.png", imageFit: "cover" },
+      { label: "얼굴 완성 2", nav: "studyFacePartsGameV2", image: "./images/face_game/face_complete_v2.png", imageFit: "cover" }
+    ],
+    layout: "main",
+    showPlayer: false
   };
 
   rest.studyFacePartsGameV2 = {
@@ -631,6 +641,18 @@ function buildStudyScreensMap() {
       image: item.image,
       speech: item.answer
     })),
+    layout: "main",
+    showPlayer: false
+  };
+
+  rest.studySymbolMatchingMenu = {
+    title: "상징 매칭",
+    helper: "상징 매칭 활동을 선택하세요.",
+    hero: [],
+    items: [
+      { label: "상징 매칭 1", nav: "studySymbolMatching", image: "./images/cake.jpg", imageFit: "cover" },
+      { label: "상징 매칭 2", nav: "studySymbolMatchingV2", image: "./images/birthday.png", imageFit: "cover" }
+    ],
     layout: "main",
     showPlayer: false
   };
