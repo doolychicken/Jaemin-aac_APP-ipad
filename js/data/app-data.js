@@ -996,7 +996,7 @@ const DATA = {
       items: [
         { label: "공원",                      image: "./images/outing_park1.png" },
         { label: "마트",                      image: "./images/outing_mart1.png" },
-        { label: "빵가게", nav: "placeBakery", image: "./images/outing_bakery.png" },
+        { label: "빵가게", nav: "placeBakery", image: "./images/places/paris_baguette_buying_bread.jpg", imageFit: "cover" },
         { label: "카페",                      image: "./images/outing_cafe.png" },
         { label: "이케아",                    image: "./images/ikea.png" },
         { label: "홈플러스", nav: "outingHomeplus", image: "./images/homeplus.png" }
@@ -1013,7 +1013,7 @@ const DATA = {
         { label: "학교", nav: "outingSchool", image: "./images/school_classroom.png" },
         { label: "공원",                      image: "./images/outing_park1.png" },
         { label: "마트",                      image: "./images/outing_mart1.png" },
-        { label: "빵가게", nav: "placeBakery", image: "./images/outing_bakery.png" },
+        { label: "빵가게", nav: "placeBakery", image: "./images/places/paris_baguette_buying_bread.jpg", imageFit: "cover" },
         { label: "카페",                      image: "./images/outing_cafe.png" },
         { label: "이케아",                    image: "./images/ikea.png" },
         { label: "홈플러스", nav: "outingHomeplus", image: "./images/homeplus.png" }
