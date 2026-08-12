@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560" role="img" aria-labelledby="title">
+  <title id="title">색깔 공부</title>
+  <rect width="800" height="560" rx="48" fill="#f8fafc"/>
+  <rect x="45" y="45" width="710" height="470" rx="38" fill="#fff" stroke="#dbeafe" stroke-width="7"/>
+  <g stroke="#fff" stroke-width="12">
+    <circle cx="230" cy="200" r="104" fill="#ef4444"/><circle cx="400" cy="200" r="104" fill="#facc15"/><circle cx="570" cy="200" r="104" fill="#22c55e"/>
+    <circle cx="315" cy="365" r="104" fill="#3b82f6"/><circle cx="485" cy="365" r="104" fill="#a855f7"/>
+  </g>
+</svg>

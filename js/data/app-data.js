@@ -667,7 +667,7 @@ const DATA = {
       hero: [],
       items: [
         { label: "유튜브", nav: "ipadYouTube", image: "./images/youtube.png", icon: "▶️" },
-        { label: "앱 공부", nav: "studyAppLearning", image: "./images/stickerbook_number.png" }
+        { label: "앱 공부", nav: "studyAppLearning", image: "./images/study.png" }
       ],
       layout: "main",
       showPlayer: false

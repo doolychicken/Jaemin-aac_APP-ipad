@@ -73,21 +73,21 @@ function buildStudyScreensMap() {
   ];
 
   const appStudyItems = [
-    { label: "숫자",   nav: "studyNumbers",    image: "./images/stickerbook_number.png" },
+    { label: "숫자",   nav: "studyNumbers",    image: "./images/study_number_puzzle_icon.svg" },
     { label: "날짜",   nav: "dateHome", image: "./images/app_date.svg", dateMode: "stepFlow" },
     { label: "이름",   nav: "studyNames",      image: "./images/person/me.png" },
     { label: "사람",   nav: "studyPeople",     image: "./images/outing_person_me.png" },
     { label: "얼굴", nav: "studyFacePartsMenu", image: "./images/face_game/jaemin_face_complete.png" },
     { label: "상징 매칭", nav: "studySymbolMatchingMenu", image: "./images/birthday.png" },
-    { label: "과일",   nav: "studySticker_2",  image: "./images/stickerbook_fruit.png" },
-    { label: "우리집", nav: "studySticker_3",  image: "./images/stickerbook_myhome.png" },
-    { label: "동물",   nav: "studySticker_4",  image: "./images/stickerbook_animal.png" },
-    { label: "탈것",   nav: "studyVehicles",   image: "./images/stickerbook_vehicle.png" },
-    { label: "색깔",   nav: "studySticker_10", image: "./images/stickerbook_shape.png" },
+    { label: "과일",   nav: "studySticker_2",  image: "./images/mart_items/apple.png" },
+    { label: "우리집", nav: "studySticker_3",  image: "./images/home.png" },
+    { label: "동물",   nav: "studySticker_4",  image: "./images/study_animal_icon.svg" },
+    { label: "탈것",   nav: "studyVehicles",   image: "./images/transport_bus.png" },
+    { label: "색깔",   nav: "studySticker_10", image: "./images/study_color_icon.svg" },
     { label: "분리수거", nav: "studyRecyclingGame", image: "./images/recycling_station.png" },
-    { label: "마트카트", nav: "studyMartCartGame", image: "./images/stickerbook_mart.png" },
+    { label: "마트카트", nav: "studyMartCartGame", image: "./images/mart_cart_jaemin.png" },
     { label: "신호등", nav: "studyTrafficLightGame", image: "./images/traffic_game/traffic_tile.jpg" },
-    { label: "한글",   nav: "studyHangul",     image: "./images/stickerbook_language.png" }
+    { label: "한글",   nav: "studyHangul",     image: "./images/study_hangul_icon.svg" }
   ];
 
   const hangulLetterItems = [
@@ -431,7 +431,7 @@ function buildStudyScreensMap() {
     items: [
       { label: "숫자 퍼즐", nav: "studyNumberPuzzle", image: "./images/study_number_puzzle_icon.svg" },
       { label: "숫자 퍼즐 2", nav: "studyNumberPuzzle2", image: "./images/study_number_puzzle2_icon.svg" },
-      { label: "숫자 카드", nav: "studySticker_6", image: "./images/stickerbook_number.png" }
+      { label: "숫자 카드", nav: "studySticker_6", image: "./images/study_number_puzzle_icon.svg" }
     ],
     layout: "main",
     showPlayer: false
@@ -520,10 +520,10 @@ function buildStudyScreensMap() {
     helper: "공부할 것을 선택하세요.",
     hero: [],
     items: [
-      { label: "한글 퍼즐", nav: "studyHangulPuzzle", image: "./images/stickerbook_language.png" },
-      { label: "가나다라 버전1", nav: "studyHangulGanadaraPuzzle", image: "./images/stickerbook_language.png" },
-      { label: "가나다라 버전2", nav: "studyHangulGanadaraPuzzleV2", image: "./images/knobpuzzle_numbers.png" },
-      { label: "ㄱㄴㄷ", nav: "studyHangulLetters", image: "./images/stickerbook_language.png" },
+      { label: "한글 퍼즐", nav: "studyHangulPuzzle", image: "./images/study_hangul_icon.svg" },
+      { label: "가나다라 버전1", nav: "studyHangulGanadaraPuzzle", image: "./images/study_hangul_icon.svg" },
+      { label: "가나다라 버전2", nav: "studyHangulGanadaraPuzzleV2", image: "./images/study_hangul_icon.svg" },
+      { label: "ㄱㄴㄷ", nav: "studyHangulLetters", image: "./images/study_hangul_icon.svg" },
       { label: "이름", nav: "studyNames", image: "./images/person/me.png" }
     ],
     layout: "main",
