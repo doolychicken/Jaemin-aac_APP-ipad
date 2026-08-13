@@ -65,6 +65,18 @@ const DATA = {
     // ── 메인 ──────────────────────────────────────────────────────────────────
     main: {
       title: "메인 화면",
+      helper: "원하는 활동을 선택하세요.",
+      hero: [],
+      items: [
+        { label: "강화물",   nav: "ipadReinforcers", image: "./images/meal_juice.png" },
+        { label: "교구선택", nav: "studyTeachingAids", image: "./images/study_pegboard.png" },
+        { label: "다음",     nav: "main_p2", image: "./images/outing.png" }
+      ],
+      layout: "main"
+    },
+
+    main_p2: {
+      title: "메인 화면 (2)",
       helper: "버튼을 누르면 음성으로 읽어줍니다.",
       hero: [],
       items: [
@@ -74,13 +86,14 @@ const DATA = {
         { label: "외출",      nav: "scheduleHomeOuting", image: "./images/outing.png" },
         { label: "기분·감정",  nav: "emotionHome", image: "./images/emotions/happy.jpg", imageFit: "cover" },
         { label: "공부하기",  nav: "studyHome",    image: "./images/study.png" },
-        { label: "다음",      nav: "main_p2",      image: "./images/outing.png" }
+        { label: "이전",      nav: "main",         image: "./images/home.png" },
+        { label: "다음",      nav: "main_p3",      image: "./images/outing.png" }
       ],
       layout: "main"
     },
 
-    main_p2: {
-      title: "메인 화면 (2)",
+    main_p3: {
+      title: "메인 화면 (3)",
       helper: "추가 카테고리를 선택하세요.",
       hero: [],
       items: [
@@ -92,8 +105,8 @@ const DATA = {
         { label: "날짜",      nav: "dateHome",     image: "./images/app_date.svg" },
         { label: "과목",      nav: "subjectHome",  icon: "📚" },
         { label: "장소",      nav: "placeHome",    image: "./images/outing_park1.png" },
-        { label: "이전",      nav: "main",         image: "./images/home.png" },
-        { label: "다음",      nav: "main_p3",      image: "./images/outing.png" }
+        { label: "이전",      nav: "main_p2",      image: "./images/home.png" },
+        { label: "다음",      nav: "main_p4",      image: "./images/outing.png" }
       ],
       layout: "main",
       showPlayer: false
@@ -203,15 +216,15 @@ const DATA = {
       showPlayer: false
     },
 
-    main_p3: {
-      title: "메인 화면 (3)",
+    main_p4: {
+      title: "메인 화면 (4)",
       helper: "추가 카테고리를 선택하세요.",
       hero: [],
       items: [
         { label: "사람",      nav: "peopleHome",   image: "./images/outing_person_me.png" },
         { label: "날씨",      nav: "weatherHome",  image: "./images/weather.png" },
         { label: "화장실",    nav: "toilet",       image: "./images/pee.png" },
-        { label: "이전",      nav: "main_p2",      image: "./images/home.png" },
+        { label: "이전",      nav: "main_p3",      image: "./images/home.png" },
         { label: "다음",      nav: "main",         image: "./images/outing.png" }
       ],
       layout: "main",
