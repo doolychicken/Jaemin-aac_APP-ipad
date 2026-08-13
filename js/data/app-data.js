@@ -667,6 +667,7 @@ const DATA = {
       hero: [],
       items: [
         { label: "유튜브", nav: "ipadYouTube", image: "./images/youtube.png", icon: "▶️" },
+        { label: "유튜브 오프라인 저장목록", videoUrl: "https://www.youtube.com/feed/downloads", directOpen: true, icon: "📁" },
         { label: "앱 공부", nav: "studyAppLearning", image: "./images/study.png" }
       ],
       layout: "main",
