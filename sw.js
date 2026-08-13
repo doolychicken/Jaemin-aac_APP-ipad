@@ -4,7 +4,7 @@
  * On first visit, pre-caches all images so subsequent loads are instant.
  */
 
-const CACHE_VERSION = 'v351';
+const CACHE_VERSION = 'v352';
 const CACHE_NAME = `jaemin-aac-${CACHE_VERSION}`;
 
 self.addEventListener('message', (event) => {
@@ -53,6 +53,29 @@ const PRECACHE_ASSETS = [
   './images/cake.jpg',
   './images/chocomilk.jpg',
   './images/cofee.png',
+  './images/real_items/animal_learning.jpg',
+  './images/real_items/banana_milk.jpg',
+  './images/real_items/beef.jpg',
+  './images/real_items/broccoli.jpg',
+  './images/real_items/calendar_learning.jpg',
+  './images/real_items/cheese.jpg',
+  './images/real_items/chicken.jpg',
+  './images/real_items/chocolate_milk.jpg',
+  './images/real_items/cola.jpg',
+  './images/real_items/color_learning.jpg',
+  './images/real_items/corn.jpg',
+  './images/real_items/cucumber.jpg',
+  './images/real_items/gummy_jelly.jpg',
+  './images/real_items/hangul_learning.jpg',
+  './images/real_items/ice_cream.jpg',
+  './images/real_items/lemon_lime_soda.jpg',
+  './images/real_items/milkshake.jpg',
+  './images/real_items/orange_soda.jpg',
+  './images/real_items/pork.jpg',
+  './images/real_items/snacks.jpg',
+  './images/real_items/strawberry_milk.jpg',
+  './images/real_items/sweet_potato.jpg',
+  './images/real_items/watermelon_juice.jpg',
   './images/dad car.png',
   './images/dadcar.png',
   './images/dad_carkey.png',

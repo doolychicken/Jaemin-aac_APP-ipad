@@ -853,9 +853,9 @@ const DATA = {
         { label: "화장실",     image: "./images/pee.png", speech: "화장실" },
         { label: "우유",       image: "./images/meal_milk.png" },
         { label: "두유",       image: "./images/meal_soymilk.png" },
-        { label: "과자",       icon: "🍪" },
-        { label: "젤리",       icon: "🍬" },
-        { label: "아이스크림", icon: "🍦" }
+        { label: "과자",       image: "./images/real_items/snacks.jpg", imageFit: "cover" },
+        { label: "젤리",       image: "./images/real_items/gummy_jelly.jpg", imageFit: "cover" },
+        { label: "아이스크림", image: "./images/real_items/ice_cream.jpg", imageFit: "cover" }
       ],
       layout: "main"
     },
@@ -883,11 +883,11 @@ const DATA = {
       hero: [],
       items: [
         { label: "토마토",   image: "./images/tomato.png" },
-        { label: "당근",     icon: "🥕" },
-        { label: "오이",     icon: "🥒" },
-        { label: "브로콜리", icon: "🥦" },
-        { label: "옥수수",   icon: "🌽" },
-        { label: "고구마",   icon: "🍠" }
+        { label: "당근",     image: "./images/mart_items/carrot.png", imageFit: "cover" },
+        { label: "오이",     image: "./images/real_items/cucumber.jpg", imageFit: "cover" },
+        { label: "브로콜리", image: "./images/real_items/broccoli.jpg", imageFit: "cover" },
+        { label: "옥수수",   image: "./images/real_items/corn.jpg", imageFit: "cover" },
+        { label: "고구마",   image: "./images/real_items/sweet_potato.jpg", imageFit: "cover" }
       ],
       layout: "main"
     },
@@ -903,14 +903,14 @@ const DATA = {
         { label: "두유",     image: "./images/meal_soymilk.png" },
         { label: "워터젤리", image: "./images/water_jelly.png" },
         { label: "요구르트", image: "./images/yogurt_drink.png" },
-        { label: "바나나우유", icon: "🍌" },
-        { label: "딸기우유", icon: "🍓" },
-        { label: "초코우유", icon: "🍫" },
-        { label: "수박주스", icon: "🍉" },
-        { label: "밀크쉐이크", icon: "🥤" },
-        { label: "콜라", icon: "🥤" },
-        { label: "사이다", icon: "🥤" },
-        { label: "환타", icon: "🥤" }
+        { label: "바나나우유", image: "./images/real_items/banana_milk.jpg", imageFit: "cover" },
+        { label: "딸기우유", image: "./images/real_items/strawberry_milk.jpg", imageFit: "cover" },
+        { label: "초코우유", image: "./images/real_items/chocolate_milk.jpg", imageFit: "cover" },
+        { label: "수박주스", image: "./images/real_items/watermelon_juice.jpg", imageFit: "cover" },
+        { label: "밀크쉐이크", image: "./images/real_items/milkshake.jpg", imageFit: "cover" },
+        { label: "콜라", image: "./images/real_items/cola.jpg", imageFit: "cover" },
+        { label: "사이다", image: "./images/real_items/lemon_lime_soda.jpg", imageFit: "cover" },
+        { label: "환타", image: "./images/real_items/orange_soda.jpg", imageFit: "cover" }
       ],
       layout: "main"
     },

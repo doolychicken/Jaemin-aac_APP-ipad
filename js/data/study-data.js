@@ -73,8 +73,8 @@ function buildStudyScreensMap() {
   ];
 
   const appStudyItems = [
-    { label: "숫자",   nav: "studyNumbers",    image: "./images/study_number_puzzle_icon.svg" },
-    { label: "날짜",   nav: "dateHome", image: "./images/app_date.svg", dateMode: "stepFlow" },
+    { label: "숫자",   nav: "studyNumbers",    image: "./images/knobpuzzle_numbers.png" },
+    { label: "날짜",   nav: "dateHome", image: "./images/real_items/calendar_learning.jpg", dateMode: "stepFlow" },
     { label: "이름",   nav: "studyNames",      image: "./images/person/me.png" },
     { label: "사람",   nav: "studyPeople",     image: "./images/outing_person_me.png" },
     { label: "얼굴", nav: "studyFacePartsMenu", image: "./images/face_game/jaemin_face_complete.png" },
@@ -83,11 +83,11 @@ function buildStudyScreensMap() {
     { label: "분리수거", nav: "studyRecyclingGame", image: "./images/recycling_station.png" },
     { label: "마트카트", nav: "studyMartCartGame", image: "./images/mart_cart_jaemin.png" },
     { label: "신호등", nav: "studyTrafficLightGame", image: "./images/traffic_game/traffic_tile.jpg" },
-    { label: "한글",   nav: "studyHangul",     image: "./images/study_hangul_icon.svg" },
+    { label: "한글",   nav: "studyHangul",     image: "./images/real_items/hangul_learning.jpg" },
     { label: "과일",   nav: "studySticker_2",  image: "./images/mart_items/apple.png" },
     { label: "우리집", nav: "studySticker_3",  image: "./images/home.png" },
-    { label: "동물",   nav: "studySticker_4",  image: "./images/study_animal_icon.svg" },
-    { label: "색깔",   nav: "studySticker_10", image: "./images/study_color_icon.svg" }
+    { label: "동물",   nav: "studySticker_4",  image: "./images/real_items/animal_learning.jpg" },
+    { label: "색깔",   nav: "studySticker_10", image: "./images/real_items/color_learning.jpg" }
   ];
 
   const hangulLetterItems = [
@@ -355,12 +355,12 @@ function buildStudyScreensMap() {
         { id: "yogurt", label: "요플레", section: "유제품 코너", image: "./images/mart_items/yogurt.png", icon: "🥣" },
         { id: "yogurtDrink", label: "요구르트", section: "유제품 코너", image: "./images/mart_items/yogurt_drink.png", icon: "🥤" },
         { id: "milk", label: "흰우유", section: "유제품 코너", image: "./images/mart_items/milk.png", icon: "🥛" },
-        { id: "strawberryMilk", label: "딸기우유", section: "유제품 코너", icon: "🍓" },
+        { id: "strawberryMilk", label: "딸기우유", section: "유제품 코너", image: "./images/real_items/strawberry_milk.jpg", icon: "🍓" },
         { id: "chocomilk", label: "초코우유", section: "유제품 코너", image: "./images/mart_items/chocomilk.png", icon: "🥛" },
-        { id: "cheese", label: "치즈", section: "유제품 코너", icon: "🧀" },
+        { id: "cheese", label: "치즈", section: "유제품 코너", image: "./images/real_items/cheese.jpg", icon: "🧀" },
         { id: "juice", label: "주스", section: "음료 코너", image: "./images/mart_items/juice.png", icon: "🧃" },
         { id: "waterJelly", label: "워터젤리", section: "음료 코너", image: "./images/mart_items/water_jelly.png", icon: "🧃" },
-        { id: "soda", label: "탄산음료", section: "음료 코너", icon: "🥤" },
+        { id: "soda", label: "탄산음료", section: "음료 코너", image: "./images/real_items/cola.jpg", icon: "🥤" },
         { id: "apple", label: "사과", section: "과일 코너", image: "./images/mart_items/apple.png", icon: "🍎" },
         { id: "strawberry", label: "딸기", section: "과일 코너", image: "./images/mart_items/strawberry.png", icon: "🍓" },
         { id: "banana", label: "바나나", section: "과일 코너", image: "./images/mart_items/banana.png", icon: "🍌" },
@@ -370,23 +370,23 @@ function buildStudyScreensMap() {
         { id: "carrot", label: "당근", section: "채소 코너", image: "./images/mart_items/carrot.png", icon: "🥕" },
         { id: "tomato", label: "토마토", section: "채소 코너", image: "./images/mart_items/tomato.png", icon: "🍅" },
         { id: "pepper", label: "피망", section: "채소 코너", image: "./images/mart_items/pepper.png", icon: "🫑" },
-        { id: "snack", label: "과자", section: "과자 코너", icon: "🍪" },
-        { id: "chips", label: "스낵", section: "과자 코너", icon: "🍟" },
-        { id: "cookie", label: "쿠키", section: "과자 코너", icon: "🍪" },
-        { id: "pork", label: "돼지고기", section: "정육 코너", icon: "🥩" },
-        { id: "chicken", label: "닭고기", section: "정육 코너", icon: "🍗" },
-        { id: "beef", label: "소고기", section: "정육 코너", icon: "🥩" },
+        { id: "snack", label: "과자", section: "과자 코너", image: "./images/real_items/snacks.jpg", icon: "🍪" },
+        { id: "chips", label: "스낵", section: "과자 코너", image: "./images/real_items/snacks.jpg", icon: "🍟" },
+        { id: "cookie", label: "쿠키", section: "과자 코너", image: "./images/real_items/snacks.jpg", icon: "🍪" },
+        { id: "pork", label: "돼지고기", section: "정육 코너", image: "./images/real_items/pork.jpg", icon: "🥩" },
+        { id: "chicken", label: "닭고기", section: "정육 코너", image: "./images/real_items/chicken.jpg", icon: "🍗" },
+        { id: "beef", label: "소고기", section: "정육 코너", image: "./images/real_items/beef.jpg", icon: "🥩" },
         { id: "egg", label: "계란", section: "정육 코너", image: "./images/mart_items/egg.png", icon: "🥚" }
       ],
       missions: [
         { id: "yogurt", label: "요플레", section: "유제품 코너", image: "./images/mart_items/yogurt.png", icon: "🥣" },
         { id: "milk", label: "흰우유", section: "유제품 코너", image: "./images/mart_items/milk.png", icon: "🥛" },
-        { id: "strawberryMilk", label: "딸기우유", section: "유제품 코너", icon: "🍓" },
+        { id: "strawberryMilk", label: "딸기우유", section: "유제품 코너", image: "./images/real_items/strawberry_milk.jpg", icon: "🍓" },
         { id: "chocomilk", label: "초코우유", section: "유제품 코너", image: "./images/mart_items/chocomilk.png", icon: "🥛" },
-        { id: "cheese", label: "치즈", section: "유제품 코너", icon: "🧀" },
+        { id: "cheese", label: "치즈", section: "유제품 코너", image: "./images/real_items/cheese.jpg", icon: "🧀" },
         { id: "juice", label: "주스", section: "음료 코너", image: "./images/mart_items/juice.png", icon: "🧃" },
         { id: "waterJelly", label: "워터젤리", section: "음료 코너", image: "./images/mart_items/water_jelly.png", icon: "🧃" },
-        { id: "soda", label: "탄산음료", section: "음료 코너", icon: "🥤" },
+        { id: "soda", label: "탄산음료", section: "음료 코너", image: "./images/real_items/cola.jpg", icon: "🥤" },
         { id: "apple", label: "사과", section: "과일 코너", image: "./images/mart_items/apple.png", icon: "🍎" },
         { id: "banana", label: "바나나", section: "과일 코너", image: "./images/mart_items/banana.png", icon: "🍌" },
         { id: "grape", label: "포도", section: "과일 코너", image: "./images/mart_items/grape.png", icon: "🍇" },
@@ -429,9 +429,9 @@ function buildStudyScreensMap() {
     helper: "숫자 공부를 선택하세요.",
     hero: [],
     items: [
-      { label: "숫자 퍼즐", nav: "studyNumberPuzzle", image: "./images/study_number_puzzle_icon.svg" },
-      { label: "숫자 퍼즐 2", nav: "studyNumberPuzzle2", image: "./images/study_number_puzzle2_icon.svg" },
-      { label: "숫자 카드", nav: "studySticker_6", image: "./images/study_number_puzzle_icon.svg" }
+      { label: "숫자 퍼즐", nav: "studyNumberPuzzle", image: "./images/knobpuzzle_numbers.png" },
+      { label: "숫자 퍼즐 2", nav: "studyNumberPuzzle2", image: "./images/knobpuzzle_numbers2.png" },
+      { label: "숫자 카드", nav: "studySticker_6", image: "./images/real_items/calendar_learning.jpg" }
     ],
     layout: "main",
     showPlayer: false
@@ -520,10 +520,10 @@ function buildStudyScreensMap() {
     helper: "공부할 것을 선택하세요.",
     hero: [],
     items: [
-      { label: "한글 퍼즐", nav: "studyHangulPuzzle", image: "./images/study_hangul_icon.svg" },
-      { label: "가나다라 버전1", nav: "studyHangulGanadaraPuzzle", image: "./images/study_hangul_icon.svg" },
-      { label: "가나다라 버전2", nav: "studyHangulGanadaraPuzzleV2", image: "./images/study_hangul_icon.svg" },
-      { label: "ㄱㄴㄷ", nav: "studyHangulLetters", image: "./images/study_hangul_icon.svg" },
+      { label: "한글 퍼즐", nav: "studyHangulPuzzle", image: "./images/real_items/hangul_learning.jpg" },
+      { label: "가나다라 버전1", nav: "studyHangulGanadaraPuzzle", image: "./images/real_items/hangul_learning.jpg" },
+      { label: "가나다라 버전2", nav: "studyHangulGanadaraPuzzleV2", image: "./images/real_items/hangul_learning.jpg" },
+      { label: "ㄱㄴㄷ", nav: "studyHangulLetters", image: "./images/real_items/hangul_learning.jpg" },
       { label: "이름", nav: "studyNames", image: "./images/person/me.png" }
     ],
     layout: "main",
