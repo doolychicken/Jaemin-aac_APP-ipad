@@ -4,7 +4,7 @@
  * On first visit, pre-caches all images so subsequent loads are instant.
  */
 
-const CACHE_VERSION = 'v353';
+const CACHE_VERSION = 'v354';
 const CACHE_NAME = `jaemin-aac-${CACHE_VERSION}`;
 
 self.addEventListener('message', (event) => {
@@ -320,7 +320,15 @@ self.addEventListener('activate', (event) => {
           .filter((k) => k !== CACHE_NAME)
           .map((k) => caches.delete(k))
       )
-    ).then(() => self.clients.claim())
+    ).then(() => self.clients.claim()).then(async () => {
+      const windows = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+      await Promise.all(windows.map((client) => {
+        const current = new URL(client.url);
+        if (current.origin !== self.location.origin || current.searchParams.get('app') === '354') return;
+        current.searchParams.set('app', '354');
+        return client.navigate(current.href);
+      }));
+    })
   );
 });
 
