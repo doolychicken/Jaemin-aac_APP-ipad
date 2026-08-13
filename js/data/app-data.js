@@ -667,8 +667,21 @@ const DATA = {
       hero: [],
       items: [
         { label: "유튜브", nav: "ipadYouTube", image: "./images/youtube.png", icon: "▶️" },
-        { label: "유튜브 오프라인 저장목록", videoUrl: "https://www.youtube.com/feed/downloads", directOpen: true, icon: "📁" },
+        { label: "유튜브 오프라인 저장목록", videoUrl: "https://www.youtube.com/watch?v=p-6QKk0plEA&list=PPSV&t=160s", directOpen: true, icon: "📁" },
+        { label: "강화물", nav: "ipadReinforcers", icon: "📁" },
         { label: "앱 공부", nav: "studyAppLearning", image: "./images/study.png" }
+      ],
+      layout: "main",
+      showPlayer: false
+    },
+
+    ipadReinforcers: {
+      title: "강화물",
+      helper: "원하는 강화물을 선택하세요.",
+      hero: [],
+      items: [
+        { label: "주스", image: "./images/meal_juice.png" },
+        { label: "버스", image: "./images/bus.png", videoUrl: "https://www.youtube.com/watch?v=p-6QKk0plEA&list=PPSV&t=160s", directOpen: true }
       ],
       layout: "main",
       showPlayer: false
