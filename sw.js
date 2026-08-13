@@ -4,7 +4,7 @@
  * On first visit, pre-caches all images so subsequent loads are instant.
  */
 
-const CACHE_VERSION = 'v349';
+const CACHE_VERSION = 'v351';
 const CACHE_NAME = `jaemin-aac-${CACHE_VERSION}`;
 
 self.addEventListener('message', (event) => {
@@ -45,6 +45,11 @@ const PRECACHE_ASSETS = [
   './images/brush.png',
   './images/bus.png',
   './images/birthday.png',
+  './images/breads/bread_croissant.jpg',
+  './images/breads/bread_red_bean.jpg',
+  './images/breads/bread_sausage.jpg',
+  './images/breads/bread_sliced.jpg',
+  './images/breads/bread_soboro.jpg',
   './images/cake.jpg',
   './images/chocomilk.jpg',
   './images/cofee.png',
@@ -167,6 +172,9 @@ const PRECACHE_ASSETS = [
   './images/outing_person_me.png',
   './images/outing_person_mom.png',
   './images/person/사람과소통 김지은선생님1.png',
+  './images/person/dad.png',
+  './images/person/me.png',
+  './images/person/mom.png',
   './images/person/rahee.png',
   './images/person/raon.png',
   './images/outing_school1.png',
@@ -255,6 +263,7 @@ const PRECACHE_ASSETS = [
   './images/water.png',
   './images/watersound.png',
   './images/watermelon.png',
+  './images/weather.png',
   './images/weather_cards/sunny.svg',
   './images/weather_cards/cloudy.svg',
   './images/weather_cards/rain.svg',
@@ -265,19 +274,18 @@ const PRECACHE_ASSETS = [
 ];
 
 // ── Install: pre-cache everything ──────────────────────────────────────────
+async function precacheEverything() {
+  const cache = await caches.open(CACHE_NAME);
+  // Small batches are reliable on Android tablets. A failed required file
+  // keeps the previous complete worker active instead of installing partially.
+  const batchSize = 8;
+  for (let i = 0; i < PRECACHE_ASSETS.length; i += batchSize) {
+    await cache.addAll(PRECACHE_ASSETS.slice(i, i + batchSize));
+  }
+}
+
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) =>
-      // addAll will fail silently per-item if we use individual fetches
-      Promise.allSettled(
-        PRECACHE_ASSETS.map((url) =>
-          cache.add(url).catch(() => {
-            // ignore individual failures (e.g. missing optional image)
-          })
-        )
-      )
-    ).then(() => self.skipWaiting())
-  );
+  event.waitUntil(precacheEverything().then(() => self.skipWaiting()));
 });
 
 // ── Activate: delete old caches ────────────────────────────────────────────
@@ -306,7 +314,7 @@ self.addEventListener('fetch', (event) => {
     // Cache-first: serve instantly from cache, fall back to network
     event.respondWith(
       caches.open(CACHE_NAME).then((cache) =>
-        cache.match(event.request).then((cached) => {
+        cache.match(event.request, { ignoreSearch: true }).then((cached) => {
           if (cached) return cached;
           return fetch(event.request).then((response) => {
             if (response.ok) cache.put(event.request, response.clone());
@@ -324,9 +332,12 @@ self.addEventListener('fetch', (event) => {
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, response.clone()));
         }
         return response;
-      }).catch(() =>
-        caches.open(CACHE_NAME).then((cache) => cache.match(event.request))
-      )
+      }).catch(() => caches.open(CACHE_NAME).then(async (cache) => {
+        const cached = await cache.match(event.request, { ignoreSearch: true });
+        if (cached) return cached;
+        if (event.request.mode === 'navigate') return cache.match('./index.html');
+        return Response.error();
+      }))
     );
   }
 });

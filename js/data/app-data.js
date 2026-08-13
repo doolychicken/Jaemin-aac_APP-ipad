@@ -803,7 +803,7 @@ const DATA = {
         { label: "과일", nav: "mealFruit",     image: "./images/apple.png" },
         { label: "야채", nav: "mealVegetable", image: "./images/tomato.png" },
         { label: "음료", nav: "mealDrink",     image: "./images/meal_juice.png" },
-        { label: "빵",   nav: "mealBread",     image: "./images/outing_bakery.png" },
+        { label: "빵",   nav: "mealBread",     image: "./images/meal_eggtart.png" },
         { label: "커피", nav: "mealCoffee",    icon: "☕" }
       ],
       layout: "main"
@@ -920,12 +920,13 @@ const DATA = {
       helper: "먹고 싶은 빵을 선택하세요.",
       hero: [],
       items: [
-        { label: "빵",         image: "./images/outing_bakery.png" },
-        { label: "식빵",       icon: "🍞" },
-        { label: "크루아상",   icon: "🥐" },
-        { label: "에그타르트", image: "./images/meal_eggtart.png" },
-        { label: "케이크",     icon: "🎂" },
-        { label: "파리바게트", image: "./images/home_schedule/paris_baguette.png" }
+        { label: "에그타르트", image: "./images/meal_eggtart.png", imageFit: "cover" },
+        { label: "식빵",       image: "./images/breads/bread_sliced.jpg", imageFit: "cover" },
+        { label: "크루아상",   image: "./images/breads/bread_croissant.jpg", imageFit: "cover" },
+        { label: "단팥빵",     image: "./images/breads/bread_red_bean.jpg", imageFit: "cover" },
+        { label: "소보로빵",   image: "./images/breads/bread_soboro.jpg", imageFit: "cover" },
+        { label: "소시지빵",   image: "./images/breads/bread_sausage.jpg", imageFit: "cover" },
+        { label: "케이크",     image: "./images/cake.jpg", imageFit: "cover" }
       ],
       layout: "main"
     },
