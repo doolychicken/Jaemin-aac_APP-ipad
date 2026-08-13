@@ -870,9 +870,9 @@ const DATA = {
         { label: "딸기",       image: "./images/strawberry.png" },
         { label: "포도",       image: "./images/grape.png" },
         { label: "수박",       image: "./images/watermelon.png" },
-        { label: "귤",         icon: "🍊" },
+        { label: "귤",         image: "./images/fruit_tangerine.jpg", imageFit: "cover" },
         { label: "오렌지",     image: "./images/orange.png" },
-        { label: "블루베리",   icon: "🫐" }
+        { label: "블루베리",   image: "./images/fruit_blueberry.jpg", imageFit: "cover" }
       ],
       layout: "main"
     },
