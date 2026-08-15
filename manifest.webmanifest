@@ -3,7 +3,7 @@
   "short_name": "재민 AAC",
   "description": "재민이를 위한 의사소통과 학습 앱",
   "lang": "ko",
-  "start_url": "./?app=359",
+  "start_url": "./?app=360",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
