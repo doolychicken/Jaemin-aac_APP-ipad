@@ -896,7 +896,7 @@ const DATA = {
       hero: [],
       items: [
         { label: "토마토",   image: "./images/tomato.png" },
-        { label: "당근",     image: "./images/mart_items/carrot.png", imageFit: "cover" },
+        { label: "당근",     image: "./images/mart_items/carrot_v2.png", imageFit: "contain" },
         { label: "오이",     image: "./images/real_items/cucumber.jpg", imageFit: "cover" },
         { label: "브로콜리", image: "./images/real_items/broccoli.jpg", imageFit: "cover" },
         { label: "옥수수",   image: "./images/real_items/corn.jpg", imageFit: "cover" },
