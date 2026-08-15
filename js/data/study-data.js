@@ -370,13 +370,13 @@ function buildStudyScreensMap() {
         { id: "carrot", label: "당근", section: "채소 코너", image: "./images/mart_items/carrot_real_v3.png", icon: "🥕" },
         { id: "tomato", label: "토마토", section: "채소 코너", image: "./images/mart_items/tomato.png", icon: "🍅" },
         { id: "pepper", label: "피망", section: "채소 코너", image: "./images/mart_items/pepper.png", icon: "🫑" },
-        { id: "snack", label: "과자", section: "과자 코너", image: "./images/real_items/snacks.jpg", icon: "🍪" },
-        { id: "chips", label: "스낵", section: "과자 코너", image: "./images/real_items/snacks.jpg", icon: "🍟" },
-        { id: "cookie", label: "쿠키", section: "과자 코너", image: "./images/real_items/snacks.jpg", icon: "🍪" },
+        { id: "snack", label: "과자", section: "과자 코너", image: "./images/real_items/crackers_v2.png", icon: "🍪" },
+        { id: "chips", label: "스낵", section: "과자 코너", image: "./images/real_items/potato_chips_v2.png", icon: "🍟" },
+        { id: "cookie", label: "쿠키", section: "과자 코너", image: "./images/real_items/cookies_v2.png", icon: "🍪" },
         { id: "pork", label: "돼지고기", section: "정육 코너", image: "./images/real_items/pork.jpg", icon: "🥩" },
         { id: "chicken", label: "닭고기", section: "정육 코너", image: "./images/real_items/chicken.jpg", icon: "🍗" },
         { id: "beef", label: "소고기", section: "정육 코너", image: "./images/real_items/beef.jpg", icon: "🥩" },
-        { id: "egg", label: "계란", section: "정육 코너", image: "./images/mart_items/egg.png", icon: "🥚" }
+        { id: "egg", label: "계란", section: "계란 코너", image: "./images/mart_items/egg.png", icon: "🥚" }
       ],
       missions: [
         { id: "yogurt", label: "요플레", section: "유제품 코너", image: "./images/mart_items/yogurt.png", icon: "🥣" },
@@ -394,13 +394,13 @@ function buildStudyScreensMap() {
         { id: "carrot", label: "당근", section: "채소 코너", image: "./images/mart_items/carrot_real_v3.png", icon: "🥕" },
         { id: "tomato", label: "토마토", section: "채소 코너", image: "./images/mart_items/tomato.png", icon: "🍅" },
         { id: "pepper", label: "피망", section: "채소 코너", image: "./images/mart_items/pepper.png", icon: "🫑" },
-        { id: "snack", label: "과자", section: "과자 코너", icon: "🍪" },
-        { id: "chips", label: "스낵", section: "과자 코너", icon: "🍟" },
-        { id: "cookie", label: "쿠키", section: "과자 코너", icon: "🍪" },
-        { id: "pork", label: "돼지고기", section: "정육 코너", icon: "🥩" },
-        { id: "chicken", label: "닭고기", section: "정육 코너", icon: "🍗" },
-        { id: "beef", label: "소고기", section: "정육 코너", icon: "🥩" },
-        { id: "egg", label: "계란", section: "정육 코너", image: "./images/mart_items/egg.png", icon: "🥚" }
+        { id: "snack", label: "과자", section: "과자 코너", image: "./images/real_items/crackers_v2.png", icon: "🍪" },
+        { id: "chips", label: "스낵", section: "과자 코너", image: "./images/real_items/potato_chips_v2.png", icon: "🍟" },
+        { id: "cookie", label: "쿠키", section: "과자 코너", image: "./images/real_items/cookies_v2.png", icon: "🍪" },
+        { id: "pork", label: "돼지고기", section: "정육 코너", image: "./images/real_items/pork.jpg", icon: "🥩" },
+        { id: "chicken", label: "닭고기", section: "정육 코너", image: "./images/real_items/chicken.jpg", icon: "🍗" },
+        { id: "beef", label: "소고기", section: "정육 코너", image: "./images/real_items/beef.jpg", icon: "🥩" },
+        { id: "egg", label: "계란", section: "계란 코너", image: "./images/mart_items/egg.png", icon: "🥚" }
       ]
     }
   };

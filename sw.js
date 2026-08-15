@@ -4,7 +4,7 @@
  * On first visit, pre-caches all images so subsequent loads are instant.
  */
 
-const CACHE_VERSION = 'v361';
+const CACHE_VERSION = 'v362';
 const CACHE_NAME = `jaemin-aac-${CACHE_VERSION}`;
 
 self.addEventListener('message', (event) => {
@@ -64,6 +64,8 @@ const PRECACHE_ASSETS = [
   './images/real_items/coca_cola_can_v2.png',
   './images/real_items/color_learning.jpg',
   './images/real_items/corn.jpg',
+  './images/real_items/cookies_v2.png',
+  './images/real_items/crackers_v2.png',
   './images/real_items/cucumber.jpg',
   './images/real_items/gummy_jelly.jpg',
   './images/real_items/hangul_learning.jpg',
@@ -72,6 +74,7 @@ const PRECACHE_ASSETS = [
   './images/real_items/milkshake.jpg',
   './images/real_items/orange_soda.jpg',
   './images/real_items/pork.jpg',
+  './images/real_items/potato_chips_v2.png',
   './images/real_items/snacks.jpg',
   './images/real_items/seoul_strawberry_milk_v2.png',
   './images/real_items/sweet_potato.jpg',
@@ -326,8 +329,8 @@ self.addEventListener('activate', (event) => {
       const windows = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
       await Promise.all(windows.map((client) => {
         const current = new URL(client.url);
-        if (current.origin !== self.location.origin || current.searchParams.get('app') === '361') return;
-        current.searchParams.set('app', '361');
+        if (current.origin !== self.location.origin || current.searchParams.get('app') === '362') return;
+        current.searchParams.set('app', '362');
         return client.navigate(current.href);
       }));
     })
