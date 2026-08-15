@@ -261,7 +261,7 @@ const SHOPPING_PLACES = [
     image: "./images/home_schedule/hanaro_mart.png",
     items: [
       { label: "물", image: "./images/water.png" },
-      { label: "우유", image: "./images/meal_milk.png" },
+      { label: "우유", image: "./images/meal_milk_large_v2.png" },
       { label: "두유", image: "./images/meal_soymilk.png" },
       { label: "주스", image: "./images/meal_juice.png" },
       { label: "바나나", image: "./images/bannana.png" },
@@ -274,7 +274,7 @@ const SHOPPING_PLACES = [
     image: "./images/home_schedule/hansalim.png",
     items: [
       { label: "계란", image: "./images/eggs.png" },
-      { label: "우유", image: "./images/meal_milk.png" },
+      { label: "우유", image: "./images/meal_milk_large_v2.png" },
       { label: "두유", image: "./images/meal_soymilk.png" },
       { label: "사과", image: "./images/apple.png" },
       { label: "토마토", image: "./images/tomato.png" },
@@ -287,7 +287,7 @@ const SHOPPING_PLACES = [
     image: "./images/homeplus.png",
     items: [
       { label: "물", image: "./images/water.png" },
-      { label: "우유", image: "./images/meal_milk.png" },
+      { label: "우유", image: "./images/meal_milk_large_v2.png" },
       { label: "두유", image: "./images/meal_soymilk.png" },
       { label: "주스", image: "./images/meal_juice.png" },
       { label: "요구르트", image: "./images/yogurt_drink.png" },
@@ -301,7 +301,7 @@ const SHOPPING_PLACES = [
     items: [
       { label: "빵", image: "./images/outing_bakery.png" },
       { label: "에그타르트", image: "./images/meal_eggtart.png" },
-      { label: "우유", image: "./images/meal_milk.png" },
+      { label: "우유", image: "./images/meal_milk_large_v2.png" },
       { label: "주스", image: "./images/meal_juice.png" },
       { label: "케이크", image: "./images/outing_bakery.png" },
       { label: "샌드위치", image: "./images/outing_bakery.png" }
