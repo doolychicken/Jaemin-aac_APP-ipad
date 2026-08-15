@@ -12,7 +12,7 @@
   <meta name="apple-mobile-web-app-title" content="재민 AAC" />
   <meta name="application-name" content="재민 AAC" />
   <meta name="theme-color" content="#3b82f6" />
-  <link rel="manifest" href="./manifest.webmanifest?v=360" />
+  <link rel="manifest" href="./manifest.webmanifest?v=361" />
   <link rel="apple-touch-icon" sizes="180x180" href="./images/app_icons/app-icon-180.png?v=347" />
   <link rel="preconnect" href="https://www.youtube.com" />
   <link rel="preconnect" href="https://img.youtube.com" />
@@ -63,8 +63,8 @@
     <section id="buttonGrid" class="grid"></section>
   </main>
 
-  <script src="./js/data/study-data.js?v=360"></script>
-  <script src="./js/data/app-data.js?v=360"></script>
+  <script src="./js/data/study-data.js?v=361"></script>
+  <script src="./js/data/app-data.js?v=361"></script>
   <script src="./js/core/pager.js?v=294"></script>
   <script src="./js/features/schedule.js?v=339"></script>
   <script src="./js/features/study-puzzle.js?v=277"></script>
@@ -83,7 +83,7 @@
       });
       window.addEventListener('load', () => {
         /* sw.js에도 v를 붙이지 않으면 Safari가 옛 서비스 워커를 붙잡는 경우가 있음 */
-        navigator.serviceWorker.register('./sw.js?v=360', { updateViaCache: 'none' })
+        navigator.serviceWorker.register('./sw.js?v=361', { updateViaCache: 'none' })
           .then(function (reg) {
             if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
             reg.addEventListener('updatefound', function () {

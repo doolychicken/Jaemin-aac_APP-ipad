@@ -917,11 +917,11 @@ const DATA = {
         { label: "워터젤리", image: "./images/water_jelly.png" },
         { label: "요구르트", image: "./images/yogurt_drink.png" },
         { label: "바나나우유", image: "./images/real_items/banana_milk.jpg", imageFit: "cover" },
-        { label: "딸기우유", image: "./images/real_items/strawberry_milk.jpg", imageFit: "cover" },
+        { label: "딸기우유", image: "./images/real_items/seoul_strawberry_milk_v2.png", imageFit: "contain" },
         { label: "초코우유", image: "./images/real_items/chocolate_milk.jpg", imageFit: "cover" },
         { label: "수박주스", image: "./images/real_items/watermelon_juice.jpg", imageFit: "cover" },
         { label: "밀크쉐이크", image: "./images/real_items/milkshake.jpg", imageFit: "cover" },
-        { label: "콜라", image: "./images/real_items/cola.jpg", imageFit: "cover" },
+        { label: "콜라", image: "./images/real_items/coca_cola_can_v2.png", imageFit: "contain" },
         { label: "사이다", image: "./images/real_items/lemon_lime_soda.jpg", imageFit: "cover" },
         { label: "환타", image: "./images/real_items/orange_soda.jpg", imageFit: "cover" }
       ],
