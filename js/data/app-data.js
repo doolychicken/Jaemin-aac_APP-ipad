@@ -5,12 +5,27 @@
  * 이 파일에서 관리합니다. 공부하기 관련 화면은 study-data.js에 있습니다.
  */
 
+function photoAacItem(prefix, index, label) {
+  return {
+    label,
+    speech: label,
+    image: `./images/photo_aac/${prefix}_${String(index).padStart(2, "0")}.jpg`,
+    imageFit: "cover"
+  };
+}
+
 const PHOTO_AAC_SECTIONS = [
   {
     key: "photoAacActions",
-    title: "동작과 방향",
-    prefix: "actions",
-    labels: ["분리수거하다", "악수하다", "인사하다", "뽀뽀하다", "손잡다", "노래하다", "만세하다", "팔들어", "오른쪽", "왼쪽", "위", "아래", "하이파이브", "아이스크림 먹다", "주스 마시다", "바나나껍질까기"]
+    title: "동작",
+    items: [1, 2, 3, 4, 5, 6, 7, 8, 13, 14, 15, 16].map((index, position) =>
+      photoAacItem("actions", index, ["분리수거하다", "악수하다", "인사하다", "뽀뽀하다", "손잡다", "노래하다", "만세하다", "팔들어", "하이파이브", "아이스크림 먹다", "주스 마시다", "바나나껍질까기"][position])
+    )
+  },
+  {
+    key: "photoAacDirections",
+    title: "방향",
+    items: ["오른쪽", "왼쪽", "위", "아래"].map((label, index) => photoAacItem("actions", index + 9, label))
   },
   {
     key: "photoAacDaily",
@@ -19,10 +34,16 @@ const PHOTO_AAC_SECTIONS = [
     labels: ["똥싸다", "농구공놀이", "물내리기", "안아주다", "TV보기", "에어컨 틀기", "선풍기 틀기", "덥다", "춥다", "아이스크림 먹다", "차갑다", "뜨겁다", "믹서기 돌리다", "입안 헹구다", "춤추다", "사랑해요"]
   },
   {
-    key: "photoAacFeelingsHobbies",
-    title: "감정과 취미",
-    prefix: "feelings_hobbies",
-    labels: ["요리하기", "설거지하기", "울고싶다", "짜증난다", "기쁘다", "슬프다", "빵먹기", "버스타기", "지하철타기", "자전거타기", "우유먹기", "기타치기", "피아노키보드치기", "노트북 하기", "공부하기", "축구공놀이"]
+    key: "photoAacFeelings",
+    title: "감정",
+    items: ["울고싶다", "짜증난다", "기쁘다", "슬프다"].map((label, index) => photoAacItem("feelings_hobbies", index + 3, label))
+  },
+  {
+    key: "photoAacHobbies",
+    title: "취미",
+    items: [1, 2, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].map((index, position) =>
+      photoAacItem("feelings_hobbies", index, ["요리하기", "설거지하기", "빵먹기", "버스타기", "지하철타기", "자전거타기", "우유먹기", "기타치기", "피아노키보드치기", "노트북 하기", "공부하기", "축구공놀이"][position])
+    )
   },
   {
     key: "photoAacPlacesAnswers",
@@ -33,14 +54,76 @@ const PHOTO_AAC_SECTIONS = [
   {
     key: "photoAacRoutine",
     title: "하루 일과",
-    prefix: "routine",
-    labels: ["일어나기", "소변보기", "밥먹기", "세수하기", "수건으로 얼굴닦기", "로션 바르기", "머리빗질", "샤워하기", "팬티입기", "바지입기", "윗도리입기", "양말 신기", "겉옷 입기", "가방메기", "준비완료", "신발 신기", "학교가기", "공부하기", "간식먹기", "친구랑 놀기", "숙제하기", "손씻기", "잠옷입기", "잠자기"]
+    items: [
+      photoAacItem("routine", 1, "일어나기"),
+      photoAacItem("routine", 2, "소변보기"),
+      photoAacItem("routine", 3, "밥먹기"),
+      { label: "양치하기", speech: "양치하기", image: "./images/brush.png", imageFit: "cover" },
+      photoAacItem("routine", 4, "세수하기"),
+      photoAacItem("routine", 5, "수건으로 얼굴닦기"),
+      photoAacItem("routine", 6, "로션 바르기"),
+      photoAacItem("routine", 7, "머리빗질"),
+      photoAacItem("routine", 8, "샤워하기"),
+      photoAacItem("routine", 9, "팬티입기"),
+      photoAacItem("routine", 10, "바지입기"),
+      photoAacItem("routine", 11, "윗도리입기"),
+      photoAacItem("routine", 12, "양말 신기"),
+      photoAacItem("routine", 13, "겉옷 입기"),
+      photoAacItem("routine", 14, "가방메기"),
+      photoAacItem("routine", 16, "신발 신기"),
+      photoAacItem("routine", 15, "준비완료"),
+      photoAacItem("routine", 17, "학교가기"),
+      photoAacItem("routine", 18, "공부하기"),
+      photoAacItem("routine", 19, "간식먹기"),
+      photoAacItem("routine", 20, "친구랑 놀기"),
+      photoAacItem("routine", 21, "숙제하기"),
+      photoAacItem("routine", 22, "손씻기"),
+      photoAacItem("routine", 23, "잠옷입기"),
+      photoAacItem("routine", 24, "잠자기")
+    ]
   },
   {
     key: "photoAacHomeLeisure",
-    title: "집과 여가",
-    prefix: "home_leisure",
-    labels: ["머리감기", "머리말리기", "신발정리", "양말벗기", "세탁기넣기", "손씻기", "겉옷벗기", "윗도리벗기", "바지벗기", "신발벗기", "싱크대갖다놓기", "커피숍가기", "놀이터가기", "차타기", "노래듣기", "유튜브보기"]
+    title: "집에서 하는 것",
+    items: [
+      photoAacItem("daily", 5, "TV보기"),
+      photoAacItem("daily", 1, "똥싸다"),
+      photoAacItem("daily", 3, "물내리기"),
+      photoAacItem("daily", 6, "에어컨 틀기"),
+      photoAacItem("daily", 7, "선풍기 틀기"),
+      photoAacItem("daily", 13, "믹서기 돌리다"),
+      photoAacItem("places_answers", 15, "밥푸기"),
+      photoAacItem("feelings_hobbies", 1, "요리하기"),
+      photoAacItem("feelings_hobbies", 2, "설거지하기"),
+      photoAacItem("home_leisure", 11, "싱크대갖다놓기"),
+      photoAacItem("home_leisure", 5, "세탁기넣기"),
+      photoAacItem("home_leisure", 6, "손씻기"),
+      photoAacItem("daily", 14, "입안 헹구다"),
+      photoAacItem("home_leisure", 1, "머리감기"),
+      photoAacItem("home_leisure", 2, "머리말리기"),
+      photoAacItem("home_leisure", 3, "신발정리"),
+      photoAacItem("home_leisure", 4, "양말벗기"),
+      photoAacItem("home_leisure", 7, "겉옷벗기"),
+      photoAacItem("home_leisure", 8, "윗도리벗기"),
+      photoAacItem("home_leisure", 9, "바지벗기"),
+      photoAacItem("home_leisure", 10, "신발벗기"),
+      photoAacItem("home_leisure", 15, "노래듣기"),
+      photoAacItem("home_leisure", 16, "유튜브보기"),
+      photoAacItem("daily", 15, "춤추다"),
+      photoAacItem("feelings_hobbies", 12, "기타치기"),
+      photoAacItem("feelings_hobbies", 13, "피아노키보드치기"),
+      photoAacItem("places_answers", 5, "피아노치기"),
+      photoAacItem("places_answers", 6, "우쿨렐레연주"),
+      photoAacItem("places_answers", 7, "북치기"),
+      photoAacItem("places_answers", 8, "터치벨 연주"),
+      photoAacItem("feelings_hobbies", 14, "노트북 하기"),
+      photoAacItem("feelings_hobbies", 15, "공부하기"),
+      photoAacItem("feelings_hobbies", 7, "빵먹기"),
+      photoAacItem("feelings_hobbies", 11, "우유먹기"),
+      photoAacItem("daily", 10, "아이스크림 먹다"),
+      photoAacItem("daily", 4, "안아주다"),
+      photoAacItem("daily", 16, "사랑해요")
+    ]
   },
   {
     key: "photoAacOutingWeather",
@@ -59,7 +142,7 @@ function buildPhotoAacScreens() {
       items: PHOTO_AAC_SECTIONS.map((section) => ({
         label: section.title,
         nav: section.key,
-        image: `./images/photo_aac/${section.prefix}_01.jpg`,
+        image: section.items?.[0]?.image || `./images/photo_aac/${section.prefix}_01.jpg`,
         imageFit: "cover"
       })),
       layout: "main",
@@ -72,12 +155,7 @@ function buildPhotoAacScreens() {
       title: section.title,
       helper: "사진을 누르면 음성으로 읽어줍니다.",
       hero: [],
-      items: section.labels.map((label, index) => ({
-        label,
-        speech: label,
-        image: `./images/photo_aac/${section.prefix}_${String(index + 1).padStart(2, "0")}.jpg`,
-        imageFit: "cover"
-      })),
+      items: section.items || section.labels.map((label, index) => photoAacItem(section.prefix, index + 1, label)),
       layout: "main",
       showPlayer: false
     };
