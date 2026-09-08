@@ -18,8 +18,8 @@ const PHOTO_AAC_SECTIONS = [
   {
     key: "photoAacActions",
     title: "동작",
-    items: [1, 2, 3, 4, 5, 6, 7, 8, 13, 14, 15, 16].map((index, position) =>
-      photoAacItem("actions", index, ["분리수거하다", "악수하다", "인사하다", "뽀뽀하다", "손잡다", "노래하다", "만세하다", "팔들어", "하이파이브", "아이스크림 먹다", "주스 마시다", "바나나껍질까기"][position])
+    items: [1, 2, 3, 4, 5, 7, 8, 13, 16].map((index, position) =>
+      photoAacItem("actions", index, ["분리수거하다", "악수하다", "인사하다", "뽀뽀하다", "손잡다", "만세하다", "팔들어", "하이파이브", "바나나껍질까기"][position])
     )
   },
   {
@@ -28,28 +28,99 @@ const PHOTO_AAC_SECTIONS = [
     items: ["오른쪽", "왼쪽", "위", "아래"].map((label, index) => photoAacItem("actions", index + 9, label))
   },
   {
-    key: "photoAacDaily",
-    title: "생활과 느낌",
-    prefix: "daily",
-    labels: ["똥싸다", "농구공놀이", "물내리기", "안아주다", "TV보기", "에어컨 틀기", "선풍기 틀기", "덥다", "춥다", "아이스크림 먹다", "차갑다", "뜨겁다", "믹서기 돌리다", "입안 헹구다", "춤추다", "사랑해요"]
-  },
-  {
     key: "photoAacFeelings",
-    title: "감정",
-    items: ["울고싶다", "짜증난다", "기쁘다", "슬프다"].map((label, index) => photoAacItem("feelings_hobbies", index + 3, label))
+    title: "감정과 느낌",
+    items: [
+      ...["울고싶다", "짜증난다", "기쁘다", "슬프다"].map((label, index) => photoAacItem("feelings_hobbies", index + 3, label)),
+      photoAacItem("daily", 8, "덥다"),
+      photoAacItem("daily", 9, "춥다"),
+      photoAacItem("daily", 11, "차갑다"),
+      photoAacItem("daily", 12, "뜨겁다")
+    ]
   },
   {
     key: "photoAacHobbies",
-    title: "취미",
-    items: [1, 2, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].map((index, position) =>
-      photoAacItem("feelings_hobbies", index, ["요리하기", "설거지하기", "빵먹기", "버스타기", "지하철타기", "자전거타기", "우유먹기", "기타치기", "피아노키보드치기", "노트북 하기", "공부하기", "축구공놀이"][position])
-    )
+    title: "취미와 운동",
+    items: [
+      photoAacItem("daily", 2, "농구공놀이"),
+      photoAacItem("feelings_hobbies", 10, "자전거타기"),
+      photoAacItem("feelings_hobbies", 14, "노트북 하기"),
+      photoAacItem("feelings_hobbies", 15, "공부하기"),
+      photoAacItem("feelings_hobbies", 16, "축구공놀이")
+    ]
   },
   {
-    key: "photoAacPlacesAnswers",
-    title: "장소와 대답",
-    prefix: "places_answers",
-    labels: ["학교가기", "놀이터 놀기", "도서관가기", "마트장보기", "피아노치기", "우쿨렐레연주", "북치기", "터치벨 연주", "좋아요", "싫어요", "네", "아니오", "공원가기", "정수기물받기", "밥푸기", "엘리베이터 타기"]
+    key: "photoAacMusic",
+    title: "음악",
+    items: [
+      photoAacItem("actions", 6, "노래하다"),
+      photoAacItem("daily", 15, "춤추다"),
+      photoAacItem("home_leisure", 15, "노래듣기"),
+      photoAacItem("feelings_hobbies", 12, "기타치기"),
+      photoAacItem("feelings_hobbies", 13, "피아노키보드치기"),
+      photoAacItem("places_answers", 5, "피아노치기"),
+      photoAacItem("places_answers", 6, "우쿨렐레연주"),
+      photoAacItem("places_answers", 7, "북치기"),
+      photoAacItem("places_answers", 8, "터치벨 연주")
+    ]
+  },
+  {
+    key: "photoAacPlaces",
+    title: "장소",
+    items: [
+      photoAacItem("places_answers", 1, "학교"),
+      photoAacItem("places_answers", 2, "놀이터"),
+      photoAacItem("places_answers", 3, "도서관"),
+      photoAacItem("places_answers", 4, "마트"),
+      photoAacItem("places_answers", 13, "공원"),
+      photoAacItem("home_leisure", 12, "카페"),
+      photoAacItem("outing_weather", 12, "빵가게"),
+      photoAacItem("outing_weather", 10, "이케아"),
+      photoAacItem("outing_weather", 11, "다이소")
+    ]
+  },
+  {
+    key: "photoAacAnswers",
+    title: "대답과 표현",
+    items: [
+      photoAacItem("places_answers", 9, "좋아요"),
+      photoAacItem("places_answers", 10, "싫어요"),
+      photoAacItem("places_answers", 11, "네"),
+      photoAacItem("places_answers", 12, "아니오"),
+      photoAacItem("daily", 4, "안아주다"),
+      photoAacItem("daily", 16, "사랑해요")
+    ]
+  },
+  {
+    key: "photoAacTransport",
+    title: "이동수단",
+    items: [
+      photoAacItem("feelings_hobbies", 8, "버스타기"),
+      photoAacItem("feelings_hobbies", 9, "지하철타기"),
+      photoAacItem("feelings_hobbies", 10, "자전거타기"),
+      photoAacItem("home_leisure", 14, "차타기"),
+      photoAacItem("places_answers", 16, "엘리베이터 타기")
+    ]
+  },
+  {
+    key: "photoAacPlayground",
+    title: "놀이터 놀이",
+    items: [
+      photoAacItem("outing_weather", 5, "그네타다"),
+      photoAacItem("outing_weather", 6, "미끄럼틀타다"),
+      photoAacItem("outing_weather", 7, "시소타다"),
+      photoAacItem("outing_weather", 8, "철봉에달리다")
+    ]
+  },
+  {
+    key: "photoAacWeather",
+    title: "날씨",
+    items: [
+      photoAacItem("outing_weather", 13, "우산쓰기"),
+      photoAacItem("outing_weather", 14, "맑음"),
+      photoAacItem("outing_weather", 15, "비온다"),
+      photoAacItem("outing_weather", 16, "눈온다")
+    ]
   },
   {
     key: "photoAacRoutine",
@@ -107,15 +178,7 @@ const PHOTO_AAC_SECTIONS = [
       photoAacItem("home_leisure", 8, "윗도리벗기"),
       photoAacItem("home_leisure", 9, "바지벗기"),
       photoAacItem("home_leisure", 10, "신발벗기"),
-      photoAacItem("home_leisure", 15, "노래듣기"),
       photoAacItem("home_leisure", 16, "유튜브보기"),
-      photoAacItem("daily", 15, "춤추다"),
-      photoAacItem("feelings_hobbies", 12, "기타치기"),
-      photoAacItem("feelings_hobbies", 13, "피아노키보드치기"),
-      photoAacItem("places_answers", 5, "피아노치기"),
-      photoAacItem("places_answers", 6, "우쿨렐레연주"),
-      photoAacItem("places_answers", 7, "북치기"),
-      photoAacItem("places_answers", 8, "터치벨 연주"),
       photoAacItem("feelings_hobbies", 14, "노트북 하기"),
       photoAacItem("feelings_hobbies", 15, "공부하기"),
       photoAacItem("feelings_hobbies", 7, "빵먹기"),
@@ -126,10 +189,15 @@ const PHOTO_AAC_SECTIONS = [
     ]
   },
   {
-    key: "photoAacOutingWeather",
-    title: "외출과 날씨",
-    prefix: "outing_weather",
-    labels: ["점프하다", "달리다", "올라간다", "내려간다", "그네타다", "미끄럼틀타다", "시소타다", "철봉에달리다", "옷구경", "이케아쇼핑", "다이소구경", "빵가게", "우산쓰기", "맑음", "비온다", "눈온다"]
+    key: "photoAacOutingActions",
+    title: "외출 동작",
+    items: [
+      photoAacItem("outing_weather", 1, "점프하다"),
+      photoAacItem("outing_weather", 2, "달리다"),
+      photoAacItem("outing_weather", 3, "올라간다"),
+      photoAacItem("outing_weather", 4, "내려간다"),
+      photoAacItem("outing_weather", 9, "옷구경")
+    ]
   }
 ];
 
