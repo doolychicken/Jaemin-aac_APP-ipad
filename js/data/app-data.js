@@ -22,7 +22,11 @@ const PHOTO_AAC_SECTIONS = [
       ...[2, 3, 4, 5, 7, 8, 13].map((index, position) =>
         photoAacItem("actions", index, ["악수하다", "인사하다", "뽀뽀하다", "손잡다", "만세하다", "팔들어", "하이파이브"][position])
       ),
-      photoAacItem("daily", 4, "안아주다")
+      photoAacItem("daily", 4, "안아주다"),
+      photoAacItem("outing_weather", 1, "점프하다"),
+      photoAacItem("outing_weather", 2, "달리다"),
+      photoAacItem("outing_weather", 3, "올라간다"),
+      photoAacItem("outing_weather", 4, "내려간다")
     ]
   },
   {
@@ -80,7 +84,8 @@ const PHOTO_AAC_SECTIONS = [
       photoAacItem("home_leisure", 12, "카페"),
       photoAacItem("outing_weather", 12, "빵가게"),
       photoAacItem("outing_weather", 10, "이케아"),
-      photoAacItem("outing_weather", 11, "다이소")
+      photoAacItem("outing_weather", 11, "다이소"),
+      photoAacItem("outing_weather", 9, "옷구경")
     ]
   },
   {
@@ -189,17 +194,6 @@ const PHOTO_AAC_SECTIONS = [
       photoAacItem("feelings_hobbies", 7, "빵먹기"),
       photoAacItem("feelings_hobbies", 11, "우유먹기"),
       photoAacItem("daily", 10, "아이스크림 먹다")
-    ]
-  },
-  {
-    key: "photoAacOutingActions",
-    title: "외출 동작",
-    items: [
-      photoAacItem("outing_weather", 1, "점프하다"),
-      photoAacItem("outing_weather", 2, "달리다"),
-      photoAacItem("outing_weather", 3, "올라간다"),
-      photoAacItem("outing_weather", 4, "내려간다"),
-      photoAacItem("outing_weather", 9, "옷구경")
     ]
   }
 ];
