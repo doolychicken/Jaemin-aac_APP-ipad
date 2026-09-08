@@ -18,9 +18,12 @@ const PHOTO_AAC_SECTIONS = [
   {
     key: "photoAacActions",
     title: "동작",
-    items: [1, 2, 3, 4, 5, 7, 8, 13, 16].map((index, position) =>
-      photoAacItem("actions", index, ["분리수거하다", "악수하다", "인사하다", "뽀뽀하다", "손잡다", "만세하다", "팔들어", "하이파이브", "바나나껍질까기"][position])
-    )
+    items: [
+      ...[2, 3, 4, 5, 7, 8, 13].map((index, position) =>
+        photoAacItem("actions", index, ["악수하다", "인사하다", "뽀뽀하다", "손잡다", "만세하다", "팔들어", "하이파이브"][position])
+      ),
+      photoAacItem("daily", 4, "안아주다")
+    ]
   },
   {
     key: "photoAacDirections",
@@ -35,7 +38,8 @@ const PHOTO_AAC_SECTIONS = [
       photoAacItem("daily", 8, "덥다"),
       photoAacItem("daily", 9, "춥다"),
       photoAacItem("daily", 11, "차갑다"),
-      photoAacItem("daily", 12, "뜨겁다")
+      photoAacItem("daily", 12, "뜨겁다"),
+      photoAacItem("daily", 16, "사랑해요")
     ]
   },
   {
@@ -86,9 +90,7 @@ const PHOTO_AAC_SECTIONS = [
       photoAacItem("places_answers", 9, "좋아요"),
       photoAacItem("places_answers", 10, "싫어요"),
       photoAacItem("places_answers", 11, "네"),
-      photoAacItem("places_answers", 12, "아니오"),
-      photoAacItem("daily", 4, "안아주다"),
-      photoAacItem("daily", 16, "사랑해요")
+      photoAacItem("places_answers", 12, "아니오")
     ]
   },
   {
@@ -157,6 +159,8 @@ const PHOTO_AAC_SECTIONS = [
     key: "photoAacHomeLeisure",
     title: "집에서 하는 것",
     items: [
+      photoAacItem("actions", 1, "분리수거하기"),
+      photoAacItem("actions", 16, "바나나껍질까기"),
       photoAacItem("daily", 5, "TV보기"),
       photoAacItem("daily", 1, "똥싸다"),
       photoAacItem("daily", 3, "물내리기"),
@@ -178,14 +182,13 @@ const PHOTO_AAC_SECTIONS = [
       photoAacItem("home_leisure", 8, "윗도리벗기"),
       photoAacItem("home_leisure", 9, "바지벗기"),
       photoAacItem("home_leisure", 10, "신발벗기"),
-      photoAacItem("home_leisure", 16, "유튜브보기"),
+      photoAacItem("home_leisure", 15, "노래듣기"),
+      photoAacItem("home_leisure", 16, "아이패드보기"),
       photoAacItem("feelings_hobbies", 14, "노트북 하기"),
       photoAacItem("feelings_hobbies", 15, "공부하기"),
       photoAacItem("feelings_hobbies", 7, "빵먹기"),
       photoAacItem("feelings_hobbies", 11, "우유먹기"),
-      photoAacItem("daily", 10, "아이스크림 먹다"),
-      photoAacItem("daily", 4, "안아주다"),
-      photoAacItem("daily", 16, "사랑해요")
+      photoAacItem("daily", 10, "아이스크림 먹다")
     ]
   },
   {
