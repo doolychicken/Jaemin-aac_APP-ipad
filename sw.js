@@ -4,7 +4,7 @@
  * On first visit, pre-caches all images so subsequent loads are instant.
  */
 
-const CACHE_VERSION = 'v362';
+const CACHE_VERSION = 'v363';
 const CACHE_NAME = `jaemin-aac-${CACHE_VERSION}`;
 
 self.addEventListener('message', (event) => {
@@ -36,6 +36,13 @@ const PRECACHE_ASSETS = [
   './js/main.js',
   './audio/watersound.mp3',
   './video/watersound.mp4',
+  ...Array.from({ length: 16 }, (_, i) => `./images/photo_aac/actions_${String(i + 1).padStart(2, '0')}.jpg`),
+  ...Array.from({ length: 16 }, (_, i) => `./images/photo_aac/daily_${String(i + 1).padStart(2, '0')}.jpg`),
+  ...Array.from({ length: 16 }, (_, i) => `./images/photo_aac/feelings_hobbies_${String(i + 1).padStart(2, '0')}.jpg`),
+  ...Array.from({ length: 16 }, (_, i) => `./images/photo_aac/places_answers_${String(i + 1).padStart(2, '0')}.jpg`),
+  ...Array.from({ length: 24 }, (_, i) => `./images/photo_aac/routine_${String(i + 1).padStart(2, '0')}.jpg`),
+  ...Array.from({ length: 16 }, (_, i) => `./images/photo_aac/home_leisure_${String(i + 1).padStart(2, '0')}.jpg`),
+  ...Array.from({ length: 16 }, (_, i) => `./images/photo_aac/outing_weather_${String(i + 1).padStart(2, '0')}.jpg`),
   // ── Images ──
   './images/apple.png',
   './images/app_icons/app-icon-180.png',

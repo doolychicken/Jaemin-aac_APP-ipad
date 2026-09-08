@@ -5,6 +5,87 @@
  * 이 파일에서 관리합니다. 공부하기 관련 화면은 study-data.js에 있습니다.
  */
 
+const PHOTO_AAC_SECTIONS = [
+  {
+    key: "photoAacActions",
+    title: "동작과 방향",
+    prefix: "actions",
+    labels: ["분리수거하다", "악수하다", "인사하다", "뽀뽀하다", "손잡다", "노래하다", "만세하다", "팔들어", "오른쪽", "왼쪽", "위", "아래", "하이파이브", "아이스크림 먹다", "주스 마시다", "바나나껍질까기"]
+  },
+  {
+    key: "photoAacDaily",
+    title: "생활과 느낌",
+    prefix: "daily",
+    labels: ["똥싸다", "농구공놀이", "물내리기", "안아주다", "TV보기", "에어컨 틀기", "선풍기 틀기", "덥다", "춥다", "아이스크림 먹다", "차갑다", "뜨겁다", "믹서기 돌리다", "입안 헹구다", "춤추다", "사랑해요"]
+  },
+  {
+    key: "photoAacFeelingsHobbies",
+    title: "감정과 취미",
+    prefix: "feelings_hobbies",
+    labels: ["요리하기", "설거지하기", "울고싶다", "짜증난다", "기쁘다", "슬프다", "빵먹기", "버스타기", "지하철타기", "자전거타기", "우유먹기", "기타치기", "피아노키보드치기", "노트북 하기", "공부하기", "축구공놀이"]
+  },
+  {
+    key: "photoAacPlacesAnswers",
+    title: "장소와 대답",
+    prefix: "places_answers",
+    labels: ["학교가기", "놀이터 놀기", "도서관가기", "마트장보기", "피아노치기", "우쿨렐레연주", "북치기", "터치벨 연주", "좋아요", "싫어요", "네", "아니오", "공원가기", "정수기물받기", "밥푸기", "엘리베이터 타기"]
+  },
+  {
+    key: "photoAacRoutine",
+    title: "하루 일과",
+    prefix: "routine",
+    labels: ["일어나기", "소변보기", "밥먹기", "세수하기", "수건으로 얼굴닦기", "로션 바르기", "머리빗질", "샤워하기", "팬티입기", "바지입기", "윗도리입기", "양말 신기", "겉옷 입기", "가방메기", "준비완료", "신발 신기", "학교가기", "공부하기", "간식먹기", "친구랑 놀기", "숙제하기", "손씻기", "잠옷입기", "잠자기"]
+  },
+  {
+    key: "photoAacHomeLeisure",
+    title: "집과 여가",
+    prefix: "home_leisure",
+    labels: ["머리감기", "머리말리기", "신발정리", "양말벗기", "세탁기넣기", "손씻기", "겉옷벗기", "윗도리벗기", "바지벗기", "신발벗기", "싱크대갖다놓기", "커피숍가기", "놀이터가기", "차타기", "노래듣기", "유튜브보기"]
+  },
+  {
+    key: "photoAacOutingWeather",
+    title: "외출과 날씨",
+    prefix: "outing_weather",
+    labels: ["점프하다", "달리다", "올라간다", "내려간다", "그네타다", "미끄럼틀타다", "시소타다", "철봉에달리다", "옷구경", "이케아쇼핑", "다이소구경", "빵가게", "우산쓰기", "맑음", "비온다", "눈온다"]
+  }
+];
+
+function buildPhotoAacScreens() {
+  const screens = {
+    photoAacHome: {
+      title: "사진 AAC",
+      helper: "원하는 사진 묶음을 선택하세요.",
+      hero: [],
+      items: PHOTO_AAC_SECTIONS.map((section) => ({
+        label: section.title,
+        nav: section.key,
+        image: `./images/photo_aac/${section.prefix}_01.jpg`,
+        imageFit: "cover"
+      })),
+      layout: "main",
+      showPlayer: false
+    }
+  };
+
+  PHOTO_AAC_SECTIONS.forEach((section) => {
+    screens[section.key] = {
+      title: section.title,
+      helper: "사진을 누르면 음성으로 읽어줍니다.",
+      hero: [],
+      items: section.labels.map((label, index) => ({
+        label,
+        speech: label,
+        image: `./images/photo_aac/${section.prefix}_${String(index + 1).padStart(2, "0")}.jpg`,
+        imageFit: "cover"
+      })),
+      layout: "main",
+      showPlayer: false
+    };
+  });
+
+  return screens;
+}
+
 const DATA = {
   youtube: {
     busVideo:   "https://www.youtube.com/watch?v=Bks5WybVkQ0&t=441s",
@@ -62,6 +143,7 @@ const DATA = {
   },
 
   screens: {
+    ...buildPhotoAacScreens(),
     // ── 메인 ──────────────────────────────────────────────────────────────────
     main: {
       title: "메인 화면",
@@ -70,6 +152,7 @@ const DATA = {
       items: [
         { label: "강화물",   nav: "ipadReinforcers", image: "./images/meal_juice.png" },
         { label: "교구선택", nav: "studyTeachingAids", image: "./images/study_pegboard.png" },
+        { label: "사진 AAC", nav: "photoAacHome", image: "./images/photo_aac/actions_01.jpg", imageFit: "cover" },
         { label: "다음",     nav: "main_p2", image: "./images/outing.png" }
       ],
       layout: "main"
