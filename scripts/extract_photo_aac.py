@@ -15,6 +15,18 @@ OUTPUT = ROOT / "images" / "photo_aac"
 
 SHEETS = [
     {
+        "file": "Gemini_Generated_Image_jen50gjen50gjen5.png",
+        "source_dir": Path(r"C:\Users\dooly\Downloads"),
+        "prefix": "preferred",
+        "labels": [
+            "엘리베이터 타기", "음악듣기", "터치벨 연주", "엉엉 울다",
+            "네", "아니오", "위", "아래",
+            "오른쪽", "왼쪽", "텔레비전켜기", "유튜브영상보기",
+            "좋아요", "싫어요", "선풍기틀기", "엘리베이터타기",
+        ],
+        "boxes": [(x, y, x + 406, y + 476) for y in (55, 638, 1220, 1801) for x in (45, 478, 911, 1344)],
+    },
+    {
         "file": "1 (2).png",
         "prefix": "actions",
         "labels": [
@@ -104,7 +116,7 @@ def main():
     OUTPUT.mkdir(parents=True, exist_ok=True)
     manifest = []
     for sheet in SHEETS:
-        source_path = SOURCE / sheet["file"]
+        source_path = sheet.get("source_dir", SOURCE) / sheet["file"]
         with Image.open(source_path) as source:
             image = ImageOps.exif_transpose(source).convert("RGB")
             if len(sheet["labels"]) != len(sheet["boxes"]):

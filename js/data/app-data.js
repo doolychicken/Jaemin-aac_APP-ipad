@@ -32,13 +32,19 @@ const PHOTO_AAC_SECTIONS = [
   {
     key: "photoAacDirections",
     title: "방향",
-    items: ["오른쪽", "왼쪽", "위", "아래"].map((label, index) => photoAacItem("actions", index + 9, label))
+    items: [
+      photoAacItem("preferred", 9, "오른쪽"),
+      photoAacItem("preferred", 10, "왼쪽"),
+      photoAacItem("preferred", 7, "위"),
+      photoAacItem("preferred", 8, "아래")
+    ]
   },
   {
     key: "photoAacFeelings",
     title: "감정과 느낌",
     items: [
-      ...["울고싶다", "짜증난다", "기쁘다", "슬프다"].map((label, index) => photoAacItem("feelings_hobbies", index + 3, label)),
+      photoAacItem("preferred", 4, "울고싶다"),
+      ...["짜증난다", "기쁘다", "슬프다"].map((label, index) => photoAacItem("feelings_hobbies", index + 4, label)),
       photoAacItem("daily", 8, "덥다"),
       photoAacItem("daily", 9, "춥다"),
       photoAacItem("daily", 11, "차갑다"),
@@ -63,13 +69,13 @@ const PHOTO_AAC_SECTIONS = [
     items: [
       photoAacItem("actions", 6, "노래하다"),
       photoAacItem("daily", 15, "춤추다"),
-      photoAacItem("home_leisure", 15, "노래듣기"),
+      photoAacItem("preferred", 2, "노래듣기"),
       photoAacItem("feelings_hobbies", 12, "기타치기"),
       photoAacItem("feelings_hobbies", 13, "피아노키보드치기"),
       photoAacItem("places_answers", 5, "피아노치기"),
       photoAacItem("places_answers", 6, "우쿨렐레연주"),
       photoAacItem("places_answers", 7, "북치기"),
-      photoAacItem("places_answers", 8, "터치벨 연주")
+      { ...photoAacItem("preferred", 3, "터치벨 연주"), imageFit: "contain" }
     ]
   },
   {
@@ -92,10 +98,10 @@ const PHOTO_AAC_SECTIONS = [
     key: "photoAacAnswers",
     title: "대답과 표현",
     items: [
-      photoAacItem("places_answers", 9, "좋아요"),
-      photoAacItem("places_answers", 10, "싫어요"),
-      photoAacItem("places_answers", 11, "네"),
-      photoAacItem("places_answers", 12, "아니오")
+      photoAacItem("preferred", 13, "좋아요"),
+      photoAacItem("preferred", 14, "싫어요"),
+      photoAacItem("preferred", 5, "네"),
+      photoAacItem("preferred", 6, "아니오")
     ]
   },
   {
@@ -106,7 +112,7 @@ const PHOTO_AAC_SECTIONS = [
       photoAacItem("feelings_hobbies", 9, "지하철타기"),
       photoAacItem("feelings_hobbies", 10, "자전거타기"),
       photoAacItem("home_leisure", 14, "차타기"),
-      photoAacItem("places_answers", 16, "엘리베이터 타기")
+      photoAacItem("preferred", 1, "엘리베이터 타기")
     ]
   },
   {
@@ -166,11 +172,11 @@ const PHOTO_AAC_SECTIONS = [
     items: [
       photoAacItem("actions", 1, "분리수거하기"),
       photoAacItem("actions", 16, "바나나껍질까기"),
-      photoAacItem("daily", 5, "TV보기"),
+      photoAacItem("preferred", 11, "TV보기"),
       photoAacItem("daily", 1, "똥싸다"),
       photoAacItem("daily", 3, "물내리기"),
       photoAacItem("daily", 6, "에어컨 틀기"),
-      photoAacItem("daily", 7, "선풍기 틀기"),
+      photoAacItem("preferred", 15, "선풍기 틀기"),
       photoAacItem("daily", 13, "믹서기 돌리다"),
       photoAacItem("places_answers", 15, "밥푸기"),
       photoAacItem("feelings_hobbies", 1, "요리하기"),
@@ -187,8 +193,8 @@ const PHOTO_AAC_SECTIONS = [
       photoAacItem("home_leisure", 8, "윗도리벗기"),
       photoAacItem("home_leisure", 9, "바지벗기"),
       photoAacItem("home_leisure", 10, "신발벗기"),
-      photoAacItem("home_leisure", 15, "노래듣기"),
-      photoAacItem("home_leisure", 16, "아이패드보기"),
+      photoAacItem("preferred", 2, "노래듣기"),
+      photoAacItem("preferred", 12, "아이패드보기"),
       photoAacItem("feelings_hobbies", 14, "노트북 하기"),
       photoAacItem("feelings_hobbies", 15, "공부하기"),
       photoAacItem("feelings_hobbies", 7, "빵먹기"),
