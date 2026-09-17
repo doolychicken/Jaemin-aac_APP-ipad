@@ -3151,7 +3151,7 @@ function renderButtons(items, layout) {
   const visibleItems = sideNavItems.length
     ? pageInfo.items.filter((item) => item.label !== "다음" && item.label !== "이전")
     : pageInfo.items;
-  const extraGridClass = `${currentKey() === "mealDrink" ? " grid--meal-drink" : ""}${currentKey() === "toilet" ? " grid--toilet" : ""}${compactMainMenu ? " grid--mobile-main-menu" : ""}`;
+  const extraGridClass = `${currentKey() === "mealDrink" ? " grid--meal-drink" : ""}${currentKey() === "toilet" ? " grid--toilet" : ""}${currentKey() === "studyTeachingAids" ? " grid--teaching-aids" : ""}${compactMainMenu ? " grid--mobile-main-menu" : ""}`;
   const autoSideNavCount = usesSideFrame && pageInfo.paged
     ? Number(pageInfo.page > 0) + Number(pageInfo.page < pageInfo.totalPages - 1)
     : 0;
@@ -3493,6 +3493,8 @@ function renderLocalVideo(screen) {
 
 function render() {
   const key    = currentKey();
+  // Returning to the first screen starts a fresh teaching-aid session.
+  if (key === "main" && completedTeachingAids.size > 0) resetTeachingAidProgress();
   const screen = DATA.screens[key] || DATA.screens.main;
   if (key !== "toilet") stopWaterSound();
   const isMain = key === "main";
