@@ -48,6 +48,27 @@ body {
   position: relative;
 }
 
+.teaching-aid-reset {
+  flex: 0 0 auto;
+  align-self: center;
+  width: min(100%, 780px);
+  min-height: 52px;
+  padding: 10px 18px;
+  border: 2px solid #b6cdf4;
+  border-radius: 16px;
+  background: #eaf3ff;
+  color: #23437f;
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
+  font-weight: 900;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.teaching-aid-reset:active {
+  background: #d9eaff;
+  transform: scale(0.99);
+}
+
 /* 스티커북 말단: 빈 배경 + 선택한 카테고리 그림만 크게 (iPad 한 화면) */
 .spotlight {
   display: none;

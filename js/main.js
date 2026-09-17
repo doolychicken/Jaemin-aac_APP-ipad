@@ -17,6 +17,7 @@ const spotlightViewEl    = document.getElementById("spotlightView");
 const spotlightBtnEl     = document.getElementById("spotlightButton");
 const spotlightImgEl     = document.getElementById("spotlightImage");
 const helperEl           = document.getElementById("helperText");
+const teachingAidResetBtn = document.getElementById("teachingAidResetButton");
 const heroEl             = document.getElementById("heroRow");
 const playerWrapEl       = document.getElementById("playerWrap");
 const playerEl           = document.getElementById("youtubePlayer");
@@ -3362,30 +3363,6 @@ function renderButtons(items, layout) {
     gridEl.appendChild(btn);
   });
 
-  if (currentKey() === "studyTeachingAids") {
-    const resetBtn = document.createElement("button");
-    resetBtn.type = "button";
-    resetBtn.className = "tile";
-    resetBtn.setAttribute("aria-label", "처음부터 다시");
-
-    const art = document.createElement("div");
-    art.className = "tile-art";
-    art.textContent = "↻";
-
-    const label = document.createElement("div");
-    label.className = "tile-label";
-    label.textContent = "처음부터 다시";
-
-    resetBtn.appendChild(art);
-    resetBtn.appendChild(label);
-    resetBtn.addEventListener("click", () => {
-      resetTeachingAidProgress();
-      speak("처음부터 다시");
-      render();
-    });
-    gridEl.appendChild(resetBtn);
-  }
-
   sideNavItems.forEach((item) => {
     const btn = document.createElement("button");
     btn.className = `tile-nav-arrow tile-nav-arrow--${item.label === "이전" ? "prev" : "next"}`;
@@ -3523,6 +3500,7 @@ function render() {
   homeBtn.style.display = isMain ? "none" : "inline-flex";
   titleEl.textContent = screen.title || "AAC";
   helperEl.textContent = screen.helper || "";
+  teachingAidResetBtn.style.display = key === "studyTeachingAids" ? "block" : "none";
   if (isInTeachingAidFlow() && screen.teachingAidId && isTeachingAidComplete(currentKey())) {
     helperEl.textContent = `${screen.title || "교구"} 완료! 뒤로 가면 다음 교구만 남아요.`;
   }
@@ -3664,6 +3642,12 @@ function render() {
 }
 
 // ── 이벤트 핸들러 ────────────────────────────────────────────────────────────
+teachingAidResetBtn.addEventListener("click", () => {
+  resetTeachingAidProgress();
+  speak("처음부터 다시");
+  render();
+});
+
 backBtn.addEventListener("click", () => {
   speak("뒤로 가기");
   if (currentKey() === "outingHome" && outingPlannerMode) {
