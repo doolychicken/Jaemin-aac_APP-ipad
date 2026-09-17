@@ -5254,6 +5254,12 @@ body {
   background: transparent;
 }
 
+.tile img.tile-img--contain {
+  object-fit: contain;
+  padding: 0;
+  background: #ffffff;
+}
+
 .dv-outer:not(.dv-outer--daily) {
   justify-content: flex-start;
 }

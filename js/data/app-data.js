@@ -49,7 +49,7 @@ const PHOTO_AAC_SECTIONS = [
       photoAacItem("daily", 9, "춥다"),
       photoAacItem("daily", 11, "차갑다"),
       photoAacItem("daily", 12, "뜨겁다"),
-      photoAacItem("daily", 16, "사랑해요")
+      { ...photoAacItem("daily", 16, "사랑해요"), imagePosition: "center top" }
     ]
   },
   {

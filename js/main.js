@@ -3306,6 +3306,8 @@ function renderButtons(items, layout) {
         const img = document.createElement("img");
         img.src = item.image || getThumbnail(yUrl); img.alt = item.label;
         if (item.imageFit === "cover") img.classList.add("tile-img--cover");
+        if (item.imageFit === "contain") img.classList.add("tile-img--contain");
+        if (item.imagePosition) img.style.objectPosition = item.imagePosition;
         setupImageElement(img, index < 2 || !!(item.image && item.image.startsWith("./images/")));
         btn.appendChild(img);
       }
@@ -3383,6 +3385,8 @@ function renderButtons(items, layout) {
       img.src = sideSlotItem.image;
       img.alt = sideSlotItem.label;
       if (sideSlotItem.imageFit === "cover") img.classList.add("tile-img--cover");
+      if (sideSlotItem.imageFit === "contain") img.classList.add("tile-img--contain");
+      if (sideSlotItem.imagePosition) img.style.objectPosition = sideSlotItem.imagePosition;
       setupImageElement(img, true);
       btn.appendChild(img);
     } else {
