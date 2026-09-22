@@ -10,7 +10,7 @@ function photoAacItem(prefix, index, label) {
     label,
     speech: label,
     image: `./images/photo_aac/${prefix}_${String(index).padStart(2, "0")}.jpg`,
-    imageFit: "cover"
+    imageFit: "contain"
   };
 }
 
@@ -49,7 +49,7 @@ const PHOTO_AAC_SECTIONS = [
       photoAacItem("daily", 9, "춥다"),
       photoAacItem("daily", 11, "차갑다"),
       photoAacItem("daily", 12, "뜨겁다"),
-      { ...photoAacItem("daily", 16, "사랑해요"), imagePosition: "center top" }
+      photoAacItem("daily", 16, "사랑해요")
     ]
   },
   {
@@ -142,7 +142,7 @@ const PHOTO_AAC_SECTIONS = [
       photoAacItem("routine", 1, "일어나기"),
       photoAacItem("routine", 2, "소변보기"),
       photoAacItem("routine", 3, "밥먹기"),
-      { label: "양치하기", speech: "양치하기", image: "./images/brush.png", imageFit: "cover" },
+      { label: "양치하기", speech: "양치하기", image: "./images/brush.png", imageFit: "contain" },
       photoAacItem("routine", 4, "세수하기"),
       photoAacItem("routine", 5, "수건으로 얼굴닦기"),
       photoAacItem("routine", 6, "로션 바르기"),
@@ -214,7 +214,7 @@ function buildPhotoAacScreens() {
         label: section.title,
         nav: section.key,
         image: section.items?.[0]?.image || `./images/photo_aac/${section.prefix}_01.jpg`,
-        imageFit: "cover"
+        imageFit: "contain"
       })),
       layout: "main",
       showPlayer: false
@@ -301,7 +301,7 @@ const DATA = {
       items: [
         { label: "강화물",   nav: "ipadReinforcers", image: "./images/meal_juice.png" },
         { label: "교구선택", nav: "studyTeachingAids", image: "./images/study_pegboard.png" },
-        { label: "사진 AAC", nav: "photoAacHome", image: "./images/photo_aac/actions_01.jpg", imageFit: "cover" },
+        { label: "사진 AAC", nav: "photoAacHome", image: "./images/photo_aac/actions_01.jpg", imageFit: "contain" },
         { label: "다음",     nav: "main_p2", image: "./images/outing.png" }
       ],
       layout: "main"
