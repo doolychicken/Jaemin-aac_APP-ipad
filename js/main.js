@@ -3323,7 +3323,7 @@ function renderButtons(items, layout) {
       }
       const label = document.createElement("div");
       label.className = "tile-label"; label.textContent = item.label;
-      btn.appendChild(label);
+      if (!item.embeddedLabel) btn.appendChild(label);
       if (currentKey() === "weatherHome" && item.videoQuery) {
         btn.classList.add("tile--has-video");
         const videoBtn = document.createElement("span");

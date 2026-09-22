@@ -10,7 +10,8 @@ function photoAacItem(prefix, index, label) {
     label,
     speech: label,
     image: `./images/photo_aac/${prefix}_${String(index).padStart(2, "0")}.jpg`,
-    imageFit: "contain"
+    imageFit: "contain",
+    embeddedLabel: prefix === "routine"
   };
 }
 

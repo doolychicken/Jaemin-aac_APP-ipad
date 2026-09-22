@@ -83,7 +83,9 @@ SHEETS = [
         ],
         "boxes": [
             (x, y, x + 218, y + h)
-            for y, h in ((4, 171), (218, 157), (413, 152), (607, 155), (806, 156), (1005, 157))
+            # Sheet 5 places its labels over the photographs. Keep each complete
+            # source card instead of cutting off the lower part of the photo.
+            for y, h in ((4, 208), (218, 188), (413, 187), (607, 191), (806, 191), (1005, 195))
             for x in (3, 227, 451, 675)
         ],
     },
