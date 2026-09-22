@@ -3193,11 +3193,16 @@ function renderButtons(items, layout) {
 
     const imageSpotlightScreens = ["outingPlace", "placeHome", "outingHomeplus", "outingSchool", "outingSchoolFriends", "outingSchool_p2", "outingSchool_p3"];
     const isPageControl = item.label === "다음" || item.label === "이전";
+    const isPhotoAacCard = navStack.some((entry) => entry.key === "photoAacHome")
+      && currentKey() !== "photoAacHome"
+      && !!item.image
+      && !item.nav
+      && !isPageControl;
     const keepSchoolNavigation = currentKey() === "placeHome" && item.label === "학교";
     const keepSchoolFriendsNavigation = currentKey() === "outingSchool" && item.label === "친구들";
     if (
       item.image
-      && imageSpotlightScreens.includes(currentKey())
+      && (imageSpotlightScreens.includes(currentKey()) || isPhotoAacCard)
       && !isPageControl
       && !keepSchoolNavigation
       && !keepSchoolFriendsNavigation
@@ -3209,7 +3214,12 @@ function renderButtons(items, layout) {
         items: [],
         layout: "spotlight",
         showPlayer: false,
-        spotlight: { label: speechText, image: item.image }
+        spotlight: {
+          label: speechText,
+          image: item.image,
+          imageFit: item.imageFit || (isPhotoAacCard ? "contain" : "cover"),
+          imagePosition: item.imagePosition || "center center"
+        }
       };
       speak(speechText);
       pushScreen("imageSpotlight", item.label);
@@ -3599,6 +3609,8 @@ function render() {
     gridEl.className = "spotlight-toilet-wrap";
     spotlightImgEl.src = screen.spotlight.image;
     spotlightImgEl.alt = screen.spotlight.label || screen.title || "";
+    spotlightImgEl.style.objectFit = screen.spotlight.imageFit || "cover";
+    spotlightImgEl.style.objectPosition = screen.spotlight.imagePosition || "center center";
     setupImageElement(spotlightImgEl, true);
     const spotLabel = screen.spotlight.label || screen.title || "";
     spotlightBtnEl.setAttribute("aria-label", `${spotLabel}, 눌러서 읽기`);
