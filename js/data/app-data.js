@@ -12,7 +12,7 @@ function photoAacItem(prefix, index, label) {
     5: "routine_ai_05_v2.jpg",
     6: "routine_ai_06_vanity.jpg",
     7: "routine_ai_07_vanity.jpg",
-    8: "routine_ai_08_photo.jpg",
+    8: "routine_ai_08_photo_identity.jpg",
     9: "routine_ai_09_photo.jpg"
   };
   const assetName = prefix === "routine" && routineReplacement[index]
@@ -178,7 +178,7 @@ const PHOTO_AAC_SECTIONS = [
       photoAacItem("routine", 22, "손씻기"),
       { label: "머리감기", speech: "머리감기", image: "./images/photo_aac/routine_ai_hairwash_shampoo.jpg", imageFit: "contain" },
       photoAacItem("routine", 8, "샤워기로 몸 적시기"),
-      { label: "거품목욕하기", speech: "거품목욕하기", image: "./images/photo_aac/routine_ai_bubblebath_bodywash.jpg", imageFit: "contain" },
+      { label: "거품목욕하기", speech: "거품목욕하기", image: "./images/photo_aac/routine_ai_bubblebath_bodywash_identity.jpg", imageFit: "contain" },
       { label: "물기 닦기", speech: "물기 닦기", image: "./images/photo_aac/routine_ai_dry_after_shower.jpg", imageFit: "contain" },
       { label: "드라이기로 머리 말리기", speech: "드라이기로 머리 말리기", image: "./images/photo_aac/routine_ai_hairdryer.jpg", imageFit: "contain" },
       { label: "아이패드로 유튜브 보기", speech: "아이패드로 유튜브 보기", image: "./images/photo_aac/routine_ai_ipad_youtube.jpg", imageFit: "contain" },
