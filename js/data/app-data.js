@@ -171,6 +171,8 @@ const PHOTO_AAC_SECTIONS = [
       photoAacItem("routine", 17, "학교가기"),
       photoAacItem("routine", 18, "공부하기"),
       photoAacItem("routine", 19, "간식먹기"),
+      { label: "아이패드로 유튜브 보기", speech: "아이패드로 유튜브 보기", image: "./images/photo_aac/routine_ai_ipad_youtube.jpg", imageFit: "contain" },
+      { label: "TV로 베베핀 노래 듣기", speech: "텔레비전으로 베베핀 노래 듣기", image: "./images/photo_aac/routine_ai_tv_bebefinn.jpg", imageFit: "contain" },
       photoAacItem("routine", 20, "친구랑 놀기"),
       photoAacItem("routine", 21, "숙제하기"),
       photoAacItem("routine", 22, "손씻기"),
