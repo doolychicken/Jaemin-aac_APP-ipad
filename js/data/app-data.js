@@ -180,6 +180,7 @@ const PHOTO_AAC_SECTIONS = [
       photoAacItem("routine", 8, "샤워기로 몸 적시기"),
       { label: "거품목욕하기", speech: "거품목욕하기", image: "./images/photo_aac/routine_ai_bubblebath_bodywash.jpg", imageFit: "contain" },
       { label: "물기 닦기", speech: "물기 닦기", image: "./images/photo_aac/routine_ai_dry_after_shower.jpg", imageFit: "contain" },
+      { label: "드라이기로 머리 말리기", speech: "드라이기로 머리 말리기", image: "./images/photo_aac/routine_ai_hairdryer.jpg", imageFit: "contain" },
       { label: "아이패드로 유튜브 보기", speech: "아이패드로 유튜브 보기", image: "./images/photo_aac/routine_ai_ipad_youtube.jpg", imageFit: "contain" },
       { label: "TV로 베베핀 노래 듣기", speech: "텔레비전으로 베베핀 노래 듣기", image: "./images/photo_aac/routine_ai_tv_bebefinn.jpg", imageFit: "contain" },
       { label: "가족과 저녁밥 먹기", speech: "엄마 아빠와 저녁밥 먹기", image: "./images/photo_aac/routine_ai_03_family.jpg", imageFit: "contain" },
