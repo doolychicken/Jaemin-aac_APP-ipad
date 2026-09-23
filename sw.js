@@ -4,7 +4,7 @@
  * On first visit, pre-caches all images so subsequent loads are instant.
  */
 
-const CACHE_VERSION = 'v378';
+const CACHE_VERSION = 'v379';
 const CACHE_NAME = `jaemin-aac-${CACHE_VERSION}`;
 
 self.addEventListener('message', (event) => {
@@ -40,9 +40,11 @@ const PRECACHE_ASSETS = [
   ...Array.from({ length: 16 }, (_, i) => `./images/photo_aac/daily_${String(i + 1).padStart(2, '0')}.jpg`),
   ...Array.from({ length: 16 }, (_, i) => `./images/photo_aac/feelings_hobbies_${String(i + 1).padStart(2, '0')}.jpg`),
   ...Array.from({ length: 16 }, (_, i) => `./images/photo_aac/places_answers_${String(i + 1).padStart(2, '0')}.jpg`),
-  ...Array.from({ length: 24 }, (_, i) => i === 4
-    ? './images/photo_aac/routine_ai_05_v2.jpg'
-    : `./images/photo_aac/routine_ai_${String(i + 1).padStart(2, '0')}.jpg`),
+  ...Array.from({ length: 24 }, (_, i) => i === 2
+    ? './images/photo_aac/routine_ai_03_family.jpg'
+    : i === 4
+      ? './images/photo_aac/routine_ai_05_v2.jpg'
+      : `./images/photo_aac/routine_ai_${String(i + 1).padStart(2, '0')}.jpg`),
   './images/photo_aac/routine_ai_brush.jpg',
   ...Array.from({ length: 16 }, (_, i) => `./images/photo_aac/home_leisure_${String(i + 1).padStart(2, '0')}.jpg`),
   ...Array.from({ length: 16 }, (_, i) => `./images/photo_aac/outing_weather_${String(i + 1).padStart(2, '0')}.jpg`),

@@ -7,8 +7,12 @@
 
 function photoAacItem(prefix, index, label) {
   const assetPrefix = prefix === "routine" ? "routine_ai" : prefix;
-  const assetName = prefix === "routine" && index === 5
-    ? "routine_ai_05_v2.jpg"
+  const routineReplacement = {
+    3: "routine_ai_03_family.jpg",
+    5: "routine_ai_05_v2.jpg"
+  };
+  const assetName = prefix === "routine" && routineReplacement[index]
+    ? routineReplacement[index]
     : `${assetPrefix}_${String(index).padStart(2, "0")}.jpg`;
   return {
     label,
