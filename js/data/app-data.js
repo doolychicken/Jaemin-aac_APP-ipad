@@ -7,10 +7,13 @@
 
 function photoAacItem(prefix, index, label) {
   const assetPrefix = prefix === "routine" ? "routine_ai" : prefix;
+  const assetName = prefix === "routine" && index === 5
+    ? "routine_ai_05_v2.jpg"
+    : `${assetPrefix}_${String(index).padStart(2, "0")}.jpg`;
   return {
     label,
     speech: label,
-    image: `./images/photo_aac/${assetPrefix}_${String(index).padStart(2, "0")}.jpg`,
+    image: `./images/photo_aac/${assetName}`,
     imageFit: "contain",
     embeddedLabel: prefix === "routine" && (index === 8 || index === 9)
   };
@@ -143,6 +146,7 @@ const PHOTO_AAC_SECTIONS = [
     items: [
       photoAacItem("routine", 1, "일어나기"),
       photoAacItem("routine", 2, "소변보기"),
+      { label: "응가하기", speech: "응가하기", image: "./images/photo_aac/daily_01.jpg", imageFit: "contain" },
       photoAacItem("routine", 3, "밥먹기"),
       { label: "양치하기", speech: "양치하기", image: "./images/photo_aac/routine_ai_brush.jpg", imageFit: "contain" },
       photoAacItem("routine", 4, "세수하기"),
