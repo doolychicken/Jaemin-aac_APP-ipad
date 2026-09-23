@@ -9,6 +9,8 @@ function photoAacItem(prefix, index, label) {
   const assetPrefix = prefix === "routine" ? "routine_ai" : prefix;
   const routineReplacement = {
     5: "routine_ai_05_v2.jpg",
+    6: "routine_ai_06_vanity.jpg",
+    7: "routine_ai_07_vanity.jpg",
     8: "routine_ai_08_photo.jpg",
     9: "routine_ai_09_photo.jpg"
   };
