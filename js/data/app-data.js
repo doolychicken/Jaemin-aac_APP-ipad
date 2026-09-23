@@ -9,7 +9,9 @@ function photoAacItem(prefix, index, label) {
   const assetPrefix = prefix === "routine" ? "routine_ai" : prefix;
   const routineReplacement = {
     3: "routine_ai_03_family.jpg",
-    5: "routine_ai_05_v2.jpg"
+    5: "routine_ai_05_v2.jpg",
+    8: "routine_ai_08_photo.jpg",
+    9: "routine_ai_09_photo.jpg"
   };
   const assetName = prefix === "routine" && routineReplacement[index]
     ? routineReplacement[index]
@@ -19,7 +21,7 @@ function photoAacItem(prefix, index, label) {
     speech: label,
     image: `./images/photo_aac/${assetName}`,
     imageFit: "contain",
-    embeddedLabel: prefix === "routine" && (index === 8 || index === 9)
+    embeddedLabel: false
   };
 }
 
