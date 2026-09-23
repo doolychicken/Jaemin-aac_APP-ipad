@@ -6,10 +6,11 @@
  */
 
 function photoAacItem(prefix, index, label) {
+  const assetPrefix = prefix === "routine" ? "routine_full" : prefix;
   return {
     label,
     speech: label,
-    image: `./images/photo_aac/${prefix}_${String(index).padStart(2, "0")}.jpg`,
+    image: `./images/photo_aac/${assetPrefix}_${String(index).padStart(2, "0")}.jpg`,
     imageFit: "contain",
     embeddedLabel: prefix === "routine"
   };

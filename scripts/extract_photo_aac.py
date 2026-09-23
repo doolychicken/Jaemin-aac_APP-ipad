@@ -72,7 +72,7 @@ SHEETS = [
     },
     {
         "file": "5.png",
-        "prefix": "routine",
+        "prefix": "routine_full",
         "labels": [
             "일어나기", "소변보기", "밥먹기", "세수하기",
             "수건으로 얼굴닦기", "로션 바르기", "머리빗질", "샤워하기",
