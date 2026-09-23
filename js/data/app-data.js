@@ -6,7 +6,9 @@
  */
 
 function photoAacItem(prefix, index, label) {
-  const assetPrefix = prefix === "routine" ? "routine_full" : prefix;
+  const assetPrefix = prefix === "routine"
+    ? (index <= 16 ? "routine_new" : "routine_full")
+    : prefix;
   return {
     label,
     speech: label,

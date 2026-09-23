@@ -4,7 +4,7 @@
  * On first visit, pre-caches all images so subsequent loads are instant.
  */
 
-const CACHE_VERSION = 'v375';
+const CACHE_VERSION = 'v376';
 const CACHE_NAME = `jaemin-aac-${CACHE_VERSION}`;
 
 self.addEventListener('message', (event) => {
@@ -41,6 +41,7 @@ const PRECACHE_ASSETS = [
   ...Array.from({ length: 16 }, (_, i) => `./images/photo_aac/feelings_hobbies_${String(i + 1).padStart(2, '0')}.jpg`),
   ...Array.from({ length: 16 }, (_, i) => `./images/photo_aac/places_answers_${String(i + 1).padStart(2, '0')}.jpg`),
   ...Array.from({ length: 24 }, (_, i) => `./images/photo_aac/routine_full_${String(i + 1).padStart(2, '0')}.jpg`),
+  ...Array.from({ length: 16 }, (_, i) => `./images/photo_aac/routine_new_${String(i + 1).padStart(2, '0')}.jpg`),
   ...Array.from({ length: 16 }, (_, i) => `./images/photo_aac/home_leisure_${String(i + 1).padStart(2, '0')}.jpg`),
   ...Array.from({ length: 16 }, (_, i) => `./images/photo_aac/outing_weather_${String(i + 1).padStart(2, '0')}.jpg`),
   ...Array.from({ length: 16 }, (_, i) => `./images/photo_aac/preferred_${String(i + 1).padStart(2, '0')}.jpg`),
