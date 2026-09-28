@@ -156,7 +156,7 @@ const PHOTO_AAC_SECTIONS = [
       photoAacItem("routine", 2, "소변보기"),
       { label: "응가하기", speech: "응가하기", image: "./images/photo_aac/daily_01.jpg", imageFit: "contain" },
       photoAacItem("routine", 3, "아침밥 먹기"),
-      { label: "양치하기", speech: "양치하기", image: "./images/photo_aac/routine_ai_brush_toothpaste.jpg", imageFit: "contain" },
+      { label: "양치하기", speech: "양치하기", image: "./images/photo_aac/routine_ai_brush_perio_cup.png", imageFit: "contain" },
       photoAacItem("routine", 4, "세수하기"),
       photoAacItem("routine", 5, "수건으로 얼굴닦기"),
       photoAacItem("routine", 6, "로션 바르기"),
@@ -185,7 +185,7 @@ const PHOTO_AAC_SECTIONS = [
       { label: "아이패드로 유튜브 보기", speech: "아이패드로 유튜브 보기", image: "./images/photo_aac/routine_ai_ipad_youtube.jpg", imageFit: "contain" },
       { label: "TV로 베베핀 노래 듣기", speech: "텔레비전으로 베베핀 노래 듣기", image: "./images/photo_aac/routine_ai_tv_bebefinn.jpg", imageFit: "contain" },
       { label: "가족과 저녁밥 먹기", speech: "엄마 아빠와 저녁밥 먹기", image: "./images/photo_aac/routine_ai_03_family.jpg", imageFit: "contain" },
-      { label: "양치하기", speech: "양치하기", image: "./images/photo_aac/routine_ai_brush_toothpaste.jpg", imageFit: "contain" },
+      { label: "양치하기", speech: "양치하기", image: "./images/photo_aac/routine_ai_brush_perio_cup.png", imageFit: "contain" },
       photoAacItem("routine", 23, "잠옷입기"),
       photoAacItem("routine", 24, "잠자기")
     ]
