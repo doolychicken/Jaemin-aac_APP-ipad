@@ -15,6 +15,7 @@
     } = deps;
 
     const gameState = {};
+    const tasks = window.createTaskScope();
 
     function shuffle(items) {
       const copy = items.slice();
@@ -43,11 +44,14 @@
     }
 
     function reset(screen) {
+      tasks.clear();
       delete gameState[screen.key || "studyMartCartGame"];
       render();
     }
 
     function clear() {
+      tasks.clear();
+      document.querySelectorAll(".mart-cart-card--ghost, .mart-cart-item--ghost").forEach((el) => el.remove());
       Object.keys(gameState).forEach((key) => delete gameState[key]);
     }
 
@@ -168,7 +172,7 @@
         terminal.classList.add("is-paid");
         card.classList.add("is-paid");
         speak("계산했어요");
-        window.setTimeout(() => {
+        tasks.setTimeout(() => {
           state.phase = "done";
           state.locked = false;
           render();
@@ -237,7 +241,7 @@
 
       if (!state.checkoutPrompted) {
         state.checkoutPrompted = true;
-        window.setTimeout(() => {
+        tasks.setTimeout(() => {
           if (!state.locked && state.phase === "checkout") speak("카드를 대주세요");
         }, 450);
       }
@@ -308,7 +312,7 @@
         scene.classList.add("is-driving");
         playPuzzleSound("success");
         speak(`맞아요. ${item.label}`);
-        window.setTimeout(() => {
+        tasks.setTimeout(() => {
           state.round += 1;
           state.locked = false;
           state.cartItem = null;
@@ -324,7 +328,7 @@
         cart.classList.add("is-wrong");
         playPuzzleSound("fail");
         speak(`${item.label} 아니야. ${current.label}을 주세요`);
-        window.setTimeout(() => {
+        tasks.setTimeout(() => {
           sourceEl?.classList.remove("is-wrong");
           cart.classList.remove("is-wrong");
         }, 560);
@@ -340,7 +344,7 @@
         sourceEl?.classList.add("is-wrong");
         playPuzzleSound("fail");
         speak("카트에 넣어주세요");
-        window.setTimeout(() => {
+        tasks.setTimeout(() => {
           sourceEl?.classList.remove("is-wrong");
         }, 560);
       }
@@ -448,7 +452,7 @@
       const promptKey = `${state.phase}:${state.round}:${current.id}`;
       if (state.promptedKey !== promptKey) {
         state.promptedKey = promptKey;
-        window.setTimeout(() => {
+        tasks.setTimeout(() => {
           if (!state.locked && state.phase === "shop") speak(`${current.label}을 주세요`);
         }, 450);
       }

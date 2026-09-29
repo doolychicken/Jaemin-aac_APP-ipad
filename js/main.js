@@ -27,6 +27,11 @@ const returnHintEl       = document.getElementById("returnHint");
 // ── 네비게이션 상태 ──────────────────────────────────────────────────────────
 const navStack = [{ key: "main", label: "메인" }];
 let selectedYoutube = "";
+let renderRevision = 0;
+let navigationRequest = 0;
+let renderedEntry = null;
+let activeFeature = null;
+const dateTasks = window.createTaskScope();
 const TEACHING_AID_PROGRESS_KEY = "jaemin-teaching-aid-progress-v2";
 let completedTeachingAids = loadCompletedTeachingAids();
 
@@ -61,19 +66,12 @@ function applyWeekdayTextColor(el, value) {
 }
 
 function loadCompletedTeachingAids() {
-  try {
-    const raw = localStorage.getItem(TEACHING_AID_PROGRESS_KEY);
-    const values = JSON.parse(raw || "[]");
-    return new Set(Array.isArray(values) ? values.map(String) : []);
-  } catch {
-    return new Set();
-  }
+  return new Set(window.appStorage.load(TEACHING_AID_PROGRESS_KEY, [],
+    (value) => Array.isArray(value) && value.every((id) => typeof id === "string")));
 }
 
 function saveCompletedTeachingAids() {
-  try {
-    localStorage.setItem(TEACHING_AID_PROGRESS_KEY, JSON.stringify(Array.from(completedTeachingAids)));
-  } catch {}
+  window.appStorage.save(TEACHING_AID_PROGRESS_KEY, Array.from(completedTeachingAids));
 }
 
 function isTeachingAidComplete(id) {
@@ -304,7 +302,9 @@ function pickPreferredKoVoice() {
   if (!("speechSynthesis" in window)) return null;
   const voices = window.speechSynthesis.getVoices() || [];
   if (!voices.length) return null;
-  const koVoices = voices.filter((v) => (v.lang || "").toLowerCase().startsWith("ko"));
+  const koVoices = voices.filter((v) => (v.lang || "").toLowerCase().startsWith("ko")
+    && (navigator.onLine || v.localService));
+  koVoices.sort((a, b) => Number(!!b.localService) - Number(!!a.localService));
   if (koVoices.length) {
     const priorities = [/female/i, /woman/i, /여성/, /google/i, /premium|neural|natural/i];
     for (const rule of priorities) {
@@ -314,7 +314,7 @@ function pickPreferredKoVoice() {
     return koVoices[0];
   }
   // 한국어 없으면 브라우저 기본(default) 목소리 우선, 없으면 첫 번째
-  return voices.find((v) => v.default) || voices[0] || null;
+  return null;
 }
 
 function unlockAudioOnce() {
@@ -340,14 +340,35 @@ function unlockAudioOnce() {
 
 // ── 2. speak: 안드로이드 정교한 예외 처리 ────────────────────────────────────
 function speak(text) {
-  if (!("speechSynthesis" in window)) return Promise.resolve();
-  if (!preferredKoVoice) preferredKoVoice = pickPreferredKoVoice();
   const spokenText = String(text || "").trim();
   if (!spokenText) return Promise.resolve();
-  ttsRequestId += 1;
+  const request = ++ttsRequestId;
+  window.offlineSpeech?.cancel();
+  try { window.speechSynthesis?.cancel(); } catch (_) {}
+  const playback = window.offlineSpeech?.play(spokenText);
+  if (playback) return playback.then(success => {
+    if (!success && request === ttsRequestId) return speakNative(spokenText);
+  });
+  return speakNative(spokenText);
+}
+
+function speakNative(text) {
+  if (!("speechSynthesis" in window)) {
+    window.appStorage.warn("음성 파일을 재생하지 못했어요. 인터넷에 연결해 오프라인 준비를 다시 확인해주세요.");
+    return Promise.resolve();
+  }
+  if (!navigator.onLine && !pickPreferredKoVoice()) {
+    window.appStorage.warn("이 문구의 음성을 재생하지 못했어요. 오프라인 준비를 다시 확인해주세요.");
+    return Promise.resolve();
+  }
+  preferredKoVoice = pickPreferredKoVoice();
+  const spokenText = String(text || "").trim();
+  if (!spokenText) return Promise.resolve();
+  const requestId = ++ttsRequestId;
 
   return new Promise((resolve) => {
     const doSpeak = () => {
+      if (requestId !== ttsRequestId) { resolve(); return; }
       if (!preferredKoVoice) preferredKoVoice = pickPreferredKoVoice();
       const u = new SpeechSynthesisUtterance(spokenText);
       let done = false;
@@ -908,519 +929,6 @@ function renderOutingPlanner() {
 }
 
 // ── 치료 선택 ────────────────────────────────────────────────────────────────
-function renderDateHome() {
-  // 오늘 날짜 초기화 (최초 1회)
-  if (!dateSelection._initialized) {
-    const now = new Date();
-    dateSelection.month   = now.getMonth() + 1;
-    dateSelection.day     = now.getDate();
-    const wNames = ["일요일","월요일","화요일","수요일","목요일","금요일","토요일"];
-    dateSelection.weekday = wNames[now.getDay()];
-    dateSelection._initialized = true;
-  }
-
-  appMainEl.classList.remove("app--spotlight");
-  spotlightViewEl.style.display = "none";
-  spotlightBtnEl.onclick = null;
-  heroEl.style.display = "none";
-  heroEl.className = "hero";
-  gridEl.style.display = "";
-  gridEl.innerHTML = "";
-  gridEl.className = "date-home-wrap";
-
-  const weather     = dateSelection.weather;
-  const weatherEmoji = weather ? (WEATHER_EMOJI[weather] || "🌤️") : null;
-
-  function buildFullText() {
-    return `오늘은 ${dateSelection.month}월 ${dateSelection.day}일 ${dateSelection.weekday}${dateSelection.weather ? " " + dateSelection.weather : ""}`;
-  }
-
-  // ── 드럼 피커 생성 함수 ──
-  function createDrumPicker(initVal, min, max, unit, onCommit) {
-    let curVal     = initVal;
-    let dragStartY = 0;
-    let dragStartV = initVal;
-    let dragging   = false;
-
-    const wrap   = document.createElement("div");
-    wrap.className = "date-drum";
-
-    const upBtn  = document.createElement("button");
-    upBtn.type   = "button";
-    upBtn.className = "date-drum-arrow";
-    upBtn.setAttribute("aria-label", `${unit} 올리기`);
-    upBtn.textContent = "▲";
-
-    const numRow = document.createElement("div");
-    numRow.className = "date-drum-numrow";
-
-    const numEl  = document.createElement("div");
-    numEl.className = "date-drum-number";
-
-    numRow.appendChild(numEl);   // 숫자만 박스 안에
-
-    const unitEl = document.createElement("div");
-    unitEl.className = "date-drum-unit";
-    unitEl.textContent = unit;   // 박스 바깥에 배치
-
-    const downBtn = document.createElement("button");
-    downBtn.type  = "button";
-    downBtn.className = "date-drum-arrow";
-    downBtn.setAttribute("aria-label", `${unit} 내리기`);
-    downBtn.textContent = "▼";
-
-    const range = max - min + 1;
-    function clamp(v) { return ((v - min) % range + range) % range + min; }
-
-    function display(v, offset = 0) {
-      curVal = clamp(v);
-      numEl.textContent = curVal;
-      numRow.style.transform = offset ? `translateY(${offset * 0.38}px)` : "";
-      numRow.style.opacity   = offset ? String(Math.max(0.45, 1 - Math.abs(offset) * 0.007)) : "";
-    }
-
-    display(initVal);
-
-    upBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      display(curVal + 1);
-      onCommit(curVal);
-    });
-    downBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      display(curVal - 1);
-      onCommit(curVal);
-    });
-
-    numRow.addEventListener("pointerdown", (e) => {
-      dragging   = true;
-      dragStartY = e.clientY;
-      dragStartV = curVal;
-      numRow.setPointerCapture(e.pointerId);
-      e.preventDefault();
-    });
-    numRow.addEventListener("pointermove", (e) => {
-      if (!dragging) return;
-      const dy    = e.clientY - dragStartY;
-      const steps = -Math.round(dy / 38);
-      display(dragStartV + steps, dy);
-    });
-    numRow.addEventListener("pointerup", (e) => {
-      if (!dragging) return;
-      dragging = false;
-      const dy    = e.clientY - dragStartY;
-      const steps = -Math.round(dy / 38);
-      display(dragStartV + steps);
-      onCommit(curVal);
-    });
-    numRow.addEventListener("pointercancel", () => { dragging = false; display(curVal); });
-
-    wrap.appendChild(upBtn);
-    wrap.appendChild(numRow);
-    wrap.appendChild(downBtn);
-
-    // 바깥 컨테이너: [드럼] + [단위 레이블]
-    const outer = document.createElement("div");
-    outer.className = "date-drum-outer";
-    outer.appendChild(wrap);
-    outer.appendChild(unitEl);
-    return outer;
-  }
-
-  // ── 날짜 카드 ──
-  const dateCard = document.createElement("div");
-  dateCard.className = "date-card";
-
-  const badge = document.createElement("div");
-  badge.className = "date-card-badge";
-  badge.textContent = "오늘 📅";
-  dateCard.appendChild(badge);
-
-  // ── 드럼 피커 행 (먼저 선언 — 꼭지 이벤트에서 참조) ──
-  const drumRow = document.createElement("div");
-  drumRow.className = "date-drum-row";
-
-  // ── 오늘 꼭지 3개 ──
-  const chipNow = new Date();
-  const chipM   = chipNow.getMonth() + 1;
-  const chipD   = chipNow.getDate();
-  const chipWS  = ["일","월","화","수","목","금","토"][chipNow.getDay()];
-  const chipWF  = ["일요일","월요일","화요일","수요일","목요일","금요일","토요일"][chipNow.getDay()];
-
-  function makeDragChip(displayText, sublabel, onApply) {
-    const chip = document.createElement("div");
-    chip.className = "date-today-chip";
-    chip.innerHTML =
-      `<span class="chip-vals">${displayText}</span>` +
-      `<span class="chip-sub">${sublabel}</span>` +
-      `<span class="chip-hint">↓</span>`;
-
-    let cDrag = false, cSX = 0, cSY = 0, cRect0 = null, cGhost = null;
-
-    chip.addEventListener("pointerdown", (e) => {
-      cDrag = true; cSX = e.clientX; cSY = e.clientY;
-      cRect0 = chip.getBoundingClientRect();
-      chip.setPointerCapture(e.pointerId);
-      cGhost = chip.cloneNode(true);
-      cGhost.className = "date-today-chip date-today-chip--ghost";
-      Object.assign(cGhost.style, {
-        position: "fixed", left: cRect0.left + "px", top: cRect0.top + "px",
-        width: cRect0.width + "px", zIndex: "9999", pointerEvents: "none", margin: "0"
-      });
-      document.body.appendChild(cGhost);
-      chip.classList.add("date-today-chip--dragging");
-      e.preventDefault();
-    });
-
-    chip.addEventListener("pointermove", (e) => {
-      if (!cDrag || !cGhost) return;
-      cGhost.style.left = (cRect0.left + e.clientX - cSX) + "px";
-      cGhost.style.top  = (cRect0.top  + e.clientY - cSY) + "px";
-      const ov = document.elementFromPoint(e.clientX, e.clientY);
-      drumRow.classList.toggle("date-drum-row--highlight",
-        !!(ov?.closest(".date-drum-row, .date-drum-outer, .date-drum")));
-    });
-
-    chip.addEventListener("pointerup", (e) => {
-      if (!cDrag) return;
-      cDrag = false;
-      chip.classList.remove("date-today-chip--dragging");
-      drumRow.classList.remove("date-drum-row--highlight");
-      if (cGhost) { cGhost.remove(); cGhost = null; }
-      const moved = Math.hypot(e.clientX - cSX, e.clientY - cSY) > 12;
-      if (!moved) { onApply(); return; }
-      const ov = document.elementFromPoint(e.clientX, e.clientY);
-      if (ov?.closest(".date-drum-row, .date-drum-outer, .date-drum, .date-card") ||
-          (e.clientY - cSY) > 40) onApply();
-    });
-
-    chip.addEventListener("pointercancel", () => {
-      cDrag = false;
-      chip.classList.remove("date-today-chip--dragging");
-      drumRow.classList.remove("date-drum-row--highlight");
-      if (cGhost) { cGhost.remove(); cGhost = null; }
-    });
-
-    return chip;
-  }
-
-  const chipRow = document.createElement("div");
-  chipRow.className = "date-chip-row";
-  chipRow.appendChild(makeDragChip(String(chipM), "월", () => { dateSelection.month   = chipM;  render(); }));
-  chipRow.appendChild(makeDragChip(String(chipD), "일", () => { dateSelection.day     = chipD;  render(); }));
-  chipRow.appendChild(makeDragChip(chipWS, "요일",    () => { dateSelection.weekday = chipWF; render(); }));
-
-  dateCard.appendChild(chipRow);
-
-  drumRow.appendChild(
-    createDrumPicker(dateSelection.month, 1, 12, "월", (v) => { dateSelection.month = v; render(); })
-  );
-
-  drumRow.appendChild(
-    createDrumPicker(dateSelection.day, 1, 31, "일", (v) => { dateSelection.day = v; render(); })
-  );
-
-  // 요일 드럼 피커
-  const WDAY_FULL = ["월요일","화요일","수요일","목요일","금요일","토요일","일요일"];
-  let wdayIdx = WDAY_FULL.indexOf(dateSelection.weekday);
-  if (wdayIdx < 0) wdayIdx = 0;
-
-  const weekdayDrum = (() => {
-    let curIdx = wdayIdx;
-    let dragStartY = 0, dragStartIdx = wdayIdx, isDragging = false;
-
-    const wrap = document.createElement("div");
-    wrap.className = "date-drum";
-
-    const upBtn2 = document.createElement("button");
-    upBtn2.type = "button"; upBtn2.className = "date-drum-arrow"; upBtn2.textContent = "▲";
-
-    const wdRow = document.createElement("div");
-    wdRow.className = "date-drum-numrow";
-
-    const wdNameEl = document.createElement("div");
-    wdNameEl.className = "date-drum-number date-drum-number--wd";
-
-    wdRow.appendChild(wdNameEl);   // 요일명(수/목/금)만 박스 안에
-
-    const wdSuffixEl = document.createElement("div");
-    wdSuffixEl.className = "date-drum-unit date-drum-unit--wd";
-    wdSuffixEl.textContent = "요일";  // 박스 바깥에 배치
-
-    const downBtn2 = document.createElement("button");
-    downBtn2.type = "button"; downBtn2.className = "date-drum-arrow"; downBtn2.textContent = "▼";
-
-    function ci(i) { return ((i % 7) + 7) % 7; }
-    function dispWd(idx, off = 0) {
-      curIdx = ci(idx);
-      wdNameEl.textContent = WDAY_FULL[curIdx].replace("요일", "");
-      applyWeekdayTextColor(wdNameEl, WDAY_FULL[curIdx]);
-      wdRow.style.transform = off ? `translateY(${off * 0.38}px)` : "";
-      wdRow.style.opacity   = off ? String(Math.max(0.45, 1 - Math.abs(off) * 0.007)) : "";
-    }
-    dispWd(curIdx);
-
-    upBtn2.addEventListener("click",   (e) => { e.stopPropagation(); dispWd(curIdx - 1); dateSelection.weekday = WDAY_FULL[curIdx]; render(); });
-    downBtn2.addEventListener("click", (e) => { e.stopPropagation(); dispWd(curIdx + 1); dateSelection.weekday = WDAY_FULL[curIdx]; render(); });
-
-    wdRow.addEventListener("pointerdown", (e) => { isDragging = true; dragStartY = e.clientY; dragStartIdx = curIdx; wdRow.setPointerCapture(e.pointerId); e.preventDefault(); });
-    wdRow.addEventListener("pointermove", (e) => { if (!isDragging) return; const dy = e.clientY - dragStartY; dispWd(dragStartIdx - Math.round(dy / 38), dy); });
-    wdRow.addEventListener("pointerup",   (e) => { if (!isDragging) return; isDragging = false; const dy = e.clientY - dragStartY; dispWd(dragStartIdx - Math.round(dy / 38)); dateSelection.weekday = WDAY_FULL[curIdx]; render(); });
-    wdRow.addEventListener("pointercancel", () => { isDragging = false; dispWd(curIdx); });
-
-    wrap.appendChild(upBtn2); wrap.appendChild(wdRow); wrap.appendChild(downBtn2);
-
-    const wdOuter = document.createElement("div");
-    wdOuter.className = "date-drum-outer";
-    wdOuter.appendChild(wrap);
-    wdOuter.appendChild(wdSuffixEl);
-    return wdOuter;
-  })();
-
-  drumRow.appendChild(weekdayDrum);
-  dateCard.appendChild(drumRow);
-
-  // 선택된 날씨 배지
-  if (weather) {
-    const wb = document.createElement("div");
-    wb.className = "date-card-weather";
-    wb.textContent = `${weatherEmoji} ${weather}`;
-    dateCard.appendChild(wb);
-  }
-
-  gridEl.appendChild(dateCard);
-
-  // ── 날씨 선택 섹션 ──
-  const weatherSection = document.createElement("div");
-  weatherSection.className = "date-weather-section";
-
-  const weatherLabel = document.createElement("div");
-  weatherLabel.className = "date-weather-label";
-  weatherLabel.textContent = "오늘 날씨";
-  weatherSection.appendChild(weatherLabel);
-
-  const weatherGrid = document.createElement("div");
-  weatherGrid.className = "date-weather-grid";
-
-  DATA.screens.dateWeatherPicker.items.forEach((item) => {
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "date-weather-tile" + (dateSelection.weather === item.label ? " is-selected" : "");
-    const img = document.createElement("img");
-    img.src = item.image; img.alt = item.label;
-    setupImageElement(img, true);
-    const lbl = document.createElement("div");
-    lbl.className = "date-weather-tile-label";
-    lbl.textContent = item.label;
-    btn.appendChild(img); btn.appendChild(lbl);
-    btn.addEventListener("click", () => { speak(item.label); dateSelection.weather = item.label; render(); });
-    weatherGrid.appendChild(btn);
-  });
-
-  weatherSection.appendChild(weatherGrid);
-  gridEl.appendChild(weatherSection);
-
-  // ── 전체 문장 읽기 버튼 ──
-  const sentenceBtn = document.createElement("button");
-  sentenceBtn.type = "button";
-  sentenceBtn.className = "date-sentence-btn";
-  const ft = buildFullText();
-  sentenceBtn.innerHTML = `<span class="date-sentence-icon">🔊</span><span>${ft}</span>`;
-  sentenceBtn.addEventListener("click", () => speak(buildFullText()));
-  gridEl.appendChild(sentenceBtn);
-}
-
-// 사진 카드판 방식 날짜 화면. 위의 예전 날짜 함수보다 뒤에 선언되어 이 함수가 사용됩니다.
-function renderDateHome() {
-  const today = new Date();
-  const weekdayNames = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
-  const weekdayChoices = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"];
-  const weatherItems = DATA.screens.dateWeatherPicker.items || [];
-  const yearChoices = [today.getFullYear() - 1, today.getFullYear(), today.getFullYear() + 1];
-
-  if (!dateSelection._initialized) {
-    dateSelection.year = today.getFullYear();
-    dateSelection.month = today.getMonth() + 1;
-    dateSelection.day = today.getDate();
-    dateSelection.weekday = weekdayNames[today.getDay()];
-    dateSelection._initialized = true;
-  }
-
-  appMainEl.classList.remove("app--spotlight");
-  spotlightViewEl.style.display = "none";
-  spotlightBtnEl.onclick = null;
-  heroEl.style.display = "none";
-  heroEl.className = "hero";
-  gridEl.style.display = "";
-  gridEl.innerHTML = "";
-  gridEl.className = "date-board";
-  helperEl.textContent = "빈칸을 누르고 아래 카드를 골라 붙여요.";
-
-  function focusLabel(kind) {
-    return { year: "년", month: "월", day: "일", weekday: "요일", weather: "날씨" }[kind] || "";
-  }
-
-  function buildFullText() {
-    const weatherText = dateSelection.weather ? ` 날씨는 ${dateSelection.weather}입니다.` : "";
-    return `오늘은 ${dateSelection.year}년 ${dateSelection.month}월 ${dateSelection.day}일 ${dateSelection.weekday}입니다.${weatherText}`;
-  }
-
-  function applyToday() {
-    dateSelection.year = today.getFullYear();
-    dateSelection.month = today.getMonth() + 1;
-    dateSelection.day = today.getDate();
-    dateSelection.weekday = weekdayNames[today.getDay()];
-    if (!weekdayChoices.includes(dateSelection.weekday)) dateSelection.weekday = "월요일";
-  }
-
-  function setFocus(nextFocus) {
-    dateCardFocus = nextFocus;
-    speak(focusLabel(nextFocus));
-    render();
-  }
-
-  function makeSlot(kind, value, unit, options = {}) {
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = `date-slot${dateCardFocus === kind ? " is-active" : ""}${options.wide ? " date-slot--wide" : ""}${options.weather ? " date-slot--weather" : ""}`;
-    btn.setAttribute("aria-label", `${focusLabel(kind)} 선택`);
-
-    if (options.weather && value) {
-      const weather = weatherItems.find((item) => item.label === value);
-      if (weather?.image) {
-        const img = document.createElement("img");
-        img.src = weather.image;
-        img.alt = value;
-        setupImageElement(img, true);
-        btn.appendChild(img);
-      }
-    }
-
-    const main = document.createElement("span");
-    main.className = "date-slot-main";
-    main.textContent = value || "?";
-    if (kind === "weekday") applyWeekdayTextColor(main, value);
-    btn.appendChild(main);
-
-    if (unit) {
-      const suffix = document.createElement("span");
-      suffix.className = "date-slot-unit";
-      suffix.textContent = unit;
-      btn.appendChild(suffix);
-    }
-
-    btn.addEventListener("click", () => setFocus(kind));
-    return btn;
-  }
-
-  function makeOptionCard(label, onPick, options = {}) {
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = `date-option-card${options.selected ? " is-selected" : ""}${options.weather ? " date-option-card--weather" : ""}`;
-
-    if (options.image) {
-      const img = document.createElement("img");
-      img.src = options.image;
-      img.alt = label;
-      setupImageElement(img, true);
-      btn.appendChild(img);
-    }
-
-    const text = document.createElement("span");
-    text.textContent = label;
-    if (options.weekday) applyWeekdayTextColor(text, label);
-    btn.appendChild(text);
-    btn.addEventListener("click", () => {
-      onPick();
-      if (options.weather) playWeatherSound(label);
-      speak(label);
-      render();
-    });
-    return btn;
-  }
-
-  function getOptionsForFocus() {
-    if (dateCardFocus === "year") {
-      return yearChoices.map((year) => makeOptionCard(String(year), () => {
-        dateSelection.year = year;
-        dateCardFocus = "month";
-      }, { selected: dateSelection.year === year }));
-    }
-
-    if (dateCardFocus === "month") {
-      return Array.from({ length: 12 }, (_, i) => i + 1).map((month) => makeOptionCard(String(month), () => {
-        dateSelection.month = month;
-        dateCardFocus = "day";
-      }, { selected: dateSelection.month === month }));
-    }
-
-    if (dateCardFocus === "day") {
-      return Array.from({ length: 31 }, (_, i) => i + 1).map((day) => makeOptionCard(String(day), () => {
-        dateSelection.day = day;
-        dateCardFocus = "weekday";
-      }, { selected: dateSelection.day === day }));
-    }
-
-    if (dateCardFocus === "weekday") {
-      return weekdayChoices.map((weekday) => makeOptionCard(weekday.replace("요일", ""), () => {
-        dateSelection.weekday = weekday;
-        dateCardFocus = "weather";
-      }, { selected: dateSelection.weekday === weekday, weekday: true }));
-    }
-
-    return weatherItems.map((item) => makeOptionCard(item.label, () => {
-      dateSelection.weather = item.label;
-    }, { selected: dateSelection.weather === item.label, image: item.image, weather: true }));
-  }
-
-  const board = document.createElement("section");
-  board.className = "date-card-board";
-  board.appendChild(makeSlot("year", dateSelection.year, "년", { wide: true }));
-  board.appendChild(makeSlot("month", dateSelection.month, "월"));
-  board.appendChild(makeSlot("day", dateSelection.day, "일"));
-  board.appendChild(makeSlot("weekday", dateSelection.weekday?.replace("요일", ""), "요일"));
-  board.appendChild(makeSlot("weather", dateSelection.weather, "", { wide: true, weather: true }));
-  gridEl.appendChild(board);
-
-  const optionPanel = document.createElement("section");
-  optionPanel.className = `date-option-panel date-option-panel--${dateCardFocus}`;
-
-  const optionTitle = document.createElement("div");
-  optionTitle.className = "date-option-title";
-  optionTitle.textContent = `${focusLabel(dateCardFocus)} 카드 고르기`;
-  optionPanel.appendChild(optionTitle);
-
-  const optionGrid = document.createElement("div");
-  optionGrid.className = "date-option-grid";
-  getOptionsForFocus().forEach((btn) => optionGrid.appendChild(btn));
-  optionPanel.appendChild(optionGrid);
-  gridEl.appendChild(optionPanel);
-
-  const actionRow = document.createElement("div");
-  actionRow.className = "date-action-row";
-
-  const todayBtn = document.createElement("button");
-  todayBtn.type = "button";
-  todayBtn.className = "date-action-btn";
-  todayBtn.textContent = "오늘 카드 붙이기";
-  todayBtn.addEventListener("click", () => {
-    applyToday();
-    dateCardFocus = "weather";
-    speak("오늘 날짜를 붙였어요");
-    render();
-  });
-  actionRow.appendChild(todayBtn);
-
-  const speakBtn = document.createElement("button");
-  speakBtn.type = "button";
-  speakBtn.className = "date-action-btn date-action-btn--primary";
-  speakBtn.textContent = "문장 읽기";
-  speakBtn.addEventListener("click", () => speak(buildFullText()));
-  actionRow.appendChild(speakBtn);
-  gridEl.appendChild(actionRow);
-}
-
-// 이전 코드 호환용 alias
 function renderDatePlanner() { renderDateHome(); }
 
 function initDateSelectionToday() {
@@ -1707,7 +1215,7 @@ function renderDateStepFlow() {
       onPick();
       if (options.weather) playWeatherSound(label);
       speak(label);
-      if (options.next) window.setTimeout(() => selectStep(options.next), 160);
+      if (options.next) dateTasks.setTimeout(() => selectStep(options.next), 160);
       else render();
     });
     return btn;
@@ -2012,20 +1520,20 @@ function renderDateStepFlowDrag() {
     const afterSpeech = Promise.resolve(speak(spokenStepLabel(kind, stored)));
     const advance = () => {
       if (dateStepPage === "summary") {
-        window.setTimeout(() => {
+        dateTasks.setTimeout(() => {
           render();
           if (summaryComplete) {
-            window.setTimeout(() => speak(dateSentenceText()), 260);
+            dateTasks.setTimeout(() => speak(dateSentenceText()), 260);
           }
         }, 180);
       } else {
-        window.setTimeout(() => gotoStep(next), 180);
+        dateTasks.setTimeout(() => gotoStep(next), 180);
       }
     };
     afterSpeech.finally(() => {
       if (kind === "weather") {
         playWeatherSound(value);
-        window.setTimeout(advance, 650);
+        dateTasks.setTimeout(advance, 650);
         return;
       }
       advance();
@@ -2787,7 +2295,7 @@ function renderDatePuzzle() {
       targetEl.appendChild(burst);
     }
     speak(String(label));
-    setTimeout(render, 420);
+    dateTasks.setTimeout(render, 420);
   }
 
   function showPuzzleMiss() {
@@ -2806,7 +2314,7 @@ function renderDatePuzzle() {
     if (kind === "weather") dateSelection.weather = value;
     dateCardFocus = nextDateFocus[kind] || "weather";
     showPuzzleSuccess(targetEl, spokenDropLabel(kind, value));
-    if (kind === "weather") window.setTimeout(() => playWeatherSound(value), 420);
+    if (kind === "weather") dateTasks.setTimeout(() => playWeatherSound(value), 420);
   }
 
   function allowDrop(e) {
@@ -3177,6 +2685,8 @@ function renderButtons(items, layout) {
   }
 
   function activateItem(item) {
+    const request = ++navigationRequest;
+    const revision = renderRevision;
     const yUrl = resolveYoutube(item);
     const speechText = item.speech || item.label;
 
@@ -3282,6 +2792,7 @@ function renderButtons(items, layout) {
       return;
     }
     const moveAfterSpeech = () => window.setTimeout(() => {
+      if (request !== navigationRequest || revision !== renderRevision) return;
       if (item.nav) { pushScreen(item.nav, item.label); render(); return; }
       if (yUrl) {
         if (item.playInApp && !useDirectYoutubeOpen) {
@@ -3506,6 +3017,15 @@ function renderLocalVideo(screen) {
 }
 
 function render() {
+  renderRevision += 1;
+  const entry = navStack[navStack.length - 1];
+  if (renderedEntry !== entry) {
+    if (activeFeature) activeFeature.clear();
+    activeFeature = null;
+    dateTasks.clear();
+    renderedEntry = entry;
+  }
+  scheduleFeature.saveSession();
   const key    = currentKey();
   // Returning to the first screen starts a fresh teaching-aid session.
   if (key === "main" && completedTeachingAids.size > 0) resetTeachingAidProgress();
@@ -3590,14 +3110,19 @@ function render() {
   } else if (scheduleFeature.handles(key)) {
     scheduleFeature.render(key, screen);
   } else if (screen.layout === "studyPuzzle") {
+    activeFeature = studyPuzzleFeature;
     studyPuzzleFeature.render(screen);
   } else if (screen.layout === "recyclingGame") {
+    activeFeature = recyclingGameFeature;
     recyclingGameFeature.render({ ...screen, key });
   } else if (screen.layout === "martCartGame") {
+    activeFeature = martCartGameFeature;
     martCartGameFeature.render({ ...screen, key });
   } else if (screen.layout === "trafficLightGame") {
+    activeFeature = trafficLightGameFeature;
     trafficLightGameFeature.render({ ...screen, key });
   } else if (screen.layout === "facePartsGame") {
+    activeFeature = facePartsGameFeature;
     facePartsGameFeature.render({ ...screen, key });
   } else if (screen.layout === "localVideo") {
     renderLocalVideo(screen);
@@ -3687,6 +3212,7 @@ homeBtn.addEventListener("click", () => {
   studyPuzzleFeature.clear();
   recyclingGameFeature.clear();
   martCartGameFeature.clear();
+  trafficLightGameFeature.clear();
   facePartsGameFeature.clear();
   selectedYoutube = "";
   resetPageState();

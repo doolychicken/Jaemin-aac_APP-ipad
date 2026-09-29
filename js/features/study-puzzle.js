@@ -16,6 +16,7 @@
       setupImageElement,
       render
     } = deps;
+    const tasks = window.createTaskScope();
     const studyPuzzleProgress = {};
 
     function removeFloatingPuzzlePieces() {
@@ -25,8 +26,12 @@
     }
 
     function clearStudyPuzzleProgress() {
+      tasks.clear();
       removeFloatingPuzzlePieces();
-      Object.keys(studyPuzzleProgress).forEach((key) => delete studyPuzzleProgress[key]);
+      Object.keys(studyPuzzleProgress).forEach((key) => {
+        studyPuzzleProgress[key].generation += 1;
+        delete studyPuzzleProgress[key];
+      });
     }
     
     function renderStudyPuzzle(screen) {
@@ -227,7 +232,7 @@
 
           movingEl.style.transition = "transform 0.9s cubic-bezier(0.16, 0.74, 0.22, 1)";
           movingEl.style.transform = `translate3d(${dx}px, ${dy}px, 0)`;
-          window.setTimeout(() => {
+          tasks.setTimeout(() => {
             sourceEl.classList.remove("is-return-target");
             movingEl.remove();
             resolve();
@@ -236,7 +241,10 @@
       }
 
       function returnMiss(movingEl, sourceEl) {
-        animatePuzzleReturn(movingEl, sourceEl).finally(showMiss);
+        const generation = state.generation;
+        animatePuzzleReturn(movingEl, sourceEl).finally(() => {
+          if (state.generation === generation && sourceEl?.isConnected) showMiss();
+        });
       }
 
       function slotAcceptsValue(slotEl, value) {
@@ -361,7 +369,7 @@
             animation.onfinish = () => {
               slotEl.classList.remove("is-magnet-target");
               slotEl.classList.add("is-docking");
-              window.setTimeout(() => {
+              tasks.setTimeout(() => {
                 slotEl.classList.remove("is-docking");
                 movingEl.remove();
                 resolve();
@@ -384,7 +392,7 @@
             movingEl.style.transition = "transform 0.14s ease-out, filter 0.14s ease-out";
             movingEl.style.transform = `translate3d(${dx}px, ${dy}px, 0) scale(${scale * 0.9})`;
             movingEl.style.filter = "brightness(1.08)";
-            window.setTimeout(() => {
+            tasks.setTimeout(() => {
               slotEl.classList.remove("is-docking");
               movingEl.remove();
               resolve();
@@ -399,7 +407,7 @@
               movingEl.style.transform = `translate3d(${dx}px, ${dy}px, 0) scale(${scale})`;
             });
           });
-          window.setTimeout(finish, 320);
+          tasks.setTimeout(finish, 320);
         });
       }
     
@@ -457,7 +465,7 @@
         const magnetAnimation = animatePuzzleMagnet(sourceEl, movingEl, slotEl);
         sourceEl?.classList.add("is-snapping");
         magnetAnimation.finally(() => {
-          if (state.generation !== matchGeneration) return;
+          if (state.generation !== matchGeneration || !slotEl.isConnected) return;
           state.matches[index] = String(value);
           playPuzzleSound("success");
           slotEl.classList.remove("is-empty");
@@ -472,10 +480,10 @@
     
           const completed = isComplete();
           speak(piece.speech || piece.label);
-          window.setTimeout(() => {
+          tasks.setTimeout(() => {
             render();
             if (completed) {
-              window.setTimeout(() => speak(puzzle.completeSpeech || "?? ??! ?? ????!"), 140);
+              tasks.setTimeout(() => speak(puzzle.completeSpeech || "?? ??! ?? ????!"), 140);
             }
           }, 70);
         });
@@ -687,6 +695,7 @@
       resetBtn.className = "btn";
       resetBtn.textContent = "처음부터 다시";
       resetBtn.addEventListener("click", () => {
+        tasks.clear();
         removeFloatingPuzzlePieces();
         state.generation += 1;
         studyPuzzleProgress[key] = { matches: {}, matchColors: {}, generation: state.generation, page: 0 };

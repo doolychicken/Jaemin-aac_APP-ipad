@@ -13,6 +13,7 @@
     } = deps;
 
     const gameState = {};
+    const tasks = window.createTaskScope();
     let pieceSizeObserver = null;
 
     function stateFor(screen) {
@@ -28,6 +29,8 @@
     }
 
     function clear() {
+      tasks.clear();
+      document.querySelectorAll(".face-game-tile--ghost").forEach((el) => el.remove());
       pieceSizeObserver?.disconnect();
       pieceSizeObserver = null;
       Object.keys(gameState).forEach((key) => delete gameState[key]);
@@ -56,6 +59,7 @@
     }
 
     function reset(screen) {
+      tasks.clear();
       delete gameState[screen.key || "studyFacePartsGame"];
       render();
     }
@@ -234,7 +238,7 @@
               speak(`${part.label} 붙였어요`);
               if (Object.keys(state.placed).length >= total) {
                 state.locked = true;
-                window.setTimeout(() => {
+                tasks.setTimeout(() => {
                   playPuzzleSound("success");
                   speak("얼굴 완성");
                   render();
@@ -248,7 +252,7 @@
             playPuzzleSound("fail");
             speak(`${part.label} 자리에 붙여주세요`);
             tile.classList.add("is-wrong");
-            window.setTimeout(() => tile.classList.remove("is-wrong"), 520);
+            tasks.setTimeout(() => tile.classList.remove("is-wrong"), 520);
           }
 
           function cancel() {
@@ -289,7 +293,7 @@
 
       if (!state.prompted) {
         state.prompted = true;
-        window.setTimeout(() => speak("얼굴을 완성해보세요"), 450);
+        tasks.setTimeout(() => speak("얼굴을 완성해보세요"), 450);
       }
     }
 

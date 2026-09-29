@@ -13,6 +13,7 @@
       render
     } = deps;
     const gameState = {};
+    const tasks = window.createTaskScope();
 
     function shuffle(items) {
       const copy = items.slice();
@@ -37,12 +38,15 @@
     }
 
     function reset(screen) {
+      tasks.clear();
       const key = screen.key || "studyRecyclingGame";
       delete gameState[key];
       render();
     }
 
     function clear() {
+      tasks.clear();
+      document.querySelectorAll(".recycling-object--ghost").forEach((el) => el.remove());
       Object.keys(gameState).forEach((key) => delete gameState[key]);
     }
 
@@ -208,7 +212,7 @@
         state.score += 1;
         playPuzzleSound("success");
         speak(`정답, ${bin.label}`);
-        window.setTimeout(() => {
+        tasks.setTimeout(() => {
           state.round += 1;
           state.locked = false;
           render();

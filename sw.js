@@ -4,7 +4,9 @@
  * On first visit, pre-caches all images so subsequent loads are instant.
  */
 
-const CACHE_VERSION = 'v395';
+importScripts('./js/data/speech-manifest.js?v=397');
+
+const CACHE_VERSION = 'v397';
 const CACHE_NAME = `jaemin-aac-${CACHE_VERSION}`;
 
 self.addEventListener('message', (event) => {
@@ -27,6 +29,11 @@ const PRECACHE_ASSETS = [
   './js/data/study-data.js',
   './js/data/app-data.js',
   './js/core/pager.js',
+  './js/core/runtime.js',
+  './js/core/offline-speech.js',
+  './js/core/offline-status.js',
+  './js/data/speech-manifest.js',
+  ...self.OFFLINE_SPEECH.assets,
   './js/features/schedule.js',
   './js/features/study-puzzle.js',
   './js/features/recycling-game.js',
@@ -331,79 +338,111 @@ const PRECACHE_ASSETS = [
   './images/youtube.png',
 ];
 
-// ── Install: pre-cache everything ──────────────────────────────────────────
-async function precacheEverything() {
-  const cache = await caches.open(CACHE_NAME);
-  // Small batches are reliable on Android tablets. A failed required file
-  // keeps the previous complete worker active instead of installing partially.
-  const batchSize = 8;
-  for (let i = 0; i < PRECACHE_ASSETS.length; i += batchSize) {
-    await cache.addAll(PRECACHE_ASSETS.slice(i, i + batchSize));
-  }
+const READY_URL = new URL('./offline-ready.json', self.registration.scope).href;
+
+async function broadcast(state) {
+  const windows = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+  windows.filter(client => client.url.startsWith(self.registration.scope)).forEach(client =>
+    client.postMessage({ type: 'OFFLINE_STATUS', version: CACHE_VERSION, ...state }));
 }
 
-self.addEventListener('install', (event) => {
-  event.waitUntil(precacheEverything().then(() => self.skipWaiting()));
-});
+async function getStatus() {
+  const cache = await caches.open(CACHE_NAME);
+  const paths = new Set((await cache.keys()).map(request => new URL(request.url).pathname));
+  const complete = PRECACHE_ASSETS.every(asset => paths.has(new URL(asset, self.registration.scope).pathname));
+  return { ready: complete && !!(await cache.match(READY_URL)), completed: PRECACHE_ASSETS.length, total: PRECACHE_ASSETS.length };
+}
 
-// ── Activate: delete old caches ────────────────────────────────────────────
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys
-          .filter((k) => k !== CACHE_NAME)
-          .map((k) => caches.delete(k))
-      )
-    ).then(() => self.clients.claim()).then(async () => {
-      const windows = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
-      await Promise.all(windows.map((client) => {
-        const current = new URL(client.url);
-        if (current.origin !== self.location.origin || current.searchParams.get('app') === '362') return;
-        current.searchParams.set('app', '362');
-        return client.navigate(current.href);
-      }));
-    })
-  );
-});
-
-// ── Fetch: cache-first for images, network-first for everything else ────────
-self.addEventListener('fetch', (event) => {
-  const url = new URL(event.request.url);
-
-  // Only handle GET requests from the same origin
-  if (event.request.method !== 'GET') return;
-
-  const isImage = /\.(png|jpe?g|gif|webp|svg)$/i.test(url.pathname);
-
-  if (isImage) {
-    // Cache-first: serve instantly from cache, fall back to network
-    event.respondWith(
-      caches.open(CACHE_NAME).then((cache) =>
-        cache.match(event.request, { ignoreSearch: true }).then((cached) => {
-          if (cached) return cached;
-          return fetch(event.request).then((response) => {
-            if (response.ok) cache.put(event.request, response.clone());
-            return response;
-          });
-        })
-      )
-    );
-  } else {
-    // Network-first for HTML/JS/CSS: 항상 네트워크에서 최신 파일 가져오고,
-    // 오프라인일 때만 캐시에서 제공
-    event.respondWith(
-      fetch(event.request).then((response) => {
-        if (response.ok) {
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, response.clone()));
-        }
-        return response;
-      }).catch(() => caches.open(CACHE_NAME).then(async (cache) => {
-        const cached = await cache.match(event.request, { ignoreSearch: true });
-        if (cached) return cached;
-        if (event.request.mode === 'navigate') return cache.match('./index.html');
-        return Response.error();
-      }))
-    );
+async function precacheEverything(repair = false) {
+  const cache = await caches.open(CACHE_NAME);
+  let completed = 0;
+  await broadcast({ ready: false, completed, total: PRECACHE_ASSETS.length });
+  for (let i = 0; i < PRECACHE_ASSETS.length; i += 8) {
+    await Promise.all(PRECACHE_ASSETS.slice(i, i + 8).map(async asset => {
+      if (repair && await cache.match(asset, { ignoreSearch: true })) { completed++; return; }
+      const response = await fetch(new Request(new URL(asset, self.registration.scope), { cache: 'reload' }));
+      if (response.status !== 200) throw new Error(`Unable to save ${asset}: ${response.status}`);
+      await cache.put(asset, response);
+      completed++;
+    }));
+    await broadcast({ ready: false, completed, total: PRECACHE_ASSETS.length });
   }
+  await cache.put(READY_URL, new Response(JSON.stringify({ version: CACHE_VERSION, count: completed }),
+    { headers: { 'Content-Type': 'application/json' } }));
+  await broadcast({ ready: true, completed, total: PRECACHE_ASSETS.length });
+}
+
+let repairJob = null;
+self.addEventListener('message', event => {
+  if (event.data?.type === 'GET_OFFLINE_STATUS') {
+    event.waitUntil(getStatus().then(status => event.source?.postMessage({
+      type: 'OFFLINE_STATUS', version: CACHE_VERSION, ...status
+    })));
+  }
+  if (event.data?.type === 'REPAIR_OFFLINE') {
+    if (!repairJob) repairJob = precacheEverything(true)
+      .catch(() => broadcast({ ready: false, error: true }))
+      .finally(() => { repairJob = null; });
+    event.waitUntil(repairJob);
+  }
+});
+
+self.addEventListener('install', event => {
+  event.waitUntil(precacheEverything().then(() => self.skipWaiting()).catch(async error => {
+    await broadcast({ ready: false, error: true });
+    throw error; // Preserve the previously complete worker on an interrupted download.
+  }));
+});
+
+self.addEventListener('activate', event => {
+  event.waitUntil(caches.keys().then(keys => Promise.all(keys
+    .filter(key => key.startsWith('jaemin-aac-') && key !== CACHE_NAME)
+    .map(key => caches.delete(key))))
+    .then(() => self.clients.claim()).then(() => getStatus()).then(broadcast));
+});
+
+// Safari seeks with byte ranges even when playing a completely cached file.
+async function rangedResponse(request, response) {
+  const range = request.headers.get('Range');
+  if (!range) return response;
+  const match = /^bytes=(\d*)-(\d*)$/.exec(range.trim());
+  if (!match || (!match[1] && !match[2])) return response;
+  const bytes = await response.arrayBuffer();
+  const size = bytes.byteLength;
+  const start = match[1] ? Number(match[1]) : Math.max(0, size - Number(match[2]));
+  const end = match[1] && match[2] ? Math.min(Number(match[2]), size - 1) : size - 1;
+  if (!Number.isSafeInteger(start) || !Number.isSafeInteger(end) || start > end || start >= size) {
+    return new Response(null, { status: 416, headers: { 'Content-Range': `bytes */${size}` } });
+  }
+  const headers = new Headers(response.headers);
+  headers.delete('Content-Encoding');
+  headers.set('Content-Range', `bytes ${start}-${end}/${size}`);
+  headers.set('Content-Length', String(end - start + 1));
+  headers.set('Accept-Ranges', 'bytes');
+  return new Response(bytes.slice(start, end + 1), { status: 206, statusText: 'Partial Content', headers });
+}
+
+self.addEventListener('fetch', event => {
+  const url = new URL(event.request.url);
+  if (event.request.method !== 'GET' || url.origin !== self.location.origin
+    || !url.href.startsWith(self.registration.scope)) return;
+  event.respondWith((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    const cached = await cache.match(event.request, { ignoreSearch: true });
+    if (cached) return rangedResponse(event.request, cached);
+    try {
+      const response = await fetch(event.request);
+      if (response.status === 200 && !event.request.headers.has('Range')) {
+        const copy = response.clone();
+        event.waitUntil(cache.put(event.request, copy).catch(() => broadcast({ ready: false, error: true })));
+      }
+      return response;
+    } catch (_) {
+      if (event.request.mode === 'navigate') {
+        const shell = await cache.match('./index.html');
+        if (shell) return shell;
+      }
+      return Response.error();
+    }
+  })());
 });

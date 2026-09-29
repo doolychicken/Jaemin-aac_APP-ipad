@@ -20,7 +20,7 @@ $scanFiles += Get-ChildItem -Path "js","css" -Recurse -File |
 function Convert-AssetPathLiteral {
   param([string]$Path)
 
-  $clean = $Path -replace '^\.\/',''
+  $clean = ($Path -split '[?#]', 2)[0] -replace '^\.\/',''
   [regex]::Replace($clean, '\\u([0-9A-Fa-f]{4})', {
     param($match)
     [string][char][Convert]::ToInt32($match.Groups[1].Value, 16)

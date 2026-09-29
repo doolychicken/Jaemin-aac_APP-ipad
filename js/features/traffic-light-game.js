@@ -15,6 +15,7 @@
     } = deps;
 
     const gameState = {};
+    const tasks = window.createTaskScope();
     const ROUND_COUNT = 8;
     const signals = [
       { id: "green", label: "초록불", command: "건너요", action: "walk", prompt: "초록불이에요. 건너요" },
@@ -45,11 +46,13 @@
     }
 
     function reset(screen) {
+      tasks.clear();
       delete gameState[screen.key || "studyTrafficLightGame"];
       render();
     }
 
     function clear() {
+      tasks.clear();
       Object.keys(gameState).forEach((key) => delete gameState[key]);
     }
 
@@ -75,7 +78,7 @@
         speak(state.current.id === "green" ? "초록불에는 건너요" : "빨간불에는 멈춰요");
       }
       const nextDelay = correct && action === "walk" ? 2000 : 1600;
-      window.setTimeout(() => {
+      tasks.setTimeout(() => {
         state.round += 1;
         state.locked = false;
         state.promptedRound = null;
@@ -223,7 +226,7 @@
 
       if (state.promptedRound !== state.round) {
         state.promptedRound = state.round;
-        window.setTimeout(() => {
+        tasks.setTimeout(() => {
           if (!state.locked) speak(current.prompt);
         }, 450);
       }

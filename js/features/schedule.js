@@ -137,20 +137,18 @@ function cleanWeeklySchedule(data) {
 }
 
 function loadWeeklySchedule() {
-  try {
-    const raw = localStorage.getItem("jaemin-weekly-v1");
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      return cleanWeeklySchedule(parsed);
-    }
-  } catch (_) {}
-  return getDefaultWeeklySchedule();
+  const data = window.appStorage.load("jaemin-weekly-v1", getDefaultWeeklySchedule(),
+    (value) => value && typeof value === "object" && !Array.isArray(value)
+      && Object.keys(value).every((day) => SCHEDULE_DAYS.includes(day))
+      && Object.values(value).every((acts) => Array.isArray(acts) && acts.every((act) =>
+        act && SCHEDULE_ACTIVITY_DEFS.some((def) => def.type === act.type)
+        && (act.people === undefined || (Array.isArray(act.people)
+          && act.people.every((person) => typeof person === "string"))))));
+  return cleanWeeklySchedule({ ...getDefaultWeeklySchedule(), ...data });
 }
 
 function saveWeeklySchedule() {
-  try {
-    localStorage.setItem("jaemin-weekly-v1", JSON.stringify(weeklyScheduleData));
-  } catch (_) {}
+  window.appStorage.save("jaemin-weekly-v1", weeklyScheduleData);
 }
 
 const WEEKLY_DAY_COLORS = [
@@ -172,17 +170,13 @@ function scheduleDayTextColor(day) {
 }
 
 function loadWeeklyPeriods() {
-  try {
-    const raw = localStorage.getItem("jaemin-weekly-periods-v1");
-    if (raw) return JSON.parse(raw);
-  } catch (_) {}
-  return ["오전", "오후"];
+  return window.appStorage.load("jaemin-weekly-periods-v1", ["오전", "오후"],
+    (value) => Array.isArray(value) && value.length > 0 && value.length <= 6
+      && value.every((label) => typeof label === "string"));
 }
 
 function saveWeeklyPeriods() {
-  try {
-    localStorage.setItem("jaemin-weekly-periods-v1", JSON.stringify(weeklyPeriodLabels));
-  } catch (_) {}
+  window.appStorage.save("jaemin-weekly-periods-v1", weeklyPeriodLabels);
 }
 
 let weeklyScheduleData  = loadWeeklySchedule();
@@ -311,6 +305,55 @@ const SHOPPING_PLACES = [
 let shoppingPlace = null;
 let shoppingItems = [];
 let shoppingRemaining = [];
+let homeRunPlan = "";
+let shoppingRunPlan = "";
+let lastSavedSession = "";
+const SESSION_KEY = "jaemin-schedule-session-v1";
+
+function validSessionItems(items, allowStrings = false) {
+  return Array.isArray(items) && items.length <= 100 && items.every((item) => {
+    if (allowStrings && typeof item === "string") return true;
+    return item && typeof item === "object" && typeof item.label === "string"
+      && (item.items === undefined || (Array.isArray(item.items)
+        && item.items.length <= 100 && item.items.every((child) =>
+          child && typeof child.label === "string")));
+  });
+}
+
+function loadSession() {
+  const saved = window.appStorage.load(SESSION_KEY, null, (value) =>
+    value && value.version === 1
+    && typeof value.homeScheduleGroupId === "string"
+    && (!value.homeScheduleGroupId || HOME_ACTIVITY_GROUPS.some((g) => g.id === value.homeScheduleGroupId))
+    && typeof value.homeRunPlan === "string" && typeof value.shoppingRunPlan === "string"
+    && (value.shoppingPlaceId === null || SHOPPING_PLACES.some((p) => p.id === value.shoppingPlaceId))
+    && validSessionItems(value.homeSchedule, true)
+    && validSessionItems(value.homeScheduleRemaining)
+    && validSessionItems(value.shoppingItems)
+    && validSessionItems(value.shoppingRemaining));
+  if (!saved) return;
+  homeScheduleGroupId = saved.homeScheduleGroupId;
+  homeActivityGroupId = saved.homeScheduleGroupId;
+  homeSchedule = saved.homeSchedule;
+  homeScheduleRemaining = saved.homeScheduleRemaining;
+  homeRunPlan = saved.homeRunPlan;
+  shoppingPlace = SHOPPING_PLACES.find((place) => place.id === saved.shoppingPlaceId) || null;
+  shoppingItems = shoppingPlace
+    ? saved.shoppingItems.map((item) => shoppingPlace.items.find((known) => known.label === item.label)).filter(Boolean)
+    : [];
+  shoppingRemaining = shoppingPlace ? saved.shoppingRemaining : [];
+  shoppingRunPlan = saved.shoppingRunPlan;
+}
+
+function saveSession() {
+  const snapshot = {
+    version: 1, homeScheduleGroupId, homeSchedule, homeScheduleRemaining, homeRunPlan,
+    shoppingPlaceId: shoppingPlace?.id || null, shoppingItems, shoppingRemaining, shoppingRunPlan
+  };
+  const serialized = JSON.stringify(snapshot);
+  if (serialized === lastSavedSession) return;
+  if (window.appStorage.save(SESSION_KEY, snapshot)) lastSavedSession = serialized;
+}
 
 function isOutingScheduleGroup(groupOrId) {
   const id = typeof groupOrId === "string" ? groupOrId : groupOrId?.id;
@@ -677,14 +720,18 @@ function renderHomeActivityPicker() {
     const startBtn = document.createElement("button");
     startBtn.className = "btn main";
     startBtn.disabled = homeSchedule.length === 0;
-    const runStepCount = buildHomeScheduleRunSteps().length;
+    const plannedSteps = buildHomeScheduleRunSteps();
+    const runStepCount = plannedSteps.length;
+    const resumeRun = homeRunPlan === JSON.stringify(plannedSteps) && homeScheduleRemaining.length > 0;
     startBtn.textContent = homeSchedule.length === 0
       ? "할 일을 선택하세요"
-      : `시작하기 → (${runStepCount}단계)`;
+      : (resumeRun ? `이어하기 → (${homeScheduleRemaining.length}단계 남음)` : `시작하기 → (${runStepCount}단계)`);
     startBtn.addEventListener("click", () => {
       if (!homeSchedule.length) return;
-      homeScheduleRemaining = buildHomeScheduleRunSteps();
-      speak("시작해봐요");
+      const steps = buildHomeScheduleRunSteps();
+      if (!resumeRun) homeScheduleRemaining = steps;
+      homeRunPlan = JSON.stringify(steps);
+      speak(resumeRun ? "이어서 해봐요" : "시작해봐요");
       pushScreen("scheduleHomeRun", "집 스케줄 실행");
       render();
     });
@@ -814,7 +861,11 @@ function renderHomeActivityPicker() {
       lbl.textContent = group.label;
       btn.appendChild(lbl);
       btn.addEventListener("click", () => {
-        if (homeScheduleGroupId && homeScheduleGroupId !== group.id) homeSchedule = [];
+        if (homeScheduleGroupId && homeScheduleGroupId !== group.id) {
+          homeSchedule = [];
+          homeScheduleRemaining = [];
+          homeRunPlan = "";
+        }
         homeActivityGroupId = group.id;
         homeScheduleGroupId = group.id;
         homeActivityPage = 0;
@@ -934,13 +985,15 @@ function renderHomeScheduleRunner() {
     btn.disabled = true;
     const afterSpeech = Promise.resolve(speak(`${activity?.speech || label} 완료!`));
     afterSpeech.finally(() => {
+      if (!btn.isConnected) return;
       btn.classList.add("home-runner-done-anim");
       btn.addEventListener("animationend", () => {
+        if (!btn.isConnected) return;
         const finishedAll = homeScheduleRemaining.length === 1;
         homeScheduleRemaining.shift();
         render();
         if (finishedAll) {
-          window.setTimeout(() => speak("모두 다 했어요! 정말 잘했어요!"), 250);
+          speak("모두 다 했어요! 정말 잘했어요!");
         }
       }, { once: true });
     });
@@ -1021,6 +1074,8 @@ function renderShoppingPlanner() {
     placeBtn.addEventListener("click", () => {
       shoppingPlace = null;
       shoppingItems = [];
+      shoppingRemaining = [];
+      shoppingRunPlan = "";
       speak("장소 다시");
       render();
     });
@@ -1029,12 +1084,14 @@ function renderShoppingPlanner() {
     const startBtn = document.createElement("button");
     startBtn.className = "btn main";
     startBtn.disabled = shoppingItems.length === 0;
+    const planKey = JSON.stringify([shoppingPlace?.id, shoppingItems.map((item) => item.label)]);
+    const resumeRun = shoppingRunPlan === planKey && shoppingRemaining.length > 0;
     startBtn.textContent = shoppingItems.length === 0
       ? "살 물건을 선택하세요"
-      : `장보기 시작 → (${shoppingItems.length}개)`;
+      : (resumeRun ? `장보기 이어하기 → (${shoppingRemaining.length}단계 남음)` : `장보기 시작 → (${shoppingItems.length}개)`);
     startBtn.addEventListener("click", () => {
       if (!shoppingPlace || shoppingItems.length === 0) return;
-      shoppingRemaining = [
+      if (!resumeRun) shoppingRemaining = [
         { type: "place", label: `${shoppingPlace.label}에 가요`, image: shoppingPlace.image, speech: `${shoppingPlace.label}에 가요` },
         ...shoppingItems.map((item) => ({
           type: "item",
@@ -1044,7 +1101,8 @@ function renderShoppingPlanner() {
           speech: `${item.label} 사요`
         }))
       ];
-      speak("장보기 시작");
+      shoppingRunPlan = planKey;
+      speak(resumeRun ? "장보기 이어하기" : "장보기 시작");
       pushScreen("scheduleShoppingRun", "장보기 실행");
       render();
     });
@@ -1059,6 +1117,8 @@ function renderShoppingPlanner() {
       appendTile(place, () => {
         shoppingPlace = place;
         shoppingItems = [];
+        shoppingRemaining = [];
+        shoppingRunPlan = "";
         speak(place.label);
         render();
       });
@@ -1151,13 +1211,15 @@ function renderShoppingRunner() {
     btn.disabled = true;
     const afterSpeech = Promise.resolve(speak(`${step.label} 완료!`));
     afterSpeech.finally(() => {
+      if (!btn.isConnected) return;
       btn.classList.add("home-runner-done-anim");
       btn.addEventListener("animationend", () => {
+        if (!btn.isConnected) return;
         const finishedAll = shoppingRemaining.length === 1;
         shoppingRemaining.shift();
         render();
         if (finishedAll) {
-          window.setTimeout(() => speak("장보기를 다 했어요! 정말 잘했어요!"), 250);
+          speak("장보기를 다 했어요! 정말 잘했어요!");
         }
       }, { once: true });
     });
@@ -2202,6 +2264,7 @@ function renderFridaySlotPicker(slotKey) {
         shoppingPlace = null;
         shoppingItems = [];
         shoppingRemaining = [];
+        shoppingRunPlan = "";
         render();
         return true;
       }
@@ -2226,15 +2289,14 @@ function renderFridaySlotPicker(slotKey) {
       weeklyEditPersonFor = null;
       weeklyEditPeriods = false;
       homeActivityGroupId = "";
-      homeScheduleGroupId = "";
       homeActivityPage = 0;
       homeShoppingTargetLabel = "";
-      shoppingPlace = null;
-      shoppingItems = [];
-      shoppingRemaining = [];
     }
 
+    loadSession();
+
     return {
+      saveSession,
       handles,
       render: renderSchedule,
       handleBack,
