@@ -122,7 +122,7 @@ def main():
             print('PASS: new speech cancels previous recorded audio', flush=True)
 
             page.evaluate("pushScreen('playSchoolHome', '놀이학교'); render();")
-            assert page.locator('.ps-game-card').count() == 10
+            assert page.locator('.ps-game-card').count() == 13
             page.locator('[data-game="match"]').click()
             page.locator('[data-choice="juice"]').click()
             assert page.locator('.ps-reward-actions').count() == 1
@@ -141,6 +141,14 @@ def main():
             page.get_by_role('button', name='도와주세요', exact=True).click()
             assert page.locator('.ps-memory-card img').count() == 4
             print('PASS: number pairing, memory cards and new recorded prompts work offline', flush=True)
+
+            for game, answers in [('family', ['me']), ('life', ['toilet']), ('name', ['hong', 'jae', 'min'])]:
+                page.evaluate("game => { pushScreen('playSchool_' + game, game); render(); }", game)
+                for answer in answers:
+                    page.locator(f'[data-choice="{answer}"]').click()
+                assert page.locator('.ps-reward-actions').is_visible()
+            assert page.evaluate("window.offlineSpeech.play('내 이름을 하나씩 맞춰요')") is True
+            print('PASS: family, life associations and name game work offline with recorded guidance', flush=True)
 
             page.evaluate("pushScreen('playSchool_music', '악기 소리 놀이'); render();")
             signatures = []
@@ -178,7 +186,7 @@ def main():
             print('PASS: local video plays and seeks with network disabled', flush=True)
 
             # Readiness must recover if a required recording disappears from storage.
-            page.evaluate("async () => { const cache = await caches.open('jaemin-aac-v400'); await cache.delete(OFFLINE_SPEECH.assets[0]); }")
+            page.evaluate("async () => { const cache = await caches.open('jaemin-aac-v401'); await cache.delete(OFFLINE_SPEECH.assets[0]); }")
             page.reload()
             page.wait_for_function("document.querySelector('#offlineStatusText').textContent.includes('파일이 부족')")
             context.set_offline(False)

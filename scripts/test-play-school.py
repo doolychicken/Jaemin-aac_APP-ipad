@@ -30,7 +30,7 @@ def main():
             page.goto(url)
             page.get_by_text('재민이 놀이학교', exact=True).click()
             page.wait_for_selector('.ps-menu-grid')
-            assert page.locator('.ps-game-card').count() == 10
+            assert page.locator('.ps-game-card').count() == 13
             page.screenshot(path=str(output / 'menu-landscape.png'))
 
             def open_game(game):
@@ -95,6 +95,46 @@ def main():
             page.locator('.ps-park-car').drag_to(page.locator('[data-choice="red"]'))
             assert page.locator('.ps-reward-actions').count() == 1
             print('PASS: optional delivery and parking drag controls', flush=True)
+
+            open_game('family')
+            assert page.locator('[data-choice="me"] img').get_attribute('src') == page.evaluate('STUDY_SCREEN_MAP.playContent.family[0].image')
+            assert page.locator('.ps-target > img').count() == 0
+            page.locator('[data-choice="mom"]').click()
+            assert page.locator('.ps-target > img').count() == 1
+            page.locator('[data-choice="me"]').click()
+            assert page.locator('.ps-reward-actions').count() == 1
+            open_game('life')
+            assert page.locator('.ps-target > img').get_attribute('src') == page.evaluate('STUDY_SCREEN_MAP.playContent.associations[0].cueImage')
+            assert page.locator('[data-choice="toilet"] img').get_attribute('src') == page.evaluate('STUDY_SCREEN_MAP.playContent.associations[0].image')
+            page.locator('[data-choice="toilet"]').click()
+            assert page.locator('.ps-reward-actions').count() == 1
+            open_game('name')
+            for round_index in range(3):
+                if round_index == 0:
+                    page.locator('[data-choice="jae"]').click()
+                page.locator('[data-choice="hong"]').click()
+                assert page.locator('.ps-name-slot.is-filled').count() == 1
+                page.get_by_role('button', name='쉬어요', exact=True).click()
+                page.get_by_role('button', name='이어서 할래요', exact=True).click()
+                assert page.locator('.ps-name-slot.is-filled').count() == 1
+                page.locator('[data-choice="jae"]').click()
+                page.locator('[data-choice="min"]').click()
+                assert page.locator('.ps-reward-actions').count() == 1
+                page.get_by_role('button', name='다 했어요' if round_index == 2 else '다음', exact=True).click()
+            assert page.evaluate("JSON.parse(localStorage.getItem('jaemin-play-school-v1')).stats.name") == {'completed': 1, 'first': 2, 'help': 1}
+            page.locator('.ps-footer').get_by_role('button', name='놀이 목록', exact=True).click()
+            page.get_by_role('button', name='기존 앱 공부 열기', exact=True).click()
+            page.wait_for_function("currentKey() === 'studyAppLearning'")
+            assert page.evaluate('navStack.length') == 2
+            page.get_by_text('재민이 놀이학교', exact=True).click()
+            page.wait_for_selector('.ps-menu-grid')
+            open_game('name')
+            for width, height in [(1024, 768), (768, 1024), (390, 844)]:
+                page.set_viewport_size({'width': width, 'height': height})
+                page.screenshot(path=str(output / f'name-{width}.png'))
+                assert page.evaluate('document.documentElement.scrollWidth <= innerWidth')
+            page.set_viewport_size({'width': 1024, 'height': 768})
+            print('PASS: existing family/photos/associations reused; name pieces, pause, records and app-study navigation', flush=True)
 
             page.locator('.ps-footer').get_by_role('button', name='놀이 목록', exact=True).click()
             page.locator('.ps-settings summary').click()

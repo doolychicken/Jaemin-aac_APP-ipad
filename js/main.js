@@ -298,6 +298,12 @@ const facePartsGameFeature = window.createFacePartsGameFeature({
 });
 
 const playSchoolFeature = window.createPlaySchoolFeature({
+  studyContent: STUDY_SCREEN_MAP.playContent,
+  returnToStudy: () => {
+    while (navStack.length > 1 && currentKey() !== "studyAppLearning") popScreen();
+    if (currentKey() !== "studyAppLearning") pushScreen("studyAppLearning", "앱 공부");
+    render();
+  },
   gridEl, appMainEl, spotlightViewEl, spotlightBtnEl, heroEl, helperEl,
   speak, render, pushScreen,
   returnToMenu: () => {

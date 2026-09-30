@@ -336,6 +336,9 @@ const DATA = {
       title: "재민이 놀이학교", helper: "", hero: [], items: [], layout: "playSchool"
     },
     playSchool_music: { title: "악기 소리 놀이", helper: "", hero: [], items: [], layout: "playSchool", game: "music" },
+    playSchool_family: { title: "우리 가족 찾기", helper: "", hero: [], items: [], layout: "playSchool", game: "family" },
+    playSchool_name: { title: "내 이름 완성", helper: "", hero: [], items: [], layout: "playSchool", game: "name" },
+    playSchool_life: { title: "생활 그림 연결", helper: "", hero: [], items: [], layout: "playSchool", game: "life" },
     playSchool_numbers: { title: "숫자 짝 맞추기", helper: "", hero: [], items: [], layout: "playSchool", game: "numbers" },
     playSchool_pairs: { title: "그림 짝 맞추기", helper: "", hero: [], items: [], layout: "playSchool", game: "pairs" },
     playSchool_memory: { title: "기억 카드 놀이", helper: "", hero: [], items: [], layout: "playSchool", game: "memory" },

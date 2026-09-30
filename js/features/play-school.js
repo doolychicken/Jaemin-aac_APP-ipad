@@ -1,5 +1,8 @@
 (function () {
   const GAMES = [
+    { id: 'family', title: '우리 가족 찾기', subtitle: '나, 엄마, 아빠를 찾아요', image: './images/outing_person_me.png', tone: 'peach', group: 'study' },
+    { id: 'name', title: '내 이름 완성', subtitle: '홍 · 재 · 민을 하나씩 맞춰요', badge: '홍 재 민', tone: 'lavender', group: 'study' },
+    { id: 'life', title: '생활 그림 연결', subtitle: '그림과 어울리는 짝을 찾아요', image: './images/dad_carkey.png', tone: 'mint', group: 'study' },
     { id: 'numbers', title: '숫자 짝 맞추기', subtitle: '숫자와 자동차 수를 연결해요', badge: '1 2 3', tone: 'blue', group: 'pairs' },
     { id: 'pairs', title: '그림 짝 맞추기', subtitle: '하나씩 눌러 같은 그림을 연결해요', badge: '● ●', tone: 'mint', group: 'pairs' },
     { id: 'memory', title: '기억 카드 놀이', subtitle: '카드를 뒤집어 같은 짝을 찾아요', badge: '★ ?', tone: 'lavender', group: 'pairs' },
@@ -31,6 +34,7 @@
   window.createPlaySchoolFeature = function (deps) {
     const { gridEl, appMainEl, spotlightViewEl, spotlightBtnEl, heroEl, helperEl, speak, render, pushScreen } = deps;
     const tasks = window.createTaskScope();
+    const studyContent = deps.studyContent;
     const instruments = window.createInstrumentPlayer();
     const instrumentCards = [
       { id: 'piano', label: '피아노', icon: '🎹' },
@@ -161,7 +165,7 @@
       gridEl.appendChild(collection);
       const tabs = element('div', 'ps-tabs');
       tabs.setAttribute('aria-label', '놀이 종류');
-      [['all', '전체'], ['pairs', '숫자 · 짝 맞추기'], ['cars', '자동차 놀이'], ['sounds', '그림 · 소리']].forEach(([id, label]) => {
+      [['all', '전체'], ['study', '우리집 · 앱 공부'], ['pairs', '숫자 · 짝 맞추기'], ['cars', '자동차 놀이'], ['sounds', '그림 · 소리']].forEach(([id, label]) => {
         const tab = button(label, () => { menuGroup = id; render(); }, 'ps-tab');
         tab.setAttribute('aria-pressed', String(menuGroup === id));
         tabs.appendChild(tab);
@@ -182,6 +186,7 @@
         games.appendChild(card);
       });
       gridEl.appendChild(games);
+      gridEl.appendChild(button('기존 앱 공부 열기', deps.returnToStudy));
       gridEl.appendChild(settingsPanel());
       gridEl.appendChild(button('화장실', () => { say('화장실'); pushScreen('toilet', '화장실'); render(); }, 'ps-toilet'));
     }
@@ -192,6 +197,11 @@
       state.helpRecorded = false;
       state.prompted = false;
       const id = state.id;
+      if (id === 'name') {
+        state.nameIndex = 0;
+        buildNameChoices();
+        return;
+      }
       if (PAIR_GAMES.includes(id)) {
         const pool = id === 'numbers'
           ? Array.from({ length: settings.numberRange }, (_, i) => ({ id: String(i + 1), label: String(i + 1), number: i + 1 }))
@@ -209,7 +219,9 @@
         return;
       }
       let pool;
-      if (id === 'parking') pool = CARS.slice(0, settings.choices);
+      if (id === 'family') pool = studyContent.family;
+      else if (id === 'life') pool = studyContent.associations.slice(0, settings.vocabulary === 'familiar' ? 3 : 6);
+      else if (id === 'parking') pool = CARS.slice(0, settings.choices);
       else if (id === 'count') pool = Array.from({ length: settings.choices }, (_, i) => ({ id: String(i + 1), label: String(i + 1) }));
       else if (id === 'delivery') pool = [ITEMS[0], ITEMS[2], ITEMS[4], ITEMS[5]].slice(0, settings.vocabulary === 'familiar' ? 2 : 4);
       else pool = ITEMS.slice(0, settings.vocabulary === 'familiar' ? 2 : ITEMS.length);
@@ -226,6 +238,9 @@
       }
     }
     function prompt() {
+      if (state.id === 'family') return state.target.label + ' 찾아주세요';
+      if (state.id === 'life') return '그림과 어울리는 짝을 찾아요';
+      if (state.id === 'name') return '내 이름을 하나씩 맞춰요';
       if (state.id === 'numbers') return '숫자와 자동차 수를 맞춰요';
       if (state.id === 'pairs') return '같은 그림끼리 짝을 맞춰요';
       if (state.id === 'memory') return '카드 두 장을 눌러 같은 짝을 찾아요';
@@ -263,10 +278,17 @@
         hint();
         return;
       }
+      if (state.id === 'name' && state.nameIndex < studyContent.name.letters.length - 1) {
+        say(state.target.label);
+        state.nameIndex++;
+        buildNameChoices();
+        render();
+        return;
+      }
       if (state.id !== 'drive' && !state.mistakes && !state.hint) stats[state.id].first++;
       state.phase = 'reward';
       save();
-      say(state.id === 'drive' ? '자동차 출발' : '찾았어요. 잘했어요');
+      say(state.id === 'drive' ? '자동차 출발' : state.id === 'name' ? '내 이름은 홍재민이야' : '찾았어요. 잘했어요');
       render();
     }
     function next() {
@@ -288,6 +310,23 @@
         [list[i], list[j]] = [list[j], list[i]];
       }
       return list;
+    }
+    function buildNameChoices() {
+      const letters = studyContent.name.letters;
+      state.target = letters[state.nameIndex];
+      state.options = shuffled([state.target, ...letters.filter(letter => letter.id !== state.target.id).slice(0, settings.choices - 1)]);
+    }
+    function renderName() {
+      const panel = element('div', 'ps-name-panel');
+      panel.appendChild(photo(studyContent.name));
+      const slots = element('div', 'ps-name-slots');
+      studyContent.name.letters.forEach((letter, index) => {
+        const slot = element('span', 'ps-name-slot' + (index < state.nameIndex ? ' is-filled' : '') + (index === state.nameIndex ? ' is-current' : ''), letter.label);
+        slot.setAttribute('aria-label', letter.label + (index < state.nameIndex ? ' 완료' : index === state.nameIndex ? ' 맞출 차례' : ''));
+        slots.appendChild(slot);
+      });
+      panel.appendChild(slots);
+      return panel;
     }
     function finishPair(id) {
       state.matched.push(id);
@@ -455,13 +494,15 @@
         const bay = element('span', 'ps-parking-bay', 'P');
         bay.style.backgroundColor = item.color;
         node.appendChild(bay);
+      } else if (state.id === 'name') {
+        node.appendChild(element('span', 'ps-letter', item.label));
       } else if (state.id === 'count') {
         node.appendChild(element('span', 'ps-number', item.label));
         const dots = element('span', 'ps-dots', '● '.repeat(Number(item.id)).trim());
         dots.setAttribute('aria-hidden', 'true');
         node.appendChild(dots);
       } else node.appendChild(photo(item));
-      node.appendChild(element('strong', '', item.label));
+      if (state.id !== 'name') node.appendChild(element('strong', '', item.label));
       if (state.id === 'delivery') drag(node, (x, y) => {
         const target = gridEl.querySelector('.ps-delivery-zone');
         if (target && contains(target, x, y)) answer(item.id);
@@ -592,8 +633,13 @@
         gridEl.appendChild(button('출발', () => answer('go'), 'ps-primary ps-go'));
       } else {
         const stage = element('div', 'ps-target');
-        if (state.id === 'match' || (state.id === 'listen' && (state.hint || !settings.sound))) stage.appendChild(photo(state.target));
-        else if (state.id === 'listen') {
+        if (state.id === 'name') stage.appendChild(renderName());
+        else if (state.id === 'life') {
+          stage.appendChild(photo({ image: state.target.cueImage }));
+          stage.appendChild(element('strong', 'ps-life-label', state.target.cueLabel));
+        }
+        else if (state.id === 'match' || (['listen', 'family'].includes(state.id) && (state.hint || !settings.sound))) stage.appendChild(photo(state.target));
+        else if (['listen', 'family'].includes(state.id)) {
           const replay = button('다시 듣기', () => say(question), 'ps-listen');
           replay.prepend(element('span', '', '♪'));
           stage.appendChild(replay);

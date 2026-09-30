@@ -73,6 +73,7 @@ function buildStudyScreensMap() {
   ];
 
   const appStudyItems = [
+    { label: "재민이 놀이학교", nav: "playSchoolHome", image: "./images/traffic_game/car_red.png" },
     { label: "숫자",   nav: "studyNumbers",    image: "./images/knobpuzzle_numbers.png" },
     { label: "날짜",   nav: "dateHome", image: "./images/real_items/calendar_learning.jpg", dateMode: "stepFlow" },
     { label: "이름",   nav: "studyNames",      image: "./images/person/me.png" },
@@ -1161,7 +1162,22 @@ function buildStudyScreensMap() {
     });
   });
 
-  return { homeItems, rest };
+  // Reuse the family's own learning materials in the tap-based play school.
+  const playContent = {
+    family: studyPeopleProfiles.filter(person => ['me', 'mom', 'dad'].includes(person.key))
+      .map(person => ({ id: person.key, label: person.relation, image: person.image })),
+    associations: ['toilet', 'carKey', 'spoon', 'toothpaste', 'fireStation', 'policeStation'].map(key => {
+      const item = symbolMatchingItems.find(value => value.key === key);
+      const answer = symbolChoicePieces([item.answer])[0];
+      return { id: item.key, label: answer.label, image: answer.image, cueImage: item.image, cueLabel: item.symbol };
+    }),
+    name: {
+      label: rest.studyNamePuzzleJaemin.title,
+      image: rest.studyNamePuzzleJaemin.puzzle.image,
+      letters: rest.studyNamePuzzleJaemin.puzzle.slots.map(slot => ({ id: slot.value, label: slot.label }))
+    }
+  };
+  return { homeItems, rest, playContent };
 }
 
 const STUDY_SCREEN_MAP = buildStudyScreensMap();
