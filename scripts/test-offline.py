@@ -124,7 +124,7 @@ def main():
             page.evaluate("pushScreen('playSchoolHome', '놀이학교'); render();")
             assert page.locator('.ps-game-card').count() == 13
             page.locator('[data-game="match"]').click()
-            page.locator('[data-choice="juice"]').click()
+            page.locator('[data-choice="juice"]').drag_to(page.locator('.ps-drop-target').first)
             assert page.locator('.ps-reward-actions').count() == 1
             assert page.evaluate("window.offlineSpeech.play('출발을 누르면 자동차가 지나가요')") is True
             assert page.evaluate('window.nativeSpeechCalls') == 0
@@ -132,10 +132,9 @@ def main():
 
             page.evaluate("pushScreen('playSchool_numbers', '숫자 짝 맞추기'); render();")
             for value in ['1', '2']:
-                page.locator(f'[data-side="left"][data-pair="{value}"]').click()
-                page.locator(f'[data-side="right"][data-pair="{value}"]').click()
+                page.locator(f'[data-side="left"][data-pair="{value}"]').drag_to(page.locator(f'[data-side="right"][data-pair="{value}"]'))
             assert page.locator('.ps-success-banner').is_visible()
-            assert page.evaluate("window.offlineSpeech.play('숫자와 자동차 수를 맞춰요')") is True
+            assert page.evaluate("window.offlineSpeech.play('숫자를 끌어서 자동차 수와 맞춰요')") is True
             assert page.evaluate('window.nativeSpeechCalls') == 0
             page.evaluate("pushScreen('playSchool_memory', '기억 카드 놀이'); render();")
             page.get_by_role('button', name='도와주세요', exact=True).click()
@@ -145,9 +144,9 @@ def main():
             for game, answers in [('family', ['me']), ('life', ['toilet']), ('name', ['hong', 'jae', 'min'])]:
                 page.evaluate("game => { pushScreen('playSchool_' + game, game); render(); }", game)
                 for answer in answers:
-                    page.locator(f'[data-choice="{answer}"]').click()
+                    page.locator(f'[data-choice="{answer}"]').drag_to(page.locator('.ps-drop-target').first)
                 assert page.locator('.ps-reward-actions').is_visible()
-            assert page.evaluate("window.offlineSpeech.play('내 이름을 하나씩 맞춰요')") is True
+            assert page.evaluate("window.offlineSpeech.play('글자를 끌어서 파란 칸에 놓아요')") is True
             print('PASS: family, life associations and name game work offline with recorded guidance', flush=True)
 
             page.evaluate("pushScreen('playSchool_music', '악기 소리 놀이'); render();")
@@ -186,7 +185,7 @@ def main():
             print('PASS: local video plays and seeks with network disabled', flush=True)
 
             # Readiness must recover if a required recording disappears from storage.
-            page.evaluate("async () => { const cache = await caches.open('jaemin-aac-v401'); await cache.delete(OFFLINE_SPEECH.assets[0]); }")
+            page.evaluate("async () => { const cache = await caches.open('jaemin-aac-v402'); await cache.delete(OFFLINE_SPEECH.assets[0]); }")
             page.reload()
             page.wait_for_function("document.querySelector('#offlineStatusText').textContent.includes('파일이 부족')")
             context.set_offline(False)

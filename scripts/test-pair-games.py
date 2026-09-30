@@ -41,13 +41,14 @@ def main():
                 assert all(card('right', item).locator('img').count() == int(item) for item in ids)
                 if round_index == 0:
                     card('left', ids[0]).click()
-                    card('right', ids[1]).click()
+                    card('right', ids[0]).click()
+                    assert page.locator('.is-matched').count() == 0
+                    card('left', ids[0]).drag_to(card('right', ids[1]))
                     assert page.locator('.is-matched').count() == 0
                     page.get_by_role('button', name='도와주세요', exact=True).click()
                     assert page.locator('.ps-pair-card.ps-hint').count() == 2
                 for item in ids:
-                    card('left', item).click()
-                    card('right', item).click()
+                    card('left', item).drag_to(card('right', item))
                 assert page.locator('.ps-success-banner').is_visible()
                 page.get_by_role('button', name='다 했어요' if round_index == 2 else '다음', exact=True).click()
             assert page.locator('.ps-earned-car').is_visible()
@@ -58,14 +59,12 @@ def main():
 
             page.locator('[data-game="pairs"]').click()
             ids = page.locator('[data-side="left"]').evaluate_all('nodes => nodes.map(n => n.dataset.pair)')
-            card('right', ids[0]).click()
-            card('left', ids[0]).click()
+            card('right', ids[0]).drag_to(card('left', ids[0]))
             assert page.locator('.is-matched').count() == 2
             page.get_by_role('button', name='쉬어요', exact=True).click()
             page.get_by_role('button', name='이어서 할래요', exact=True).click()
             assert page.locator('.is-matched').count() == 2
-            card('left', ids[1]).click()
-            card('right', ids[1]).click()
+            card('left', ids[1]).drag_to(card('right', ids[1]))
             assert page.locator('.ps-success-banner').is_visible()
             page.locator('.ps-footer').get_by_role('button', name='놀이 목록', exact=True).click()
             page.locator('[data-game="memory"]').click()
@@ -107,7 +106,7 @@ def main():
                 assert len(ids) == 3
                 all_numbers.update(ids)
                 for item in ids:
-                    card('left', item).click(); card('right', item).click()
+                    card('left', item).drag_to(card('right', item))
                 page.get_by_role('button', name='다 했어요' if round_index == 2 else '다음', exact=True).click()
             assert all_numbers == {'1', '2', '3', '4', '5'}
             for game in ['numbers', 'pairs', 'memory']:

@@ -40,16 +40,16 @@ def main():
 
             open_game('match')
             assert page.locator('.ps-choice').count() == 2
-            page.locator('[data-choice="toilet"]').click()
+            page.locator('[data-choice="toilet"]').drag_to(page.locator('.ps-drop-target').first)
             assert page.locator('[data-choice="juice"]').evaluate("node => node.classList.contains('ps-hint')")
-            page.locator('[data-choice="toilet"]').click()
+            page.locator('[data-choice="toilet"]').drag_to(page.locator('.ps-drop-target').first)
             assert page.evaluate("JSON.parse(localStorage.getItem('jaemin-play-school-v1')).stats.match.help") == 1
-            page.locator('[data-choice="juice"]').click()
+            page.locator('[data-choice="juice"]').drag_to(page.locator('.ps-drop-target').first)
             page.screenshot(path=str(output / 'reward-landscape.png'))
             page.get_by_role('button', name='다음', exact=True).click()
-            page.locator('[data-choice="toilet"]').click()
+            page.locator('[data-choice="toilet"]').drag_to(page.locator('.ps-drop-target').first)
             page.get_by_role('button', name='다음', exact=True).click()
-            page.locator('[data-choice="juice"]').click()
+            page.locator('[data-choice="juice"]').drag_to(page.locator('.ps-drop-target').first)
             page.get_by_role('button', name='다 했어요', exact=True).click()
             assert page.locator('.ps-complete').is_visible()
             stats = page.evaluate("JSON.parse(localStorage.getItem('jaemin-play-school-v1')).stats.match")
@@ -72,20 +72,20 @@ def main():
             page.get_by_role('button', name='쉬어요', exact=True).click()
             assert page.locator('.ps-rest').is_visible()
             page.get_by_role('button', name='이어서 할래요', exact=True).click()
-            page.locator('[data-choice="juice"]').click()
+            page.locator('[data-choice="juice"]').drag_to(page.locator('.ps-drop-target').first)
             print('PASS: listening, visual help, break and resume', flush=True)
 
             open_game('parking')
             page.screenshot(path=str(output / 'parking-landscape.png'))
-            page.locator('[data-choice="red"]').click()
+            page.locator('.ps-park-car').drag_to(page.locator('[data-choice="red"]'))
             assert page.locator('.ps-reward-actions').count() == 1
             open_game('delivery')
-            page.locator('[data-choice="juice"]').click()
+            page.locator('[data-choice="juice"]').drag_to(page.locator('.ps-drop-target').first)
             assert page.locator('.ps-reward-actions').count() == 1
             open_game('count')
-            page.locator('[data-choice="1"]').click()
+            page.locator('[data-choice="1"]').drag_to(page.locator('.ps-drop-target').first)
             assert page.locator('.ps-reward-actions').count() == 1
-            print('PASS: parking, delivery and counting all work with taps alone', flush=True)
+            print('PASS: parking, delivery and counting use drag-and-drop', flush=True)
 
             open_game('delivery')
             page.locator('[data-choice="juice"]').drag_to(page.locator('.ps-delivery-zone'))
@@ -94,31 +94,65 @@ def main():
             open_game('parking')
             page.locator('.ps-park-car').drag_to(page.locator('[data-choice="red"]'))
             assert page.locator('.ps-reward-actions').count() == 1
-            print('PASS: optional delivery and parking drag controls', flush=True)
+            print('PASS: delivery and parking drag controls', flush=True)
 
             open_game('family')
             assert page.locator('[data-choice="me"] img').get_attribute('src') == page.evaluate('STUDY_SCREEN_MAP.playContent.family[0].image')
             assert page.locator('.ps-target > img').count() == 0
-            page.locator('[data-choice="mom"]').click()
+            page.locator('[data-choice="mom"]').drag_to(page.locator('.ps-drop-target').first)
             assert page.locator('.ps-target > img').count() == 1
-            page.locator('[data-choice="me"]').click()
+            page.locator('[data-choice="me"]').drag_to(page.locator('.ps-drop-target').first)
             assert page.locator('.ps-reward-actions').count() == 1
             open_game('life')
             assert page.locator('.ps-target > img').get_attribute('src') == page.evaluate('STUDY_SCREEN_MAP.playContent.associations[0].cueImage')
             assert page.locator('[data-choice="toilet"] img').get_attribute('src') == page.evaluate('STUDY_SCREEN_MAP.playContent.associations[0].image')
-            page.locator('[data-choice="toilet"]').click()
+            page.locator('[data-choice="toilet"]').drag_to(page.locator('.ps-drop-target').first)
             assert page.locator('.ps-reward-actions').count() == 1
             open_game('name')
+            page.locator('[data-choice="hong"]').click()
+            assert page.locator('.ps-name-slot.is-filled').count() == 0
+            page.locator('[data-choice="hong"]').drag_to(page.locator('.ps-game-header'))
+            assert page.locator('.ps-name-slot.is-filled').count() == 0
+            touch = context.new_cdp_session(page)
+
+            def touch_letter(cancel=False, exit_game=False):
+                source = page.locator('[data-choice="hong"]').bounding_box()
+                target = page.locator('.ps-name-slot.is-current').bounding_box()
+                start = {'x': source['x'] + source['width'] / 2, 'y': source['y'] + source['height'] / 2}
+                end = {'x': target['x'] + target['width'] / 2, 'y': target['y'] + target['height'] / 2}
+                touch.send('Input.dispatchTouchEvent', {'type': 'touchStart', 'touchPoints': [dict(start, id=1)]})
+                for step in range(1, 7):
+                    point = {key: start[key] + (end[key] - start[key]) * step / 6 for key in ['x', 'y']}
+                    touch.send('Input.dispatchTouchEvent', {'type': 'touchMove', 'touchPoints': [dict(point, id=1)]})
+                assert page.locator('.ps-drag-ghost').count() == 1
+                assert page.locator('.ps-drop-over').count() == 1
+                if exit_game:
+                    page.evaluate('homeBtn.click()')
+                touch.send('Input.dispatchTouchEvent', {'type': 'touchCancel' if cancel else 'touchEnd', 'touchPoints': []})
+                assert page.locator('.ps-drag-ghost').count() == 0
+                assert page.locator('.ps-drop-over').count() == 0
+
+            touch_letter(cancel=True)
+            assert page.locator('.ps-name-slot.is-filled').count() == 0
+            touch_letter(exit_game=True)
+            assert page.evaluate('currentKey()') == 'main'
+            page.get_by_text('재민이 놀이학교', exact=True).click()
+            page.wait_for_selector('.ps-menu-grid')
+            open_game('name')
+            touch_letter()
+            assert page.locator('.ps-name-slot.is-filled').count() == 1
+            open_game('name')
+            print('PASS: touch drag/drop, hover, cancel, outside drop, tap rejection and exit cleanup', flush=True)
             for round_index in range(3):
                 if round_index == 0:
-                    page.locator('[data-choice="jae"]').click()
-                page.locator('[data-choice="hong"]').click()
+                    page.locator('[data-choice="jae"]').drag_to(page.locator('.ps-drop-target').first)
+                page.locator('[data-choice="hong"]').drag_to(page.locator('.ps-drop-target').first)
                 assert page.locator('.ps-name-slot.is-filled').count() == 1
                 page.get_by_role('button', name='쉬어요', exact=True).click()
                 page.get_by_role('button', name='이어서 할래요', exact=True).click()
                 assert page.locator('.ps-name-slot.is-filled').count() == 1
-                page.locator('[data-choice="jae"]').click()
-                page.locator('[data-choice="min"]').click()
+                page.locator('[data-choice="jae"]').drag_to(page.locator('.ps-drop-target').first)
+                page.locator('[data-choice="min"]').drag_to(page.locator('.ps-drop-target').first)
                 assert page.locator('.ps-reward-actions').count() == 1
                 page.get_by_role('button', name='다 했어요' if round_index == 2 else '다음', exact=True).click()
             assert page.evaluate("JSON.parse(localStorage.getItem('jaemin-play-school-v1')).stats.name") == {'completed': 1, 'first': 2, 'help': 1}
@@ -147,7 +181,7 @@ def main():
             open_game('listen')
             assert page.locator('.ps-choice').count() == 3
             assert page.locator('.ps-target > img').count() == 1
-            page.locator('[data-choice="juice"]').click()
+            page.locator('[data-choice="juice"]').drag_to(page.locator('.ps-drop-target').first)
             assert page.locator('.ps-road-car').evaluate("node => getComputedStyle(node).animationName") == 'none'
             print('PASS: caregiver choices persist; silent mode has a visual prompt; still mode stops motion', flush=True)
 

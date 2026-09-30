@@ -4,7 +4,7 @@
     { id: 'name', title: '내 이름 완성', subtitle: '홍 · 재 · 민을 하나씩 맞춰요', badge: '홍 재 민', tone: 'lavender', group: 'study' },
     { id: 'life', title: '생활 그림 연결', subtitle: '그림과 어울리는 짝을 찾아요', image: './images/dad_carkey.png', tone: 'mint', group: 'study' },
     { id: 'numbers', title: '숫자 짝 맞추기', subtitle: '숫자와 자동차 수를 연결해요', badge: '1 2 3', tone: 'blue', group: 'pairs' },
-    { id: 'pairs', title: '그림 짝 맞추기', subtitle: '하나씩 눌러 같은 그림을 연결해요', badge: '● ●', tone: 'mint', group: 'pairs' },
+    { id: 'pairs', title: '그림 짝 맞추기', subtitle: '끌어서 같은 그림을 연결해요', badge: '● ●', tone: 'mint', group: 'pairs' },
     { id: 'memory', title: '기억 카드 놀이', subtitle: '카드를 뒤집어 같은 짝을 찾아요', badge: '★ ?', tone: 'lavender', group: 'pairs' },
     { id: 'drive', title: '자동차 출발', subtitle: '누르면 자동차가 지나가요', image: './images/traffic_game/car_red.png', tone: 'peach' },
     { id: 'match', title: '같은 그림 찾기', subtitle: '같은 사진을 골라요', image: './images/meal_juice.png', tone: 'mint' },
@@ -49,7 +49,7 @@
       instruments.stop();
       gridEl.querySelectorAll('[data-instrument]').forEach(node => node.classList.remove('ps-playing'));
     }
-    document.addEventListener('visibilitychange', () => { if (document.hidden) stopInstruments(); });
+    document.addEventListener('visibilitychange', () => { if (document.hidden) { stopInstruments(); dragCleanup?.(); } });
     const saved = window.appStorage.load(KEY, { settings: DEFAULTS, stats: {} }, value =>
       value && value.settings && [2, 3].includes(value.settings.choices)
       && [3, 5].includes(value.settings.rounds) && ['slow', 'still'].includes(value.settings.motion)
@@ -61,12 +61,14 @@
     let settings = { ...DEFAULTS, ...saved.settings };
     const stats = saved.stats;
     let state = null;
+    let dragCleanup = null;
     let settingsOpen = false;
     let menuGroup = 'all';
 
     function save() { window.appStorage.save(KEY, { settings, stats }); }
     function say(text) { return settings.sound ? speak(text) : Promise.resolve(); }
     function clear() {
+      dragCleanup?.();
       tasks.clear();
       stopInstruments();
       gridEl.scrollTop = 0;
@@ -133,7 +135,7 @@
       select('그림 범위', 'vocabulary', [['familiar', '주스 · 화장실부터'], ['extended', '물 · 자동차 · 과일도']]);
       select('놀이 안내 음성', 'sound', [[true, '소리 켜기'], [false, '조용히 하기']]);
       details.appendChild(controls);
-      details.appendChild(element('p', 'ps-parent-note', '누르기만 해도 할 수 있어요. 시간 제한과 감점은 없어요. 어려우면 도움을 누르고, 쉬고 싶으면 언제든 쉬어요.'));
+      details.appendChild(element('p', 'ps-parent-note', '이름과 짝 맞추기는 조각을 끌어 놓아요. 악기와 기억 카드는 눌러요. 시간 제한과 감점은 없어요.'));
       const records = element('div', 'ps-records');
       GAMES.forEach(game => {
         if (game.id === 'music') return; // Free play has no scored rounds.
@@ -240,9 +242,9 @@
     function prompt() {
       if (state.id === 'family') return state.target.label + ' 찾아주세요';
       if (state.id === 'life') return '그림과 어울리는 짝을 찾아요';
-      if (state.id === 'name') return '내 이름을 하나씩 맞춰요';
-      if (state.id === 'numbers') return '숫자와 자동차 수를 맞춰요';
-      if (state.id === 'pairs') return '같은 그림끼리 짝을 맞춰요';
+      if (state.id === 'name') return '글자를 끌어서 파란 칸에 놓아요';
+      if (state.id === 'numbers') return '숫자를 끌어서 자동차 수와 맞춰요';
+      if (state.id === 'pairs') return '그림을 끌어서 같은 짝에 놓아요';
       if (state.id === 'memory') return '카드 두 장을 눌러 같은 짝을 찾아요';
       if (state.id === 'drive') return '출발을 누르면 자동차가 지나가요';
       if (state.id === 'match') return '같은 그림을 찾아요';
@@ -323,6 +325,7 @@
       studyContent.name.letters.forEach((letter, index) => {
         const slot = element('span', 'ps-name-slot' + (index < state.nameIndex ? ' is-filled' : '') + (index === state.nameIndex ? ' is-current' : ''), letter.label);
         slot.setAttribute('aria-label', letter.label + (index < state.nameIndex ? ' 완료' : index === state.nameIndex ? ' 맞출 차례' : ''));
+        if (index === state.nameIndex) slot.classList.add('ps-drop-target');
         slots.appendChild(slot);
       });
       panel.appendChild(slots);
@@ -336,16 +339,10 @@
       if (state.matched.length === state.pairItems.length) answer('board');
       else { say('짝을 찾았어요'); render(); }
     }
-    function selectPair(side, id) {
-      if (!state || state.paused || state.phase !== 'question' || state.matched.includes(id)) return;
+    function dropPair(id, targetId) {
+      if (!state || state.paused || state.phase !== 'question' || state.matched.includes(id) || state.matched.includes(targetId)) return;
       tasks.clear();
-      const selected = state.selected;
-      if (!selected || selected.side === side) {
-        state.selected = { side, id };
-        state.pairMessage = state.id === 'numbers' ? '짝이 되는 숫자나 자동차를 눌러요' : '반대쪽에서 같은 그림을 눌러요';
-        render(); return;
-      }
-      if (selected.id === id) { finishPair(id); return; }
+      if (targetId === id) { finishPair(id); return; }
       state.mistakes++;
       state.pairMessage = '다시 살펴볼까요?';
       say('다시 살펴볼까요');
@@ -406,20 +403,24 @@
             const matched = state.matched.includes(item.id);
             const selected = state.selected?.side === side && state.selected.id === item.id;
             const hinted = state.hint && state.selected?.id === item.id;
-            const card = button('', () => selectPair(side, item.id), 'ps-pair-card' + (matched ? ' is-matched' : '') + (selected ? ' is-selected' : '') + (hinted ? ' ps-hint' : ''));
+            const card = button('', () => {}, 'ps-pair-card' + (matched ? ' is-matched' : ' ps-drop-target') + (selected ? ' is-selected' : '') + (hinted ? ' ps-hint' : ''));
             card.dataset.side = side; card.dataset.pair = item.id;
             card.disabled = matched;
             card.setAttribute('aria-pressed', String(selected));
             card.setAttribute('aria-label', (side === 'left' ? '왼쪽 ' : '오른쪽 ') + (item.number && side === 'right' ? '자동차 ' + item.number + '대' : item.label) + (matched ? ' 짝 완료' : ''));
             card.appendChild(pairFace(item, side === 'right'));
             if (matched) card.appendChild(element('span', 'ps-pair-check', '✓'));
+            if (!matched) drag(card, (x, y) => {
+              const target = dropTarget([...gridEl.querySelectorAll('.ps-pair-card:not(:disabled)')].filter(node => node.dataset.side !== side), x, y);
+              if (target) dropPair(item.id, target.dataset.pair);
+            }, () => [...gridEl.querySelectorAll('.ps-pair-card:not(:disabled)')].filter(node => node.dataset.side !== side));
             column.appendChild(card);
           });
           board.appendChild(column);
         });
         gridEl.appendChild(board);
       }
-      const status = element('p', 'ps-pair-status', state.pairMessage || (state.id === 'memory' ? '카드 두 장을 하나씩 눌러요' : '왼쪽 하나, 오른쪽 하나를 눌러요'));
+      const status = element('p', 'ps-pair-status', state.pairMessage || (state.id === 'memory' ? '카드 두 장을 하나씩 눌러요' : '조각을 끌어서 반대쪽 짝에 놓아요'));
       status.setAttribute('role', 'status');
       gridEl.appendChild(status);
       const assist = element('div', 'ps-assist');
@@ -432,15 +433,29 @@
         tasks.setTimeout(() => { if (state && !state.paused && state.phase === 'question') say(prompt()); }, 200);
       }
     }
-    function drag(source, onDrop) {
+    function drag(source, onDrop, targets = () => [...gridEl.querySelectorAll('.ps-drop-target')]) {
+      source.classList.add('ps-draggable');
       source.addEventListener('pointerdown', event => {
-        if (event.button !== 0 || state.phase !== 'question' || state.paused) return;
+        if (event.button !== 0 || event.isPrimary === false || !state || state.phase !== 'question' || state.paused || dragCleanup) return;
         const rect = source.getBoundingClientRect();
         let ghost = null;
-        source.setPointerCapture(event.pointerId);
+        const clean = () => {
+          source.removeEventListener('pointermove', move);
+          source.removeEventListener('pointerup', finish);
+          source.removeEventListener('pointercancel', finish);
+          source.removeEventListener('lostpointercapture', finish);
+          if (source.hasPointerCapture(event.pointerId)) source.releasePointerCapture(event.pointerId);
+          ghost?.remove();
+          source.classList.remove('ps-dragging');
+          gridEl.querySelectorAll('.ps-drop-over').forEach(node => node.classList.remove('ps-drop-over'));
+          dragCleanup = null;
+        };
         const move = ev => {
-          if (!ghost && Math.hypot(ev.clientX - event.clientX, ev.clientY - event.clientY) < 14) return;
+          if (ev.pointerId !== event.pointerId) return;
+          if (!ghost && Math.hypot(ev.clientX - event.clientX, ev.clientY - event.clientY) < 8) return;
+          ev.preventDefault();
           if (!ghost) {
+            tasks.clear();
             ghost = source.cloneNode(true);
             ghost.removeAttribute('id');
             ghost.classList.add('ps-drag-ghost');
@@ -449,25 +464,40 @@
             ghost.style.width = rect.width + 'px';
             ghost.style.height = rect.height + 'px';
             document.body.appendChild(ghost);
+            source.classList.add('ps-dragging');
           }
           ghost.style.left = ev.clientX - rect.width / 2 + 'px';
           ghost.style.top = ev.clientY - rect.height / 2 + 'px';
+          gridEl.querySelectorAll('.ps-drop-over').forEach(node => node.classList.remove('ps-drop-over'));
+          dropTarget(targets(), ev.clientX, ev.clientY)?.classList.add('ps-drop-over');
         };
         const finish = ev => {
-          source.removeEventListener('pointermove', move);
-          source.removeEventListener('pointerup', finish);
-          source.removeEventListener('pointercancel', finish);
-          if (source.hasPointerCapture(event.pointerId)) source.releasePointerCapture(event.pointerId);
+          if (ev.pointerId !== event.pointerId) return;
           if (ghost) {
-            ghost.remove();
             source.dataset.suppressClickUntil = String(performance.now() + 350);
-            if (ev.type === 'pointerup') onDrop(ev.clientX, ev.clientY);
           }
+          const dropped = !!ghost && ev.type === 'pointerup';
+          clean();
+          if (dropped) onDrop(ev.clientX, ev.clientY);
         };
+        dragCleanup = clean;
         source.addEventListener('pointermove', move);
         source.addEventListener('pointerup', finish);
         source.addEventListener('pointercancel', finish);
+        source.addEventListener('lostpointercapture', finish);
+        source.setPointerCapture(event.pointerId);
       });
+    }
+    function dropTarget(nodes, x, y) {
+      const bounds = gridEl.getBoundingClientRect();
+      if (x < bounds.left || x > bounds.right || y < bounds.top || y > bounds.bottom) return null;
+      return nodes.filter(node => contains(node, x, y)).sort((a, b) => {
+        const distance = node => {
+          const rect = node.getBoundingClientRect();
+          return Math.hypot(Math.max(rect.left - x, 0, x - rect.right), Math.max(rect.top - y, 0, y - rect.bottom));
+        };
+        return distance(a) - distance(b);
+      })[0];
     }
     function contains(node, x, y) {
       const box = node.getBoundingClientRect();
@@ -486,7 +516,7 @@
       return scene;
     }
     function choice(item) {
-      const node = button('', () => answer(item.id), 'ps-choice');
+      const node = button('', () => {}, 'ps-choice');
       node.dataset.choice = item.id;
       node.setAttribute('aria-label', item.label);
       if (state.hint && item.id === state.target.id) node.classList.add('ps-hint');
@@ -503,9 +533,9 @@
         node.appendChild(dots);
       } else node.appendChild(photo(item));
       if (state.id !== 'name') node.appendChild(element('strong', '', item.label));
-      if (state.id === 'delivery') drag(node, (x, y) => {
-        const target = gridEl.querySelector('.ps-delivery-zone');
-        if (target && contains(target, x, y)) answer(item.id);
+      if (state.id === 'parking') node.classList.add('ps-drop-target');
+      else drag(node, (x, y) => {
+        if (dropTarget([...gridEl.querySelectorAll('.ps-drop-target')], x, y)) answer(item.id);
       });
       return node;
     }
@@ -633,6 +663,10 @@
         gridEl.appendChild(button('출발', () => answer('go'), 'ps-primary ps-go'));
       } else {
         const stage = element('div', 'ps-target');
+        if (!['name', 'parking'].includes(state.id)) {
+          stage.classList.add('ps-drop-target');
+          stage.setAttribute('aria-label', '조각 놓는 곳');
+        }
         if (state.id === 'name') stage.appendChild(renderName());
         else if (state.id === 'life') {
           stage.appendChild(photo({ image: state.target.cueImage }));
@@ -648,7 +682,7 @@
           car.setAttribute('aria-label', state.target.label + ' 자동차');
           car.appendChild(photo(state.target));
           drag(car, (x, y) => {
-            const bay = [...gridEl.querySelectorAll('.ps-choice')].find(node => contains(node, x, y));
+            const bay = dropTarget([...gridEl.querySelectorAll('.ps-choice')], x, y);
             if (bay) answer(bay.dataset.choice);
           });
           stage.appendChild(car);
@@ -669,6 +703,7 @@
         options.style.setProperty('--choice-count', state.options.length);
         state.options.forEach(item => options.appendChild(choice(item)));
         gridEl.appendChild(options);
+        gridEl.appendChild(element('p', 'ps-drag-instruction', state.id === 'parking' ? '자동차를 끌어서 같은 색 주차장에 놓아요' : '아래 조각을 끌어서 위의 칸에 놓아요'));
         const assist = element('div', 'ps-assist');
         assist.appendChild(button('다시 듣기', () => say(question)));
         assist.appendChild(button('도와주세요', hint));
@@ -682,6 +717,7 @@
       }
     }
     function renderFeature(screen) {
+      dragCleanup?.();
       appMainEl.classList.remove('app--spotlight');
       spotlightViewEl.style.display = 'none';
       spotlightBtnEl.onclick = null;
