@@ -102,6 +102,64 @@
 .ps-rest-icon { font-size: 85px; color: #88b2ad; }
 .ps-drag-ghost { position: fixed; pointer-events: none; z-index: 10000; margin: 0; opacity: .88; transform: scale(.85); }
 .ps-drag-ghost .ps-photo { width: 90%; height: 80%; object-fit: contain; }
+.play-school { background: #f5f5ef; padding: 20px; gap: 16px; }
+.ps-intro { position: relative; overflow: hidden; flex-shrink: 0; padding: 26px; min-height: 154px; border-radius: 26px; background: linear-gradient(115deg, #164c49, #2d7770); color: #fffdf4; }
+.ps-intro::after { content: ''; position: absolute; width: 40%; height: 100%; right: -5%; bottom: -60%; border: 24px solid #ffffff12; border-radius: 50%; pointer-events: none; }
+.ps-intro .ps-eyebrow { color: #b7e7cc; }
+.ps-intro h2 { font-size: clamp(24px, 3.5vw, 38px); margin-top: 12px; max-width: 72%; }
+.ps-intro p { color: #d2e5dd; max-width: 70%; margin-top: 10px; }
+.ps-hero-car { position: absolute; right: 0; bottom: 4px; width: 27%; height: 110px; object-fit: contain; transform: rotate(-8deg); filter: drop-shadow(0 10px 5px #0003); }
+.ps-collection { display: flex; align-items: center; gap: 15px; background: #fff; border: 1px solid #e7e9df; border-radius: 18px; padding: 12px 18px; flex-wrap: wrap; }
+.ps-collection > strong { font-size: 15px; }
+.ps-stickers { display: flex; gap: 6px; }
+.ps-sticker { width: 43px; height: 38px; background: #f3f3ed; border: 1px dashed #ccd3c5; border-radius: 10px; display: grid; place-items: center; color: #a6af9e; font-size: 25px; }
+.ps-sticker.is-collected { background: #fff0bf; border-style: solid; border-color: #f3d778; }
+.ps-sticker img { width: 90%; height: 90%; object-fit: contain; mix-blend-mode: multiply; }
+.ps-collection-note { color: #607368; font-size: 13px; margin-left: auto; }
+.ps-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+.ps-tab { border: 1px solid #d7e0d8; padding: 10px 18px; min-height: 46px; border-radius: 30px; color: #4a6159; background: white; font-weight: 700 !important; }
+.ps-tab[aria-pressed=true] { background: #244e48; color: white; border-color: #244e48; }
+.ps-menu-grid { gap: 16px; }
+.ps-game-card { border: 1px solid #ffffff; box-shadow: 0 5px 0 #243e3012, 0 12px 25px #243e3007; padding: 20px; min-height: 226px; transition: transform .15s ease, box-shadow .15s ease; }
+.ps-game-card > .ps-photo { height: 100px; }
+.ps-game-art { height: 100px; display: grid; place-items: center; font-size: 54px; font-weight: 900; letter-spacing: .12em; color: #315d8d; text-shadow: 0 4px #ffffffaa; }
+.ps-art-pairs { color: #3d8267; }
+.ps-art-memory { color: #74609b; }
+.ps-card-action { margin-top: auto; padding-top: 9px; font-size: 12px; font-weight: 800; color: #435f55; }
+.ps-pair-meter { align-self: center; border-radius: 20px; background: #e0ede4; color: #2f6654; padding: 7px 22px; font-size: 17px; font-weight: 800; }
+.ps-pair-board { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(18px, 6vw, 70px); width: min(850px, 100%); align-self: center; }
+.ps-pair-column { display: flex; flex-direction: column; gap: 12px; }
+.ps-pair-card, .ps-memory-card { position: relative; border: 3px solid #e0e7df; background: white; color: #294247; border-radius: 22px; min-height: 120px; padding: 10px; box-shadow: 0 5px 0 #cdd7cc; display: grid; place-items: center; }
+.ps-pair-card.is-selected { border-color: #347fc1; background: #eaf5ff; box-shadow: 0 5px 0 #347fc1; }
+.ps-pair-card.ps-hint { border-color: #d5a225; }
+.ps-pair-card.is-matched, .ps-memory-card.is-matched { background: #e1f0dd; border-color: #7baa7f; box-shadow: 0 4px 0 #7baa7f; opacity: 1; }
+.ps-pair-face { display: grid; place-items: center; width: 100%; }
+.ps-pair-face img { width: 100%; height: 95px; object-fit: contain; mix-blend-mode: multiply; }
+.ps-pair-number { font-size: 64px; line-height: 1.2; font-weight: 900; color: #315d8d; }
+.ps-quantity { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; width: 100%; max-width: 290px; }
+.ps-quantity img { width: 100%; height: 45px; object-fit: contain; mix-blend-mode: multiply; }
+.ps-pair-check { position: absolute; right: 10px; top: 8px; border-radius: 50%; width: 25px; height: 25px; background: #39784d; color: white; font-size: 18px; display: grid; place-items: center; }
+.ps-pair-status { min-height: 24px; margin: 0; text-align: center; color: #46695b; font-weight: 700; }
+.ps-memory-board { display: grid; grid-template-columns: repeat(var(--pairs), minmax(0, 1fr)); gap: 14px; width: min(820px, 100%); align-self: center; }
+.ps-memory-card { min-height: 158px; background: #427b74; border-color: #6eaaa0; box-shadow: 0 5px 0 #27594f; }
+.ps-memory-card.is-revealed { background: #fff; border-color: #d7e3d7; }
+.ps-card-back { font-size: 58px; color: #e6edc8; text-shadow: 0 3px #27594f; }
+.ps-flip-again { align-self: center; }
+.ps-success-banner { background: #e0f0d6; border-radius: 16px; padding: 14px; text-align: center; font-size: 22px; font-weight: 800; color: #39734e; animation: ps-arrive .35s ease-out; }
+.ps-earned-car { width: min(300px, 75%); height: 125px; object-fit: contain; mix-blend-mode: multiply; }
+@keyframes ps-arrive { from { transform: translateY(8px); opacity: .4; } to { transform: none; opacity: 1; } }
+.ps-still .ps-success-banner { animation: none; }
+@media (min-width: 900px) and (max-height: 850px) {
+  .ps-pair-game { gap: 8px; padding: 12px 20px; }
+  .ps-pair-game .ps-question { font-size: 28px; }
+  .ps-pair-game .ps-pair-meter { padding: 3px 18px; }
+  .ps-three-pairs .ps-pair-column { gap: 8px; }
+  .ps-three-pairs .ps-pair-card { min-height: 88px; padding: 5px; border-radius: 16px; }
+  .ps-three-pairs .ps-pair-face img { height: 64px; }
+  .ps-three-pairs .ps-pair-number { font-size: 46px; }
+  .ps-three-pairs .ps-quantity img { height: 32px; }
+  .ps-pair-game .ps-memory-card { min-height: 118px; }
+}
 @media (max-width: 760px) {
   .play-school { padding: 12px; border-radius: 20px; gap: 10px; }
   .ps-menu-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
@@ -114,5 +172,19 @@
   .ps-control, .ps-toilet { padding: 9px 12px; font-size: 16px; }
   .ps-records { grid-template-columns: 1fr; }
   .ps-count-road { gap: 6px; }
+  .ps-intro { padding: 18px; min-height: 152px; }
+  .ps-intro h2 { max-width: 100%; padding-right: 10%; }
+  .ps-intro p { max-width: 74%; font-size: 13px; }
+  .ps-hero-car { height: 75px; }
+  .ps-game-art { height: 74px; font-size: 36px; }
+  .ps-collection { gap: 10px; padding: 12px; }
+  .ps-collection-note { margin-left: 0; }
+  .ps-tab { padding: 8px 12px; font-size: 13px !important; }
+  .ps-pair-board { gap: 16px; }
+  .ps-pair-card { min-height: 112px; }
+  .ps-pair-face img { height: 80px; }
+  .ps-memory-card { min-height: 128px; padding: 6px; }
+  .ps-quantity img { height: 35px; }
+  .ps-memory-board { gap: 10px; }
 }
-@media (prefers-reduced-motion: reduce) { .ps-road-car.is-driving { animation: none; left: 30%; } }
+@media (prefers-reduced-motion: reduce) { .ps-road-car.is-driving { animation: none; left: 30%; } .ps-success-banner { animation: none; } .ps-game-card { transition: none; } }

@@ -30,7 +30,7 @@ def main():
             page.goto(url)
             page.get_by_text('재민이 놀이학교', exact=True).click()
             page.wait_for_selector('.ps-menu-grid')
-            assert page.locator('.ps-game-card').count() == 7
+            assert page.locator('.ps-game-card').count() == 10
             page.screenshot(path=str(output / 'menu-landscape.png'))
 
             def open_game(game):

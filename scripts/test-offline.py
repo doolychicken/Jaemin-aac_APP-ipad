@@ -122,13 +122,25 @@ def main():
             print('PASS: new speech cancels previous recorded audio', flush=True)
 
             page.evaluate("pushScreen('playSchoolHome', '놀이학교'); render();")
-            assert page.locator('.ps-game-card').count() == 7
+            assert page.locator('.ps-game-card').count() == 10
             page.locator('[data-game="match"]').click()
             page.locator('[data-choice="juice"]').click()
             assert page.locator('.ps-reward-actions').count() == 1
             assert page.evaluate("window.offlineSpeech.play('출발을 누르면 자동차가 지나가요')") is True
             assert page.evaluate('window.nativeSpeechCalls') == 0
             print('PASS: new play-school game and recorded instructions work offline', flush=True)
+
+            page.evaluate("pushScreen('playSchool_numbers', '숫자 짝 맞추기'); render();")
+            for value in ['1', '2']:
+                page.locator(f'[data-side="left"][data-pair="{value}"]').click()
+                page.locator(f'[data-side="right"][data-pair="{value}"]').click()
+            assert page.locator('.ps-success-banner').is_visible()
+            assert page.evaluate("window.offlineSpeech.play('숫자와 자동차 수를 맞춰요')") is True
+            assert page.evaluate('window.nativeSpeechCalls') == 0
+            page.evaluate("pushScreen('playSchool_memory', '기억 카드 놀이'); render();")
+            page.get_by_role('button', name='도와주세요', exact=True).click()
+            assert page.locator('.ps-memory-card img').count() == 4
+            print('PASS: number pairing, memory cards and new recorded prompts work offline', flush=True)
 
             page.evaluate("pushScreen('playSchool_music', '악기 소리 놀이'); render();")
             signatures = []
@@ -166,7 +178,7 @@ def main():
             print('PASS: local video plays and seeks with network disabled', flush=True)
 
             # Readiness must recover if a required recording disappears from storage.
-            page.evaluate("async () => { const cache = await caches.open('jaemin-aac-v399'); await cache.delete(OFFLINE_SPEECH.assets[0]); }")
+            page.evaluate("async () => { const cache = await caches.open('jaemin-aac-v400'); await cache.delete(OFFLINE_SPEECH.assets[0]); }")
             page.reload()
             page.wait_for_function("document.querySelector('#offlineStatusText').textContent.includes('파일이 부족')")
             context.set_offline(False)
