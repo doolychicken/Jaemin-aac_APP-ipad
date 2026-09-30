@@ -5,7 +5,8 @@
     { id: 'listen', title: '듣고 골라요', subtitle: '주스와 화장실부터 천천히', image: './images/pee.png', tone: 'blue' },
     { id: 'parking', title: '색깔 주차장', subtitle: '차와 같은 색을 찾아요', image: './images/traffic_game/car_blue.png', tone: 'lavender' },
     { id: 'delivery', title: '주스 배달', subtitle: '물건을 싣고 출발해요', image: './images/mart_items/juice.png', tone: 'yellow' },
-    { id: 'count', title: '자동차 세기', subtitle: '한 대, 두 대를 살펴봐요', image: './images/traffic_game/car_silver.png', tone: 'rose' }
+    { id: 'count', title: '자동차 세기', subtitle: '한 대, 두 대를 살펴봐요', image: './images/traffic_game/car_silver.png', tone: 'rose' },
+    { id: 'music', title: '악기 소리 놀이', subtitle: '누르면 악기 소리가 나요', image: './images/piano.png', tone: 'yellow' }
   ];
   const ITEMS = [
     { id: 'juice', label: '주스', image: './images/meal_juice.png' },
@@ -26,6 +27,21 @@
   window.createPlaySchoolFeature = function (deps) {
     const { gridEl, appMainEl, spotlightViewEl, spotlightBtnEl, heroEl, helperEl, speak, render, pushScreen } = deps;
     const tasks = window.createTaskScope();
+    const instruments = window.createInstrumentPlayer();
+    const instrumentCards = [
+      { id: 'piano', label: '피아노', icon: '🎹' },
+      { id: 'drum', label: '북', icon: '🥁' },
+      { id: 'guitar', label: '기타', icon: '🎸' },
+      { id: 'bell', label: '종', icon: '🔔' }
+    ];
+    let musicVolume = 0.3;
+    let musicRequest = 0;
+    function stopInstruments() {
+      musicRequest++;
+      instruments.stop();
+      gridEl.querySelectorAll('[data-instrument]').forEach(node => node.classList.remove('ps-playing'));
+    }
+    document.addEventListener('visibilitychange', () => { if (document.hidden) stopInstruments(); });
     const saved = window.appStorage.load(KEY, { settings: DEFAULTS, stats: {} }, value =>
       value && value.settings && [2, 3].includes(value.settings.choices)
       && [3, 5].includes(value.settings.rounds) && ['slow', 'still'].includes(value.settings.motion)
@@ -42,6 +58,7 @@
     function say(text) { return settings.sound ? speak(text) : Promise.resolve(); }
     function clear() {
       tasks.clear();
+      stopInstruments();
       gridEl.scrollTop = 0;
       document.querySelectorAll('.ps-drag-ghost').forEach(el => el.remove());
       state = null;
@@ -108,6 +125,7 @@
       details.appendChild(element('p', 'ps-parent-note', '누르기만 해도 할 수 있어요. 시간 제한과 감점은 없어요. 어려우면 도움을 누르고, 쉬고 싶으면 언제든 쉬어요.'));
       const records = element('div', 'ps-records');
       GAMES.forEach(game => {
+        if (game.id === 'music') return; // Free play has no scored rounds.
         const row = stats[game.id] || { completed: 0, first: 0, help: 0 };
         records.appendChild(element('p', '', game.title + ' · 완료 ' + row.completed
           + (game.id === 'drive' ? '' : ' · 첫 선택 성공 ' + row.first + ' · 도움 ' + row.help)));
@@ -289,12 +307,63 @@
       row.appendChild(button('놀이 목록', menu));
       row.appendChild(button('쉬어요', () => {
         tasks.clear();
+        stopInstruments();
         state.paused = true;
         say('쉬어요');
         render();
       }));
       row.appendChild(button('화장실', () => { say('화장실'); pushScreen('toilet', '화장실'); render(); }, 'ps-control ps-toilet'));
       return row;
+    }
+    function renderMusic() {
+      gridEl.appendChild(element('h2', 'ps-question', '악기를 눌러봐요'));
+      gridEl.appendChild(element('p', 'ps-music-note', '좋아하는 악기를 누르면 소리가 나요. 또 눌러도 좋아요.'));
+      const choices = element('div', 'ps-instruments');
+      const status = element('p', 'ps-music-status', '어떤 소리가 날까요?');
+      status.setAttribute('role', 'status');
+      const offset = state.instrumentPage || 0;
+      instrumentCards.slice(offset, offset + 2).forEach(item => {
+        const card = button('', async () => {
+          tasks.clear();
+          stopInstruments();
+          window.offlineSpeech?.cancel();
+          try { window.speechSynthesis?.cancel(); } catch (_) {}
+          const request = ++musicRequest;
+          const ok = await instruments.play(item.id, musicVolume);
+          if (request !== musicRequest || !card.isConnected) return;
+          if (!ok) { status.textContent = '소리를 다시 눌러 주세요'; return; }
+          card.classList.add('ps-playing');
+          status.textContent = item.label;
+          tasks.setTimeout(() => card.classList.remove('ps-playing'), 1800);
+        }, 'ps-instrument');
+        card.dataset.instrument = item.id;
+        card.setAttribute('aria-label', item.label);
+        const icon = element('span', 'ps-instrument-icon', item.icon);
+        icon.setAttribute('aria-hidden', 'true');
+        card.appendChild(icon);
+        card.appendChild(element('strong', '', item.label));
+        choices.appendChild(card);
+      });
+      gridEl.appendChild(choices);
+      gridEl.appendChild(status);
+      const controls = element('div', 'ps-assist');
+      controls.appendChild(button('다른 악기', () => {
+        tasks.clear(); stopInstruments();
+        state.instrumentPage = offset === 0 ? 2 : 0;
+        render();
+      }));
+      controls.appendChild(button('소리 멈추기', () => {
+        tasks.clear(); stopInstruments(); status.textContent = '소리를 멈췄어요';
+      }));
+      const volume = element('label', 'ps-music-volume', '악기 소리 크기');
+      const slider = element('input', '');
+      slider.type = 'range'; slider.min = '0.1'; slider.max = '0.6'; slider.step = '0.1'; slider.value = String(musicVolume);
+      slider.setAttribute('aria-label', '악기 소리 크기');
+      slider.addEventListener('input', () => { musicVolume = Number(slider.value); stopInstruments(); });
+      volume.appendChild(slider);
+      controls.appendChild(volume);
+      gridEl.appendChild(controls);
+      gridEl.appendChild(footer());
     }
     function renderGame(game) {
       if (!state || state.id !== game.id) {
@@ -309,7 +378,7 @@
       const progress = element('div', 'ps-progress');
       progress.setAttribute('aria-label', '전체 ' + settings.rounds + '번 중 ' + Math.min(state.round + 1, settings.rounds) + '번째');
       for (let i = 0; i < settings.rounds; i++) progress.appendChild(element('span', i <= state.round ? 'is-done' : ''));
-      header.appendChild(progress);
+      if (game.id !== 'music') header.appendChild(progress);
       gridEl.appendChild(header);
       if (state.paused) {
         const rest = element('div', 'ps-rest');
@@ -321,6 +390,7 @@
         gridEl.appendChild(button('화장실', () => { pushScreen('toilet', '화장실'); render(); }, 'ps-control ps-toilet'));
         return;
       }
+      if (game.id === 'music') { renderMusic(); return; }
       if (state.phase === 'complete') {
         const complete = element('div', 'ps-complete');
         complete.appendChild(element('div', 'ps-stars', '★ ★ ★'));

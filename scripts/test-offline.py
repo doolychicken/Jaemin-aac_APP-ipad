@@ -32,6 +32,18 @@ NO_NATIVE_SPEECH = """(() => {
   window.recordedStarts = 0;
   window.recordedEnds = 0;
   window.recordedStops = 0;
+  window.instrumentNotes = [];
+  window.instrumentStops = 0;
+  const oscillatorStart = OscillatorNode.prototype.start;
+  const oscillatorStop = OscillatorNode.prototype.stop;
+  OscillatorNode.prototype.start = function(...args) {
+    window.instrumentNotes.push(this.frequency.value);
+    return oscillatorStart.apply(this, args);
+  };
+  OscillatorNode.prototype.stop = function(...args) {
+    if (!args.length) window.instrumentStops++;
+    return oscillatorStop.apply(this, args);
+  };
   const start = AudioBufferSourceNode.prototype.start;
   const stop = AudioBufferSourceNode.prototype.stop;
   AudioBufferSourceNode.prototype.start = function(...args) {
@@ -110,13 +122,41 @@ def main():
             print('PASS: new speech cancels previous recorded audio', flush=True)
 
             page.evaluate("pushScreen('playSchoolHome', '놀이학교'); render();")
-            assert page.locator('.ps-game-card').count() == 6
+            assert page.locator('.ps-game-card').count() == 7
             page.locator('[data-game="match"]').click()
             page.locator('[data-choice="juice"]').click()
             assert page.locator('.ps-reward-actions').count() == 1
             assert page.evaluate("window.offlineSpeech.play('출발을 누르면 자동차가 지나가요')") is True
             assert page.evaluate('window.nativeSpeechCalls') == 0
             print('PASS: new play-school game and recorded instructions work offline', flush=True)
+
+            page.evaluate("pushScreen('playSchool_music', '악기 소리 놀이'); render();")
+            signatures = []
+            for instrument in ['piano', 'drum', 'guitar', 'bell']:
+                if instrument == 'guitar':
+                    page.get_by_role('button', name='다른 악기', exact=True).click()
+                page.evaluate('window.instrumentNotes = []')
+                page.locator(f'[data-instrument="{instrument}"]').click()
+                page.wait_for_selector(f'[data-instrument="{instrument}"].ps-playing')
+                notes = page.evaluate('window.instrumentNotes')
+                assert notes, instrument
+                signatures.append(notes)
+                page.get_by_role('button', name='소리 멈추기', exact=True).click()
+                assert page.locator('.ps-playing').count() == 0
+            assert len({str(notes) for notes in signatures}) == 4
+            assert page.evaluate('window.instrumentStops') > 0
+            page.locator('[data-instrument="bell"]').click()
+            page.wait_for_selector('.ps-playing')
+            stops = page.evaluate('window.instrumentStops')
+            page.get_by_role('button', name='쉬어요', exact=True).click()
+            assert page.evaluate('window.instrumentStops') > stops
+            page.get_by_role('button', name='이어서 할래요', exact=True).click()
+            page.locator('[data-instrument="bell"]').click()
+            page.wait_for_selector('.ps-playing')
+            stops = page.evaluate('window.instrumentStops')
+            page.locator('.ps-footer').get_by_role('button', name='놀이 목록', exact=True).click()
+            assert page.evaluate('window.instrumentStops') > stops
+            print('PASS: four distinct instrument sounds play offline and stop on break or exit', flush=True)
 
             page.evaluate("pushScreen('toiletWaterVideo', '물소리'); render();")
             page.evaluate("document.querySelector('video').muted = true; document.querySelector('video').play();")
@@ -126,7 +166,7 @@ def main():
             print('PASS: local video plays and seeks with network disabled', flush=True)
 
             # Readiness must recover if a required recording disappears from storage.
-            page.evaluate("async () => { const cache = await caches.open('jaemin-aac-v398'); await cache.delete(OFFLINE_SPEECH.assets[0]); }")
+            page.evaluate("async () => { const cache = await caches.open('jaemin-aac-v399'); await cache.delete(OFFLINE_SPEECH.assets[0]); }")
             page.reload()
             page.wait_for_function("document.querySelector('#offlineStatusText').textContent.includes('파일이 부족')")
             context.set_offline(False)

@@ -30,7 +30,7 @@ def main():
             page.goto(url)
             page.get_by_text('재민이 놀이학교', exact=True).click()
             page.wait_for_selector('.ps-menu-grid')
-            assert page.locator('.ps-game-card').count() == 6
+            assert page.locator('.ps-game-card').count() == 7
             page.screenshot(path=str(output / 'menu-landscape.png'))
 
             def open_game(game):
@@ -110,6 +110,25 @@ def main():
             page.locator('[data-choice="juice"]').click()
             assert page.locator('.ps-road-car').evaluate("node => getComputedStyle(node).animationName") == 'none'
             print('PASS: caregiver choices persist; silent mode has a visual prompt; still mode stops motion', flush=True)
+
+            open_game('music')
+            assert page.locator('[data-instrument]').count() == 2
+            page.locator('[data-instrument="piano"]').click()
+            page.wait_for_selector('[data-instrument="piano"].ps-playing')
+            page.get_by_role('button', name='다른 악기', exact=True).click()
+            assert page.locator('[data-instrument="guitar"]').count() == 1
+            page.locator('[data-instrument="guitar"]').click()
+            page.wait_for_selector('.ps-playing')
+            page.get_by_label('악기 소리 크기').fill('0.2')
+            assert page.locator('.ps-playing').count() == 0
+            page.get_by_role('button', name='쉬어요', exact=True).click()
+            page.get_by_role('button', name='이어서 할래요', exact=True).click()
+            assert page.locator('[data-instrument="guitar"]').count() == 1
+            for width, height in [(1024, 768), (768, 1024), (390, 844)]:
+                page.set_viewport_size({'width': width, 'height': height})
+                page.screenshot(path=str(output / f'music-{width}.png'))
+                assert page.evaluate('document.documentElement.scrollWidth <= innerWidth')
+            print('PASS: instrument free play, two large choices, volume, rest and responsive layouts', flush=True)
 
             for width, height in [(1024, 768), (768, 1024), (390, 844)]:
                 page.set_viewport_size({'width': width, 'height': height})

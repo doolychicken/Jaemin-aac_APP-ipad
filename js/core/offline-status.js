@@ -1,5 +1,5 @@
 (function () {
-  const VERSION = 'v398';
+  const VERSION = 'v399';
   const status = document.getElementById('offlineStatus');
   const label = document.getElementById('offlineStatusText');
   const retry = document.getElementById('offlineRetry');
@@ -43,7 +43,7 @@
 
   async function register() {
     try {
-      registration = await navigator.serviceWorker.register('./sw.js?v=398', { updateViaCache: 'none' });
+      registration = await navigator.serviceWorker.register('./sw.js?v=399', { updateViaCache: 'none' });
       if (registration.waiting) registration.waiting.postMessage({ type: 'SKIP_WAITING' });
       registration.addEventListener('updatefound', () => {
         const worker = registration.installing;
@@ -63,7 +63,7 @@
     show('오프라인 파일을 다시 준비하고 있어요');
     try { await navigator.storage?.persist?.(); } catch (_) {}
     await register();
-    if (registration?.active?.scriptURL.endsWith('sw.js?v=398')) {
+    if (registration?.active?.scriptURL.endsWith('sw.js?v=399')) {
       registration.active.postMessage({ type: 'REPAIR_OFFLINE' });
     }
   });
