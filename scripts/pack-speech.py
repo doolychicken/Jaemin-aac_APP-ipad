@@ -11,6 +11,16 @@ out = ROOT / 'audio/speech'
 out.mkdir(parents=True, exist_ok=True)
 rate = 16000
 buffers, frames, clips, assets = [], 0, {}, []
+manifest_path = ROOT / 'js/data/speech-manifest.js'
+if manifest_path.exists():
+    previous = json.loads(manifest_path.read_text(encoding='utf-8').split('self.OFFLINE_SPEECH = ', 1)[1].strip().rstrip(';'))
+    clips = previous['clips']
+    assets = previous['assets']
+    for asset in assets:
+        if not (ROOT / asset).is_file():
+            raise FileNotFoundError(asset)
+# Append new vocabulary without repacking or redownloading existing voice files.
+texts = [text for text in texts if text not in clips]
 
 
 def flush():

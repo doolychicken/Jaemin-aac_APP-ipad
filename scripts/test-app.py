@@ -175,7 +175,7 @@ def main():
             offline_page = offline.new_page()
             offline_page.goto(url)
             offline_page.wait_for_function("navigator.serviceWorker.controller && typeof render === 'function'", timeout=60000)
-            offline_page.wait_for_function("async () => !!(await (await caches.open('jaemin-aac-v397')).match('./js/core/runtime.js'))")
+            offline_page.wait_for_function("async () => !!(await (await caches.open('jaemin-aac-v398')).match('./js/core/runtime.js'))")
             offline.set_offline(True)
             offline_page.reload()
             offline_page.wait_for_function("typeof render === 'function' && document.querySelector('#buttonGrid button')")

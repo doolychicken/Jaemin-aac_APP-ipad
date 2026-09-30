@@ -1,0 +1,108 @@
+.play-school {
+  --ps-ink: #294247;
+  --ps-green: #26736a;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: auto;
+  padding: 14px 18px 18px;
+  border-radius: 26px;
+  background: #fffdf7;
+  color: var(--ps-ink);
+  -webkit-overflow-scrolling: touch;
+}
+.play-school button, .play-school select { font: inherit; cursor: pointer; touch-action: manipulation; }
+.play-school button:focus-visible, .play-school select:focus-visible, .play-school summary:focus-visible { outline: 4px solid #1467a3; outline-offset: 3px; }
+.ps-eyebrow { font-size: 13px; font-weight: 800; letter-spacing: .06em; color: #52756d; }
+.ps-intro h2 { margin: 5px 0 4px; font-size: clamp(22px, 3vw, 32px); letter-spacing: -.05em; }
+.ps-intro p { margin: 0; color: #61716e; font-size: 15px; }
+.ps-menu-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.ps-game-card { min-height: 168px; padding: 16px; border: 1px solid #29424716; border-radius: 23px; text-align: left; color: var(--ps-ink); display: flex; flex-direction: column; gap: 9px; box-shadow: 0 4px 0 #29424709; }
+.ps-game-card:active { transform: translateY(2px); box-shadow: none; }
+.ps-game-card > .ps-photo { width: 100%; height: 87px; object-fit: contain; mix-blend-mode: multiply; }
+.ps-game-copy { display: flex; flex-direction: column; gap: 4px; }
+.ps-game-copy strong { font-size: clamp(18px, 2.3vw, 24px); letter-spacing: -.045em; }
+.ps-game-copy span { font-size: 13px; line-height: 1.4; color: #516363; }
+.ps-tone-peach { background: #ffe5d5; }
+.ps-tone-mint { background: #e0f1e6; }
+.ps-tone-blue { background: #e1effa; }
+.ps-tone-lavender { background: #eae6f8; }
+.ps-tone-yellow { background: #fff1c9; }
+.ps-tone-rose { background: #f9e4e5; }
+.ps-settings { background: #f0f2ec; padding: 12px 16px; border-radius: 16px; }
+.ps-settings summary { min-height: 30px; line-height: 30px; cursor: pointer; font-size: 15px; font-weight: 700; }
+.ps-settings-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 12px; }
+.ps-field { display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
+.ps-field select { min-height: 48px; border-radius: 10px; padding: 7px; color: var(--ps-ink); background: white; border: 1px solid #bac9c0; min-width: 0; }
+.ps-parent-note, .ps-records { font-size: 13px; line-height: 1.65; color: #4e625d; }
+.ps-records { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 14px; }
+.ps-records p { margin: 0; }
+.ps-game-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.ps-progress { display: flex; gap: 7px; }
+.ps-progress span { width: 12px; height: 12px; border-radius: 50%; background: #dce4dc; }
+.ps-progress .is-done { background: #458679; }
+.ps-question { margin: 0; text-align: center; font-size: clamp(24px, 3.4vw, 36px); line-height: 1.25; letter-spacing: -.05em; }
+.ps-control, .ps-primary, .ps-toilet { min-height: 50px; border-radius: 15px; border: 1px solid #cbd8d0; padding: 10px 20px; background: white; color: var(--ps-ink); font-weight: 800; font-size: 17px; }
+.ps-primary { background: #27796d; color: white; border-color: #27796d; min-height: 62px; font-size: 23px; padding: 12px 34px; }
+.ps-go { width: min(380px, 90%); align-self: center; min-height: 80px; font-size: 34px; }
+.ps-toilet { background: #eef2ff; color: #364d8c; border-color: #d8e1f5; }
+.play-school > .ps-toilet { position: sticky; bottom: 0; flex-shrink: 0; z-index: 2; }
+.ps-footer, .ps-assist, .ps-reward-actions { display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; }
+.ps-footer { margin-top: auto; padding-top: 7px; }
+.ps-footer .ps-toilet { margin-left: auto; }
+.ps-assist .ps-control { min-height: 46px; padding: 8px 16px; font-size: 15px; }
+.ps-hint-copy { font-size: 14px; color: #476d61; }
+.ps-target { min-height: 130px; height: clamp(130px, 21vh, 210px); display: flex; align-items: center; justify-content: center; gap: 20px; border-radius: 22px; background: #f1f5ec; flex-shrink: 0; position: relative; }
+.ps-target > .ps-photo { height: 90%; max-width: 80%; object-fit: contain; mix-blend-mode: multiply; }
+.ps-choices { display: grid; grid-template-columns: repeat(var(--choice-count), minmax(0, 1fr)); gap: 18px; max-width: 850px; width: 100%; align-self: center; }
+.ps-choice { border: 3px solid #dce6dd; border-radius: 23px; min-height: 156px; padding: 12px; background: white; color: var(--ps-ink); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; touch-action: none !important; }
+.ps-choice .ps-photo { width: 100%; height: clamp(70px, 12vh, 115px); object-fit: contain; }
+.ps-choice strong { font-size: clamp(21px, 2.8vw, 30px); }
+.ps-choice.ps-hint { border: 5px solid #4c947b; background: #edf8ef; }
+.ps-listen { display: flex; align-items: center; gap: 18px; min-height: 100px; padding: 18px 30px; color: var(--ps-green); background: white; border: 2px solid #cadfd1; border-radius: 24px; font-weight: 800; font-size: 24px; }
+.ps-listen span { font-size: 55px; }
+.ps-parking-bay { width: 95%; min-height: 80px; border: 4px solid white; box-shadow: 0 0 0 2px #d5dcd8; border-radius: 16px; color: white; font-weight: 900; font-size: 58px; text-shadow: 0 2px 3px #0005; }
+.ps-park-car { width: min(430px, 85%); background: transparent; border: 0; touch-action: none !important; }
+.ps-park-car .ps-photo { width: 100%; max-height: 160px; object-fit: contain; mix-blend-mode: multiply; }
+.ps-number { font-size: 54px; font-weight: 900; line-height: 1; }
+.ps-dots { color: #438679; font-size: 20px; }
+.ps-count-road .ps-photo { width: 27%; object-fit: contain; }
+.ps-delivery-zone { border: 3px dashed #b9cbb7; padding: 10px; }
+.ps-delivery-car { width: 48%; max-height: 150px; object-fit: contain; mix-blend-mode: multiply; }
+.ps-request { display: flex; flex-direction: column; align-items: center; padding: 7px 18px; border-radius: 18px; background: white; font-size: 20px; font-weight: 800; }
+.ps-request .ps-photo { height: 88px; max-width: 130px; object-fit: contain; }
+.ps-road { position: relative; min-height: 220px; height: clamp(220px, 35vh, 380px); flex-shrink: 0; overflow: hidden; isolation: isolate; border-radius: 24px; background: #e7f5fc; }
+.ps-sun { position: absolute; top: 20px; right: 10%; width: 58px; height: 58px; border-radius: 50%; background: #ffd77c; }
+.ps-cloud { position: absolute; top: 25px; left: 12%; width: 90px; height: 26px; border-radius: 40px; background: #ffffffdd; }
+.ps-cloud:before { content: ''; position: absolute; width: 40px; height: 40px; top: -14px; left: 20px; border-radius: 50%; background: inherit; }
+.ps-cloud-two { top: 58px; left: 56%; transform: scale(.65); }
+.ps-hill { position: absolute; inset: 42% -10% -20%; border-radius: 50% 60% 0 0; background: #d6e8b6; }
+.ps-asphalt { position: absolute; bottom: 0; width: 100%; height: 30%; background: #72827c; border-top: 6px solid #f7f1cf; }
+.ps-asphalt:after { content: ''; position: absolute; top: 60%; left: 0; width: 100%; height: 5px; background: repeating-linear-gradient(90deg, #fff9d8 0 55px, transparent 55px 105px); }
+.ps-road-car { position: absolute; width: min(42%, 340px); height: 46%; object-fit: contain; bottom: 12%; left: 30%; mix-blend-mode: multiply; z-index: 1; }
+.ps-road-car.is-driving { animation: ps-drive 5.5s linear both; }
+@keyframes ps-drive { from { left: 100%; } to { left: -45%; } }
+.ps-still .ps-road-car.is-driving { animation: none; left: 30%; }
+.ps-complete, .ps-rest { flex: 1; min-height: 280px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; text-align: center; background: #eef5e8; border-radius: 25px; padding: 25px; }
+.ps-complete h2, .ps-rest h2 { font-size: 38px; margin: 0; }
+.ps-complete p { margin: 0; }
+.ps-stars { color: #bf7b1c; font-size: 48px; letter-spacing: 10px; }
+.ps-rest-icon { font-size: 85px; color: #88b2ad; }
+.ps-drag-ghost { position: fixed; pointer-events: none; z-index: 10000; margin: 0; opacity: .88; transform: scale(.85); }
+.ps-drag-ghost .ps-photo { width: 90%; height: 80%; object-fit: contain; }
+@media (max-width: 760px) {
+  .play-school { padding: 12px; border-radius: 20px; gap: 10px; }
+  .ps-menu-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .ps-game-card { min-height: 153px; padding: 12px; }
+  .ps-game-card > .ps-photo { height: 74px; }
+  .ps-settings-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ps-target { height: 140px; min-height: 140px; }
+  .ps-choice { min-height: 145px; padding: 8px; }
+  .ps-choices { gap: 10px; }
+  .ps-control, .ps-toilet { padding: 9px 12px; font-size: 16px; }
+  .ps-records { grid-template-columns: 1fr; }
+  .ps-count-road { gap: 6px; }
+}
+@media (prefers-reduced-motion: reduce) { .ps-road-car.is-driving { animation: none; left: 30%; } }

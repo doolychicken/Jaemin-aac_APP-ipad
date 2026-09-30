@@ -326,10 +326,21 @@ const DATA = {
         { label: "강화물",   nav: "ipadReinforcers", image: "./images/meal_juice.png" },
         { label: "교구선택", nav: "studyTeachingAids", image: "./images/study_pegboard.png" },
         { label: "사진 AAC", nav: "photoAacHome", image: "./images/photo_aac/actions_01.jpg", imageFit: "contain" },
+        { label: "재민이 놀이학교", nav: "playSchoolHome", image: "./images/traffic_game/car_red.png", imageFit: "contain" },
         { label: "다음",     nav: "main_p2", image: "./images/outing.png" }
       ],
       layout: "main"
     },
+
+    playSchoolHome: {
+      title: "재민이 놀이학교", helper: "", hero: [], items: [], layout: "playSchool"
+    },
+    playSchool_drive: { title: "자동차 출발", helper: "", hero: [], items: [], layout: "playSchool", game: "drive" },
+    playSchool_match: { title: "같은 그림 찾기", helper: "", hero: [], items: [], layout: "playSchool", game: "match" },
+    playSchool_listen: { title: "듣고 골라요", helper: "", hero: [], items: [], layout: "playSchool", game: "listen" },
+    playSchool_parking: { title: "색깔 주차장", helper: "", hero: [], items: [], layout: "playSchool", game: "parking" },
+    playSchool_delivery: { title: "주스 배달", helper: "", hero: [], items: [], layout: "playSchool", game: "delivery" },
+    playSchool_count: { title: "자동차 세기", helper: "", hero: [], items: [], layout: "playSchool", game: "count" },
 
     main_p2: {
       title: "메인 화면 (2)",

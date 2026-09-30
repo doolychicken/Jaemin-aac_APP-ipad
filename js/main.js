@@ -297,6 +297,16 @@ const facePartsGameFeature = window.createFacePartsGameFeature({
   render
 });
 
+const playSchoolFeature = window.createPlaySchoolFeature({
+  gridEl, appMainEl, spotlightViewEl, spotlightBtnEl, heroEl, helperEl,
+  speak, render, pushScreen,
+  returnToMenu: () => {
+    while (navStack.length > 1 && currentKey() !== "playSchoolHome") popScreen();
+    if (currentKey() !== "playSchoolHome") pushScreen("playSchoolHome", "재민이 놀이학교");
+    render();
+  }
+});
+
 // ── 1. 한국어 목소리 선택 (fallback: default 목소리) ─────────────────────────
 function pickPreferredKoVoice() {
   if (!("speechSynthesis" in window)) return null;
@@ -3109,6 +3119,9 @@ function render() {
     renderDateHome();
   } else if (scheduleFeature.handles(key)) {
     scheduleFeature.render(key, screen);
+  } else if (screen.layout === "playSchool") {
+    activeFeature = playSchoolFeature;
+    playSchoolFeature.render(screen);
   } else if (screen.layout === "studyPuzzle") {
     activeFeature = studyPuzzleFeature;
     studyPuzzleFeature.render(screen);
@@ -3169,6 +3182,7 @@ function render() {
 
   if (
     gridEl.style.display !== "none"
+    && screen.layout !== "playSchool"
     && screen.layout !== "studyPuzzle"
     && screen.layout !== "recyclingGame"
     && screen.layout !== "martCartGame"

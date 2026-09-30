@@ -4,9 +4,9 @@
  * On first visit, pre-caches all images so subsequent loads are instant.
  */
 
-importScripts('./js/data/speech-manifest.js?v=397');
+importScripts('./js/data/speech-manifest.js?v=398');
 
-const CACHE_VERSION = 'v397';
+const CACHE_VERSION = 'v398';
 const CACHE_NAME = `jaemin-aac-${CACHE_VERSION}`;
 
 self.addEventListener('message', (event) => {
@@ -26,6 +26,8 @@ const PRECACHE_ASSETS = [
   './css/features/traffic-light-game.css',
   './css/features/face-parts-game.css',
   './css/date-overrides.css',
+  './css/features/play-school.css',
+  './js/features/play-school.js',
   './js/data/study-data.js',
   './js/data/app-data.js',
   './js/core/pager.js',
@@ -360,6 +362,15 @@ async function precacheEverything(repair = false) {
   for (let i = 0; i < PRECACHE_ASSETS.length; i += 8) {
     await Promise.all(PRECACHE_ASSETS.slice(i, i + 8).map(async asset => {
       if (repair && await cache.match(asset, { ignoreSearch: true })) { completed++; return; }
+      // Content-addressed speech packs are immutable across app updates.
+      if (/^\.\/audio\/speech\/pack-\d+-[a-f0-9]{10}\.wav$/.test(asset)) {
+        const previous = await caches.match(new URL(asset, self.registration.scope).href);
+        if (previous?.status === 200) {
+          await cache.put(asset, previous);
+          completed++;
+          return;
+        }
+      }
       const response = await fetch(new Request(new URL(asset, self.registration.scope), { cache: 'reload' }));
       if (response.status !== 200) throw new Error(`Unable to save ${asset}: ${response.status}`);
       await cache.put(asset, response);

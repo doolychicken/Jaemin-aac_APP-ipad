@@ -1,5 +1,5 @@
 (function () {
-  const VERSION = 'v397';
+  const VERSION = 'v398';
   const status = document.getElementById('offlineStatus');
   const label = document.getElementById('offlineStatusText');
   const retry = document.getElementById('offlineRetry');

@@ -109,6 +109,15 @@ def main():
             assert page.evaluate('window.recordedStops') > 0
             print('PASS: new speech cancels previous recorded audio', flush=True)
 
+            page.evaluate("pushScreen('playSchoolHome', '놀이학교'); render();")
+            assert page.locator('.ps-game-card').count() == 6
+            page.locator('[data-game="match"]').click()
+            page.locator('[data-choice="juice"]').click()
+            assert page.locator('.ps-reward-actions').count() == 1
+            assert page.evaluate("window.offlineSpeech.play('출발을 누르면 자동차가 지나가요')") is True
+            assert page.evaluate('window.nativeSpeechCalls') == 0
+            print('PASS: new play-school game and recorded instructions work offline', flush=True)
+
             page.evaluate("pushScreen('toiletWaterVideo', '물소리'); render();")
             page.evaluate("document.querySelector('video').muted = true; document.querySelector('video').play();")
             page.wait_for_function("document.querySelector('video').currentTime > 0.2 && !document.querySelector('video').error")
@@ -117,7 +126,7 @@ def main():
             print('PASS: local video plays and seeks with network disabled', flush=True)
 
             # Readiness must recover if a required recording disappears from storage.
-            page.evaluate("async () => { const cache = await caches.open('jaemin-aac-v397'); await cache.delete(OFFLINE_SPEECH.assets[0]); }")
+            page.evaluate("async () => { const cache = await caches.open('jaemin-aac-v398'); await cache.delete(OFFLINE_SPEECH.assets[0]); }")
             page.reload()
             page.wait_for_function("document.querySelector('#offlineStatusText').textContent.includes('파일이 부족')")
             context.set_offline(False)
