@@ -148,7 +148,7 @@ def main():
             offline.add_init_script(offline_tests.NO_NATIVE_SPEECH)
             off=offline.new_page(); off.set_default_timeout(120000)
             off.goto(url)
-            off.wait_for_function("async () => { const c=await caches.open('jaemin-aac-v408'); return !!(await c.match('./images/bathroom_book/boy-two.png')) && !!(await c.match('./js/features/sticker-book.js')); }")
+            off.wait_for_function("async () => { const c=await caches.open('jaemin-aac-v409'); return !!(await c.match('./images/bathroom_book/boy-two.png')) && !!(await c.match('./js/features/sticker-book.js')); }")
             off.reload(); off.wait_for_function('navigator.serviceWorker.controller !== null')
             off.wait_for_function("document.getElementById('offlineStatusText').textContent.includes('준비 완료')")
             offline.set_offline(True); off.reload()
@@ -173,7 +173,7 @@ def main():
                 off.mouse.move(b['x']+b['width']/2,b['y']+b['height']/2,steps=8); off.mouse.up()
                 assert off.locator('.sb-next').count()==1
             assert off.evaluate('window.nativeSpeechCalls')==0
-            for book,chapter,total in [('Kitchen','fixtures',8),('Kitchen','cooking',3),('Living','fixtures',9)]:
+            for book,chapter,total in [('Kitchen','fixtures',8),('Kitchen','cooking',3),('Living','fixtures',9),('Bedroom','fixtures',7)]:
                 off.evaluate(f"pushScreen('sticker{book}_{chapter}','스티커북'); render()")
                 for index in range(total):
                     off.wait_for_selector('.sb-card:not(:disabled)')

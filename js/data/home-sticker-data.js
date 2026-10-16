@@ -700,142 +700,194 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
     "id": "bedroom",
     "label": "침실",
     "nav": "stickerBedroom",
-    "storageKey": "jaemin-bedroom-stickers-v1",
+    "storageKey": "jaemin-bedroom-stickers-v2",
     "width": 1536,
     "height": 1024,
-    "room": "./images/home_books/bedroom-room.png",
-    "empty": "./images/home_books/bedroom-room.png",
+    "room": "./images/home_books/bedroom-room-v2.png",
+    "empty": "./images/home_books/bedroom-room-v2.png",
     "compose": true,
     "chapters": [
       {
         "id": "fixtures",
         "title": "큰 가구 붙이기",
-        "subtitle": "큰 물건부터 하나씩 놓아요",
+        "subtitle": "창가부터 차례로 침실을 꾸며요",
         "pieces": [
           {
-            "id": "bed",
-            "label": "침대",
-            "image": "./images/home_books/bedroom-stickers.png",
+            "id": "curtains",
+            "label": "커튼",
+            "image": "./images/home_books/bedroom-stickers-v2.png",
             "sheet": [
-              1536,
-              1024
+              1086,
+              1448
             ],
             "crop": [
-              108,
-              31,
-              357,
-              249
+              17,
+              765,
+              373,
+              345
             ],
             "target": [
-              0.22786458333333334,
-              0.5078125,
-              0.4166666666666667,
-              0.43592436974789917
+              0.09114583333333333,
+              0.0927734375,
+              0.3059895833333333,
+              0.46875
+            ],
+            "fit": true,
+            "parts": [
+              {
+                "crop": [
+                  17,
+                  765,
+                  373,
+                  40
+                ],
+                "box": [
+                  0,
+                  0,
+                  1,
+                  0.11594202898550725
+                ]
+              },
+              {
+                "crop": [
+                  17,
+                  805,
+                  353,
+                  305
+                ],
+                "box": [
+                  0,
+                  0.11594202898550725,
+                  0.9463806970509383,
+                  0.8840579710144928
+                ]
+              }
             ]
           },
           {
-            "id": "wardrobe",
-            "label": "옷장",
-            "image": "./images/home_books/bedroom-stickers.png",
+            "id": "bed",
+            "label": "침대",
+            "image": "./images/home_books/bedroom-stickers-v2.png",
             "sheet": [
-              1536,
-              1024
+              1086,
+              1448
             ],
             "crop": [
-              674,
-              8,
-              188,
-              272
+              11,
+              80,
+              470,
+              292
             ],
             "target": [
-              0.7682291666666666,
-              0.2099609375,
-              0.2159926470588235,
-              0.46875
+              0.078125,
+              0.439453125,
+              0.37109375,
+              0.3458277925531915
             ]
           },
           {
             "id": "nightstand",
-            "label": "침대 옆 탁자",
-            "image": "./images/home_books/bedroom-stickers.png",
+            "label": "협탁",
+            "image": "./images/home_books/bedroom-stickers-v2.png",
             "sheet": [
-              1536,
-              1024
+              1086,
+              1448
             ],
             "crop": [
-              1146,
-              39,
-              206,
-              221
+              495,
+              127,
+              191,
+              220
             ],
             "target": [
-              0.625,
-              0.56640625,
-              0.1171875,
-              0.18858085558252427
+              0.4622395833333333,
+              0.5810546875,
+              0.09440104166666667,
+              0.16310127617801048
             ]
           },
           {
             "id": "dresser",
+            "label": "화장대",
+            "image": "./images/home_books/bedroom-stickers-v2.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              732,
+              153,
+              335,
+              219
+            ],
+            "target": [
+              0.595703125,
+              0.498046875,
+              0.18229166666666666,
+              0.1787546641791045
+            ]
+          },
+          {
+            "id": "mirror",
+            "label": "거울",
+            "image": "./images/home_books/bedroom-stickers-v2.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              24,
+              466,
+              353,
+              255
+            ],
+            "target": [
+              0.595703125,
+              0.3005212021954674,
+              0.18229166666666666,
+              0.19752567280453256
+            ]
+          },
+          {
+            "id": "wardrobe",
+            "label": "장롱",
+            "image": "./images/home_books/bedroom-stickers-v2.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              422,
+              397,
+              239,
+              362
+            ],
+            "target": [
+              0.80078125,
+              0.244140625,
+              0.19342411947513813,
+              0.439453125
+            ]
+          },
+          {
+            "id": "chest",
             "label": "서랍장",
-            "image": "./images/home_books/bedroom-stickers.png",
+            "image": "./images/home_books/bedroom-stickers-v2.png",
             "sheet": [
-              1536,
-              1024
+              1086,
+              1448
             ],
             "crop": [
-              123,
-              299,
-              326,
-              244
+              703,
+              492,
+              367,
+              232
             ],
             "target": [
-              0.05859375,
-              0.48828125,
-              0.15625,
-              0.1754217791411043
-            ]
-          },
-          {
-            "id": "lamp",
-            "label": "스탠드",
-            "image": "./images/home_books/bedroom-stickers.png",
-            "sheet": [
-              1536,
-              1024
-            ],
-            "crop": [
-              684,
-              303,
-              168,
-              240
-            ],
-            "target": [
-              0.634765625,
-              0.390625,
-              0.08203125,
-              0.17578125
-            ]
-          },
-          {
-            "id": "alarm",
-            "label": "알람 시계",
-            "image": "./images/home_books/bedroom-stickers.png",
-            "sheet": [
-              1536,
-              1024
-            ],
-            "crop": [
-              1169,
-              305,
-              162,
-              224
-            ],
-            "target": [
-              0.13020833333333334,
-              0.41015625,
-              0.03766741071428571,
-              0.078125
+              0.6217447916666666,
+              0.771484375,
+              0.1953125,
+              0.1852009536784741
             ]
           }
         ]
@@ -843,136 +895,116 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
       {
         "id": "items",
         "title": "생활용품 놓기",
-        "subtitle": "물건을 알맞은 자리에 놓아요",
+        "subtitle": "베개와 시계, 스탠드를 놓아요",
         "pieces": [
           {
-            "id": "pillow",
+            "id": "pillows",
             "label": "베개",
-            "image": "./images/home_books/bedroom-stickers.png",
+            "image": "./images/home_books/bedroom-stickers-v2.png",
             "sheet": [
-              1536,
-              1024
+              1086,
+              1448
             ],
             "crop": [
-              121,
-              552,
-              339,
-              209
+              381,
+              878,
+              374,
+              155
             ],
             "target": [
-              0.4296875,
-              0.6005859375,
-              0.11067708333333333,
-              0.10235181600294985
+              0.15299479166666666,
+              0.5078125,
+              0.20833333333333334,
+              0.1295120320855615
             ]
           },
           {
-            "id": "blanket",
-            "label": "이불",
-            "image": "./images/home_books/bedroom-stickers.png",
+            "id": "lamp",
+            "label": "스탠드",
+            "image": "./images/home_books/bedroom-stickers-v2.png",
             "sheet": [
-              1536,
-              1024
+              1086,
+              1448
             ],
             "crop": [
-              612,
-              558,
-              312,
-              194
+              446,
+              1105,
+              188,
+              294
             ],
             "target": [
-              0.322265625,
-              0.68359375,
-              0.12369791666666667,
-              0.1153720953525641
+              0.4622395833333333,
+              0.4853515625,
+              0.045794359410430835,
+              0.107421875
+            ]
+          },
+          {
+            "id": "digital",
+            "label": "전자시계",
+            "image": "./images/home_books/bedroom-stickers-v2.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              776,
+              876,
+              281,
+              171
+            ],
+            "target": [
+              0.5143229166666666,
+              0.5571167426601423,
+              0.0390625,
+              0.03565669483985765
+            ]
+          },
+          {
+            "id": "alarm",
+            "label": "알람 시계",
+            "image": "./images/home_books/bedroom-stickers-v2.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              82,
+              1134,
+              203,
+              275
+            ],
+            "target": [
+              0.6966145833333334,
+              0.724609375,
+              0.028835227272727273,
+              0.05859375
             ]
           },
           {
             "id": "slippers",
             "label": "슬리퍼",
-            "image": "./images/home_books/bedroom-stickers.png",
+            "image": "./images/home_books/bedroom-stickers-v2.png",
             "sheet": [
-              1536,
-              1024
+              1086,
+              1448
             ],
             "crop": [
-              1084,
-              583,
-              333,
-              181
+              735,
+              1183,
+              324,
+              217
             ],
             "target": [
-              0.6217447916666666,
-              0.8447265625,
-              0.09765625,
-              0.07962063626126126
-            ]
-          },
-          {
-            "id": "pajamas",
-            "label": "잠옷",
-            "image": "./images/home_books/bedroom-stickers.png",
-            "sheet": [
-              1536,
-              1024
-            ],
-            "crop": [
-              153,
-              769,
-              278,
-              225
-            ],
-            "target": [
-              0.08138020833333333,
-              0.439453125,
-              0.061848958333333336,
-              0.07508641524280575
-            ]
-          },
-          {
-            "id": "teddy",
-            "label": "곰 인형",
-            "image": "./images/home_books/bedroom-stickers.png",
-            "sheet": [
-              1536,
-              1024
-            ],
-            "crop": [
-              660,
-              766,
-              216,
-              235
-            ],
-            "target": [
-              0.517578125,
-              0.6640625,
-              0.08976063829787234,
-              0.146484375
-            ]
-          },
-          {
-            "id": "book",
-            "label": "그림책",
-            "image": "./images/home_books/bedroom-stickers.png",
-            "sheet": [
-              1536,
-              1024
-            ],
-            "crop": [
-              1098,
-              777,
-              304,
-              221
-            ],
-            "target": [
-              0.6770833333333334,
-              0.546875,
-              0.045572916666666664,
-              0.04969546669407895
+              0.4231770833333333,
+              0.810546875,
+              0.07161458333333333,
+              0.07194613233024691
             ]
           }
         ]
       }
-    ]
+    ],
+    "description": "창가 침대 · 협탁 · 화장대와 거울 · 장롱"
   }
 ]];

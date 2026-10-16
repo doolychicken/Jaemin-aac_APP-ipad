@@ -25,7 +25,7 @@ def main():
    shelf();page.screenshot(path=str(out/'shelf.png'))
    for id,label in [('kitchen','주방'),('living','거실'),('bedroom','침실')]:
     page.get_by_text(label+' 스티커북',exact=True).click()
-    chapters={'fixtures':8,'items':7,'cooking':3} if id=='kitchen' else ({'fixtures':9,'items':3} if id=='living' else {'fixtures':6,'items':6})
+    chapters={'fixtures':8,'items':7,'cooking':3} if id=='kitchen' else ({'fixtures':9,'items':3} if id=='living' else {'fixtures':7,'items':5})
     assert page.locator('[data-chapter]').count()==len(chapters)
     for chapter,total in chapters.items():
      page.locator(f'[data-chapter="{chapter}"]').click()
@@ -49,9 +49,9 @@ def main():
     shelf()
    page.reload();shelf()
    for id in ['kitchen','living','bedroom']:
-    version=2 if id=='living' else 1
+    version=1 if id=='kitchen' else 2
     saved=page.evaluate(f"JSON.parse(localStorage.getItem('jaemin-{id}-stickers-v{version}'))")
-    expected={'fixtures':8,'items':7,'cooking':3} if id=='kitchen' else ({'fixtures':9,'items':3} if id=='living' else {'fixtures':6,'items':6})
+    expected={'fixtures':8,'items':7,'cooking':3} if id=='kitchen' else ({'fixtures':9,'items':3} if id=='living' else {'fixtures':7,'items':5})
     assert {k:len(s['placed']) for k,s in saved['progress'].items()}==expected
    # Bathroom progress remains on its original key and each book has independent reset.
    assert page.evaluate("localStorage.getItem('jaemin-bathroom-stickers-v1')")==None

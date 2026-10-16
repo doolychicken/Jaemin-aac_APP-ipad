@@ -666,5 +666,5 @@ window.STICKER_BOOKS.push(...[
     "completeMessage": "외출 준비를 마쳤어요!"
   }
 ]);
-const storageActivities = {"kitchen": [{"label": "냉장고 채우기", "description": "문을 열고 음식을 넣어요", "nav": "stickerFridge_items", "target": [0.17, 0.48]}], "bedroom": [{"label": "옷장 정리하기", "description": "옷과 소품을 정리해요", "nav": "stickerWardrobe_items", "target": [0.875, 0.48]}, {"label": "옷입히기", "description": "재민이와 외출 준비를 해요", "nav": "stickerDress"}]};
+const storageActivities = {"kitchen": [{"label": "냉장고 채우기", "description": "문을 열고 음식을 넣어요", "nav": "stickerFridge_items", "target": [0.17, 0.48]}], "bedroom": [{"label": "옷장 정리하기", "description": "옷과 소품을 정리해요", "nav": "stickerWardrobe_items", "target": [0.9, 0.48]}, {"label": "옷입히기", "description": "재민이와 외출 준비를 해요", "nav": "stickerDress"}]};
 window.STICKER_BOOKS.forEach(book => { if (storageActivities[book.id]) book.activities = storageActivities[book.id]; });
