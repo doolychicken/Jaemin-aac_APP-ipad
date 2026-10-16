@@ -376,6 +376,282 @@ window.STICKER_BOOKS.push(...[
               0.09553520927601811,
               0.1123046875
             ]
+          },
+          {
+            "id": "underwear",
+            "label": "팬티",
+            "image": "./images/storage_dress/wardrobe-extras.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              40,
+              143,
+              297,
+              228
+            ],
+            "target": [
+              0.6966145833333334,
+              0.48828125,
+              0.07161458333333333,
+              0.08246527777777778
+            ]
+          },
+          {
+            "id": "hanger",
+            "label": "옷걸이",
+            "image": "./images/storage_dress/wardrobe-extras.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              371,
+              108,
+              344,
+              227
+            ],
+            "target": [
+              0.234375,
+              0.1220703125,
+              0.09114583333333333,
+              0.09021847747093023
+            ]
+          },
+          {
+            "id": "coat",
+            "label": "외투",
+            "image": "./images/storage_dress/wardrobe-extras.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              733,
+              48,
+              337,
+              368
+            ],
+            "target": [
+              0.3385416666666667,
+              0.1220703125,
+              0.15625,
+              0.2559347181008902
+            ]
+          },
+          {
+            "id": "gloves",
+            "label": "장갑",
+            "image": "./images/storage_dress/wardrobe-extras.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              44,
+              477,
+              290,
+              232
+            ],
+            "target": [
+              0.6998697916666666,
+              0.146484375,
+              0.0732421875,
+              0.087890625
+            ]
+          },
+          {
+            "id": "scarf",
+            "label": "목도리",
+            "image": "./images/storage_dress/wardrobe-extras.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              373,
+              513,
+              340,
+              192
+            ],
+            "target": [
+              0.22786458333333334,
+              0.60546875,
+              0.09765625,
+              0.08272058823529412
+            ]
+          },
+          {
+            "id": "belt",
+            "label": "허리띠",
+            "image": "./images/storage_dress/wardrobe-extras.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              755,
+              510,
+              290,
+              188
+            ],
+            "target": [
+              0.390625,
+              0.6201171875,
+              0.07161458333333333,
+              0.06963900862068965
+            ]
+          }
+        ]
+      }
+    ],
+    "hidden": true,
+    "returnNav": "stickerBedroom",
+    "returnLabel": "침실 스티커북"
+  },
+  {
+    "id": "linen",
+    "label": "이불장",
+    "title": "이불장 정리하기",
+    "heading": "이불장 정리하기",
+    "nav": "stickerLinen",
+    "storageKey": "jaemin-linen-stickers-v1",
+    "width": 1536,
+    "height": 1024,
+    "room": "./images/storage_dress/linen.png",
+    "empty": "./images/storage_dress/linen.png",
+    "chapters": [
+      {
+        "id": "items",
+        "title": "이불과 베개를 넣어요",
+        "subtitle": "하나씩 끌어서 알맞은 자리에 놓아요",
+        "pieces": [
+          {
+            "id": "winter",
+            "label": "두꺼운 이불",
+            "image": "./images/storage_dress/wardrobe-extras.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              26,
+              812,
+              326,
+              229
+            ],
+            "target": [
+              0.2571614583333333,
+              0.11699278661809817,
+              0.185546875,
+              0.19550721338190183
+            ]
+          },
+          {
+            "id": "summer",
+            "label": "얇은 이불",
+            "image": "./images/storage_dress/wardrobe-extras.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              385,
+              811,
+              321,
+              233
+            ],
+            "target": [
+              0.5533854166666666,
+              0.1069351148753894,
+              0.18880208333333334,
+              0.2055648851246106
+            ]
+          },
+          {
+            "id": "blanket",
+            "label": "담요",
+            "image": "./images/storage_dress/wardrobe-extras.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              736,
+              830,
+              329,
+              206
+            ],
+            "target": [
+              0.24739583333333334,
+              0.37196939114741645,
+              0.20182291666666666,
+              0.18955404635258358
+            ]
+          },
+          {
+            "id": "pillow",
+            "label": "하얀 베개",
+            "image": "./images/storage_dress/wardrobe-extras.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              30,
+              1156,
+              319,
+              201
+            ],
+            "target": [
+              0.5533854166666666,
+              0.3769255730799373,
+              0.1953125,
+              0.1845978644200627
+            ]
+          },
+          {
+            "id": "bluepillow",
+            "label": "파란 베개",
+            "image": "./images/storage_dress/wardrobe-extras.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              387,
+              1153,
+              312,
+              205
+            ],
+            "target": [
+              0.2506510416666667,
+              0.6229341947115384,
+              0.1953125,
+              0.19249549278846154
+            ]
+          },
+          {
+            "id": "bolster",
+            "label": "긴 베개",
+            "image": "./images/storage_dress/wardrobe-extras.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              733,
+              1202,
+              333,
+              118
+            ],
+            "target": [
+              0.5533854166666666,
+              0.7116149352477478,
+              0.1953125,
+              0.10381475225225226
+            ]
           }
         ]
       }
@@ -666,5 +942,5 @@ window.STICKER_BOOKS.push(...[
     "completeMessage": "외출 준비를 마쳤어요!"
   }
 ]);
-const storageActivities = {"kitchen": [{"label": "냉장고 채우기", "description": "문을 열고 음식을 넣어요", "nav": "stickerFridge_items", "target": [0.17, 0.48]}], "bedroom": [{"label": "옷장 정리하기", "description": "옷과 소품을 정리해요", "nav": "stickerWardrobe_items", "target": [0.9, 0.48]}, {"label": "옷입히기", "description": "재민이와 외출 준비를 해요", "nav": "stickerDress"}]};
+const storageActivities = {"kitchen": [{"label": "냉장고 채우기", "description": "문을 열고 음식을 넣어요", "nav": "stickerFridge_items", "target": [0.17, 0.48]}], "bedroom": [{"label": "옷장 정리하기", "description": "옷과 소품 14개를 정리해요", "nav": "stickerWardrobe_items", "target": [0.9, 0.48]}, {"label": "이불장 정리하기", "description": "넓은 칸에 이불과 베개를 넣어요", "nav": "stickerLinen_items", "target": [0.72, 0.86]}, {"label": "옷입히기", "description": "재민이와 외출 준비를 해요", "nav": "stickerDress"}]};
 window.STICKER_BOOKS.forEach(book => { if (storageActivities[book.id]) book.activities = storageActivities[book.id]; });

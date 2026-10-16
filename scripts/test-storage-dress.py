@@ -19,7 +19,7 @@ def main():
    ctx.add_init_script(base.MOCK_SPEECH)
    page=ctx.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
    page.goto(f'http://127.0.0.1:{server.server_port}/')
-   for id,parent,activity,total in [('fridge','Kitchen','냉장고 채우기',8),('wardrobe','Bedroom','옷장 정리하기',8),('dress',None,'옷입히기',9)]:
+   for id,parent,activity,total in [('fridge','Kitchen','냉장고 채우기',8),('wardrobe','Bedroom','옷장 정리하기',14),('linen','Bedroom','이불장 정리하기',6),('dress',None,'옷입히기',9)]:
     if parent:
      page.evaluate(f"pushScreen('sticker{parent}_items','생활용품');render()")
      page.locator('.sb-room-link',has_text=activity).click()
@@ -42,7 +42,7 @@ def main():
     page.screenshot(path=str(out/f'{id}-complete.png'))
     assert page.locator('.sb-placed').count()==total
     page.locator('.sb-toolbar').get_by_role('button',name='목록',exact=True).click()
-    expected={'fridge':'주방 꾸미기','wardrobe':'침실 꾸미기','dress':'옷입히기'}[id]
+    expected={'fridge':'주방 꾸미기','wardrobe':'침실 꾸미기','linen':'침실 꾸미기','dress':'옷입히기'}[id]
     assert page.locator('.sb-intro h2').inner_text()==expected
    page.reload()
    page.evaluate("pushScreen('stickerDress_items','옷입히기');render()")
@@ -58,8 +58,15 @@ def main():
    page.locator('.sb-card').focus();page.keyboard.press('Enter');page.keyboard.press('Enter')
    assert page.locator('.sb-next').count()==1
    assert page.evaluate("JSON.parse(localStorage.getItem('jaemin-fridge-stickers-v1')).progress.items.placed.length")==8
+   # An older completed wardrobe continues with the newly appended underwear.
+   page.evaluate("""const k='jaemin-wardrobe-stickers-v1';const s=JSON.parse(localStorage.getItem(k));
+    s.progress.items={cursor:8,placed:s.progress.items.placed.slice(0,8)};localStorage.setItem(k,JSON.stringify(s));""")
+   page.reload();page.evaluate("pushScreen('stickerWardrobe_items','옷장');render()")
+   page.wait_for_selector('.sb-card:not(:disabled)')
+   assert page.locator('.sb-card').get_attribute('data-piece')=='underwear'
+   assert not page.locator('#storageNotice').is_visible()
    assert not errors,errors
-   browser.close();print('PASS: storage hotspots, all 25 stickers, correct parent menus, dress resume/undo, responsive layouts and keyboard')
+   browser.close();print('PASS: all 37 storage/dress stickers, linen navigation, old wardrobe progress, responsive layouts and keyboard')
  finally:server.shutdown()
 
 if __name__=='__main__':main()

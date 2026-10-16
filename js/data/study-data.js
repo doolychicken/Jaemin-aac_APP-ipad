@@ -290,6 +290,7 @@ function buildStudyScreensMap() {
   for (const [book, nav, title, chapterTitle] of [
     ["fridge", "stickerFridge", "냉장고 채우기", "냉장고에 넣어요"],
     ["wardrobe", "stickerWardrobe", "옷장 정리하기", "옷장에 넣어요"],
+    ["linen", "stickerLinen", "이불장 정리하기", "이불과 베개를 넣어요"],
     ["dress", "stickerDress", "옷입히기", "재민이 옷입히기"]
   ]) {
     rest[nav] = { title, book, helper: "", hero: [], items: [], layout: "stickerBook", showPlayer: false };
