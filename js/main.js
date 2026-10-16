@@ -313,15 +313,17 @@ const playSchoolFeature = window.createPlaySchoolFeature({
   }
 });
 
-const stickerBookFeature = window.createStickerBookFeature({
-  gridEl, appMainEl, spotlightViewEl, spotlightBtnEl, heroEl, helperEl,
-  speak, playPuzzleSound, pushScreen, render,
-  returnToBook: () => {
-    while (navStack.length > 1 && currentKey() !== "stickerBathroom") popScreen();
-    if (currentKey() !== "stickerBathroom") pushScreen("stickerBathroom", "화장실 스티커북");
-    render();
-  }
-});
+const stickerBookFeatures = Object.fromEntries(window.STICKER_BOOKS.map(catalog => [catalog.id,
+  window.createStickerBookFeature({
+    gridEl, appMainEl, spotlightViewEl, spotlightBtnEl, heroEl, helperEl,
+    speak, playPuzzleSound, pushScreen, render, catalog,
+    returnToBook: () => {
+      while (navStack.length > 1 && currentKey() !== catalog.nav) popScreen();
+      if (currentKey() !== catalog.nav) pushScreen(catalog.nav, catalog.label + " 스티커북");
+      render();
+    }
+  })
+]));
 
 // ── 1. 한국어 목소리 선택 (fallback: default 목소리) ─────────────────────────
 function pickPreferredKoVoice() {
@@ -3136,8 +3138,8 @@ function render() {
   } else if (scheduleFeature.handles(key)) {
     scheduleFeature.render(key, screen);
   } else if (screen.layout === "stickerBook") {
-    activeFeature = stickerBookFeature;
-    stickerBookFeature.render(screen);
+    activeFeature = stickerBookFeatures[screen.book || "bathroom"];
+    activeFeature.render(screen);
   } else if (screen.layout === "playSchool") {
     activeFeature = playSchoolFeature;
     playSchoolFeature.render(screen);

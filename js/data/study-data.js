@@ -276,6 +276,14 @@ function buildStudyScreensMap() {
     };
   }
 
+  for (const [book, label, nav] of [["kitchen", "주방", "stickerKitchen"], ["living", "거실", "stickerLiving"], ["bedroom", "침실", "stickerBedroom"]]) {
+    rest.stickerBookHome.items.push({ label: label + " 스티커북", nav, image: "./images/home_books/" + book + "-room.png" });
+    rest[nav] = { title: label + " 스티커북", book, helper: "", hero: [], items: [], layout: "stickerBook", showPlayer: false };
+    for (const [chapter, title] of [["fixtures", "큰 가구 붙이기"], ["items", "생활용품 놓기"]]) {
+      rest[nav + "_" + chapter] = { title, book, chapter, helper: "", hero: [], items: [], layout: "stickerBook", showPlayer: false };
+    }
+  }
+
   rest.studyRecyclingGame = {
     title: "분리수거 게임",
     helper: "물건을 맞는 분리수거통에 넣어보세요.",

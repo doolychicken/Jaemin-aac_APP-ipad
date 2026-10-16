@@ -1,11 +1,13 @@
 /* One-at-a-time photo stickers, with touch/pointer input and saved chapter progress. */
 (function () {
   'use strict';
-  const KEY = 'jaemin-bathroom-stickers-v1';
-  const catalog = window.STICKER_BOOK;
-  const chapterById = id => catalog.chapters.find(chapter => chapter.id === id);
 
   window.createStickerBookFeature = function (deps) {
+    const catalog = deps.catalog || window.STICKER_BOOK;
+    const KEY = catalog.storageKey || 'jaemin-bathroom-stickers-v1';
+    const chapterById = id => catalog.chapters.find(chapter => chapter.id === id);
+    const roomName = catalog.label || '화장실';
+    const navKey = catalog.nav || 'stickerBathroom';
     const { gridEl, appMainEl, spotlightViewEl, spotlightBtnEl, heroEl, helperEl, speak, playPuzzleSound } = deps;
     const saved = window.appStorage.load(KEY, { version: 1, sound: true, hints: true, progress: {} }, value => {
       if (!value || value.version !== 1 || typeof value.sound !== 'boolean' || typeof value.hints !== 'boolean'
@@ -154,18 +156,18 @@
     function bookHome() {
       chapter = null;
       const intro = el('div', 'sb-intro');
-      intro.append(el('span', 'sb-kicker', '나만의 스티커북'), el('h2', '', '화장실을 꾸며요'),
+      intro.append(el('span', 'sb-kicker', '나만의 스티커북'), el('h2', '', roomName + ' 꾸미기'),
         el('p', '', '큰 사진을 하나씩 끌어다 붙여요. 천천히, 내 속도로.'));
       root.append(intro);
       const layout = el('div', 'sb-book-layout');
       const cover = el('div', 'sb-cover');
-      const photo = el('img', ''); photo.src = catalog.room; photo.alt = '거울과 수납장, 샤워기가 있는 화장실';
-      cover.append(photo, el('span', 'sb-cover-caption', '우리 아이의 화장실 스티커북'));
+      const photo = coverPhoto(catalog);
+      cover.append(photo, el('span', 'sb-cover-caption', '우리 아이의 ' + roomName + ' 스티커북'));
       layout.append(cover);
       const choices = el('div', 'sb-chapters');
       catalog.chapters.forEach((item, index) => {
         const state = stateFor(item.id);
-        const card = button('', () => go('stickerBathroom_' + item.id, item.title), 'sb-chapter');
+        const card = button('', () => go(navKey + '_' + item.id, item.title), 'sb-chapter');
         card.dataset.chapter = item.id;
         card.append(el('span', 'sb-chapter-number', String(index + 1)));
         const copy = el('span', 'sb-chapter-copy');
@@ -183,13 +185,25 @@
       options.append(sound, hint, el('p', 'sb-note', '붙인 내용은 자동으로 저장돼요. 큰 물건부터 시작해 보세요.'));
       root.append(options);
     }
+    function coverPhoto(book) {
+      const frame = el('div', 'sb-cover-photo');
+      frame.style.aspectRatio = book.width + ' / ' + book.height;
+      const photo = el('img', ''); photo.src = book.room; photo.alt = (book.label || '화장실') + ' 배경';
+      frame.append(photo);
+      if (book.compose) book.chapters[0].pieces.forEach(piece => placedSprite(piece, frame));
+      return frame;
+    }
     function library() {
       chapter = null;
       root.append(el('span', 'sb-kicker', '그림을 붙이며 배우는 시간'), el('h2', 'sb-library-title', '내 스티커북'));
-      const card = button('', () => go('stickerBathroom', '화장실 스티커북'), 'sb-library-card');
-      const photo = el('img', ''); photo.src = catalog.room; photo.alt = '';
-      card.append(photo, el('strong', '', '화장실 스티커북'), el('span', '', '큰 물건 · 생활용품 · 생활 연습'));
-      root.append(card, el('p', 'sb-note', '스티커는 하나씩 나와요. 붙인 곳부터 이어서 할 수 있어요.'));
+      const shelf = el('div', 'sb-library-grid');
+      (window.STICKER_BOOKS || [catalog]).forEach(book => {
+        const name = (book.label || '화장실') + ' 스티커북';
+        const card = button('', () => go(book.nav || 'stickerBathroom', name), 'sb-library-card');
+        card.append(coverPhoto(book), el('strong', '', name), el('span', '', book.compose ? '큰 가구 · 생활용품' : '큰 물건 · 생활용품 · 생활 연습'));
+        shelf.append(card);
+      });
+      root.append(shelf, el('p', 'sb-note', '스티커는 하나씩 나와요. 붙인 곳부터 이어서 할 수 있어요.'));
     }
     function renderScene(stage, state) {
       const isFixture = chapter.id === 'fixtures';
@@ -198,7 +212,7 @@
       const last = state.cursor >= chapter.pieces.length ? chapter.pieces[chapter.pieces.length - 1] : active;
       const background = el('img', 'sb-room');
       background.src = isFixture || isRoutine ? catalog.empty : catalog.room;
-      background.alt = '스티커를 붙이는 화장실 배경'; background.draggable = false;
+      background.alt = '스티커를 붙이는 ' + roomName + ' 배경'; background.draggable = false;
       stage.appendChild(background);
       const layer = el('div', 'sb-piece-layer'); stage.appendChild(layer);
       if (isFixture) {
@@ -207,6 +221,7 @@
         catalog.chapters[0].pieces.filter(piece => piece.id !== last?.omit).forEach(piece => placedSprite(piece, layer));
         if (last && state.placed.includes(last.id)) placedSprite(last, layer);
       } else {
+        if (catalog.compose) catalog.chapters[0].pieces.forEach(piece => placedSprite(piece, layer));
         chapter.pieces.filter(piece => state.placed.includes(piece.id)).forEach(piece => placedSprite(piece, layer));
       }
       return layer;
@@ -281,13 +296,13 @@
       root.append(toolbar);
       const workspace = el('div', 'sb-workspace');
       const canvasWrap = el('div', 'sb-canvas-wrap');
-      const stage = el('div', 'sb-stage'); stage.setAttribute('aria-label', '화장실 배경');
+      const stage = el('div', 'sb-stage'); stage.setAttribute('aria-label', roomName + ' 배경');
       canvasWrap.append(stage); workspace.append(canvasWrap);
       renderScene(stage, state);
       const tray = el('aside', 'sb-tray');
       tray.setAttribute('aria-label', '지금 붙일 스티커');
       workspace.append(tray); root.append(workspace);
-      const status = el('p', 'sb-status', done ? '멋진 화장실이 완성됐어요!' : matched ? '잘 붙였어요! 다음 스티커도 만나볼까요?' : '스티커를 꾹 잡고 표시된 자리로 옮겨요.');
+      const status = el('p', 'sb-status', done ? roomName + ' 꾸미기를 완성했어요!' : matched ? '잘 붙였어요! 다음 스티커도 만나볼까요?' : '스티커를 꾹 잡고 표시된 자리로 옮겨요.');
       status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite'); root.append(status);
       const footer = el('div', 'sb-footer');
       const undo = button('하나 되돌리기', () => {

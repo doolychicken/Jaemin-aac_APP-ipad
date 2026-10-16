@@ -106,3 +106,11 @@
   .sb-tray { grid-template-columns: 1fr 1.1fr 1fr; }
 }
 @media (prefers-reduced-motion: reduce) { .sb-cover { transform: none; } }
+.sb-library-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.sb-library-grid .sb-library-card { width: 100%; margin-bottom: 0; padding: 12px; gap: 8px; }
+.sb-library-grid .sb-cover-photo { max-width: 240px; align-self: center; }
+.sb-library-grid .sb-library-card strong { font-size: 22px; }
+.sb-library-grid + .sb-note { margin-top: 20px; }
+.sb-cover-photo { position: relative; width: 100%; overflow: hidden; border-radius: 12px; }
+.sb-cover-photo > img { display: block; width: 100%; height: 100%; }
+@media (max-width: 600px) { .sb-library-grid { grid-template-columns: 1fr; } }
