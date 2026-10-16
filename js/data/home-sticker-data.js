@@ -82,22 +82,22 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
           {
             "id": "table",
             "label": "식탁",
-            "image": "./images/home_books/kitchen-stickers.png",
+            "image": "./images/home_books/kitchen-table-v3.png",
             "sheet": [
               1536,
               1024
             ],
             "crop": [
-              104,
-              305,
-              375,
-              193
+              151,
+              180,
+              1234,
+              690
             ],
             "target": [
-              0.20833333333333334,
-              0.6591796875,
-              0.4231770833333333,
-              0.32669270833333336
+              0.1171875,
+              0.498046875,
+              0.5859375,
+              0.4914467686385737
             ]
           },
           {
@@ -158,9 +158,9 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
             ],
             "target": [
               0.29296875,
-              0.2978515625,
-              0.14322916666666666,
-              0.12359877326565144
+              0.33417935702199664,
+              0.11067708333333333,
+              0.09550814297800339
             ]
           },
           {
@@ -183,6 +183,27 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               0.06556735836627141,
               0.2392578125
             ]
+          },
+          {
+            "id": "blender",
+            "label": "믹서기",
+            "image": "./images/sticker_food/drinks.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              146,
+              1060,
+              142,
+              379
+            ],
+            "target": [
+              0.4020182291666667,
+              0.26026766065140844,
+              0.042317708333333336,
+              0.16941983934859156
+            ]
           }
         ]
       },
@@ -194,85 +215,86 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
           {
             "id": "plate",
             "label": "접시",
-            "image": "./images/home_books/kitchen-stickers.png",
+            "image": "./images/home_books/kitchen-items-v3.png",
             "sheet": [
-              1536,
-              1024
+              1086,
+              1448
             ],
             "crop": [
-              133,
-              569,
-              302,
-              160
+              723,
+              1115,
+              337,
+              276
             ],
             "target": [
-              0.3059895833333333,
-              0.66015625,
-              0.09114583333333333,
-              0.07243377483443708
-            ]
+              0.22135416666666666,
+              0.56640625,
+              0.07486979166666667,
+              0.0537109375
+            ],
+            "fit": true
           },
           {
             "id": "glass",
             "label": "물컵",
-            "image": "./images/home_books/kitchen-tools-v2.png",
+            "image": "./images/home_books/kitchen-items-v3.png",
             "sheet": [
-              1536,
-              1024
+              1086,
+              1448
             ],
             "crop": [
-              133,
-              76,
-              238,
-              392
+              101,
+              1099,
+              183,
+              297
             ],
             "target": [
               0.46875,
               0.3466796875,
-              0.025692894345238096,
+              0.02607454755892256,
               0.0634765625
             ]
           },
           {
             "id": "spoon",
             "label": "숟가락",
-            "image": "./images/home_books/kitchen-stickers.png",
+            "image": "./images/home_books/kitchen-items-v3.png",
             "sheet": [
-              1536,
-              1024
+              1086,
+              1448
             ],
             "crop": [
-              1225,
-              521,
-              62,
-              228
+              143,
+              722,
+              91,
+              355
             ],
             "target": [
+              0.478515625,
               0.537109375,
-              0.6396484375,
-              0.015933388157894735,
-              0.087890625
+              0.01251650528169014,
+              0.0732421875
             ]
           },
           {
             "id": "bowl",
             "label": "밥그릇",
-            "image": "./images/home_books/kitchen-tools-v2.png",
+            "image": "./images/home_books/kitchen-items-v3.png",
             "sheet": [
-              1536,
-              1024
+              1086,
+              1448
             ],
             "crop": [
-              1065,
-              130,
-              401,
-              322
+              43,
+              73,
+              298,
+              239
             ],
             "target": [
-              0.8385416666666666,
-              0.4052734375,
-              0.045572916666666664,
-              0.05489206670822943
+              0.2864583333333333,
+              0.478515625,
+              0.06510416666666667,
+              0.07832162332214765
             ]
           },
           {
@@ -290,10 +312,10 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               226
             ],
             "target": [
-              0.4296875,
-              0.6591796875,
-              0.068359375,
-              0.08614805994423792
+              0.3190104166666667,
+              0.56640625,
+              0.045572916666666664,
+              0.05743203996282528
             ]
           },
           {
@@ -311,8 +333,8 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               236
             ],
             "target": [
-              0.56640625,
-              0.5517578125,
+              0.5989583333333334,
+              0.439453125,
               0.051600569385593216,
               0.1416015625
             ]
@@ -336,6 +358,195 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               0.408203125,
               0.029296875,
               0.043096127717391304
+            ]
+          },
+          {
+            "id": "soup",
+            "label": "국",
+            "image": "./images/home_books/kitchen-items-v3.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              389,
+              61,
+              294,
+              253
+            ],
+            "target": [
+              0.20833333333333334,
+              0.478515625,
+              0.06510416666666667,
+              0.0840375212585034
+            ]
+          },
+          {
+            "id": "side-dishes",
+            "label": "반찬",
+            "image": "./images/home_books/kitchen-items-v3.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              723,
+              53,
+              339,
+              274
+            ],
+            "target": [
+              0.390625,
+              0.517578125,
+              0.08138020833333333,
+              0.09866450036873156
+            ]
+          },
+          {
+            "id": "sponge",
+            "label": "수세미",
+            "image": "./images/home_books/kitchen-items-v3.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              43,
+              413,
+              313,
+              261
+            ],
+            "target": [
+              0.5143229166666666,
+              0.419921875,
+              0.035807291666666664,
+              0.04478771465654952
+            ]
+          },
+          {
+            "id": "dish-soap",
+            "label": "주방세제",
+            "image": "./images/home_books/kitchen-items-v3.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              463,
+              350,
+              153,
+              354
+            ],
+            "target": [
+              0.517578125,
+              0.3271484375,
+              0.0309520656779661,
+              0.107421875
+            ]
+          },
+          {
+            "id": "fried-egg",
+            "label": "계란프라이",
+            "image": "./images/home_books/kitchen-items-v3.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              736,
+              419,
+              293,
+              262
+            ],
+            "target": [
+              0.23763020833333334,
+              0.5712890625,
+              0.042317708333333336,
+              0.05676061220136519
+            ]
+          },
+          {
+            "id": "fork",
+            "label": "포크",
+            "image": "./images/home_books/kitchen-items-v3.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              510,
+              724,
+              64,
+              353
+            ],
+            "target": [
+              0.5045572916666666,
+              0.537109375,
+              0.008852691218130312,
+              0.0732421875
+            ]
+          },
+          {
+            "id": "chopsticks",
+            "label": "젓가락",
+            "image": "./images/home_books/kitchen-items-v3.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              862,
+              723,
+              52,
+              354
+            ],
+            "target": [
+              0.52734375,
+              0.537109375,
+              0.007172492937853108,
+              0.0732421875
+            ]
+          },
+          {
+            "id": "tissue",
+            "label": "휴지",
+            "image": "./images/home_books/kitchen-items-v3.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              399,
+              1122,
+              296,
+              256
+            ],
+            "target": [
+              0.576171875,
+              0.52734375,
+              0.052083333333333336,
+              0.06756756756756757
+            ]
+          },
+          {
+            "id": "mug",
+            "label": "머그컵",
+            "image": "./images/sticker_food/drinks.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              419,
+              1133,
+              294,
+              268
+            ],
+            "target": [
+              0.3466796875,
+              0.5183088860544218,
+              0.042317708333333336,
+              0.05786298894557823
             ]
           }
         ]

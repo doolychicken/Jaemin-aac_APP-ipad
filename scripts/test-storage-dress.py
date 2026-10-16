@@ -23,6 +23,7 @@ def main():
     if parent:
      page.evaluate(f"pushScreen('sticker{parent}_items','생활용품');render()")
      page.locator('.sb-room-link',has_text=activity).click()
+     if id=='fridge':page.locator('[data-chapter="items"]').click()
     else:
      page.evaluate("pushScreen('studyAppLearning','앱 공부');render()")
      page.get_by_text('옷입히기',exact=True).click()
@@ -42,7 +43,7 @@ def main():
     page.screenshot(path=str(out/f'{id}-complete.png'))
     assert page.locator('.sb-placed').count()==total
     page.locator('.sb-toolbar').get_by_role('button',name='목록',exact=True).click()
-    expected={'fridge':'주방 꾸미기','wardrobe':'침실 꾸미기','linen':'침실 꾸미기','dress':'옷입히기'}[id]
+    expected={'fridge':'냉장고 채우기','wardrobe':'침실 꾸미기','linen':'침실 꾸미기','dress':'옷입히기'}[id]
     assert page.locator('.sb-intro h2').inner_text()==expected
    page.reload()
    page.evaluate("pushScreen('stickerDress_items','옷입히기');render()")

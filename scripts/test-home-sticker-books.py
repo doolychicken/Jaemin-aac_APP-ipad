@@ -21,11 +21,11 @@ def main():
    page.goto(f'http://127.0.0.1:{server.server_port}/')
    def shelf():
     page.evaluate("pushScreen('stickerBookHome','스티커북');render()")
-    assert page.locator('.sb-library-card').count()==5
+    assert page.locator('.sb-library-card').count()==6
    shelf();page.screenshot(path=str(out/'shelf.png'))
    for id,label in [('kitchen','주방'),('living','거실'),('bedroom','침실')]:
     page.get_by_text(label+' 스티커북',exact=True).click()
-    chapters={'fixtures':8,'items':7,'cooking':3} if id=='kitchen' else ({'fixtures':9,'items':3} if id=='living' else {'fixtures':7,'items':5})
+    chapters={'fixtures':9,'items':16,'cooking':3} if id=='kitchen' else ({'fixtures':9,'items':3} if id=='living' else {'fixtures':7,'items':5})
     assert page.locator('[data-chapter]').count()==len(chapters)
     for chapter,total in chapters.items():
      page.locator(f'[data-chapter="{chapter}"]').click()
@@ -38,7 +38,7 @@ def main():
       page.mouse.move(a['x']+a['width']/2,a['y']+a['height']/2);page.mouse.down()
       page.mouse.move(b['x']+b['width']/2,b['y']+b['height']/2,steps=8);page.mouse.up()
       if chapter=='cooking':
-       assert page.locator('.sb-placed').count()==9
+       assert page.locator('.sb-placed').count()==10
        page.screenshot(path=str(out/f'kitchen-cooking-{i}.png'))
       page.locator('.sb-next').click()
      page.wait_for_selector('.sb-loading',state='detached')
@@ -51,7 +51,7 @@ def main():
    for id in ['kitchen','living','bedroom']:
     version=1 if id=='kitchen' else 2
     saved=page.evaluate(f"JSON.parse(localStorage.getItem('jaemin-{id}-stickers-v{version}'))")
-    expected={'fixtures':8,'items':7,'cooking':3} if id=='kitchen' else ({'fixtures':9,'items':3} if id=='living' else {'fixtures':7,'items':5})
+    expected={'fixtures':9,'items':16,'cooking':3} if id=='kitchen' else ({'fixtures':9,'items':3} if id=='living' else {'fixtures':7,'items':5})
     assert {k:len(s['placed']) for k,s in saved['progress'].items()}==expected
    # Bathroom progress remains on its original key and each book has independent reset.
    assert page.evaluate("localStorage.getItem('jaemin-bathroom-stickers-v1')")==None
@@ -78,7 +78,7 @@ def main():
      r=page.locator(sel).bounding_box();assert r['x']>=0 and r['y']>=0 and r['x']+r['width']<=w+1 and r['y']+r['height']<=h+1,(w,h,sel,r)
    assert not errors,errors
    browser.close()
-   print('PASS: all 42 room stickers, cooking replacement, five-book navigation, per-room resume/reset isolation, five screen sizes')
+   print('PASS: all 52 room stickers, cooking replacement, six-book navigation, per-room resume/reset isolation, five screen sizes')
  finally:server.shutdown()
 
 if __name__=='__main__':main()

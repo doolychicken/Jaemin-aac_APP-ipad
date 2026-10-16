@@ -74,6 +74,7 @@ function buildStudyScreensMap() {
 
   const appStudyItems = [
     { label: "스티커북", nav: "stickerBookHome", image: "./images/bathroom_book/room.png" },
+    { label: "식판", nav: "stickerTray", image: "./images/sticker_food/tray.png" },
     { label: "옷입히기", nav: "stickerDress", image: "./images/storage_dress/dress-base.png" },
     { label: "재민이 놀이학교", nav: "playSchoolHome", image: "./images/traffic_game/car_red.png" },
     { label: "숫자",   nav: "studyNumbers",    image: "./images/knobpuzzle_numbers.png" },
@@ -295,6 +296,15 @@ function buildStudyScreensMap() {
   ]) {
     rest[nav] = { title, book, helper: "", hero: [], items: [], layout: "stickerBook", showPlayer: false };
     rest[nav + "_items"] = { title: chapterTitle, book, chapter: "items", helper: "", hero: [], items: [], layout: "stickerBook", showPlayer: false };
+  }
+
+  rest.stickerTray = { title: "식판 차리기", book: "tray", helper: "", hero: [], items: [], layout: "stickerBook", showPlayer: false };
+  rest.stickerBookHome.items.push({ label: "식판 스티커북", nav: "stickerTray", image: "./images/sticker_food/tray.png" });
+  for (const [book, nav, chapters] of [
+    ["fridge", "stickerFridge", [["drinks", "음료 넣기"], ["meals", "음식과 간식 넣기"], ["vegetables", "채소 넣기"], ["fruit", "과일 넣기"]]],
+    ["tray", "stickerTray", [["rice", "밥과 국 차리기"], ["meal", "반찬 바꾸기"], ["fruit", "과일 간식 차리기"], ["snack", "맛있는 간식 차리기"]]]
+  ]) {
+    for (const [chapter, title] of chapters) rest[nav + "_" + chapter] = { title, book, chapter, helper: "", hero: [], items: [], layout: "stickerBook", showPlayer: false };
   }
 
   rest.studyRecyclingGame = {

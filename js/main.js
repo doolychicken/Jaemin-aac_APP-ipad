@@ -318,9 +318,9 @@ const stickerBookFeatures = Object.fromEntries(window.STICKER_BOOKS.map(catalog 
     gridEl, appMainEl, spotlightViewEl, spotlightBtnEl, heroEl, helperEl,
     speak, playPuzzleSound, pushScreen, render, catalog,
     returnToBook: () => {
-      const destination = catalog.returnNav || catalog.nav;
+      const destination = catalog.chapters.length > 1 ? catalog.nav : (catalog.returnNav || catalog.nav);
       while (navStack.length > 1 && currentKey() !== destination) popScreen();
-      if (currentKey() !== destination) pushScreen(destination, catalog.returnLabel || catalog.title || catalog.label + " 스티커북");
+      if (currentKey() !== destination) pushScreen(destination, destination === catalog.returnNav ? catalog.returnLabel : (catalog.title || catalog.label + " 스티커북"));
       render();
     }
   })
