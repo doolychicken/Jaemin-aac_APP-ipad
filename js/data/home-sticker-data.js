@@ -418,7 +418,7 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
     "id": "living",
     "label": "거실",
     "nav": "stickerLiving",
-    "storageKey": "jaemin-living-stickers-v1",
+    "storageKey": "jaemin-living-stickers-v2",
     "width": 1536,
     "height": 1024,
     "room": "./images/home_books/living-room.png",
@@ -427,133 +427,196 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
     "chapters": [
       {
         "id": "fixtures",
-        "title": "큰 가구 붙이기",
+        "title": "가구와 가전 놓기",
         "subtitle": "큰 물건부터 하나씩 놓아요",
         "pieces": [
           {
             "id": "sofa",
             "label": "소파",
-            "image": "./images/home_books/living-stickers.png",
+            "image": "./images/home_books/living-stickers-v2.png",
             "sheet": [
-              1536,
-              1024
+              1086,
+              1448
             ],
             "crop": [
-              53,
-              36,
-              450,
-              204
+              19,
+              129,
+              355,
+              145
             ],
             "target": [
-              0.20182291666666666,
-              0.46875,
-              0.3841145833333333,
-              0.26119791666666664
+              0.1953125,
+              0.458984375,
+              0.3385416666666667,
+              0.20741637323943662
             ]
           },
           {
             "id": "console",
-            "label": "텔레비전 받침대",
-            "image": "./images/home_books/living-stickers.png",
+            "label": "거실장",
+            "image": "./images/home_books/living-stickers-v2.png",
             "sheet": [
-              1536,
-              1024
+              1086,
+              1448
             ],
             "crop": [
-              555,
-              76,
-              428,
-              155
+              395,
+              151,
+              323,
+              110
             ],
             "target": [
-              0.5989583333333334,
-              0.625,
-              0.234375,
-              0.12731819509345793
+              0.5631510416666666,
+              0.576171875,
+              0.2604166666666667,
+              0.13303018575851394
             ]
           },
           {
             "id": "tv",
             "label": "텔레비전",
-            "image": "./images/home_books/living-stickers.png",
+            "image": "./images/home_books/living-stickers-v2.png",
             "sheet": [
-              1536,
-              1024
+              1086,
+              1448
             ],
             "crop": [
-              1093,
-              28,
-              363,
-              217
+              739,
+              88,
+              317,
+              198
             ],
             "target": [
-              0.6067708333333334,
-              0.4228515625,
-              0.21809895833333334,
-              0.19556807420798897
+              0.5794270833333334,
+              0.36268360607255523,
+              0.22786458333333334,
+              0.2134882689274448
             ]
           },
           {
             "id": "table",
             "label": "거실 탁자",
-            "image": "./images/home_books/living-stickers.png",
+            "image": "./images/home_books/living-stickers-v2.png",
             "sheet": [
-              1536,
-              1024
+              1086,
+              1448
             ],
             "crop": [
-              70,
-              319,
-              416,
+              30,
+              496,
+              340,
               161
             ],
             "target": [
-              0.25390625,
-              0.78125,
-              0.3645833333333333,
-              0.21165114182692307
+              0.24088541666666666,
+              0.732421875,
+              0.3450520833333333,
+              0.2450884650735294
             ]
           },
           {
-            "id": "shelf",
-            "label": "책장",
-            "image": "./images/home_books/living-stickers.png",
+            "id": "aircon",
+            "label": "에어컨",
+            "image": "./images/home_books/living-stickers-v2.png",
             "sheet": [
-              1536,
-              1024
+              1086,
+              1448
             ],
             "crop": [
-              700,
-              248,
-              137,
-              258
+              486,
+              361,
+              115,
+              422
             ],
             "target": [
-              0.83984375,
-              0.400390625,
-              0.13828326873385013,
-              0.390625
+              0.859375,
+              0.244140625,
+              0.08693411828593996,
+              0.478515625
             ]
           },
           {
             "id": "clock",
             "label": "벽시계",
-            "image": "./images/home_books/living-stickers.png",
+            "image": "./images/home_books/living-stickers-v2.png",
             "sheet": [
-              1536,
-              1024
+              1086,
+              1448
             ],
             "crop": [
-              1167,
-              276,
-              224,
-              222
+              764,
+              820,
+              272,
+              273
             ],
             "target": [
-              0.4036458333333333,
-              0.21484375,
-              0.07161458333333333,
-              0.10646275111607142
+              0.3255208333333333,
+              0.2197265625,
+              0.078125,
+              0.11761833639705882
+            ]
+          },
+          {
+            "id": "fan",
+            "label": "선풍기",
+            "image": "./images/home_books/living-stickers-v2.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              798,
+              378,
+              199,
+              377
+            ],
+            "target": [
+              0.042317708333333336,
+              0.48828125,
+              0.09106812278956676,
+              0.2587890625
+            ]
+          },
+          {
+            "id": "purifier",
+            "label": "공기청정기",
+            "image": "./images/home_books/living-stickers-v2.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              116,
+              788,
+              166,
+              332
+            ],
+            "target": [
+              0.14322916666666666,
+              0.634765625,
+              0.052083333333333336,
+              0.15625
+            ]
+          },
+          {
+            "id": "vacuum",
+            "label": "청소기",
+            "image": "./images/home_books/living-stickers-v2.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              492,
+              795,
+              105,
+              313
+            ],
+            "target": [
+              0.7552083333333334,
+              0.60546875,
+              0.06333616214057508,
+              0.283203125
             ]
           }
         ]
@@ -561,137 +624,77 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
       {
         "id": "items",
         "title": "생활용품 놓기",
-        "subtitle": "물건을 알맞은 자리에 놓아요",
+        "subtitle": "슬리퍼와 리모컨을 알맞은 자리에 놓아요",
         "pieces": [
           {
-            "id": "cushion",
-            "label": "쿠션",
-            "image": "./images/home_books/living-stickers.png",
+            "id": "slippers",
+            "label": "슬리퍼",
+            "image": "./images/home_books/living-stickers-v2.png",
             "sheet": [
-              1536,
-              1024
+              1086,
+              1448
             ],
             "crop": [
-              138,
-              519,
-              280,
-              240
+              43,
+              1200,
+              319,
+              196
             ],
             "target": [
-              0.2734375,
-              0.5224609375,
-              0.068359375,
-              0.087890625
-            ]
-          },
-          {
-            "id": "book",
-            "label": "책",
-            "image": "./images/home_books/living-stickers.png",
-            "sheet": [
-              1536,
-              1024
-            ],
-            "crop": [
-              679,
-              521,
-              178,
-              239
-            ],
-            "target": [
-              0.8658854166666666,
-              0.4296875,
-              0.031516954323570434,
-              0.0634765625
+              0.19856770833333334,
+              0.6962890625,
+              0.07486979166666667,
+              0.06900225313479624
             ]
           },
           {
             "id": "remote",
-            "label": "리모컨",
-            "image": "./images/home_books/living-stickers.png",
+            "label": "텔레비전 리모컨",
+            "image": "./images/home_books/living-stickers-v2.png",
             "sheet": [
-              1536,
-              1024
+              1086,
+              1448
             ],
             "crop": [
-              1242,
-              514,
-              74,
-              246
+              493,
+              1123,
+              101,
+              301
             ],
             "target": [
-              0.546875,
-              0.7861328125,
-              0.01272971714092141,
-              0.0634765625
-            ]
+              0.33203125,
+              0.7421875,
+              0.068359375,
+              0.03440679505813953
+            ],
+            "rotate": 90
           },
           {
-            "id": "car",
-            "label": "장난감 자동차",
-            "image": "./images/home_books/living-stickers.png",
+            "id": "acremote",
+            "label": "에어컨 리모컨",
+            "image": "./images/home_books/living-stickers-v2.png",
             "sheet": [
-              1536,
-              1024
+              1086,
+              1448
             ],
             "crop": [
-              84,
-              822,
-              354,
-              154
+              847,
+              1142,
+              105,
+              272
             ],
             "target": [
-              0.322265625,
-              0.7880859375,
-              0.078125,
-              0.050979872881355935
-            ]
-          },
-          {
-            "id": "plant",
-            "label": "화분",
-            "image": "./images/home_books/living-stickers.png",
-            "sheet": [
-              1536,
-              1024
+              0.4654947916666667,
+              0.7421875,
+              0.061848958333333336,
+              0.035813275505514705
             ],
-            "crop": [
-              609,
-              762,
-              325,
-              242
-            ],
-            "target": [
-              0.09765625,
-              0.5859375,
-              0.16612323519283748,
-              0.185546875
-            ]
-          },
-          {
-            "id": "basket",
-            "label": "정리 바구니",
-            "image": "./images/home_books/living-stickers.png",
-            "sheet": [
-              1536,
-              1024
-            ],
-            "crop": [
-              1129,
-              787,
-              308,
-              203
-            ],
-            "target": [
-              0.6770833333333334,
-              0.8154296875,
-              0.1171875,
-              0.11585582386363637
-            ]
+            "rotate": 90
           }
         ]
       }
-    ]
+    ],
+    "description": "사진 속 가구와 가전 · 리모컨 · 슬리퍼"
   },
   {
     "id": "bedroom",

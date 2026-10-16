@@ -25,7 +25,7 @@ def main():
    shelf();page.screenshot(path=str(out/'shelf.png'))
    for id,label in [('kitchen','주방'),('living','거실'),('bedroom','침실')]:
     page.get_by_text(label+' 스티커북',exact=True).click()
-    chapters={'fixtures':8,'items':7,'cooking':3} if id=='kitchen' else {'fixtures':6,'items':6}
+    chapters={'fixtures':8,'items':7,'cooking':3} if id=='kitchen' else ({'fixtures':9,'items':3} if id=='living' else {'fixtures':6,'items':6})
     assert page.locator('[data-chapter]').count()==len(chapters)
     for chapter,total in chapters.items():
      page.locator(f'[data-chapter="{chapter}"]').click()
@@ -49,8 +49,9 @@ def main():
     shelf()
    page.reload();shelf()
    for id in ['kitchen','living','bedroom']:
-    saved=page.evaluate(f"JSON.parse(localStorage.getItem('jaemin-{id}-stickers-v1'))")
-    expected={'fixtures':8,'items':7,'cooking':3} if id=='kitchen' else {'fixtures':6,'items':6}
+    version=2 if id=='living' else 1
+    saved=page.evaluate(f"JSON.parse(localStorage.getItem('jaemin-{id}-stickers-v{version}'))")
+    expected={'fixtures':8,'items':7,'cooking':3} if id=='kitchen' else ({'fixtures':9,'items':3} if id=='living' else {'fixtures':6,'items':6})
     assert {k:len(s['placed']) for k,s in saved['progress'].items()}==expected
    # Bathroom progress remains on its original key and each book has independent reset.
    assert page.evaluate("localStorage.getItem('jaemin-bathroom-stickers-v1')")==None
@@ -58,7 +59,7 @@ def main():
    page.locator('[data-chapter="items"]').click()
    page.get_by_role('button',name='처음부터',exact=True).click()
    page.locator('.sb-dialog').get_by_role('button',name='처음부터',exact=True).click()
-   assert page.evaluate("JSON.parse(localStorage.getItem('jaemin-living-stickers-v1')).progress.items.placed.length")==6
+   assert page.evaluate("JSON.parse(localStorage.getItem('jaemin-living-stickers-v2')).progress.items.placed.length")==3
    # v406 completed chapters remain valid; appended appliances/tools continue next.
    page.evaluate("""localStorage.setItem('jaemin-kitchen-stickers-v1',JSON.stringify({version:1,sound:false,hints:true,progress:{
      fixtures:{cursor:6,placed:['fridge','sink','hob','table','chair','cooker']},

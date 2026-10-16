@@ -85,7 +85,13 @@
       image.setAttribute('width', piece.sheet[0]);
       image.setAttribute('height', piece.sheet[1]);
       image.setAttribute('clip-path', `url(#${clipId})`);
-      svg.appendChild(image);
+      if (piece.rotate === 90) {
+        const [x, y, w, h] = piece.crop;
+        svg.setAttribute('viewBox', `0 0 ${h} ${w}`);
+        const group = document.createElementNS(svg.namespaceURI, 'g');
+        group.setAttribute('transform', `translate(${h} 0) rotate(90) translate(${-x} ${-y})`);
+        group.appendChild(image); svg.appendChild(group);
+      } else svg.appendChild(image);
       return svg;
     }
     function position(node, piece) {
