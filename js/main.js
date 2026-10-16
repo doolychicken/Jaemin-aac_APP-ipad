@@ -318,8 +318,9 @@ const stickerBookFeatures = Object.fromEntries(window.STICKER_BOOKS.map(catalog 
     gridEl, appMainEl, spotlightViewEl, spotlightBtnEl, heroEl, helperEl,
     speak, playPuzzleSound, pushScreen, render, catalog,
     returnToBook: () => {
-      while (navStack.length > 1 && currentKey() !== catalog.nav) popScreen();
-      if (currentKey() !== catalog.nav) pushScreen(catalog.nav, catalog.label + " 스티커북");
+      const destination = catalog.returnNav || catalog.nav;
+      while (navStack.length > 1 && currentKey() !== destination) popScreen();
+      if (currentKey() !== destination) pushScreen(destination, catalog.returnLabel || catalog.title || catalog.label + " 스티커북");
       render();
     }
   })

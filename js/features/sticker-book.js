@@ -48,9 +48,30 @@
       // SVG viewBox clips source sheets without creating resized or re-generated copies.
       const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
       svg.setAttribute('viewBox', piece.crop.join(' '));
+      if (piece.fit) svg.setAttribute('preserveAspectRatio', 'none');
       svg.setAttribute('class', 'sb-sprite ' + className);
       svg.setAttribute('aria-hidden', 'true');
       svg.setAttribute('focusable', 'false');
+      if (piece.parts) {
+        svg.setAttribute('viewBox', '0 0 100 100');
+        svg.setAttribute('preserveAspectRatio', 'none');
+        piece.parts.forEach(part => {
+          const [x, y, w, h] = part.box;
+          const [cx, cy, cw, ch] = part.crop;
+          const group = document.createElementNS(svg.namespaceURI, 'g');
+          group.setAttribute('transform', `translate(${x * 100} ${y * 100}) scale(${w * 100 / cw} ${h * 100 / ch}) translate(${-cx} ${-cy})`);
+          const clip = document.createElementNS(svg.namespaceURI, 'clipPath');
+          const id = 'sb-clip-' + (++spriteNumber); clip.setAttribute('id', id);
+          const rect = document.createElementNS(svg.namespaceURI, 'rect');
+          ['x', 'y', 'width', 'height'].forEach((key, i) => rect.setAttribute(key, part.crop[i]));
+          clip.append(rect);
+          const image = document.createElementNS(svg.namespaceURI, 'image');
+          image.setAttribute('href', piece.image); image.setAttribute('width', piece.sheet[0]); image.setAttribute('height', piece.sheet[1]);
+          image.setAttribute('clip-path', `url(#${id})`);
+          group.append(clip, image); svg.append(group);
+        });
+        return svg;
+      }
       // A viewBox alone still paints neighbouring sheet pixels in letterbox space.
       const defs = document.createElementNS(svg.namespaceURI, 'defs');
       const clip = document.createElementNS(svg.namespaceURI, 'clipPath');
@@ -156,7 +177,7 @@
     function bookHome() {
       chapter = null;
       const intro = el('div', 'sb-intro');
-      intro.append(el('span', 'sb-kicker', '나만의 스티커북'), el('h2', '', roomName + ' 꾸미기'),
+      intro.append(el('span', 'sb-kicker', '나만의 스티커북'), el('h2', '', catalog.heading || roomName + ' 꾸미기'),
         el('p', '', '큰 사진을 하나씩 끌어다 붙여요. 천천히, 내 속도로.'));
       root.append(intro);
       const layout = el('div', 'sb-book-layout');
@@ -174,6 +195,12 @@
         copy.append(el('strong', '', item.title), el('span', '', item.subtitle));
         const count = state.placed.length;
         copy.append(el('small', '', count === item.pieces.length ? '완성했어요 · 다시 볼까요?' : count ? `${count} / ${item.pieces.length}개 · 이어서 하기` : `${item.pieces.length}개 · 시작하기`));
+        card.append(copy, el('span', 'sb-chevron', '›')); choices.append(card);
+      });
+      (catalog.activities || []).forEach(activity => {
+        const card = button('', () => go(activity.nav, activity.label), 'sb-chapter sb-extra-activity');
+        const copy = el('span', 'sb-chapter-copy');
+        copy.append(el('strong', '', activity.label), el('span', '', activity.description));
         card.append(copy, el('span', 'sb-chevron', '›')); choices.append(card);
       });
       layout.append(choices); root.append(layout);
@@ -197,10 +224,10 @@
       chapter = null;
       root.append(el('span', 'sb-kicker', '그림을 붙이며 배우는 시간'), el('h2', 'sb-library-title', '내 스티커북'));
       const shelf = el('div', 'sb-library-grid');
-      (window.STICKER_BOOKS || [catalog]).forEach(book => {
-        const name = (book.label || '화장실') + ' 스티커북';
+      (window.STICKER_BOOKS || [catalog]).filter(book => !book.hidden).forEach(book => {
+        const name = book.title || (book.label || '화장실') + ' 스티커북';
         const card = button('', () => go(book.nav || 'stickerBathroom', name), 'sb-library-card');
-        card.append(coverPhoto(book), el('strong', '', name), el('span', '', book.compose ? '큰 가구 · 생활용품' : '큰 물건 · 생활용품 · 생활 연습'));
+        card.append(coverPhoto(book), el('strong', '', name), el('span', '', book.description || (book.compose ? '큰 가구 · 생활용품' : '큰 물건 · 생활용품 · 생활 연습')));
         shelf.append(card);
       });
       root.append(shelf, el('p', 'sb-note', '스티커는 하나씩 나와요. 붙인 곳부터 이어서 할 수 있어요.'));
@@ -299,10 +326,18 @@
       const stage = el('div', 'sb-stage'); stage.setAttribute('aria-label', roomName + ' 배경');
       canvasWrap.append(stage); workspace.append(canvasWrap);
       renderScene(stage, state);
+      if (chapter.id === 'items' || done) {
+        (catalog.activities || []).filter(activity => activity.target).forEach(activity => {
+          const open = button(activity.label, () => go(activity.nav, activity.label), 'sb-room-link');
+          open.style.left = activity.target[0] * 100 + '%';
+          open.style.top = activity.target[1] * 100 + '%';
+          stage.append(open);
+        });
+      }
       const tray = el('aside', 'sb-tray');
       tray.setAttribute('aria-label', '지금 붙일 스티커');
       workspace.append(tray); root.append(workspace);
-      const status = el('p', 'sb-status', done ? roomName + ' 꾸미기를 완성했어요!' : matched ? '잘 붙였어요! 다음 스티커도 만나볼까요?' : '스티커를 꾹 잡고 표시된 자리로 옮겨요.');
+      const status = el('p', 'sb-status', done ? (catalog.completeMessage || roomName + ' 꾸미기를 완성했어요!') : matched ? '잘 붙였어요! 다음 스티커도 만나볼까요?' : '스티커를 꾹 잡고 표시된 자리로 옮겨요.');
       status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite'); root.append(status);
       const footer = el('div', 'sb-footer');
       const undo = button('하나 되돌리기', () => {

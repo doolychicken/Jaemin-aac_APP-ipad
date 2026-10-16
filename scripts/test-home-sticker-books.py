@@ -21,11 +21,11 @@ def main():
    page.goto(f'http://127.0.0.1:{server.server_port}/')
    def shelf():
     page.evaluate("pushScreen('stickerBookHome','스티커북');render()")
-    assert page.locator('.sb-library-card').count()==4
+    assert page.locator('.sb-library-card').count()==5
    shelf();page.screenshot(path=str(out/'shelf.png'))
    for id,label in [('kitchen','주방'),('living','거실'),('bedroom','침실')]:
     page.get_by_text(label+' 스티커북',exact=True).click()
-    assert page.locator('.sb-chapter').count()==2
+    assert page.locator('[data-chapter]').count()==2
     for chapter in ['fixtures','items']:
      page.locator(f'[data-chapter="{chapter}"]').click()
      page.wait_for_selector('.sb-card:not(:disabled)')

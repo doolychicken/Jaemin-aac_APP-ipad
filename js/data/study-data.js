@@ -74,6 +74,7 @@ function buildStudyScreensMap() {
 
   const appStudyItems = [
     { label: "스티커북", nav: "stickerBookHome", image: "./images/bathroom_book/room.png" },
+    { label: "옷입히기", nav: "stickerDress", image: "./images/storage_dress/dress-base.png" },
     { label: "재민이 놀이학교", nav: "playSchoolHome", image: "./images/traffic_game/car_red.png" },
     { label: "숫자",   nav: "studyNumbers",    image: "./images/knobpuzzle_numbers.png" },
     { label: "날짜",   nav: "dateHome", image: "./images/real_items/calendar_learning.jpg", dateMode: "stepFlow" },
@@ -282,6 +283,15 @@ function buildStudyScreensMap() {
     for (const [chapter, title] of [["fixtures", "큰 가구 붙이기"], ["items", "생활용품 놓기"]]) {
       rest[nav + "_" + chapter] = { title, book, chapter, helper: "", hero: [], items: [], layout: "stickerBook", showPlayer: false };
     }
+  }
+
+  for (const [book, nav, title, chapterTitle] of [
+    ["fridge", "stickerFridge", "냉장고 채우기", "냉장고에 넣어요"],
+    ["wardrobe", "stickerWardrobe", "옷장 정리하기", "옷장에 넣어요"],
+    ["dress", "stickerDress", "옷입히기", "재민이 옷입히기"]
+  ]) {
+    rest[nav] = { title, book, helper: "", hero: [], items: [], layout: "stickerBook", showPlayer: false };
+    rest[nav + "_items"] = { title: chapterTitle, book, chapter: "items", helper: "", hero: [], items: [], layout: "stickerBook", showPlayer: false };
   }
 
   rest.studyRecyclingGame = {

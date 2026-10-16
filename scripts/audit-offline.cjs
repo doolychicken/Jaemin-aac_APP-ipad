@@ -23,6 +23,7 @@ function walk(object, location) {
 walk(data, 'DATA');
 vm.runInContext(read('js/data/sticker-book-data.js'), context);
 vm.runInContext(read('js/data/home-sticker-data.js'), context);
+vm.runInContext(read('js/data/storage-dress-data.js'), context);
 walk(context.window.STICKER_BOOKS, 'STICKER_BOOKS');
 for (const text of ['오늘은 2026년 9월 29일 화요일입니다. 날씨는 맑음입니다.',
   '우유 아니야. 사과를 주세요', '하나로마트에 가요 완료!', '양치하기 완료했어요', '월요일 스케줄 수정',
