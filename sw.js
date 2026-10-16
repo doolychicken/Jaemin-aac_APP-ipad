@@ -4,9 +4,9 @@
  * On first visit, pre-caches all images so subsequent loads are instant.
  */
 
-importScripts('./js/data/speech-manifest.js?v=402');
+importScripts('./js/data/speech-manifest.js?v=403');
 
-const CACHE_VERSION = 'v402';
+const CACHE_VERSION = 'v403';
 const CACHE_NAME = `jaemin-aac-${CACHE_VERSION}`;
 
 self.addEventListener('message', (event) => {
@@ -27,6 +27,16 @@ const PRECACHE_ASSETS = [
   './css/features/face-parts-game.css',
   './css/date-overrides.css',
   './css/features/play-school.css',
+  './css/features/sticker-book.css',
+  './js/data/sticker-book-data.js',
+  './js/features/sticker-book.js',
+  './images/bathroom_book/room.png',
+  './images/bathroom_book/empty.png',
+  './images/bathroom_book/fixtures.png',
+  './images/bathroom_book/items.png',
+  './images/bathroom_book/towel-bin.png',
+  './images/bathroom_book/boy-one.png',
+  './images/bathroom_book/boy-two.png',
   './js/features/play-school.js',
   './js/core/instrument-sounds.js',
   './js/data/study-data.js',

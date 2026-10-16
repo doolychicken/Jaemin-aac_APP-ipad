@@ -313,6 +313,16 @@ const playSchoolFeature = window.createPlaySchoolFeature({
   }
 });
 
+const stickerBookFeature = window.createStickerBookFeature({
+  gridEl, appMainEl, spotlightViewEl, spotlightBtnEl, heroEl, helperEl,
+  speak, playPuzzleSound, pushScreen, render,
+  returnToBook: () => {
+    while (navStack.length > 1 && currentKey() !== "stickerBathroom") popScreen();
+    if (currentKey() !== "stickerBathroom") pushScreen("stickerBathroom", "화장실 스티커북");
+    render();
+  }
+});
+
 // ── 1. 한국어 목소리 선택 (fallback: default 목소리) ─────────────────────────
 function pickPreferredKoVoice() {
   if (!("speechSynthesis" in window)) return null;
@@ -3125,6 +3135,9 @@ function render() {
     renderDateHome();
   } else if (scheduleFeature.handles(key)) {
     scheduleFeature.render(key, screen);
+  } else if (screen.layout === "stickerBook") {
+    activeFeature = stickerBookFeature;
+    stickerBookFeature.render(screen);
   } else if (screen.layout === "playSchool") {
     activeFeature = playSchoolFeature;
     playSchoolFeature.render(screen);
@@ -3188,6 +3201,7 @@ function render() {
 
   if (
     gridEl.style.display !== "none"
+    && screen.layout !== "stickerBook"
     && screen.layout !== "playSchool"
     && screen.layout !== "studyPuzzle"
     && screen.layout !== "recyclingGame"

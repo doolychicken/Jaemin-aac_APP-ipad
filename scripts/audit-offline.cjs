@@ -21,6 +21,8 @@ function walk(object, location) {
   }
 }
 walk(data, 'DATA');
+vm.runInContext(read('js/data/sticker-book-data.js'), context);
+walk(context.window.STICKER_BOOK, 'STICKER_BOOK');
 for (const text of ['오늘은 2026년 9월 29일 화요일입니다. 날씨는 맑음입니다.',
   '우유 아니야. 사과를 주세요', '하나로마트에 가요 완료!', '양치하기 완료했어요', '월요일 스케줄 수정',
   '11. 장애인 콜택시 타요', 'ㄱㄴㄷ']) {
@@ -40,5 +42,6 @@ function assetsIn(object) {
   }
 }
 assetsIn(data);
+assetsIn(context.window.STICKER_BOOK);
 if (missing.length) { console.error(JSON.stringify(missing, null, 2)); process.exitCode = 1; }
 else console.log(`PASS: ${count} data speech values, dynamic sentences, and ${assets.length} offline assets`);

@@ -1,0 +1,32 @@
+Bathroom sticker book / v403
+
+Entry: 앱 공부 > 스티커북 > 화장실 스티커북
+Chapters: 8 fixtures, 16 toiletries, 8 everyday routine scenes.
+Exactly one active sticker. Pointer-based drag with generous target tolerance;
+explicit Next after success; keyboard selection then target confirmation.
+Saved local progress, per-chapter reset confirmation, undo, break, optional audio/hints.
+No timers, failure sounds, points or automatic advancement.
+
+Implementation: js/features/sticker-book.js, css/features/sticker-book.css,
+js/data/sticker-book-data.js. Sprite rendering clips unchanged PNG sheets with
+SVG viewBox + clipPath. scripts/build-sticker-catalog.py regenerates metadata.
+Storage key: jaemin-bathroom-stickers-v1. Versioned, validated local storage only.
+New art, code and Korean audio are included in service worker v403.
+
+Verification: scripts/test-sticker-book.py covers all placements, real touch events,
+cancel/exit, portrait and landscape layouts, resume/undo/reset, keyboard access,
+image retry, corrupt storage and offline reload with recorded speech.
+Existing scripts/test-app.py, scripts/test-offline.py and both asset audits also run.
+Browser checks emulate iPad dimensions/touch in Chrome; physical iPad Safari still
+requires a device check. First online loading must finish before offline use.
+
+Art provenance: User-requested photo-style assets generated in this conversation.
+room.png = bathroom-background-v17; fixtures.png = bathroom-fixtures-v18;
+items.png = bathroom-all-photo-stickers-v13; towel-bin.png = bathroom-lidded-bin-v20;
+boy-one.png / boy-two.png = bathroom-boy-routines-v21 / v22.
+The standing toilet scene is a clothed preparation scene, not direct urination.
+These are generated images and not exact photographic extractions.
+
+Empty room: generated with the built-in image_gen tool using room.png as reference.
+Final prompt:
+Precise background edit for a children's bathroom sticker puzzle. Starting with this exact bathroom photo, remove ONLY these eight fixtures and fill their footprints with matching tiled walls or floor: the shower assembly including heads rail faucet hose; bathtub; gold mirror; pedestal sink and its faucet; towel rail; half-open cabinet; toilet; small toilet-paper holder. Preserve the window, all tile grid, lighting, perspective, camera framing and original canvas size exactly. KEEP the small white shelf beside shower at x210-400 y330, and KEEP the large white floating countertop at x720-1070 y510. No objects added. The result is an empty bathroom shell with two empty shelves and a window, photorealistic, same 1491x1055 landscape composition, no text. Do not change the architecture. This will have original fixtures placed back at their original pixel positions.
