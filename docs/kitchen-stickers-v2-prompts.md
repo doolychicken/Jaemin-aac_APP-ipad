@@ -1,0 +1,25 @@
+# Kitchen sticker update — built-in image_gen
+
+Saved assets: images/home_books/kitchen-appliances-v2.png, kitchen-tools-v2.png, kitchen-room-v2.png.
+
+Compared sources (not substituted): https://www.lge.co.kr/water-purifiers/wd106awt ; https://www.ganow.co.kr/appliance/264 ; https://cjgmarket.kr/shop/item.php?category=1&it_id=20211122192215861111
+
+## Final countertop refinement (supersedes initial room prompt below)
+Use case: precise-object-edit. Edit this empty kitchen photograph. Keep the left refrigerator recess, window, room walls and floor unchanged. Change the countertop and lower cabinetry so the counter has a MUCH DEEPER, WIDER visible horizontal white surface: its back edge at image y=410, its front edge at image y=530 in this 1536x1024 image. This means the top surface is approximately 120 pixels tall, visibly a wide slab/surface viewed from above, rather than the present narrow 30 pixel strip. Shorten the cabinet doors vertically so they begin below y=545 and end at their original y=650. Keep room composition and perspective, entire countertop EMPTY. No objects. Make this a substantial clearly visible increase in usable countertop depth, not merely a thicker front edge. Photorealistic interior photograph, landscape 1536x1024.
+
+Source edit target: C:/Users/dooly/Desktop/프린트/주방2.png
+
+The appliance atlas is an AI-assisted extraction/reconstruction of the user's collage, not a verified manufacturer product photograph. Exact model numbers were not confirmed. Internet candidates were compared but not substituted.
+
+Original table, chair and sink stickers are retained.
+
+
+
+## kitchen-appliances-v2
+Use case: background-extraction. Input is the user's appliance photo collage, an edit target. Extract ONLY its FIVE appliances into a transparent PNG sticker atlas, 1536x1024 pixels, strict 3 columns x2 rows. Row1 left silver LG four-door refrigerator, middle silver LG microwave with black glass door and right control panel, right white LG slim water purifier with black top. Row2 left Rinnai TWO burner gas stove with black top and silver front and two silver knobs, middle white CUCHEN rounded rice cooker with silver circular top handle and front gray LCD, right EMPTY transparent cell. Preserve the exact visible appliance identities, proportions, colors, number of doors/burners, control layouts and photographed look from this source. Do NOT substitute new appliance models. Remove all original backgrounds, shadows, other furniture, cups and rice items. Clean and clarify fuzzy edges gently while preserving details. Full uncut silhouettes, each item centered completely inside its own cell with at least 25px transparent margin, no neighboring overlap. Use the refrigerator tall within its cell, microwave and gas stove wide within their cells, purifier upright. Real photographed products, NOT drawings or stylized renders. Actual transparent alpha background, no gray mat, no checkerboard, no glow.
+
+## kitchen-tools-v2
+Use case: product-mockup. Create one 1536x1024 landscape transparent PNG atlas for a child's photorealistic kitchen sticker activity. EXACTLY six isolated real photographed kitchen objects arranged in strict THREE COLUMNS and TWO ROWS; each complete object inside its own cell with generous transparent gaps. Row 1 left to right: a plain clear cylindrical drinking glass EMPTY suitable for placing below a water dispenser spout, front view; a white plastic rice paddle, diagonally laid with scoop upper-left and handle lower-right; a white ceramic Korean rice bowl containing cooked white rice, three-quarter front view. Row 2: a stainless steel cooking pot with two short side handles and fitted glass lid, front view slightly from above; a stainless whistling kettle with black top handle and spout pointing left, front view slightly from above; a black nonstick frying pan with handle pointing diagonally right, view from slightly above at 30 degrees so cooking surface visible. Real product catalog photography, soft natural light and crisp clean details, no logos, no labels, no food other than rice in bowl, no hands, no fire, no background or floors. Actual alpha transparency, no checkerboard pattern, no external shadows. Object silhouettes must NOT touch neighboring cells and must not be cropped.
+
+## kitchen-room-v2
+Use case: precise-object-edit. This empty kitchen image is the edit target. Keep its exact 1536x1024 landscape framing, left refrigerator recess, window, light neutral tiles, white cabinetry and floor, camera angle and photoreal quality. Change ONLY the long white countertop: make its top surface visibly deeper, extending its FRONT edge downward to approximately y=515 while its BACK edge stays at y=425, reducing the visible cabinet door height correspondingly; cabinet bases stay y=680. This provides a clear continuous 90-pixel-deep countertop surface for placing small cup and bowl stickers in front of appliances. No objects, appliances, sink, cookware, shelves or text added. Keep the entire kitchen empty, same lighting and perspective.

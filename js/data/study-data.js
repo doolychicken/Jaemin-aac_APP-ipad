@@ -281,9 +281,11 @@ function buildStudyScreensMap() {
     rest.stickerBookHome.items.push({ label: label + " 스티커북", nav, image: "./images/home_books/" + book + "-room.png" });
     rest[nav] = { title: label + " 스티커북", book, helper: "", hero: [], items: [], layout: "stickerBook", showPlayer: false };
     for (const [chapter, title] of [["fixtures", "큰 가구 붙이기"], ["items", "생활용품 놓기"]]) {
-      rest[nav + "_" + chapter] = { title, book, chapter, helper: "", hero: [], items: [], layout: "stickerBook", showPlayer: false };
+      rest[nav + "_" + chapter] = { title: book === "kitchen" && chapter === "fixtures" ? "가구와 가전 놓기" : title, book, chapter, helper: "", hero: [], items: [], layout: "stickerBook", showPlayer: false };
     }
   }
+
+  rest.stickerKitchen_cooking = { title: "조리도구 올려놓기", book: "kitchen", chapter: "cooking", helper: "", hero: [], items: [], layout: "stickerBook", showPlayer: false };
 
   for (const [book, nav, title, chapterTitle] of [
     ["fridge", "stickerFridge", "냉장고 채우기", "냉장고에 넣어요"],

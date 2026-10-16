@@ -249,7 +249,8 @@
         if (last && state.placed.includes(last.id)) placedSprite(last, layer);
       } else {
         if (catalog.compose) catalog.chapters[0].pieces.forEach(piece => placedSprite(piece, layer));
-        chapter.pieces.filter(piece => state.placed.includes(piece.id)).forEach(piece => placedSprite(piece, layer));
+        const visible = chapter.single ? (last ? [last] : []) : chapter.pieces;
+        visible.filter(piece => state.placed.includes(piece.id)).forEach(piece => placedSprite(piece, layer));
       }
       return layer;
     }
@@ -397,7 +398,9 @@
       observer = new ResizeObserver(resize); observer.observe(canvasWrap); resize();
       const localEpoch = epoch;
       const urls = new Set([catalog.room, catalog.empty, ...chapter.pieces.map(p => p.image)]);
-      if (chapter.id === 'routines') urls.add(catalog.chapters[0].pieces[0].image);
+      if (chapter.id === 'routines' || catalog.compose) {
+        catalog.chapters[0].pieces.forEach(piece => urls.add(piece.image));
+      }
       const loading = el('div', 'sb-loading', '스티커를 준비하고 있어요…');
       canvasWrap.append(loading);
       Promise.all([...urls].map(loadImage)).then(() => {

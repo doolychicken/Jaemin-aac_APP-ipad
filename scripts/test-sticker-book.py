@@ -148,7 +148,7 @@ def main():
             offline.add_init_script(offline_tests.NO_NATIVE_SPEECH)
             off=offline.new_page(); off.set_default_timeout(120000)
             off.goto(url)
-            off.wait_for_function("async () => { const c=await caches.open('jaemin-aac-v406'); return !!(await c.match('./images/bathroom_book/boy-two.png')) && !!(await c.match('./js/features/sticker-book.js')); }")
+            off.wait_for_function("async () => { const c=await caches.open('jaemin-aac-v407'); return !!(await c.match('./images/bathroom_book/boy-two.png')) && !!(await c.match('./js/features/sticker-book.js')); }")
             off.reload(); off.wait_for_function('navigator.serviceWorker.controller !== null')
             off.wait_for_function("document.getElementById('offlineStatusText').textContent.includes('준비 완료')")
             offline.set_offline(True); off.reload()
@@ -172,6 +172,19 @@ def main():
                 off.mouse.move(a['x']+a['width']/2,a['y']+a['height']/2); off.mouse.down()
                 off.mouse.move(b['x']+b['width']/2,b['y']+b['height']/2,steps=8); off.mouse.up()
                 assert off.locator('.sb-next').count()==1
+            assert off.evaluate('window.nativeSpeechCalls')==0
+            for chapter,total in [('fixtures',8),('cooking',3)]:
+                off.evaluate(f"pushScreen('stickerKitchen_{chapter}','주방'); render()")
+                for index in range(total):
+                    off.wait_for_selector('.sb-card:not(:disabled)')
+                    before=off.evaluate('window.recordedEnds')
+                    off.locator('.sb-listen').click()
+                    off.wait_for_function('(before) => window.recordedEnds > before',arg=before)
+                    a=off.locator('.sb-card').bounding_box(); b=off.locator('.sb-target').bounding_box()
+                    off.mouse.move(a['x']+a['width']/2,a['y']+a['height']/2); off.mouse.down()
+                    off.mouse.move(b['x']+b['width']/2,b['y']+b['height']/2,steps=8); off.mouse.up()
+                    off.locator('.sb-next').click()
+                assert off.locator('.sb-tray--complete').count()==1
             assert off.evaluate('window.nativeSpeechCalls')==0
             print('PASS: cached code/photos and placement after offline reload',flush=True)
             offline.close(); browser.close()

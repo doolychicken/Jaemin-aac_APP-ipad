@@ -7,33 +7,33 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
     "storageKey": "jaemin-kitchen-stickers-v1",
     "width": 1536,
     "height": 1024,
-    "room": "./images/home_books/kitchen-room.png",
-    "empty": "./images/home_books/kitchen-room.png",
+    "room": "./images/home_books/kitchen-room-v2.png",
+    "empty": "./images/home_books/kitchen-room-v2.png",
     "compose": true,
     "chapters": [
       {
         "id": "fixtures",
-        "title": "큰 가구 붙이기",
+        "title": "가구와 가전 놓기",
         "subtitle": "큰 물건부터 하나씩 놓아요",
         "pieces": [
           {
             "id": "fridge",
             "label": "냉장고",
-            "image": "./images/home_books/kitchen-stickers.png",
+            "image": "./images/home_books/kitchen-appliances-v2.png",
             "sheet": [
               1536,
               1024
             ],
             "crop": [
-              231,
-              10,
-              104,
-              249
+              92,
+              28,
+              325,
+              629
             ],
             "target": [
-              0.09765625,
+              0.09114583333333333,
               0.1611328125,
-              0.14139892904953147,
+              0.1749221648118707,
               0.5078125
             ]
           },
@@ -52,31 +52,31 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               243
             ],
             "target": [
-              0.4557291666666667,
-              0.25390625,
-              0.14322916666666666,
-              0.18915591032608695
+              0.52734375,
+              0.3173828125,
+              0.11067708333333333,
+              0.14616593070652173
             ]
           },
           {
             "id": "hob",
-            "label": "인덕션",
-            "image": "./images/home_books/kitchen-stickers.png",
+            "label": "가스레인지",
+            "image": "./images/home_books/kitchen-appliances-v2.png",
             "sheet": [
               1536,
               1024
             ],
             "crop": [
-              1067,
-              104,
-              373,
-              130
+              53,
+              695,
+              652,
+              279
             ],
             "target": [
-              0.6705729166666666,
-              0.3984375,
-              0.13671875,
-              0.07147494973190349
+              0.6510416666666666,
+              0.3203125,
+              0.18880208333333334,
+              0.12118661330521473
             ]
           },
           {
@@ -124,22 +124,64 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
           {
             "id": "cooker",
             "label": "밥솥",
-            "image": "./images/home_books/kitchen-stickers.png",
+            "image": "./images/home_books/kitchen-appliances-v2.png",
             "sheet": [
               1536,
               1024
             ],
             "crop": [
-              1152,
-              279,
-              225,
-              219
+              778,
+              621,
+              330,
+              378
             ],
             "target": [
-              0.8268229166666666,
-              0.291015625,
-              0.09698737157534247,
+              0.8463541666666666,
+              0.2880859375,
+              0.0824136078042328,
               0.1416015625
+            ]
+          },
+          {
+            "id": "microwave",
+            "label": "전자레인지",
+            "image": "./images/home_books/kitchen-appliances-v2.png",
+            "sheet": [
+              1536,
+              1024
+            ],
+            "crop": [
+              520,
+              196,
+              591,
+              340
+            ],
+            "target": [
+              0.29296875,
+              0.2978515625,
+              0.14322916666666666,
+              0.12359877326565144
+            ]
+          },
+          {
+            "id": "purifier",
+            "label": "정수기",
+            "image": "./images/home_books/kitchen-appliances-v2.png",
+            "sheet": [
+              1536,
+              1024
+            ],
+            "crop": [
+              1228,
+              47,
+              208,
+              506
+            ],
+            "target": [
+              0.44921875,
+              0.1904296875,
+              0.06556735836627141,
+              0.2392578125
             ]
           }
         ]
@@ -173,22 +215,22 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
           {
             "id": "glass",
             "label": "물컵",
-            "image": "./images/home_books/kitchen-stickers.png",
+            "image": "./images/home_books/kitchen-tools-v2.png",
             "sheet": [
               1536,
               1024
             ],
             "crop": [
-              692,
-              538,
-              153,
-              210
+              133,
+              76,
+              238,
+              392
             ],
             "target": [
-              0.4850260416666667,
-              0.6103515625,
-              0.042689732142857144,
-              0.087890625
+              0.46875,
+              0.3466796875,
+              0.025692894345238096,
+              0.0634765625
             ]
           },
           {
@@ -215,22 +257,22 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
           {
             "id": "bowl",
             "label": "밥그릇",
-            "image": "./images/home_books/kitchen-stickers.png",
+            "image": "./images/home_books/kitchen-tools-v2.png",
             "sheet": [
               1536,
               1024
             ],
             "crop": [
-              166,
-              819,
-              236,
-              152
+              1065,
+              130,
+              401,
+              322
             ],
             "target": [
-              0.4231770833333333,
-              0.65625,
-              0.061848958333333336,
-              0.05975238347457627
+              0.8385416666666666,
+              0.4052734375,
+              0.045572916666666664,
+              0.05489206670822943
             ]
           },
           {
@@ -248,8 +290,8 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               226
             ],
             "target": [
-              0.5989583333333334,
-              0.3515625,
+              0.4296875,
+              0.6591796875,
               0.068359375,
               0.08614805994423792
             ]
@@ -269,15 +311,108 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               236
             ],
             "target": [
-              0.3580729166666667,
-              0.2880859375,
+              0.56640625,
+              0.5517578125,
               0.051600569385593216,
               0.1416015625
+            ]
+          },
+          {
+            "id": "paddle",
+            "label": "밥주걱",
+            "image": "./images/home_books/kitchen-tools-v2.png",
+            "sheet": [
+              1536,
+              1024
+            ],
+            "crop": [
+              534,
+              69,
+              414,
+              406
+            ],
+            "target": [
+              0.8951822916666666,
+              0.408203125,
+              0.029296875,
+              0.043096127717391304
+            ]
+          }
+        ]
+      },
+      {
+        "id": "cooking",
+        "title": "조리도구 올려놓기",
+        "subtitle": "가스레인지에 하나씩 올려놓아요",
+        "single": true,
+        "pieces": [
+          {
+            "id": "pot",
+            "label": "냄비",
+            "image": "./images/home_books/kitchen-tools-v2.png",
+            "sheet": [
+              1536,
+              1024
+            ],
+            "crop": [
+              18,
+              570,
+              511,
+              355
+            ],
+            "target": [
+              0.65625,
+              0.2614645761986301,
+              0.09114583333333333,
+              0.09498073630136987
+            ]
+          },
+          {
+            "id": "kettle",
+            "label": "주전자",
+            "image": "./images/home_books/kitchen-tools-v2.png",
+            "sheet": [
+              1536,
+              1024
+            ],
+            "crop": [
+              556,
+              501,
+              396,
+              432
+            ],
+            "target": [
+              0.6653645833333334,
+              0.23712713068181818,
+              0.07291666666666667,
+              0.11931818181818182
+            ]
+          },
+          {
+            "id": "pan",
+            "label": "프라이팬",
+            "image": "./images/home_books/kitchen-tools-v2.png",
+            "sheet": [
+              1536,
+              1024
+            ],
+            "crop": [
+              1016,
+              580,
+              505,
+              344
+            ],
+            "target": [
+              0.65625,
+              0.23337909962871287,
+              0.12044270833333333,
+              0.12306621287128713
             ]
           }
         ]
       }
-    ]
+    ],
+    "description": "가구와 가전 · 생활용품 · 조리도구"
   },
   {
     "id": "living",
