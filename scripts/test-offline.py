@@ -121,6 +121,15 @@ def main():
             assert page.evaluate('window.recordedStops') > 0
             print('PASS: new speech cancels previous recorded audio', flush=True)
 
+            page.evaluate("pushScreen('morningRoutine', '아침 일정'); render();")
+            assert page.locator('.morning-board').count() == 1
+            page.locator('.mr-date').click()
+            page.get_by_role('button', name='맑음', exact=True).click()
+            assert page.evaluate("window.offlineSpeech.play('강서 큰나무 병원에 가요')") is True
+            assert page.evaluate("window.offlineSpeech.play('푸르메 재활병원에 가요')") is True
+            assert page.evaluate('window.nativeSpeechCalls') == 0
+            print('PASS: morning date/weather board and hospital speech work offline', flush=True)
+
             page.evaluate("pushScreen('playSchoolHome', '놀이학교'); render();")
             assert page.locator('.ps-game-card').count() == 13
             page.locator('[data-game="match"]').click()
@@ -185,7 +194,7 @@ def main():
             print('PASS: local video plays and seeks with network disabled', flush=True)
 
             # Readiness must recover if a required recording disappears from storage.
-            page.evaluate("async () => { const cache = await caches.open('jaemin-aac-v415'); await cache.delete(OFFLINE_SPEECH.assets[0]); }")
+            page.evaluate("async () => { const cache = await caches.open('jaemin-aac-v416'); await cache.delete(OFFLINE_SPEECH.assets[0]); }")
             page.reload()
             page.wait_for_function("document.querySelector('#offlineStatusText').textContent.includes('파일이 부족')")
             context.set_offline(False)

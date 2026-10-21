@@ -317,6 +317,37 @@ const DATA = {
 
   screens: {
     ...buildPhotoAacScreens(),
+    morningRoutine: {
+      title: "아침 일정", helper: "날짜와 날씨를 보고 오늘 일정을 붙여요.",
+      layout: "morningRoutine", hero: [], items: [], showPlayer: false,
+      cards: {
+        school: { label: "학교", speech: "학교에 가요", image: "./images/outing_school1.png" },
+        lunch: { label: "점심 먹기", speech: "점심을 먹어요", image: "./images/meal.png" },
+        lesson: { label: "수업", speech: "수업을 해요", image: "./images/school_classroom.png" },
+        calltaxi: { label: "장애인 콜택시", speech: "장애인 콜택시를 타요", image: "./images/transport_calltaxi.png" },
+        bignamu: { label: "강서 큰나무 병원", speech: "강서 큰나무 병원에 가요", symbol: "🏥" },
+        taxi: { label: "택시", speech: "택시를 타요", image: "./images/taxi.png" },
+        communication: { label: "사람과소통", speech: "사람과소통에 가요", image: "./images/therapy/communication_with_people.png" },
+        walk: { label: "걸어가기", speech: "걸어서 가요", image: "./images/transport_walk.png" },
+        severance: { label: "세브란스병원", speech: "세브란스병원에 가요", image: "./images/therapy_center_severance.png" },
+        purme: { label: "푸르메 재활병원", speech: "푸르메 재활병원에 가요", symbol: "🏥" },
+        bus: { label: "버스", speech: "버스를 타요", image: "./images/transport_bus.png" },
+        home: { label: "집", speech: "집에 와요", image: "./images/home.png" }
+      },
+      plans: {
+        1: ["school", "lunch", "calltaxi", "bignamu", "taxi", "home"],
+        2: ["school", "lunch", "calltaxi", "bignamu", "taxi", "home"],
+        3: ["school", "lunch", "calltaxi", "bignamu", "taxi", "home"],
+        4: ["school", "lunch", "lesson", "calltaxi", "communication", "walk", "home"],
+        5: ["school", "lunch", "calltaxi", "severance", "purme", "bus", "home"]
+      },
+      weather: [
+        { label: "맑음", image: "./images/weather_cards/sunny.svg" },
+        { label: "흐림", image: "./images/weather_cards/cloudy.svg" },
+        { label: "비", image: "./images/weather_cards/rain.svg" },
+        { label: "눈", image: "./images/weather_cards/snow.svg" }
+      ]
+    },
     // ── 메인 ──────────────────────────────────────────────────────────────────
     quickTalk: {
       title: "바로 말하기", helper: "사진을 누르면 내 말을 들려줘요.",
@@ -341,6 +372,7 @@ const DATA = {
       hero: [],
       items: [
         { label: "바로 말하기", nav: "quickTalk", image: "./images/meal_eggtart.png" },
+        { label: "아침 일정", nav: "morningRoutine", image: "./images/app_schedule.svg" },
         { label: "강화물",   nav: "ipadReinforcers", image: "./images/meal_juice.png" },
         { label: "교구선택", nav: "studyTeachingAids", image: "./images/study_pegboard.png" },
         { label: "사진 AAC", nav: "photoAacHome", image: "./images/photo_aac/actions_01.jpg", imageFit: "contain" },
@@ -643,6 +675,7 @@ const DATA = {
       helper: "스케줄 관련 항목을 선택하세요.",
       hero: [],
       items: [
+        { label: "아침 일정", nav: "morningRoutine", image: "./images/app_schedule.svg" },
         { label: "오늘 일정", nav: "scheduleToday",        image: "./images/school_classroom.png" },
         { label: "집 스케줄", nav: "scheduleHomeActivity", image: "./images/home.png" },
         { label: "장보기", nav: "scheduleShopping", image: "./images/outing_mart1.png" },

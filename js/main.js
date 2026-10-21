@@ -213,6 +213,11 @@ async function toggleFullscreenMode() {
   speak("전체 화면");
 }
 
+const morningRoutineFeature = window.createMorningRoutine({
+  gridEl, speak,
+  openTalk() { pushScreen("quickTalk", "바로 말하기"); render(); }
+});
+
 const scheduleFeature = window.createScheduleFeature({
   DATA,
   gridEl,
@@ -3181,6 +3186,11 @@ function render() {
     appendPagerButtons(gridEl, pageInfo);
   } else if (key === "dateHome") {
     renderDateHome();
+  } else if (screen.layout === "morningRoutine") {
+    activeFeature = morningRoutineFeature;
+    heroEl.innerHTML = "";
+    gridEl.style.display = "";
+    morningRoutineFeature.render(screen);
   } else if (scheduleFeature.handles(key)) {
     scheduleFeature.render(key, screen);
   } else if (screen.layout === "stickerBook") {
