@@ -148,7 +148,7 @@ def main():
             offline.add_init_script(offline_tests.NO_NATIVE_SPEECH)
             off=offline.new_page(); off.set_default_timeout(120000)
             off.goto(url)
-            off.wait_for_function("async () => { const c=await caches.open('jaemin-aac-v422'); return !!(await c.match('./images/bathroom_book/boy-two.png')) && !!(await c.match('./js/features/sticker-book.js')); }")
+            off.wait_for_function("async () => { const c=await caches.open('jaemin-aac-v423'); return !!(await c.match('./images/bathroom_book/boy-two.png')) && !!(await c.match('./js/features/sticker-book.js')); }")
             off.reload(); off.wait_for_function('navigator.serviceWorker.controller !== null')
             off.wait_for_function("document.getElementById('offlineStatusText').textContent.includes('준비 완료')")
             offline.set_offline(True); off.reload()

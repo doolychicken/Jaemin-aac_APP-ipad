@@ -80,7 +80,7 @@ def update_kitchen(book):
   p=kitchen_piece(pid,label,tools,region,x,0,width)
   p['target'][1]=365/1024-p['target'][3]
   cooking.append(p)
- book['room']=book['empty']='./images/home_books/kitchen-room-v5.png'
+ book['room']=book['empty']='./images/home_books/kitchen-room-v4.png'
  fixtures['title']='가구와 가전 놓기'
  book['description']='가구와 가전 · 생활용품 · 조리도구'
  book['chapters'].append(dict(id='cooking',title='조리도구 올려놓기',subtitle='가스레인지에 하나씩 올려놓아요',single=True,pieces=cooking))
@@ -122,24 +122,24 @@ def arrange_kitchen(book):
  fixtures,items,cooking=book['chapters']
  byid={p['id']:p for p in fixtures['pieces']}
  # Keep existing IDs, order and physical sizes; change only positions.
- for pid,x in [('microwave',405),('hob',590),('sink',890),('blender',1080),('cooker',1170),('purifier',1320)]:
+ for pid,x in [('microwave',150),('hob',330),('sink',630),('blender',810),('cooker',885),('purifier',1020)]:
   p=byid[pid];p['target'][:2]=[x/1536,450/1024-p['target'][3]]
- byid['fridge']['target'][:2]=[65/1536,165/1024]
- byid['table']['target'][:2]=[300/1536,510/1024]
+ byid['fridge']['target'][:2]=[1175/1536,165/1024]
+ byid['table']['target'][:2]=[330/1536,510/1024]
  # Opposite side views face the table; retain IDs and 300px chair height.
  cw,ch=Image.open(ROOT/'images/home_books/kitchen-chairs-side.png').size
- right=kitchen_piece('chair','의자','kitchen-chairs-side',(cw//2,0,cw,ch),1205,680,300,'h')
+ right=kitchen_piece('chair','의자','kitchen-chairs-side',(cw//2,0,cw,ch),1240,680,300,'h')
  byid['chair'].update(right)
- left=kitchen_piece('chair-left','왼쪽 의자','kitchen-chairs-side',(0,0,cw//2,ch),95,680,300,'h')
+ left=kitchen_piece('chair-left','왼쪽 의자','kitchen-chairs-side',(0,0,cw//2,ch),130,680,300,'h')
  fixtures['pieces'].append(left)
  table_items={'plate','spoon','bowl','banana','milk','soup','side-dishes','fried-egg','fork','chopsticks','tissue','mug'}
- positions={'glass':(1340,410),'paddle':(1305,440),'sponge':(910,405),'dish-soap':(870,305),'rubber-gloves':(1010,420)}
+ positions={'glass':(1040,410),'paddle':(1020,440),'sponge':(650,405),'dish-soap':(610,305),'rubber-gloves':(750,420)}
  for p in items['pieces']:
-  if p['id'] in table_items:p['target'][0]+=120/1536
+  if p['id'] in table_items:p['target'][0]+=150/1536
   elif p['id'] in positions:
    x,y=positions[p['id']];p['target'][:2]=[x/1536,y/1024]
  for p in cooking['pieces']:
-  p['target'][0]-=410/1536;p['target'][1]-=2/1024
+  p['target'][0]-=670/1536;p['target'][1]-=2/1024
  for chapter in book['chapters']:
   for p in chapter['pieces']:
    x,y,w,h=p['target'];assert x>=0 and y>=0 and x+w<=1 and y+h<=1,p['id']

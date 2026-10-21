@@ -22,7 +22,7 @@ def main():
    placement=page.evaluate("""() => {
     const b=window.STICKER_BOOKS.find(b=>b.id==='kitchen');
     const p=Object.fromEntries(b.chapters[0].pieces.map(p=>[p.id,p.target]));
-    return {ordered:['fridge','microwave','hob','sink','blender','cooker','purifier'].map(id=>p[id][0]),
+    return {ordered:['microwave','hob','sink','blender','cooker','purifier','fridge'].map(id=>p[id][0]),
      left:p['chair-left'][0]+p['chair-left'][2],table:p.table[0],right:p.chair[0],tableEnd:p.table[0]+p.table[2]};
    }""")
    assert placement['ordered']==sorted(placement['ordered'])
