@@ -80,7 +80,7 @@ def update_kitchen(book):
   p=kitchen_piece(pid,label,tools,region,x,0,width)
   p['target'][1]=365/1024-p['target'][3]
   cooking.append(p)
- book['room']=book['empty']='./images/home_books/kitchen-room-v3.png'
+ book['room']=book['empty']='./images/home_books/kitchen-room-v4.png'
  fixtures['title']='가구와 가전 놓기'
  book['description']='가구와 가전 · 생활용품 · 조리도구'
  book['chapters'].append(dict(id='cooking',title='조리도구 올려놓기',subtitle='가스레인지에 하나씩 올려놓아요',single=True,pieces=cooking))

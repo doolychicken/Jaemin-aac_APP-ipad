@@ -7,8 +7,8 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
     "storageKey": "jaemin-kitchen-stickers-v1",
     "width": 1536,
     "height": 1024,
-    "room": "./images/home_books/kitchen-room-v3.png",
-    "empty": "./images/home_books/kitchen-room-v3.png",
+    "room": "./images/home_books/kitchen-room-v4.png",
+    "empty": "./images/home_books/kitchen-room-v4.png",
     "compose": true,
     "chapters": [
       {
