@@ -2422,5 +2422,5 @@ window.STICKER_BOOKS.push(...[
     "completeMessage": "식사 준비를 마쳤어요!"
   }
 ]);
-const storageActivities = {"kitchen": [{"label": "냉장고 채우기", "description": "음료와 음식, 과일과 채소를 넣어요", "nav": "stickerFridge", "target": [0.17, 0.3]}, {"label": "식판 차리기", "description": "밥과 반찬, 간식을 차려요", "nav": "stickerTray"}], "bedroom": [{"label": "옷장 정리하기", "description": "옷과 소품 14개를 정리해요", "nav": "stickerWardrobe_items", "target": [0.9, 0.48]}, {"label": "이불장 정리하기", "description": "넓은 칸에 이불과 베개를 넣어요", "nav": "stickerLinen_items", "target": [0.72, 0.86]}, {"label": "옷입히기", "description": "재민이와 외출 준비를 해요", "nav": "stickerDress"}]};
+const storageActivities = {"kitchen": [{"label": "냉장고 채우기", "description": "음료와 음식, 과일과 채소를 넣어요", "nav": "stickerFridge", "target": [0.88, 0.4]}, {"label": "식판 차리기", "description": "밥과 반찬, 간식을 차려요", "nav": "stickerTray"}], "bedroom": [{"label": "옷장 정리하기", "description": "옷과 소품 14개를 정리해요", "nav": "stickerWardrobe_items", "target": [0.9, 0.48]}, {"label": "이불장 정리하기", "description": "넓은 칸에 이불과 베개를 넣어요", "nav": "stickerLinen_items", "target": [0.72, 0.86]}, {"label": "옷입히기", "description": "재민이와 외출 준비를 해요", "nav": "stickerDress"}]};
 window.STICKER_BOOKS.forEach(book => { if (storageActivities[book.id]) book.activities = storageActivities[book.id]; });
