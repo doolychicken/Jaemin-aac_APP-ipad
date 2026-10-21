@@ -520,6 +520,27 @@ window.STICKER_BOOK = {
             0.044757,
             0.123223
           ]
+        },
+        {
+          "id": "poop",
+          "label": "똥",
+          "image": "./images/bathroom_book/poop.png",
+          "sheet": [
+            1254,
+            1254
+          ],
+          "crop": [
+            86,
+            93,
+            1102,
+            1085
+          ],
+          "target": [
+            0.784708,
+            0.63981,
+            0.043595,
+            0.060661
+          ]
         }
       ]
     },

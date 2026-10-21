@@ -90,11 +90,11 @@ def main():
             print('PASS: drag-only pointer/touch, cancel/exit, resume, undo, rest and 8-fixture completion',flush=True)
 
             chapter('items')
-            for i in range(16):
+            for i in range(17):
                 page.wait_for_selector('.sb-loading',state='detached')
                 assert page.locator('.sb-card').count()==1
                 drag(); page.locator('.sb-next').click()
-            assert len(saved('items')['placed'])==16
+            assert len(saved('items')['placed'])==17
             page.screenshot(path=str(out/'items-complete.png'))
             chapter('routines'); drag(); page.locator('.sb-next').click()
             drag(); page.screenshot(path=str(out/'routines.png'))
@@ -103,12 +103,12 @@ def main():
                 page.wait_for_selector('.sb-loading',state='detached')
                 drag(); page.screenshot(path=str(out/f'routine-{i}.png')); page.locator('.sb-next').click()
             assert len(saved('routines')['placed'])==8
-            print('PASS: all 16 toiletries and all 8 boy routines place and save',flush=True)
+            print('PASS: all 17 toiletries and all 8 boy routines place and save',flush=True)
 
             chapter('fixtures')
             page.get_by_role('button',name='처음부터',exact=True).click()
             page.get_by_role('dialog').get_by_role('button',name='처음부터',exact=True).click()
-            assert saved()['placed']==[] and len(saved('items')['placed'])==16
+            assert saved()['placed']==[] and len(saved('items')['placed'])==17
             for width,height in [(768,1024),(820,1180),(1024,768),(1180,820),(390,844)]:
                 page.set_viewport_size({'width':width,'height':height}); page.wait_for_timeout(400)
                 page.wait_for_selector('.sb-loading',state='detached')
@@ -148,7 +148,7 @@ def main():
             offline.add_init_script(offline_tests.NO_NATIVE_SPEECH)
             off=offline.new_page(); off.set_default_timeout(120000)
             off.goto(url)
-            off.wait_for_function("async () => { const c=await caches.open('jaemin-aac-v411'); return !!(await c.match('./images/bathroom_book/boy-two.png')) && !!(await c.match('./js/features/sticker-book.js')); }")
+            off.wait_for_function("async () => { const c=await caches.open('jaemin-aac-v418'); return !!(await c.match('./images/bathroom_book/boy-two.png')) && !!(await c.match('./js/features/sticker-book.js')); }")
             off.reload(); off.wait_for_function('navigator.serviceWorker.controller !== null')
             off.wait_for_function("document.getElementById('offlineStatusText').textContent.includes('준비 완료')")
             offline.set_offline(True); off.reload()
@@ -173,7 +173,7 @@ def main():
                 off.mouse.move(b['x']+b['width']/2,b['y']+b['height']/2,steps=8); off.mouse.up()
                 assert off.locator('.sb-next').count()==1
             assert off.evaluate('window.nativeSpeechCalls')==0
-            for book,chapter,total in [('Kitchen','fixtures',9),('Kitchen','items',16),('Kitchen','cooking',3),('Living','fixtures',9),('Bedroom','fixtures',7),('Wardrobe','items',14),('Linen','items',6),('Fridge','drinks',9),('Fridge','meals',7),('Fridge','vegetables',6),('Fridge','fruit',9),('Tray','rice',9),('Tray','meal',9),('Tray','fruit',9),('Tray','snack',9)]:
+            for book,chapter,total in [('Kitchen','fixtures',10),('Kitchen','items',17),('Kitchen','cooking',3),('Living','fixtures',9),('Bedroom','fixtures',7),('Wardrobe','items',14),('Linen','items',6),('Fridge','drinks',9),('Fridge','meals',7),('Fridge','vegetables',6),('Fridge','fruit',9),('Tray','rice',9),('Tray','meal',9),('Tray','fruit',9),('Tray','snack',9)]:
                 off.evaluate(f"pushScreen('sticker{book}_{chapter}','스티커북'); render()")
                 for index in range(total):
                     off.wait_for_selector('.sb-card:not(:disabled)')

@@ -7,7 +7,7 @@ sys.path.insert(0, str(ROOT / '_local/print-tools'))
 from PIL import Image
 
 folder = ROOT / 'images/bathroom_book'
-images = {name: Image.open(folder / (name + '.png')) for name in ['fixtures', 'items', 'towel-bin', 'boy-one', 'boy-two']}
+images = {name: Image.open(folder / (name + '.png')) for name in ['fixtures', 'items', 'towel-bin', 'boy-one', 'boy-two', 'poop']}
 def piece(id, label, source, box, x, y, width=None, height=None, **extra):
     image = images[source]
     # Read alpha bounds only; the browser clips the unchanged sheet using SVG viewBox.
@@ -46,6 +46,8 @@ items=[
     piece('puff','샤워볼','items',(0,855,270,1115),1256,243,width=75),
     piece('cleaner','변기솔','items',(805,280,1000,605),1005,820,height=130),
 ]
+# Append to preserve saved indices of the existing toiletries.
+items.append(piece('poop','똥','poop',(0,0,*images['poop'].size),1170,675,width=65))
 routine_defs=[
     ('stand','서 있어요','boy-one',(0,0,512,814),690,420,580,None),
     ('brush','양치해요','boy-one',(512,0,1024,814),405,420,580,None),
