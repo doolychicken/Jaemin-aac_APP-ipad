@@ -7,8 +7,8 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
     "storageKey": "jaemin-kitchen-stickers-v1",
     "width": 1536,
     "height": 1024,
-    "room": "./images/home_books/kitchen-room-v4.png",
-    "empty": "./images/home_books/kitchen-room-v4.png",
+    "room": "./images/home_books/kitchen-room-v5.png",
+    "empty": "./images/home_books/kitchen-room-v5.png",
     "compose": true,
     "chapters": [
       {
@@ -31,7 +31,7 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               629
             ],
             "target": [
-              0.791015625,
+              0.042317708333333336,
               0.1611328125,
               0.1749221648118707,
               0.5078125
@@ -52,7 +52,7 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               243
             ],
             "target": [
-              0.3515625,
+              0.5794270833333334,
               0.29328719429347827,
               0.11067708333333333,
               0.14616593070652173
@@ -73,7 +73,7 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               279
             ],
             "target": [
-              0.14973958333333334,
+              0.3841145833333333,
               0.31826651169478526,
               0.18880208333333334,
               0.12118661330521473
@@ -115,7 +115,7 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               839
             ],
             "target": [
-              0.8072916666666666,
+              0.7845052083333334,
               0.6640625,
               0.12803560786650775,
               0.29296875
@@ -136,7 +136,7 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               378
             ],
             "target": [
-              0.5338541666666666,
+              0.76171875,
               0.2978515625,
               0.0824136078042328,
               0.1416015625
@@ -157,7 +157,7 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               340
             ],
             "target": [
-              0.035807291666666664,
+              0.263671875,
               0.34394498202199664,
               0.11067708333333333,
               0.09550814297800339
@@ -178,7 +178,7 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               506
             ],
             "target": [
-              0.64453125,
+              0.859375,
               0.2001953125,
               0.06556735836627141,
               0.2392578125
@@ -199,7 +199,7 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               379
             ],
             "target": [
-              0.46875,
+              0.703125,
               0.27003328565140844,
               0.042317708333333336,
               0.16941983934859156
@@ -220,7 +220,7 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               839
             ],
             "target": [
-              0.045572916666666664,
+              0.061848958333333336,
               0.6640625,
               0.12803560786650775,
               0.29296875
@@ -270,7 +270,7 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               297
             ],
             "target": [
-              0.6575520833333334,
+              0.8723958333333334,
               0.400390625,
               0.02607454755892256,
               0.0634765625
@@ -375,7 +375,7 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               1537
             ],
             "target": [
-              0.6217447916666666,
+              0.849609375,
               0.4296875,
               0.01031204253415745,
               0.0439453125
@@ -438,7 +438,7 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               261
             ],
             "target": [
-              0.3645833333333333,
+              0.5924479166666666,
               0.3955078125,
               0.035807291666666664,
               0.04478771465654952
@@ -459,7 +459,7 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               354
             ],
             "target": [
-              0.3385416666666667,
+              0.56640625,
               0.2978515625,
               0.0309520656779661,
               0.107421875
@@ -585,7 +585,7 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               1148
             ],
             "target": [
-              0.4296875,
+              0.6575520833333334,
               0.41015625,
               0.08047850428281068,
               0.1123046875
@@ -614,7 +614,7 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               355
             ],
             "target": [
-              0.15494791666666663,
+              0.3893229166666667,
               0.2595114511986301,
               0.09114583333333333,
               0.09498073630136987
@@ -635,7 +635,7 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               432
             ],
             "target": [
-              0.1640625,
+              0.39843750000000006,
               0.23517400568181818,
               0.07291666666666667,
               0.11931818181818182
@@ -656,7 +656,7 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               344
             ],
             "target": [
-              0.15494791666666663,
+              0.3893229166666667,
               0.23142597462871287,
               0.12044270833333333,
               0.12306621287128713
