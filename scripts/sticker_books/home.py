@@ -80,7 +80,7 @@ def update_kitchen(book):
   p=kitchen_piece(pid,label,tools,region,x,0,width)
   p['target'][1]=365/1024-p['target'][3]
   cooking.append(p)
- book['room']=book['empty']='./images/home_books/kitchen-room-v2.png'
+ book['room']=book['empty']='./images/home_books/kitchen-room-v3.png'
  fixtures['title']='가구와 가전 놓기'
  book['description']='가구와 가전 · 생활용품 · 조리도구'
  book['chapters'].append(dict(id='cooking',title='조리도구 올려놓기',subtitle='가스레인지에 하나씩 올려놓아요',single=True,pieces=cooking))
@@ -122,7 +122,7 @@ def arrange_kitchen(book):
  fixtures,items,cooking=book['chapters']
  byid={p['id']:p for p in fixtures['pieces']}
  # Keep existing IDs, order and physical sizes; change only positions.
- for pid,x in [('microwave',20),('hob',210),('sink',520),('blender',720),('cooker',820),('purifier',990)]:
+ for pid,x in [('microwave',55),('hob',230),('sink',540),('blender',720),('cooker',820),('purifier',990)]:
   p=byid[pid];p['target'][:2]=[x/1536,450/1024-p['target'][3]]
  byid['fridge']['target'][:2]=[1215/1536,165/1024]
  byid['table']['target'][:2]=[300/1536,510/1024]
@@ -136,7 +136,7 @@ def arrange_kitchen(book):
   elif p['id'] in positions:
    x,y=positions[p['id']];p['target'][:2]=[x/1536,y/1024]
  for p in cooking['pieces']:
-  p['target'][0]-=790/1536;p['target'][1]-=2/1024
+  p['target'][0]-=770/1536;p['target'][1]-=2/1024
  for chapter in book['chapters']:
   for p in chapter['pieces']:
    x,y,w,h=p['target'];assert x>=0 and y>=0 and x+w<=1 and y+h<=1,p['id']
