@@ -4,9 +4,9 @@
  * On first visit, pre-caches all images so subsequent loads are instant.
  */
 
-importScripts('./js/data/speech-manifest.js?v=411');
+importScripts('./js/data/speech-manifest.js?v=415');
 
-const CACHE_VERSION = 'v411';
+const CACHE_VERSION = 'v415';
 const CACHE_NAME = `jaemin-aac-${CACHE_VERSION}`;
 
 self.addEventListener('message', (event) => {
@@ -48,6 +48,8 @@ const PRECACHE_ASSETS = [
   './images/home_books/kitchen-stickers.png',
   './images/home_books/kitchen-appliances-v2.png',
   './images/home_books/kitchen-tools-v2.png',
+  './images/home_books/kitchen-paddle-yellow.png',
+  './images/home_books/kitchen-rubber-gloves.png',
   './images/home_books/kitchen-items-v3.png',
   './images/home_books/kitchen-table-v3.png',
   './images/home_books/living-room.png',

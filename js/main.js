@@ -2653,6 +2653,51 @@ function appendQuickToiletTile(options = {}) {
 
 function renderButtons(items, layout) {
   gridEl.innerHTML = "";
+  if (layout === "quickTalk") {
+    gridEl.className = "quick-talk-grid";
+    const status = document.createElement("div");
+    status.className = "quick-talk-status";
+    status.setAttribute("role", "status");
+    status.textContent = "하고 싶은 말을 골라주세요";
+    for (const item of items) {
+      const card = document.createElement("button");
+      card.type = "button";
+      card.className = "quick-talk-card";
+      card.setAttribute("aria-label", item.speech);
+      if (item.crop) {
+        const ns = "http://www.w3.org/2000/svg";
+        const svg = document.createElementNS(ns, "svg");
+        svg.setAttribute("viewBox", item.crop.join(" "));
+        svg.setAttribute("aria-hidden", "true");
+        const img = document.createElementNS(ns, "image");
+        img.setAttribute("href", item.image);
+        img.setAttribute("width", item.sheet[0]);
+        img.setAttribute("height", item.sheet[1]);
+        const clip = document.createElementNS(ns, "clipPath");
+        clip.id = "quick-talk-remote-clip";
+        const rect = document.createElementNS(ns, "rect");
+        ["x", "y", "width", "height"].forEach((key, i) => rect.setAttribute(key, item.crop[i]));
+        clip.append(rect); svg.append(clip);
+        img.setAttribute("clip-path", "url(#quick-talk-remote-clip)");
+        svg.append(img); card.append(svg);
+      } else {
+        const img = document.createElement("img");
+        img.src = item.image; img.alt = "";
+        card.append(img);
+      }
+      const label = document.createElement("span");
+      label.textContent = item.label; card.append(label);
+      card.addEventListener("click", () => {
+        for (const other of gridEl.querySelectorAll(".quick-talk-card")) other.classList.remove("is-selected");
+        card.classList.add("is-selected");
+        status.textContent = item.speech;
+        speak(item.speech);
+      });
+      gridEl.append(card);
+    }
+    gridEl.append(status);
+    return;
+  }
   const isMain  = layout === "main";
   const isMedia = layout === "media";
   const compactMainMenu = isMainMenuScreenKey() && window.matchMedia("(max-width: 760px)").matches;

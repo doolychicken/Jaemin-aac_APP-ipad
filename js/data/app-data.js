@@ -318,11 +318,29 @@ const DATA = {
   screens: {
     ...buildPhotoAacScreens(),
     // ── 메인 ──────────────────────────────────────────────────────────────────
+    quickTalk: {
+      title: "바로 말하기", helper: "사진을 누르면 내 말을 들려줘요.",
+      hero: [], layout: "quickTalk", showPlayer: false,
+      items: [
+        { label: "에그타르트", speech: "에그타르트 주세요", image: "./images/meal_eggtart.png" },
+        { label: "우유", speech: "우유 주세요", image: "./images/meal_milk_large_v2.png" },
+        { label: "밥 먹기", speech: "밥 먹고 싶어요", image: "./images/meal.png" },
+        { label: "화장실", speech: "화장실 갈래요", image: "./images/pee.png" },
+        { label: "양치", speech: "양치할래요", image: "./images/brush.png" },
+        { label: "잠자기", speech: "자고 싶어요", image: "./images/sleep.png" },
+        { label: "TV 보기", speech: "TV 보고 싶어요", image: "./images/home_books/living-stickers-v2.png", crop: [465,1118,155,330], sheet: [1086,1448] },
+        { label: "아이패드", speech: "아이패드 주세요", image: "./images/ipad.png" },
+        { label: "유튜브", speech: "유튜브 보고 싶어요", image: "./images/youtube.png" },
+        { label: "산책하기", speech: "산책 가고 싶어요", image: "./images/shoes.png" },
+        { label: "자동차 타기", speech: "자동차 타고 싶어요", image: "./images/dad_carkey.png" }
+      ]
+    },
     main: {
       title: "메인 화면",
       helper: "원하는 활동을 선택하세요.",
       hero: [],
       items: [
+        { label: "바로 말하기", nav: "quickTalk", image: "./images/meal_eggtart.png" },
         { label: "강화물",   nav: "ipadReinforcers", image: "./images/meal_juice.png" },
         { label: "교구선택", nav: "studyTeachingAids", image: "./images/study_pegboard.png" },
         { label: "사진 AAC", nav: "photoAacHome", image: "./images/photo_aac/actions_01.jpg", imageFit: "contain" },

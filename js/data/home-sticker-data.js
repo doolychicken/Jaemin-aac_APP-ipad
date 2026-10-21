@@ -342,22 +342,22 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
           {
             "id": "paddle",
             "label": "밥주걱",
-            "image": "./images/home_books/kitchen-tools-v2.png",
+            "image": "./images/home_books/kitchen-paddle-yellow.png",
             "sheet": [
-              1536,
-              1024
+              963,
+              1634
             ],
             "crop": [
-              534,
-              69,
-              414,
-              406
+              207,
+              55,
+              541,
+              1537
             ],
             "target": [
               0.8951822916666666,
               0.408203125,
-              0.029296875,
-              0.043096127717391304
+              0.01031204253415745,
+              0.0439453125
             ]
           },
           {
@@ -547,6 +547,27 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               0.5183088860544218,
               0.042317708333333336,
               0.05786298894557823
+            ]
+          },
+          {
+            "id": "rubber-gloves",
+            "label": "고무장갑",
+            "image": "./images/home_books/kitchen-rubber-gloves.png",
+            "sheet": [
+              1312,
+              1199
+            ],
+            "crop": [
+              39,
+              27,
+              1234,
+              1148
+            ],
+            "target": [
+              0.5826822916666666,
+              0.373046875,
+              0.08047850428281068,
+              0.1123046875
             ]
           }
         ]

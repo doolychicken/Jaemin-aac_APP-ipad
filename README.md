@@ -21,5 +21,9 @@
 스티커 수정과 배포 전 검증 방법은 [스티커북 관리 안내](docs/sticker-books/README.md),
 앱 전체 구조는 [구조 안내](docs/STRUCTURE.md)를 참고하세요.
 
+파일 보관 위치와 추가 절차는 [파일 관리 기준](docs/FILE-MANAGEMENT.md)에 정리했습니다.
+`python scripts/manage-project.py inventory`로 용량과 파일 현황을 확인하고,
+`python scripts/manage-project.py check`로 기본 연결 검사를 한 번에 실행합니다.
+
 실행 중인 사진 URL과 저장 키는 기존 기기의 진도와 오프라인 캐시에 연결되어 있습니다.
 파일 정리는 제작 코드와 문서부터 하고, 앱에서 쓰는 URL을 옮길 때는 참조·캐시·기존 진도를 함께 검증합니다.
