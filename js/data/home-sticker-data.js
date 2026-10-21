@@ -103,21 +103,21 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
           {
             "id": "chair",
             "label": "의자",
-            "image": "./images/home_books/kitchen-stickers.png",
+            "image": "./images/home_books/kitchen-chairs-side.png",
             "sheet": [
-              1536,
-              1024
+              1774,
+              887
             ],
             "crop": [
-              696,
-              277,
-              144,
-              227
+              1093,
+              23,
+              550,
+              839
             ],
             "target": [
               0.8072916666666666,
               0.6640625,
-              0.12389867841409691,
+              0.12803560786650775,
               0.29296875
             ]
           },
@@ -208,21 +208,21 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
           {
             "id": "chair-left",
             "label": "왼쪽 의자",
-            "image": "./images/home_books/kitchen-stickers.png",
+            "image": "./images/home_books/kitchen-chairs-side.png",
             "sheet": [
-              1536,
-              1024
+              1774,
+              887
             ],
             "crop": [
-              696,
-              277,
-              144,
-              227
+              131,
+              23,
+              550,
+              839
             ],
             "target": [
               0.045572916666666664,
               0.6640625,
-              0.12389867841409691,
+              0.12803560786650775,
               0.29296875
             ]
           }

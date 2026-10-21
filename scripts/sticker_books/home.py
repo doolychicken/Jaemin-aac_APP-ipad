@@ -126,9 +126,12 @@ def arrange_kitchen(book):
   p=byid[pid];p['target'][:2]=[x/1536,450/1024-p['target'][3]]
  byid['fridge']['target'][:2]=[1215/1536,165/1024]
  byid['table']['target'][:2]=[300/1536,510/1024]
- byid['chair']['target'][:2]=[1240/1536,680/1024]
- left=deepcopy(byid['chair']);left.update(id='chair-left',label='왼쪽 의자')
- left['target'][0]=70/1536;fixtures['pieces'].append(left)
+ # Opposite side views face the table; retain IDs and 300px chair height.
+ cw,ch=Image.open(ROOT/'images/home_books/kitchen-chairs-side.png').size
+ right=kitchen_piece('chair','의자','kitchen-chairs-side',(cw//2,0,cw,ch),1240,680,300,'h')
+ byid['chair'].update(right)
+ left=kitchen_piece('chair-left','왼쪽 의자','kitchen-chairs-side',(0,0,cw//2,ch),70,680,300,'h')
+ fixtures['pieces'].append(left)
  table_items={'plate','spoon','bowl','banana','milk','soup','side-dishes','fried-egg','fork','chopsticks','tissue','mug'}
  positions={'glass':(1010,410),'paddle':(955,440),'sponge':(560,405),'dish-soap':(520,305),'rubber-gloves':(660,420)}
  for p in items['pieces']:
