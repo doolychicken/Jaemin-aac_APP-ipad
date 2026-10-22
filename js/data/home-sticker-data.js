@@ -782,7 +782,7 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               422
             ],
             "target": [
-              0.859375,
+              0.810546875,
               0.244140625,
               0.08693411828593996,
               0.478515625
@@ -824,7 +824,7 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               377
             ],
             "target": [
-              0.042317708333333336,
+              0.09765625,
               0.48828125,
               0.09106812278956676,
               0.2587890625
@@ -845,8 +845,8 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               332
             ],
             "target": [
-              0.14322916666666666,
-              0.634765625,
+              0.21484375,
+              0.68359375,
               0.052083333333333336,
               0.15625
             ]
