@@ -4,9 +4,9 @@
  * On first visit, pre-caches all images so subsequent loads are instant.
  */
 
-importScripts('./js/data/speech-manifest.js?v=424');
+importScripts('./js/data/speech-manifest.js?v=425');
 
-const CACHE_VERSION = 'v424';
+const CACHE_VERSION = 'v425';
 const CACHE_NAME = `jaemin-aac-${CACHE_VERSION}`;
 
 self.addEventListener('message', (event) => {
