@@ -42,6 +42,7 @@
 .sb-workspace { flex: 1 1 0; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, 35%); gap: 12px; }
 .sb-canvas-wrap { min-width: 0; min-height: 0; position: relative; display: flex; align-items: center; justify-content: center; border-radius: 18px; background: #ece9e1; overflow: hidden; }
 .sb-stage { flex: 0 0 auto; position: relative; overflow: hidden; isolation: isolate; }
+.sb-scene { position: absolute; }
 .sb-room { display: block; width: 100%; height: 100%; user-select: none; pointer-events: none; }
 .sb-piece-layer { position: absolute; inset: 0; pointer-events: none; }
 .sb-placed { position: absolute; pointer-events: none; }
@@ -123,6 +124,27 @@
   .sb-tray > .sb-button { grid-column: 2; min-height: 44px; padding: 4px 8px; }
 }
 @media (prefers-reduced-motion: reduce) { .sb-cover { transform: none; } }
+[data-book="kitchen"] .sb-room-link { width: max-content; }
+@media (min-width: 700px) and (max-width: 1100px) and (orientation: portrait) {
+  [data-book="kitchen"] .sb-workspace {
+    grid-template-rows: minmax(0, 1fr) clamp(172px, 18vh, 236px);
+  }
+}
+@media (min-width: 900px) and (min-height: 501px) and (orientation: landscape) {
+  .sb-root--play[data-book="kitchen"] {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    gap: 8px 12px;
+  }
+  [data-book="kitchen"] .sb-toolbar { grid-area: 1 / 1; }
+  [data-book="kitchen"] .sb-footer { grid-area: 1 / 2; align-items: center; }
+  [data-book="kitchen"] .sb-workspace {
+    grid-area: 2 / 1 / 3 / -1;
+    grid-template-columns: minmax(0, 1fr) clamp(240px, 25%, 320px);
+  }
+  [data-book="kitchen"] .sb-status { grid-area: 3 / 1 / 4 / -1; }
+}
 .sb-library-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
 .sb-library-grid .sb-library-card { width: 100%; margin-bottom: 0; padding: 12px; gap: 8px; }
 .sb-library-grid .sb-cover-photo { max-width: 240px; align-self: center; }

@@ -85,11 +85,20 @@
       image.setAttribute('width', piece.sheet[0]);
       image.setAttribute('height', piece.sheet[1]);
       image.setAttribute('clip-path', `url(#${clipId})`);
-      if (piece.rotate === 90) {
+      if (piece.rotate === 90 || piece.rotate === 270) {
         const [x, y, w, h] = piece.crop;
         svg.setAttribute('viewBox', `0 0 ${h} ${w}`);
         const group = document.createElementNS(svg.namespaceURI, 'g');
-        group.setAttribute('transform', `translate(${h} 0) rotate(90) translate(${-x} ${-y})`);
+        const turn = piece.rotate === 90 ? `translate(${h} 0) rotate(90)` : `translate(0 ${w}) rotate(-90)`;
+        group.setAttribute('transform', `${turn} translate(${-x} ${-y})`);
+        group.appendChild(image); svg.appendChild(group);
+      } else if (piece.displayAspect) {
+        // Use the same perspective on the card, under the pointer and on the floor.
+        const [x, y, w, h] = piece.crop;
+        const width = h * piece.displayAspect;
+        svg.setAttribute('viewBox', `0 0 ${width} ${h}`);
+        const group = document.createElementNS(svg.namespaceURI, 'g');
+        group.setAttribute('transform', `scale(${width / w} 1) translate(${-x} ${-y})`);
         group.appendChild(image); svg.appendChild(group);
       } else svg.appendChild(image);
       return svg;
@@ -99,8 +108,8 @@
       Object.assign(node.style, { left: x * 100 + '%', top: y * 100 + '%', width: w * 100 + '%', height: h * 100 + '%' });
     }
     // Expand the landing area around the original cutout, including at room edges.
-    function sizeDropTarget(target, piece, width, height) {
-      const [x, y, w, h] = piece.target;
+    function sizeDropTarget(target, bounds, width, height) {
+      const [x, y, w, h] = bounds;
       const artWidth = w * width, artHeight = h * height;
       const zoneWidth = Math.min(width, Math.max(84, artWidth + 16));
       const zoneHeight = Math.min(height, Math.max(84, artHeight + 16));
@@ -230,12 +239,27 @@
       options.append(sound, hint, el('p', 'sb-note', '붙인 내용은 자동으로 저장돼요. 큰 물건부터 시작해 보세요.'));
       root.append(options);
     }
+    // Keep photos and placed stickers in their original room coordinates. Only the
+    // outside frame clips the room, so the same crop works at every screen size.
+    function sceneLayer(frame, book) {
+      if (!book.sceneCrop) return frame;
+      const [x, y, width, height] = book.sceneCrop;
+      const scene = el('div', 'sb-scene');
+      Object.assign(scene.style, {
+        left: -100 * x / width + '%', top: -100 * y / height + '%',
+        width: 100 * book.width / width + '%', height: 100 * book.height / height + '%'
+      });
+      frame.append(scene);
+      return scene;
+    }
     function coverPhoto(book) {
       const frame = el('div', 'sb-cover-photo');
-      frame.style.aspectRatio = book.width + ' / ' + book.height;
-      const photo = el('img', ''); photo.src = book.room; photo.alt = (book.label || '화장실') + ' 배경';
-      frame.append(photo);
-      if (book.compose) book.chapters[0].pieces.forEach(piece => placedSprite(piece, frame));
+      const [, , width, height] = book.sceneCrop || [0, 0, book.width, book.height];
+      frame.style.aspectRatio = width + ' / ' + height;
+      const scene = sceneLayer(frame, book);
+      const photo = el('img', 'sb-room'); photo.src = book.room; photo.alt = (book.label || '화장실') + ' 배경';
+      scene.append(photo);
+      if (book.compose) book.chapters[0].pieces.forEach(piece => placedSprite(piece, scene));
       return frame;
     }
     function library() {
@@ -333,6 +357,7 @@
       const done = !piece;
       const matched = !!piece && state.placed.includes(piece.id);
       root.classList.add('sb-root--play');
+      root.dataset.book = catalog.id;
       const toolbar = el('div', 'sb-toolbar');
       toolbar.append(button('목록', menu), el('strong', 'sb-chapter-title', chapter.title));
       const progress = el('div', 'sb-progress');
@@ -345,13 +370,14 @@
       const canvasWrap = el('div', 'sb-canvas-wrap');
       const stage = el('div', 'sb-stage'); stage.setAttribute('aria-label', roomName + ' 배경');
       canvasWrap.append(stage); workspace.append(canvasWrap);
-      renderScene(stage, state);
+      const scene = sceneLayer(stage, catalog);
+      renderScene(scene, state);
       if (chapter.id === 'items' || done) {
         (catalog.activities || []).filter(activity => activity.target).forEach(activity => {
           const open = button(activity.label, () => go(activity.nav, activity.label), 'sb-room-link');
           open.style.left = activity.target[0] * 100 + '%';
           open.style.top = activity.target[1] * 100 + '%';
-          stage.append(open);
+          scene.append(open);
         });
       }
       const tray = el('aside', 'sb-tray');
@@ -380,7 +406,7 @@
           state.cursor++; save(); render({ chapter: chapter.id });
         }, 'sb-button sb-primary sb-next'));
       } else {
-        tray.append(el('span', 'sb-kicker', '이번 스티커'), el('h2', 'sb-piece-label', piece.label));
+        tray.append(el('span', 'sb-kicker', piece.positionCue || '이번 스티커'), el('h2', 'sb-piece-label', piece.label));
         const card = button('', event => {
           // Keyboard/switch access is explicit; ordinary taps do not place a sticker.
           if (event.detail !== 0 || !ready) return;
@@ -392,8 +418,8 @@
         card.append(sprite(piece)); tray.append(card);
         tray.append(button('이름 듣기', () => say(piece.label), 'sb-button sb-listen'));
         const target = button('', () => { if (armed && ready) accept(); }, 'sb-target');
-        target.setAttribute('aria-label', `${piece.label} 붙일 자리`);
-        target.append(sprite(piece, 'sb-guide'), el('span', 'sb-target-tag', '여기에'));
+        target.setAttribute('aria-label', [piece.label, piece.positionCue, '붙일 자리'].filter(Boolean).join(' '));
+        target.append(sprite(piece, 'sb-guide'), el('span', 'sb-target-tag', piece.positionCue || '여기에'));
         if (saved.hints) target.classList.add('sb-show-hint');
         stage.append(target);
         tray.append(button('자리 보기', () => { target.classList.add('sb-show-hint'); notice('표시된 자리에 붙여요.'); }));
@@ -410,11 +436,16 @@
       }
       const resize = () => {
         const rect = canvasWrap.getBoundingClientRect();
-        const width = Math.max(1, Math.min(rect.width, rect.height * catalog.width / catalog.height));
-        const height = width * catalog.height / catalog.width;
+        const [left, top, frameWidth, frameHeight] = catalog.sceneCrop || [0, 0, catalog.width, catalog.height];
+        const width = Math.max(1, Math.min(rect.width, rect.height * frameWidth / frameHeight));
+        const height = width * frameHeight / frameWidth;
         stage.style.width = width + 'px'; stage.style.height = height + 'px';
         const target = stage.querySelector('.sb-target');
-        if (target) sizeDropTarget(target, piece, width, height);
+        if (target) {
+          const [x, y, w, h] = piece.target;
+          sizeDropTarget(target, [(x * catalog.width - left) / frameWidth, (y * catalog.height - top) / frameHeight,
+            w * catalog.width / frameWidth, h * catalog.height / frameHeight], width, height);
+        }
       };
       observer = new ResizeObserver(resize); observer.observe(canvasWrap); resize();
       const localEpoch = epoch;

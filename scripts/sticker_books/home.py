@@ -71,7 +71,7 @@ def update_kitchen(book):
   elif piece['id']=='bowl':items['pieces'][index]=kitchen_piece('bowl','밥그릇',tools,tool_regions[2],1288,415,70)
   elif piece['id']=='banana':piece['target']=[660/1536,675/1024,*piece['target'][2:]]
   elif piece['id']=='milk':piece['target']=[870/1536,565/1024,*piece['target'][2:]]
- # Standing yellow model: retain the saved ID and the previous maximum size.
+ # Keep the standing yellow model and its saved piece ID.
  paddle_image=Image.open(ROOT/'images/home_books/kitchen-paddle-yellow.png')
  items['pieces'].append(kitchen_piece('paddle','밥주걱','kitchen-paddle-yellow',
                                     (0,0,*paddle_image.size),1375,418,45,'h'))
@@ -95,7 +95,9 @@ def update_kitchen_items(book):
         (85,1085,305,1430),(380,1100,710,1410),(710,1090,1086,1425)]
  def p(pid,label,index,x,y,size,axis='w'):
   return kitchen_piece(pid,label,asset,boxes[index],x,y,size,axis)
- table=kitchen_piece('table','식탁','kitchen-table-v3',(0,0,1536,1024),180,510,900)
+ table_asset='kitchen-table-square'
+ with Image.open(ROOT/f'images/home_books/{table_asset}.png') as table_image:
+  table=kitchen_piece('table','식탁',table_asset,(0,0,*table_image.size),0,0,900)
  fixtures['pieces']=[table if item['id']=='table' else item for item in fixtures['pieces']]
  replacements={
   'plate':p('plate','접시',11,340,580,115),
@@ -118,28 +120,72 @@ def update_kitchen_items(book):
   p('chopsticks','젓가락',8,810,550,75,'h'),p('tissue','휴지',10,885,540,80)
  ])
 
+def set_kitchen_target(piece, cx, bottom, max_width, max_height, rotation=0):
+ # Center and baseline are room pixels. The pictured cutout retains its proportions.
+ w,h=piece['crop'][2:]
+ if rotation:
+  w,h=h,w
+  piece['rotate']=rotation
+ scale=min(max_width/w,max_height/h)
+ w,h=w*scale,h*scale
+ piece['target']=[(cx-w/2)/1536,(bottom-h)/1024,w/1536,h/1024]
+
 def arrange_kitchen(book):
  fixtures,items,cooking=book['chapters']
+ book['sceneCrop']=[88,24,1368,984]
  byid={p['id']:p for p in fixtures['pieces']}
- # Keep existing IDs, order and physical sizes; change only positions.
- for pid,x in [('microwave',150),('hob',330),('sink',630),('blender',810),('cooker',885),('purifier',1020)]:
-  p=byid[pid];p['target'][:2]=[x/1536,450/1024-p['target'][3]]
+ for pid,x in [('microwave',108),('hob',287),('sink',630),('blender',815),('cooker',928),('purifier',1061)]:
+  p=byid[pid];p['target'][:2]=[x/1536,444/1024-p['target'][3]]
  byid['fridge']['target'][:2]=[1175/1536,165/1024]
- byid['table']['target'][:2]=[330/1536,510/1024]
- # Opposite side views face the table; retain IDs and 300px chair height.
- cw,ch=Image.open(ROOT/'images/home_books/kitchen-chairs-side.png').size
- right=kitchen_piece('chair','의자','kitchen-chairs-side',(cw//2,0,cw,ch),1240,680,300,'h')
- byid['chair'].update(right)
- left=kitchen_piece('chair-left','왼쪽 의자','kitchen-chairs-side',(0,0,cw//2,ch),130,680,300,'h')
- fixtures['pieces'].append(left)
- table_items={'plate','spoon','bowl','banana','milk','soup','side-dishes','fried-egg','fork','chopsticks','tissue','mug'}
- positions={'glass':(1040,410),'paddle':(1020,440),'sponge':(650,405),'dish-soap':(610,305),'rubber-gloves':(750,420)}
- for p in items['pieces']:
-  if p['id'] in table_items:p['target'][0]+=150/1536
-  elif p['id'] in positions:
-   x,y=positions[p['id']];p['target'][:2]=[x/1536,y/1024]
+ table=byid['table']
+ table['displayAspect']=900/526
+ table['target']=[318/1536,472/1024,900/1536,526/1024]
+ with Image.open(ROOT/'images/home_books/kitchen-chairs-side.png') as chairs:
+  cw,ch=chairs.size
+ byid['chair'].update(kitchen_piece('chair','의자','kitchen-chairs-side',(cw//2,0,cw,ch),1226,643,277,'h'))
+ fixtures['pieces'].append(kitchen_piece('chair-left','왼쪽 의자','kitchen-chairs-side',(0,0,cw//2,ch),130,643,277,'h'))
+
+ item_by_id={p['id']:p for p in items['pieces']}
+ # The cup stands below the dispenser and the paddle beside the cooker. The
+ # gloves hang from the cabinet, leaving both the sink and the meals visible.
+ counter={
+  'glass':(1110,465,74,112), 'paddle':(902,461,43,115),
+  'sponge':(685,469,98,81), 'dish-soap':(598,437,64,150),
+  'rubber-gloves':(245,632,141,130),
+ }
+ # Each diner faces inward. The bowls flank the shared dishes and the three
+ # utensil handles face the chair that will use them.
+ left_setting={
+  'bowl':(482,609,130,105), 'soup':(470,753,132,113),
+  'spoon':(610,650,155,43,90), 'chopsticks':(610,749,155,30,90),
+  'fork':(610,702,155,37,90),
+ }
+ right_setting={
+  'bowl':(1067,753,130,105), 'soup':(1051,609,132,113),
+  'spoon':(925,650,155,43,270), 'chopsticks':(925,749,155,30,270),
+  'fork':(925,702,155,37,270),
+ }
+ shared={
+  'side-dishes':(768,696,148,124), 'fried-egg':(768,753,68,43),
+  'banana':(830,558,85,69), 'milk':(615,575,67,105),
+  'tissue':(937,564,92,79), 'mug':(710,556,79,70),
+ }
+ for pid,target in {**counter,**shared,**left_setting}.items():
+  set_kitchen_target(item_by_id[pid],*target)
+ item_by_id['plate']['target']=[699/1536,706/1024,138/1536,63/1024]
+ item_by_id['side-dishes']['positionCue']='가운데'
+ for pid,target in right_setting.items():
+  original=item_by_id[pid]
+  original['positionCue']='왼쪽 자리'
+  other=deepcopy(original)
+  other.update(id=pid+'-right',positionCue='오른쪽 자리')
+  set_kitchen_target(other,*target)
+  items['pieces'].append(other)
+ items['subtitle']='양쪽에 밥과 국, 수저를 놓고 가운데에 반찬을 놓아요'
+
+ # These are successive alternatives on the same left burner.
  for p in cooking['pieces']:
-  p['target'][0]-=670/1536;p['target'][1]-=2/1024
+  p['target'][0]-=713/1536;p['target'][1]-=8/1024
  for chapter in book['chapters']:
   for p in chapter['pieces']:
    x,y,w,h=p['target'];assert x>=0 and y>=0 and x+w<=1 and y+h<=1,p['id']
@@ -248,7 +294,6 @@ for id,(label,nav,rows) in ROOMS.items():
   gloves=Image.open(ROOT/'images/home_books/kitchen-rubber-gloves.png')
   books[-1]['chapters'][1]['pieces'].append(kitchen_piece(
       'rubber-gloves','고무장갑','kitchen-rubber-gloves',(0,0,*gloves.size),895,382,115,'h'))
-  arrange_kitchen(books[-1])
   # Hang the tools on the open backsplash between the left wall and the window.
   asset='kitchen-utensils-extra'
   with Image.open(ROOT/f'images/home_books/{asset}.png') as image:
@@ -256,6 +301,7 @@ for id,(label,nav,rows) in ROOMS.items():
   for i,(pid,label,x) in enumerate([('ladle','국자',178),('turner','뒤집개',306),('tongs','집게',434)]):
    region=(i*w//3,0,(i+1)*w//3,h)
    books[-1]['chapters'][1]['pieces'].append(kitchen_piece(pid,label,asset,region,x,139,150,'h'))
+  arrange_kitchen(books[-1])
  if id=='living':update_living(books[-1])
  if id=='bedroom':update_bedroom(books[-1])
 source='/* Generated by scripts/build-home-sticker-catalog.py */\nwindow.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", label: "화장실", nav: "stickerBathroom"}), ...'+json.dumps(books,ensure_ascii=False,indent=2)+'];\n'

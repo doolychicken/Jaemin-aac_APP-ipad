@@ -53,7 +53,7 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
             ],
             "target": [
               0.41015625,
-              0.29328719429347827,
+              0.28742781929347827,
               0.11067708333333333,
               0.14616593070652173
             ]
@@ -73,8 +73,8 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               279
             ],
             "target": [
-              0.21484375,
-              0.31826651169478526,
+              0.18684895833333334,
+              0.31240713669478526,
               0.18880208333333334,
               0.12118661330521473
             ]
@@ -82,23 +82,24 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
           {
             "id": "table",
             "label": "식탁",
-            "image": "./images/home_books/kitchen-table-v3.png",
+            "image": "./images/home_books/kitchen-table-square.png",
             "sheet": [
-              1536,
-              1024
+              1457,
+              1079
             ],
             "crop": [
-              151,
-              180,
-              1234,
-              690
+              1,
+              33,
+              1455,
+              1024
             ],
             "target": [
-              0.21484375,
-              0.498046875,
+              0.20703125,
+              0.4609375,
               0.5859375,
-              0.4914467686385737
-            ]
+              0.513671875
+            ],
+            "displayAspect": 1.7110266159695817
           },
           {
             "id": "chair",
@@ -115,10 +116,10 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               839
             ],
             "target": [
-              0.8072916666666666,
-              0.6640625,
-              0.12803560786650775,
-              0.29296875
+              0.7981770833333334,
+              0.6279296875,
+              0.11821954459674215,
+              0.2705078125
             ]
           },
           {
@@ -136,8 +137,8 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               378
             ],
             "target": [
-              0.576171875,
-              0.2978515625,
+              0.6041666666666666,
+              0.2919921875,
               0.0824136078042328,
               0.1416015625
             ]
@@ -157,8 +158,8 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               340
             ],
             "target": [
-              0.09765625,
-              0.34394498202199664,
+              0.0703125,
+              0.33808560702199664,
               0.11067708333333333,
               0.09550814297800339
             ]
@@ -178,8 +179,8 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               506
             ],
             "target": [
-              0.6640625,
-              0.2001953125,
+              0.6907552083333334,
+              0.1943359375,
               0.06556735836627141,
               0.2392578125
             ]
@@ -199,8 +200,8 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               379
             ],
             "target": [
-              0.52734375,
-              0.27003328565140844,
+              0.5305989583333334,
+              0.26417391065140844,
               0.042317708333333336,
               0.16941983934859156
             ]
@@ -221,9 +222,9 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
             ],
             "target": [
               0.08463541666666667,
-              0.6640625,
-              0.12803560786650775,
-              0.29296875
+              0.6279296875,
+              0.11821954459674215,
+              0.2705078125
             ]
           }
         ]
@@ -231,7 +232,7 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
       {
         "id": "items",
         "title": "생활용품 놓기",
-        "subtitle": "물건을 알맞은 자리에 놓아요",
+        "subtitle": "양쪽에 밥과 국, 수저를 놓고 가운데에 반찬을 놓아요",
         "pieces": [
           {
             "id": "plate",
@@ -248,10 +249,10 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               276
             ],
             "target": [
-              0.31901041666666663,
-              0.56640625,
-              0.07486979166666667,
-              0.0537109375
+              0.455078125,
+              0.689453125,
+              0.08984375,
+              0.0615234375
             ],
             "fit": true
           },
@@ -270,10 +271,10 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               297
             ],
             "target": [
-              0.6770833333333334,
-              0.400390625,
-              0.02607454755892256,
-              0.0634765625
+              0.7001920244107743,
+              0.3447265625,
+              0.04492845117845118,
+              0.109375
             ]
           },
           {
@@ -291,11 +292,13 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               355
             ],
             "target": [
-              0.576171875,
-              0.537109375,
-              0.01251650528169014,
-              0.0732421875
-            ]
+              0.3466796875,
+              0.5959644586267605,
+              0.10091145833333333,
+              0.03880116637323944
+            ],
+            "rotate": 90,
+            "positionCue": "왼쪽 자리"
           },
           {
             "id": "bowl",
@@ -312,11 +315,12 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               239
             ],
             "target": [
-              0.3841145833333333,
-              0.478515625,
-              0.06510416666666667,
-              0.07832162332214765
-            ]
+              0.271484375,
+              0.49290845218120805,
+              0.08463541666666667,
+              0.10181811031879194
+            ],
+            "positionCue": "왼쪽 자리"
           },
           {
             "id": "banana",
@@ -333,10 +337,10 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               226
             ],
             "target": [
-              0.4166666666666667,
-              0.56640625,
-              0.045572916666666664,
-              0.05743203996282528
+              0.5136301046275812,
+              0.4775390625,
+              0.05346895741150442,
+              0.0673828125
             ]
           },
           {
@@ -354,10 +358,10 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               236
             ],
             "target": [
-              0.6966145833333334,
-              0.439453125,
-              0.051600569385593216,
-              0.1416015625
+              0.3817076602224576,
+              0.458984375,
+              0.03736592955508474,
+              0.1025390625
             ]
           },
           {
@@ -375,10 +379,10 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               1537
             ],
             "target": [
-              0.6640625,
-              0.4296875,
-              0.01031204253415745,
-              0.0439453125
+              0.5740630845396877,
+              0.337890625,
+              0.02635299758729126,
+              0.1123046875
             ]
           },
           {
@@ -396,11 +400,12 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               253
             ],
             "target": [
-              0.30598958333333337,
-              0.478515625,
-              0.06510416666666667,
-              0.0840375212585034
-            ]
+              0.26324470932147565,
+              0.625,
+              0.08548974802371541,
+              0.1103515625
+            ],
+            "positionCue": "왼쪽 자리"
           },
           {
             "id": "side-dishes",
@@ -417,11 +422,12 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               274
             ],
             "target": [
-              0.48828125,
-              0.517578125,
-              0.08138020833333333,
-              0.09866450036873156
-            ]
+              0.4518229166666667,
+              0.5628687315634219,
+              0.09635416666666667,
+              0.11681876843657817
+            ],
+            "positionCue": "가운데"
           },
           {
             "id": "sponge",
@@ -438,10 +444,10 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               261
             ],
             "target": [
-              0.4231770833333333,
-              0.3955078125,
-              0.035807291666666664,
-              0.04478771465654952
+              0.41434312140804597,
+              0.37890625,
+              0.06324084051724138,
+              0.0791015625
             ]
           },
           {
@@ -459,10 +465,10 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               354
             ],
             "target": [
-              0.3971354166666667,
-              0.2978515625,
-              0.0309520656779661,
-              0.107421875
+              0.3684895833333333,
+              0.28214996936274506,
+              0.041666666666666664,
+              0.14460784313725492
             ]
           },
           {
@@ -480,10 +486,10 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               262
             ],
             "target": [
-              0.33528645833333337,
-              0.5712890625,
-              0.042317708333333336,
-              0.05676061220136519
+              0.4843464237436386,
+              0.693359375,
+              0.03130715251272265,
+              0.0419921875
             ]
           },
           {
@@ -501,11 +507,13 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               353
             ],
             "target": [
-              0.6022135416666666,
-              0.537109375,
-              0.008852691218130312,
-              0.0732421875
-            ]
+              0.3466796875,
+              0.658103532223796,
+              0.10091145833333333,
+              0.027443342776203965
+            ],
+            "rotate": 90,
+            "positionCue": "왼쪽 자리"
           },
           {
             "id": "chopsticks",
@@ -522,11 +530,13 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               354
             ],
             "target": [
-              0.625,
-              0.537109375,
-              0.007172492937853108,
-              0.0732421875
-            ]
+              0.3466796875,
+              0.7092105843926554,
+              0.10091145833333333,
+              0.022234728107344635
+            ],
+            "rotate": 90,
+            "positionCue": "왼쪽 자리"
           },
           {
             "id": "tissue",
@@ -543,10 +553,10 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               256
             ],
             "target": [
-              0.673828125,
-              0.52734375,
-              0.052083333333333336,
-              0.06756756756756757
+              0.580291748046875,
+              0.4736328125,
+              0.059468587239583336,
+              0.0771484375
             ]
           },
           {
@@ -564,10 +574,10 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               268
             ],
             "target": [
-              0.4443359375,
-              0.5183088860544218,
-              0.042317708333333336,
-              0.05786298894557823
+              0.43724249844527363,
+              0.474609375,
+              0.049994169776119396,
+              0.068359375
             ]
           },
           {
@@ -585,10 +595,10 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               1148
             ],
             "target": [
-              0.48828125,
-              0.41015625,
-              0.08047850428281068,
-              0.1123046875
+              0.1140173580865273,
+              0.490234375,
+              0.09097570049361207,
+              0.126953125
             ]
           },
           {
@@ -653,6 +663,119 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               0.03950735493492408,
               0.146484375
             ]
+          },
+          {
+            "id": "bowl-right",
+            "label": "밥그릇",
+            "image": "./images/home_books/kitchen-items-v3.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              43,
+              73,
+              298,
+              239
+            ],
+            "target": [
+              0.65234375,
+              0.633533452181208,
+              0.08463541666666667,
+              0.10181811031879194
+            ],
+            "positionCue": "오른쪽 자리"
+          },
+          {
+            "id": "soup-right",
+            "label": "국",
+            "image": "./images/home_books/kitchen-items-v3.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              389,
+              61,
+              294,
+              253
+            ],
+            "target": [
+              0.641499917654809,
+              0.484375,
+              0.08548974802371541,
+              0.1103515625
+            ],
+            "positionCue": "오른쪽 자리"
+          },
+          {
+            "id": "spoon-right",
+            "label": "숟가락",
+            "image": "./images/home_books/kitchen-items-v3.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              143,
+              722,
+              91,
+              355
+            ],
+            "target": [
+              0.5517578125,
+              0.5959644586267605,
+              0.10091145833333333,
+              0.03880116637323944
+            ],
+            "rotate": 270,
+            "positionCue": "오른쪽 자리"
+          },
+          {
+            "id": "chopsticks-right",
+            "label": "젓가락",
+            "image": "./images/home_books/kitchen-items-v3.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              862,
+              723,
+              52,
+              354
+            ],
+            "target": [
+              0.5517578125,
+              0.7092105843926554,
+              0.10091145833333333,
+              0.022234728107344635
+            ],
+            "rotate": 270,
+            "positionCue": "오른쪽 자리"
+          },
+          {
+            "id": "fork-right",
+            "label": "포크",
+            "image": "./images/home_books/kitchen-items-v3.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              510,
+              724,
+              64,
+              353
+            ],
+            "target": [
+              0.5517578125,
+              0.658103532223796,
+              0.10091145833333333,
+              0.027443342776203965
+            ],
+            "rotate": 270,
+            "positionCue": "오른쪽 자리"
           }
         ]
       },
@@ -677,8 +800,8 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               355
             ],
             "target": [
-              0.22005208333333331,
-              0.2595114511986301,
+              0.19205729166666669,
+              0.2536520761986301,
               0.09114583333333333,
               0.09498073630136987
             ]
@@ -698,8 +821,8 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               432
             ],
             "target": [
-              0.22916666666666669,
-              0.23517400568181818,
+              0.20117187500000006,
+              0.22931463068181818,
               0.07291666666666667,
               0.11931818181818182
             ]
@@ -719,8 +842,8 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               344
             ],
             "target": [
-              0.22005208333333331,
-              0.23142597462871287,
+              0.19205729166666669,
+              0.22556659962871287,
               0.12044270833333333,
               0.12306621287128713
             ]
@@ -728,7 +851,13 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
         ]
       }
     ],
-    "description": "가구와 가전 · 생활용품 · 조리도구"
+    "description": "가구와 가전 · 생활용품 · 조리도구",
+    "sceneCrop": [
+      88,
+      24,
+      1368,
+      984
+    ]
   },
   {
     "id": "living",
