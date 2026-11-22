@@ -1,5 +1,9 @@
 (function () {
   const GAMES = [
+    { id: 'kiosk', title: '식당 키오스크', subtitle: '음식을 고르고 카드로 결제해요', image: './images/play_kiosk/gimbap.webp', tone: 'peach', group: 'daily' },
+    { id: 'dishwash', title: '설거지 놀이', subtitle: '문지르고 헹군 뒤 건조대에 놓아요', book: 'kitchen', piece: 'sponge', tone: 'mint', group: 'daily' },
+    { id: 'tablesetting', title: '밥상 차리기', subtitle: '밥과 국, 반찬과 수저를 놓아요', book: 'kitchen', piece: 'side-dishes', tone: 'yellow', group: 'daily' },
+    { id: 'objectnames', title: '물건 이름 찾기', subtitle: '전자기기와 우리 집 물건을 구분해요', image: './images/play_household/laptop.webp', tone: 'blue', group: 'daily' },
     { id: 'carwash', title: '반짝 세차장', subtitle: '자동차를 씻고 닦아요', image: './images/traffic_game/car_blue.png', tone: 'blue', group: 'cars' },
     { id: 'snackshop', title: '내가 고르는 매점', subtitle: '먹고 싶은 것을 주문해요', image: './images/meal_eggtart.png', tone: 'peach', group: 'study' },
     { id: 'family', title: '우리 가족 찾기', subtitle: '나, 엄마, 아빠를 찾아요', image: './images/outing_person_me.png', tone: 'peach', group: 'study' },
@@ -65,8 +69,12 @@
     let state = null;
     let dragCleanup = null;
     let settingsOpen = false;
-    const activityViews = { carwash: window.renderPlayCarwash, snackshop: window.renderPlaySnackshop };
-    let menuGroup = 'first';
+    const activityViews = {
+      carwash: window.renderPlayCarwash, snackshop: window.renderPlaySnackshop,
+      kiosk: window.renderPlayKiosk, dishwash: window.renderPlayDishwash,
+      tablesetting: window.renderPlayTableSetting, objectnames: window.renderPlayObjectNames
+    };
+    let menuGroup = 'daily';
 
     function save() { window.appStorage.save(KEY, { settings, stats }); }
     function say(text) { return settings.sound ? speak(text) : Promise.resolve(); }
@@ -91,6 +99,29 @@
       return node;
     }
     function photo(item, className = 'ps-photo') {
+      if (item.book) {
+        const book = window.STICKER_BOOKS.find(book => book.id === item.book);
+        const piece = book.chapters.flatMap(chapter => chapter.pieces).find(piece => piece.id === item.piece);
+        const svgNS = 'http://www.w3.org/2000/svg';
+        const frame = document.createElementNS(svgNS, 'svg');
+        const crop = document.createElementNS(svgNS, 'svg');
+        const image = document.createElementNS(svgNS, 'image');
+        const [, , width, height] = piece.crop;
+        frame.setAttribute('class', className);
+        frame.setAttribute('aria-hidden', 'true');
+        frame.setAttribute('focusable', 'false');
+        frame.setAttribute('viewBox', '0 0 ' + width + ' ' + height);
+        crop.setAttribute('viewBox', piece.crop.join(' '));
+        crop.setAttribute('width', width);
+        crop.setAttribute('height', height);
+        crop.setAttribute('overflow', 'hidden');
+        image.setAttribute('href', piece.image);
+        image.setAttribute('width', piece.sheet[0]);
+        image.setAttribute('height', piece.sheet[1]);
+        crop.appendChild(image);
+        frame.appendChild(crop);
+        return frame;
+      }
       const image = element('img', className);
       image.src = item.image;
       image.alt = '';
@@ -150,10 +181,13 @@
       return details;
     }
     function renderMenu() {
+      const content = element('div', 'ps-menu-scroll');
+      content.dataset.group = menuGroup;
+      gridEl.append(content);
       const intro = element('div', 'ps-intro');
       intro.appendChild(element('h2', '', '어떤 놀이를 할까요?'));
       intro.appendChild(photo(CARS[0], 'ps-hero-car'));
-      gridEl.appendChild(intro);
+      content.appendChild(intro);
       const total = Object.values(stats).reduce((sum, row) => sum + row.completed, 0);
       const collection = element('div', 'ps-collection');
       collection.appendChild(element('strong', '', '나의 자동차 스티커'));
@@ -167,17 +201,17 @@
       collection.appendChild(element('span', 'ps-collection-note', total ? '완료한 놀이 ' + total + '번' : '놀이를 끝내면 하나씩 모아요'));
       const tabs = element('div', 'ps-tabs');
       tabs.setAttribute('aria-label', '놀이 종류');
-      [['first', '먼저 해봐요'], ['all', '전체'], ['study', '우리집 · 앱 공부'], ['pairs', '숫자 · 짝 맞추기'], ['cars', '자동차 놀이'], ['sounds', '그림 · 소리']].forEach(([id, label]) => {
+      [['daily', '생활 놀이'], ['first', '먼저 해봐요'], ['all', '전체'], ['study', '우리집 · 앱 공부'], ['pairs', '숫자 · 짝 맞추기'], ['cars', '자동차 놀이'], ['sounds', '그림 · 소리']].forEach(([id, label]) => {
         const tab = button(label, () => { menuGroup = id; render(); }, 'ps-tab');
         tab.setAttribute('aria-pressed', String(menuGroup === id));
         tabs.appendChild(tab);
       });
-      gridEl.appendChild(tabs);
+      content.appendChild(tabs);
       const games = element('div', 'ps-menu-grid');
-      if (menuGroup === 'first') games.classList.add('ps-starter-games');
+      if (menuGroup === 'first' || menuGroup === 'daily') games.classList.add('ps-starter-games');
       GAMES.forEach(game => {
         const group = game.group || (['drive', 'parking', 'delivery', 'count'].includes(game.id) ? 'cars' : 'sounds');
-        if (menuGroup === 'first' ? !activityViews[game.id] : menuGroup !== 'all' && menuGroup !== group) return;
+        if (menuGroup === 'first' ? !['carwash', 'snackshop'].includes(game.id) : menuGroup !== 'all' && menuGroup !== group) return;
         const card = button('', () => open(game), 'ps-game-card ps-tone-' + game.tone);
         card.dataset.game = game.id;
         card.appendChild(game.badge ? element('span', 'ps-game-art ps-art-' + game.id, game.badge) : photo(game));
@@ -187,10 +221,10 @@
         card.appendChild(copy);
         games.appendChild(card);
       });
-      gridEl.appendChild(games);
-      gridEl.appendChild(collection);
-      gridEl.appendChild(button('기존 앱 공부 열기', deps.returnToStudy));
-      gridEl.appendChild(settingsPanel());
+      content.appendChild(games);
+      content.appendChild(collection);
+      content.appendChild(button('기존 앱 공부 열기', deps.returnToStudy));
+      content.appendChild(settingsPanel());
       gridEl.appendChild(button('화장실', () => { say('화장실'); pushScreen('toilet', '화장실'); render(); }, 'ps-toilet'));
     }
     function buildRound() {
@@ -653,7 +687,7 @@
         gridEl.appendChild(board);
         const active = () => board.isConnected && state?.id === game.id && state.phase === 'question' && !state.paused;
         activityViews[game.id]({
-          board, state, settings, element, button, photo, draw: render,
+          board, state, settings, element, button, photo, shuffled, draw: render,
           say(text) {
             tasks.clear();
             return say(text);

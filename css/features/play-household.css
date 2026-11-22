@@ -1,0 +1,46 @@
+.hh-prompt { margin: 0; color: #24483f; font-size: clamp(22px, 3vw, 34px); letter-spacing: -.045em; }
+.hh-table-game, .hh-words { padding: clamp(12px, 2vw, 24px); border: 1px solid #d8e4db; border-radius: 22px; background: #f7faf4; }
+.hh-table-heading, .hh-word-head { display: flex; align-items: center; justify-content: center; gap: 16px; padding-bottom: 14px; }
+.hh-step-count { font-size: 16px; color: #4a635c; white-space: nowrap; }
+.hh-table-area { display: flex; gap: clamp(10px, 2vw, 24px); align-items: stretch; justify-content: center; }
+.hh-mat { position: relative; flex: 1; min-width: 0; align-self: center; max-width: 740px; aspect-ratio: 1.72; border-radius: 16px; background: #e9d5af url('../../images/play_household/place-mat.webp') center / 100% 100%; }
+.hh-place { position: absolute; display: grid; place-items: center; padding: 0; }
+.hh-place[data-slot="rice"] { left: 9%; top: 49%; width: 28%; height: 40%; }
+.hh-place[data-slot="soup"] { left: 39%; top: 49%; width: 28%; height: 40%; }
+.hh-place[data-slot="side"] { left: 36%; top: 8%; width: 27%; height: 36%; }
+.hh-place[data-slot="cup"] { left: 10%; top: 8%; width: 17%; height: 35%; }
+.hh-place[data-slot="spoon"] { left: 69%; top: 27%; width: 11%; height: 60%; }
+.hh-place[data-slot="sticks"] { left: 82%; top: 27%; width: 11%; height: 60%; }
+.hh-table-photo { width: 100%; height: 100%; display: block; pointer-events: none; }
+.hh-place-hint { min-width: 44px; min-height: 44px; border: 3px dashed #357869; border-radius: 14px; background: #ffffff87; }
+.hh-place-hint .hh-table-photo { opacity: .29; }
+.hh-here { position: absolute; inset: auto auto 0; border-radius: 12px; padding: 2px 7px; color: #235a4d; background: white; font-size: 13px; font-weight: 800; white-space: nowrap; }
+.hh-ready, .hh-place-hint.ps-drop-over { background: #d6efde; }
+.hh-table-tray { flex: 0 1 24%; max-width: 220px; display: flex; flex-direction: column; align-self: center; gap: 10px; }
+.hh-table-card, .hh-choice, .hh-group { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 7px; color: #263f38; background: #fff; border: 2px solid #b9d0c4; border-radius: 18px; }
+.hh-table-card { min-height: 140px; padding: 12px; touch-action: none !important; }
+.hh-table-card .hh-table-photo { height: clamp(85px, 15vh, 150px); }
+.hh-table-card strong, .hh-choice strong { font-size: clamp(20px, 2.3vw, 28px); }
+.hh-table-card[aria-pressed="true"], .hh-modes button[aria-pressed="true"] { border-color: #217365; background: #dbefe7; color: #194d40; }
+.hh-words { text-align: center; background: #f5f8fb; }
+.hh-modes, .hh-word-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin: 10px auto; }
+.hh-groups { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; max-width: 900px; margin: 12px auto 0; }
+.hh-group { display: flex; flex-direction: row; min-height: 92px; padding: 9px; font-size: clamp(17px, 2vw, 23px) !important; }
+.hh-group-image { width: 41%; height: clamp(54px, 8vh, 88px); object-fit: contain; pointer-events: none; }
+.hh-word-choices { display: grid; grid-template-columns: repeat(var(--hh-count), minmax(0,1fr)); gap: clamp(8px, 1.7vw, 20px); max-width: 860px; margin: 10px auto; }
+.hh-option { display: grid; align-content: start; gap: 5px; min-width: 0; }
+.hh-choice { width: 100%; min-height: 70px; padding: clamp(9px, 1.4vw, 16px); }
+.hh-option-art { display: block; height: clamp(80px, 17vh, 180px); width: 100%; object-fit: contain; }
+.hh-word-cue, .hh-answer-art { display: block; height: clamp(85px, 19vh, 220px); width: 70%; object-fit: contain; margin: 6px auto 12px; }
+.hh-word-result { padding: 10px; }
+.hh-word-status { min-height: 1.3em; margin: 2px 0; color: #31594c; font-weight: 700; }
+@media (max-width: 650px) {
+  .hh-groups { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .hh-group { min-height: 73px; }
+  .hh-table-area { flex-direction: column; }
+  .hh-mat { width: 100%; flex: none; }
+  .hh-table-tray { flex: none; flex-direction: row; max-width: none; align-items: center; }
+  .hh-table-card { flex-direction: row; min-height: 76px; }
+  .hh-table-card .hh-table-photo { width: 65px; height: 65px; }
+  .hh-word-head { flex-wrap: wrap; gap: 8px; }
+}

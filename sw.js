@@ -4,9 +4,9 @@
  * On first visit, pre-caches all images so subsequent loads are instant.
  */
 
-importScripts('./js/data/speech-manifest.js?v=428');
+importScripts('./js/data/speech-manifest.js?v=430');
 
-const CACHE_VERSION = 'v429';
+const CACHE_VERSION = 'v430';
 const CACHE_NAME = `jaemin-aac-${CACHE_VERSION}`;
 
 self.addEventListener('message', (event) => {
@@ -30,6 +30,9 @@ const PRECACHE_ASSETS = [
   './css/features/face-parts-game.css',
   './css/date-overrides.css',
   './css/features/play-school.css',
+  './css/features/play-household.css',
+  './css/features/play-dishwash.css',
+  './css/features/play-kiosk.css',
   './css/features/play-carwash.css',
   './css/features/play-snackshop.css',
   './css/features/sticker-book.css',
@@ -80,6 +83,19 @@ const PRECACHE_ASSETS = [
   './images/bathroom_book/boy-two.png',
   './images/bathroom_book/poop.png',
   './js/features/play-school.js',
+  './js/features/play-dishwash.js',
+  './js/features/play-kiosk.js',
+  './js/features/play-tablesetting.js',
+  './js/features/play-objectnames.js',
+  './images/play_dishwash/drying-rack.webp',
+  './images/play_kiosk/gimbap.webp',
+  './images/play_kiosk/udon.webp',
+  './images/play_kiosk/omurice.webp',
+  './images/play_kiosk/reader.webp',
+  './images/play_household/place-mat.webp',
+  './images/play_household/phone.webp',
+  './images/play_household/laptop.webp',
+  './images/play_household/tablet.webp',
   './js/features/play-carwash.js',
   './js/features/play-snackshop.js',
   './js/core/instrument-sounds.js',
