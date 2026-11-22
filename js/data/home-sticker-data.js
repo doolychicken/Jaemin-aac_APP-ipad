@@ -590,6 +590,69 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               0.08047850428281068,
               0.1123046875
             ]
+          },
+          {
+            "id": "ladle",
+            "label": "국자",
+            "image": "./images/home_books/kitchen-utensils-extra.png",
+            "sheet": [
+              1536,
+              1024
+            ],
+            "crop": [
+              103,
+              21,
+              347,
+              959
+            ],
+            "target": [
+              0.11588541666666667,
+              0.1357421875,
+              0.03533547314911366,
+              0.146484375
+            ]
+          },
+          {
+            "id": "turner",
+            "label": "뒤집개",
+            "image": "./images/home_books/kitchen-utensils-extra.png",
+            "sheet": [
+              1536,
+              1024
+            ],
+            "crop": [
+              593,
+              14,
+              333,
+              962
+            ],
+            "target": [
+              0.19921875,
+              0.1357421875,
+              0.033804086538461536,
+              0.146484375
+            ]
+          },
+          {
+            "id": "tongs",
+            "label": "집게",
+            "image": "./images/home_books/kitchen-utensils-extra.png",
+            "sheet": [
+              1536,
+              1024
+            ],
+            "crop": [
+              1049,
+              43,
+              373,
+              922
+            ],
+            "target": [
+              0.2825520833333333,
+              0.1357421875,
+              0.03950735493492408,
+              0.146484375
+            ]
           }
         ]
       },
@@ -877,7 +940,7 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
       {
         "id": "items",
         "title": "생활용품 놓기",
-        "subtitle": "슬리퍼와 리모컨을 알맞은 자리에 놓아요",
+        "subtitle": "거실에서 쓰는 물건을 알맞은 자리에 놓아요",
         "pieces": [
           {
             "id": "slippers",
@@ -943,11 +1006,116 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               0.035813275505514705
             ],
             "rotate": 90
+          },
+          {
+            "id": "flowering-pot",
+            "label": "꽃 화분",
+            "image": "./images/home_books/living-flowering-pot.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              167,
+              43,
+              943,
+              1185
+            ],
+            "target": [
+              0.029296875,
+              0.748046875,
+              0.09584596958509141,
+              0.1806640625
+            ]
+          },
+          {
+            "id": "watering-can",
+            "label": "물뿌리개",
+            "image": "./images/home_books/living-watering-can.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              13,
+              198,
+              1229,
+              861
+            ],
+            "target": [
+              0.12630208333333334,
+              0.833984375,
+              0.07291666666666667,
+              0.07662479658258747
+            ]
+          },
+          {
+            "id": "plant-sprayer",
+            "label": "분무기",
+            "image": "./images/home_books/living-plant-sprayer.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              286,
+              55,
+              656,
+              1144
+            ],
+            "target": [
+              0.20377604166666666,
+              0.7822265625,
+              0.03210591491841492,
+              0.083984375
+            ]
+          },
+          {
+            "id": "sofa-cushion",
+            "label": "소파 쿠션",
+            "image": "./images/home_books/living-cushion-scale.png",
+            "sheet": [
+              1774,
+              887
+            ],
+            "crop": [
+              48,
+              73,
+              825,
+              722
+            ],
+            "target": [
+              0.25390625,
+              0.486328125,
+              0.07421875,
+              0.09742897727272727
+            ]
+          },
+          {
+            "id": "scale",
+            "label": "체중계",
+            "image": "./images/home_books/living-cushion-scale.png",
+            "sheet": [
+              1774,
+              887
+            ],
+            "crop": [
+              922,
+              142,
+              814,
+              652
+            ],
+            "target": [
+              0.6263020833333334,
+              0.8017578125,
+              0.0859375,
+              0.10325168918918919
+            ]
           }
         ]
       }
     ],
-    "description": "사진 속 가구와 가전 · 리모컨 · 슬리퍼"
+    "description": "가구와 가전 · 생활용품 · 화분 돌보기"
   },
   {
     "id": "bedroom",

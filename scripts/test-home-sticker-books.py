@@ -31,9 +31,11 @@ def main():
     page.evaluate("pushScreen('stickerBookHome','스티커북');render()")
     assert page.locator('.sb-library-card').count()==6
    shelf();page.screenshot(path=str(out/'shelf.png'))
+   chapter_counts = {'kitchen': {'fixtures':10, 'items':20, 'cooking':3},
+                     'living': {'fixtures':9, 'items':8}, 'bedroom': {'fixtures':7, 'items':5}}
    for id,label in [('kitchen','주방'),('living','거실'),('bedroom','침실')]:
     page.get_by_text(label+' 스티커북',exact=True).click()
-    chapters={'fixtures':10,'items':17,'cooking':3} if id=='kitchen' else ({'fixtures':9,'items':3} if id=='living' else {'fixtures':7,'items':5})
+    chapters=chapter_counts[id]
     assert page.locator('[data-chapter]').count()==len(chapters)
     for chapter,total in chapters.items():
      page.locator(f'[data-chapter="{chapter}"]').click()
@@ -59,7 +61,7 @@ def main():
    for id in ['kitchen','living','bedroom']:
     version=1 if id=='kitchen' else 2
     saved=page.evaluate(f"JSON.parse(localStorage.getItem('jaemin-{id}-stickers-v{version}'))")
-    expected={'fixtures':10,'items':17,'cooking':3} if id=='kitchen' else ({'fixtures':9,'items':3} if id=='living' else {'fixtures':7,'items':5})
+    expected=chapter_counts[id]
     assert {k:len(s['placed']) for k,s in saved['progress'].items()}==expected
    # Bathroom progress remains on its original key and each book has independent reset.
    assert page.evaluate("localStorage.getItem('jaemin-bathroom-stickers-v1')")==None
@@ -67,7 +69,19 @@ def main():
    page.locator('[data-chapter="items"]').click()
    page.get_by_role('button',name='처음부터',exact=True).click()
    page.locator('.sb-dialog').get_by_role('button',name='처음부터',exact=True).click()
-   assert page.evaluate("JSON.parse(localStorage.getItem('jaemin-living-stickers-v2')).progress.items.placed.length")==3
+   assert page.evaluate("JSON.parse(localStorage.getItem('jaemin-living-stickers-v2')).progress.items.placed.length")==8
+   # A previously completed v425 room resumes directly at its first added sticker.
+   for room,version,old_count in [('kitchen',1,17),('living',2,3)]:
+    page.evaluate("""([room,version,count]) => {
+      const key='jaemin-'+room+'-stickers-v'+version;
+      const ids=STICKER_BOOKS.find(b=>b.id===room).chapters.find(c=>c.id==='items').pieces.map(p=>p.id);
+      localStorage.setItem(key, JSON.stringify({version:1,sound:true,hints:true,progress:{items:{placed:ids.slice(0,count),cursor:count}}}));
+    }""",[room,version,old_count])
+    page.reload()
+    page.evaluate("room => {pushScreen('sticker'+room+'_items','생활용품');render()}",room.capitalize())
+    page.wait_for_selector('.sb-card:not(:disabled)')
+    label=page.locator('.sb-tray h2').inner_text()
+    assert label in (['국자','뒤집개','집게'] if room=='kitchen' else ['꽃 화분','분무기','물뿌리개','소파 쿠션','체중계']),label
    # v406 completed chapters remain valid; appended appliances/tools continue next.
    page.evaluate("""localStorage.setItem('jaemin-kitchen-stickers-v1',JSON.stringify({version:1,sound:false,hints:true,progress:{
      fixtures:{cursor:6,placed:['fridge','sink','hob','table','chair','cooker']},
@@ -86,7 +100,7 @@ def main():
      r=page.locator(sel).bounding_box();assert r['x']>=0 and r['y']>=0 and r['x']+r['width']<=w+1 and r['y']+r['height']<=h+1,(w,h,sel,r)
    assert not errors,errors
    browser.close()
-   print('PASS: all 54 room stickers, cooking replacement, six-book navigation, per-room resume/reset isolation, five screen sizes')
+   print('PASS: all 62 room stickers, cooking replacement, prior completion resumes at new items, per-room reset isolation, five screen sizes')
  finally:server.shutdown()
 
 if __name__=='__main__':main()

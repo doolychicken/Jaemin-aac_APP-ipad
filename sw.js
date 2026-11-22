@@ -4,9 +4,9 @@
  * On first visit, pre-caches all images so subsequent loads are instant.
  */
 
-importScripts('./js/data/speech-manifest.js?v=425');
+importScripts('./js/data/speech-manifest.js?v=426');
 
-const CACHE_VERSION = 'v425';
+const CACHE_VERSION = 'v426';
 const CACHE_NAME = `jaemin-aac-${CACHE_VERSION}`;
 
 self.addEventListener('message', (event) => {
@@ -52,6 +52,7 @@ const PRECACHE_ASSETS = [
   './images/home_books/kitchen-stickers.png',
   './images/home_books/kitchen-appliances-v2.png',
   './images/home_books/kitchen-tools-v2.png',
+  './images/home_books/kitchen-utensils-extra.png',
   './images/home_books/kitchen-paddle-yellow.png',
   './images/home_books/kitchen-rubber-gloves.png',
   './images/home_books/kitchen-items-v3.png',
@@ -59,6 +60,10 @@ const PRECACHE_ASSETS = [
   './images/home_books/living-room.png',
   './images/home_books/living-stickers.png',
   './images/home_books/living-stickers-v2.png',
+  './images/home_books/living-cushion-scale.png',
+  './images/home_books/living-flowering-pot.png',
+  './images/home_books/living-watering-can.png',
+  './images/home_books/living-plant-sprayer.png',
   './images/home_books/bedroom-room.png',
   './images/home_books/bedroom-stickers.png',
   './images/home_books/bedroom-room-v2.png',

@@ -98,6 +98,18 @@
       const [x, y, w, h] = piece.target;
       Object.assign(node.style, { left: x * 100 + '%', top: y * 100 + '%', width: w * 100 + '%', height: h * 100 + '%' });
     }
+    // Expand the landing area around the original cutout, including at room edges.
+    function sizeDropTarget(target, piece, width, height) {
+      const [x, y, w, h] = piece.target;
+      const artWidth = w * width, artHeight = h * height;
+      const zoneWidth = Math.min(width, Math.max(84, artWidth + 16));
+      const zoneHeight = Math.min(height, Math.max(84, artHeight + 16));
+      const left = Math.max(0, Math.min(width - zoneWidth, x * width + (artWidth - zoneWidth) / 2));
+      const top = Math.max(0, Math.min(height - zoneHeight, y * height + (artHeight - zoneHeight) / 2));
+      Object.assign(target.style, { left: left + 'px', top: top + 'px', width: zoneWidth + 'px', height: zoneHeight + 'px' });
+      Object.assign(target.querySelector('.sb-guide').style, { left: (x * width - left) + 'px', top: (y * height - top) + 'px',
+        width: artWidth + 'px', height: artHeight + 'px' });
+    }
     function placedSprite(piece, layer) {
       const wrap = el('div', 'sb-placed');
       wrap.dataset.placed = piece.id;
@@ -269,7 +281,7 @@
         const hit = (x, y) => {
           const rect = target.getBoundingClientRect();
           const room = stage.getBoundingClientRect();
-          const pad = 26;
+          const pad = 18;
           return x >= Math.max(room.left, rect.left - pad) && x <= Math.min(room.right, rect.right + pad)
             && y >= Math.max(room.top, rect.top - pad) && y <= Math.min(room.bottom, rect.bottom + pad);
         };
@@ -282,7 +294,7 @@
           dragCancel = null;
           if (card.hasPointerCapture?.(id)) card.releasePointerCapture(id);
         }
-        function cancel() { cleanup(); }
+        function cancel(e) { if (e.pointerId === id) cleanup(); }
         function move(e) {
           if (e.pointerId !== id) return;
           e.preventDefault();
@@ -290,12 +302,13 @@
           if (!moved) {
             moved = true;
             ghost = el('div', 'sb-drag-ghost'); ghost.append(sprite(piece));
-            const r = target.getBoundingClientRect();
-            const factor = Math.min(1.3, Math.max(1, 76 / Math.max(r.width, r.height)));
+            const r = target.querySelector('.sb-guide').getBoundingClientRect();
+            const longest = Math.max(1, r.width, r.height);
+            const factor = Math.max(120, Math.min(200, longest)) / longest;
             ghost.style.width = r.width * factor + 'px'; ghost.style.height = r.height * factor + 'px';
             document.body.appendChild(ghost); card.classList.add('sb-dragging');
           }
-          ghost.style.left = e.clientX + 'px'; ghost.style.top = e.clientY + 'px';
+          ghost.style.left = e.clientX + 'px'; ghost.style.top = (e.clientY - (e.pointerType === 'touch' ? 24 : 0)) + 'px';
           target.classList.toggle('sb-over', hit(e.clientX, e.clientY));
         }
         function end(e) {
@@ -380,7 +393,6 @@
         tray.append(button('이름 듣기', () => say(piece.label), 'sb-button sb-listen'));
         const target = button('', () => { if (armed && ready) accept(); }, 'sb-target');
         target.setAttribute('aria-label', `${piece.label} 붙일 자리`);
-        position(target, piece);
         target.append(sprite(piece, 'sb-guide'), el('span', 'sb-target-tag', '여기에'));
         if (saved.hints) target.classList.add('sb-show-hint');
         stage.append(target);
@@ -399,7 +411,10 @@
       const resize = () => {
         const rect = canvasWrap.getBoundingClientRect();
         const width = Math.max(1, Math.min(rect.width, rect.height * catalog.width / catalog.height));
-        stage.style.width = width + 'px'; stage.style.height = width * catalog.height / catalog.width + 'px';
+        const height = width * catalog.height / catalog.width;
+        stage.style.width = width + 'px'; stage.style.height = height + 'px';
+        const target = stage.querySelector('.sb-target');
+        if (target) sizeDropTarget(target, piece, width, height);
       };
       observer = new ResizeObserver(resize); observer.observe(canvasWrap); resize();
       const localEpoch = epoch;
