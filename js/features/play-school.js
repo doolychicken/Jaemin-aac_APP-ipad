@@ -1,5 +1,7 @@
 (function () {
   const GAMES = [
+    { id: 'carwash', title: '반짝 세차장', subtitle: '자동차를 씻고 닦아요', image: './images/traffic_game/car_blue.png', tone: 'blue', group: 'cars' },
+    { id: 'snackshop', title: '내가 고르는 매점', subtitle: '먹고 싶은 것을 주문해요', image: './images/meal_eggtart.png', tone: 'peach', group: 'study' },
     { id: 'family', title: '우리 가족 찾기', subtitle: '나, 엄마, 아빠를 찾아요', image: './images/outing_person_me.png', tone: 'peach', group: 'study' },
     { id: 'name', title: '내 이름 완성', subtitle: '홍 · 재 · 민을 하나씩 맞춰요', badge: '홍 재 민', tone: 'lavender', group: 'study' },
     { id: 'life', title: '생활 그림 연결', subtitle: '그림과 어울리는 짝을 찾아요', image: './images/dad_carkey.png', tone: 'mint', group: 'study' },
@@ -63,7 +65,8 @@
     let state = null;
     let dragCleanup = null;
     let settingsOpen = false;
-    let menuGroup = 'all';
+    const activityViews = { carwash: window.renderPlayCarwash, snackshop: window.renderPlaySnackshop };
+    let menuGroup = 'first';
 
     function save() { window.appStorage.save(KEY, { settings, stats }); }
     function say(text) { return settings.sound ? speak(text) : Promise.resolve(); }
@@ -141,16 +144,14 @@
         if (game.id === 'music') return; // Free play has no scored rounds.
         const row = stats[game.id] || { completed: 0, first: 0, help: 0 };
         records.appendChild(element('p', '', game.title + ' · 완료 ' + row.completed
-          + (game.id === 'drive' ? '' : ' · 첫 선택 성공 ' + row.first + ' · 도움 ' + row.help)));
+          + (game.id === 'drive' || activityViews[game.id] ? '' : ' · 첫 선택 성공 ' + row.first + ' · 도움 ' + row.help)));
       });
       details.appendChild(records);
       return details;
     }
     function renderMenu() {
       const intro = element('div', 'ps-intro');
-      intro.appendChild(element('span', 'ps-eyebrow', '재민이의 플레이 클럽'));
-      intro.appendChild(element('h2', '', '톡톡 맞추고, 신나게 출발!'));
-      intro.appendChild(element('p', '', '숫자도, 그림도. 오늘은 어떤 짝을 찾아볼까요?'));
+      intro.appendChild(element('h2', '', '어떤 놀이를 할까요?'));
       intro.appendChild(photo(CARS[0], 'ps-hero-car'));
       gridEl.appendChild(intro);
       const total = Object.values(stats).reduce((sum, row) => sum + row.completed, 0);
@@ -164,19 +165,19 @@
       }
       collection.appendChild(stickers);
       collection.appendChild(element('span', 'ps-collection-note', total ? '완료한 놀이 ' + total + '번' : '놀이를 끝내면 하나씩 모아요'));
-      gridEl.appendChild(collection);
       const tabs = element('div', 'ps-tabs');
       tabs.setAttribute('aria-label', '놀이 종류');
-      [['all', '전체'], ['study', '우리집 · 앱 공부'], ['pairs', '숫자 · 짝 맞추기'], ['cars', '자동차 놀이'], ['sounds', '그림 · 소리']].forEach(([id, label]) => {
+      [['first', '먼저 해봐요'], ['all', '전체'], ['study', '우리집 · 앱 공부'], ['pairs', '숫자 · 짝 맞추기'], ['cars', '자동차 놀이'], ['sounds', '그림 · 소리']].forEach(([id, label]) => {
         const tab = button(label, () => { menuGroup = id; render(); }, 'ps-tab');
         tab.setAttribute('aria-pressed', String(menuGroup === id));
         tabs.appendChild(tab);
       });
       gridEl.appendChild(tabs);
       const games = element('div', 'ps-menu-grid');
+      if (menuGroup === 'first') games.classList.add('ps-starter-games');
       GAMES.forEach(game => {
         const group = game.group || (['drive', 'parking', 'delivery', 'count'].includes(game.id) ? 'cars' : 'sounds');
-        if (menuGroup !== 'all' && menuGroup !== group) return;
+        if (menuGroup === 'first' ? !activityViews[game.id] : menuGroup !== 'all' && menuGroup !== group) return;
         const card = button('', () => open(game), 'ps-game-card ps-tone-' + game.tone);
         card.dataset.game = game.id;
         card.appendChild(game.badge ? element('span', 'ps-game-art ps-art-' + game.id, game.badge) : photo(game));
@@ -184,10 +185,10 @@
         copy.appendChild(element('strong', '', game.title));
         copy.appendChild(element('span', '', game.subtitle));
         card.appendChild(copy);
-        card.appendChild(element('span', 'ps-card-action', '놀이 시작  →'));
         games.appendChild(card);
       });
       gridEl.appendChild(games);
+      gridEl.appendChild(collection);
       gridEl.appendChild(button('기존 앱 공부 열기', deps.returnToStudy));
       gridEl.appendChild(settingsPanel());
       gridEl.appendChild(button('화장실', () => { say('화장실'); pushScreen('toilet', '화장실'); render(); }, 'ps-toilet'));
@@ -199,6 +200,13 @@
       state.helpRecorded = false;
       state.prompted = false;
       const id = state.id;
+      if (activityViews[id]) {
+        state.step = 0;
+        state.washSelected = false;
+        state.shopChoice = null;
+        state.lastPrompt = '';
+        return;
+      }
       if (id === 'name') {
         state.nameIndex = 0;
         buildNameChoices();
@@ -637,6 +645,40 @@
         complete.appendChild(button('한 번 더', () => { clear(); render(); }, 'ps-primary'));
         complete.appendChild(button('다른 놀이', menu));
         gridEl.appendChild(complete);
+        gridEl.appendChild(footer());
+        return;
+      }
+      if (activityViews[game.id]) {
+        const board = element('div', 'ps-activity');
+        gridEl.appendChild(board);
+        const active = () => board.isConnected && state?.id === game.id && state.phase === 'question' && !state.paused;
+        activityViews[game.id]({
+          board, state, settings, element, button, photo, draw: render,
+          say(text) {
+            tasks.clear();
+            return say(text);
+          },
+          bindDrag(source, target, onHit) {
+            drag(source, (x,y) => { if (active() && dropTarget([target], x, y)) onHit(); }, () => [target]);
+          },
+          promptOnce(text) {
+            if (!active() || state.lastPrompt === text) return;
+            state.lastPrompt = text;
+            tasks.setTimeout(() => { if (active() && state.lastPrompt === text) say(text); }, 180);
+          },
+          win(text) {
+            if (!active()) return;
+            tasks.clear();
+            state.phase = 'reward';
+            say(text);
+            render();
+          }
+        });
+        if (state.phase === 'reward') {
+          const actions = element('div', 'ps-reward-actions');
+          actions.appendChild(button(state.round + 1 === settings.rounds ? '다 했어요' : '다음', next, 'ps-primary'));
+          gridEl.appendChild(actions);
+        }
         gridEl.appendChild(footer());
         return;
       }

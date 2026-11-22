@@ -30,12 +30,40 @@ def main():
             page.goto(url)
             page.get_by_text('재민이 놀이학교', exact=True).click()
             page.wait_for_selector('.ps-menu-grid')
-            assert page.locator('.ps-game-card').count() == 13
+            assert page.locator('.ps-game-card').count() == 2
+            page.locator('[data-game="carwash"]').click()
+            page.locator('.wash-bay').click()
+            assert page.locator('[data-wash-tool="sponge"]').is_visible()
+            page.locator('[data-wash-tool="sponge"]').drag_to(page.locator('.wash-bay'))
+            page.locator('[data-wash-tool="plant-sprayer"]').click()
+            page.get_by_role('button', name='쉬어요', exact=True).click()
+            page.get_by_role('button', name='이어서 할래요', exact=True).click()
+            page.locator('.wash-bay').click()
+            page.locator('[data-wash-tool="roll"]').drag_to(page.locator('.wash-bay'))
+            assert page.locator('.wash-finished').is_visible()
+            page.locator('.ps-footer').get_by_role('button', name='놀이 목록', exact=True).click()
+            page.locator('[data-game="snackshop"]').click()
+            page.locator('[data-shop-item="tart"]').click()
+            page.locator('[data-shop-reset]').click()
+            assert page.locator('[data-shop-order]').get_attribute('aria-disabled') == 'true'
+            page.locator('[data-shop-item="milk"]').drag_to(page.locator('[data-shop-order]'))
+            assert page.locator('[data-shop-receipt="milk"]').is_visible()
+            page.wait_for_function("window.spoken.includes('우유 주세요')")
+            page.get_by_role('button', name='다음', exact=True).click()
+            page.locator('[data-shop-item="juice"]').click()
+            page.locator('[data-shop-order]').click()
+            assert page.locator('[data-shop-receipt="juice"]').is_visible()
+            page.locator('.ps-footer').get_by_role('button', name='놀이 목록', exact=True).click()
+            print('PASS: both starter games, wash stages, pause and resume, changing and voicing an order', flush=True)
+            page.get_by_role('button', name='전체', exact=True).click()
+            assert page.locator('.ps-game-card').count() == 15
             page.screenshot(path=str(output / 'menu-landscape.png'))
 
             def open_game(game):
                 if not page.locator('.ps-menu-grid').count():
                     page.locator('.ps-footer').get_by_role('button', name='놀이 목록', exact=True).click()
+                if not page.locator(f'[data-game="{game}"]').count():
+                    page.get_by_role('button', name='전체', exact=True).click()
                 page.locator(f'[data-game="{game}"]').click()
 
             open_game('match')

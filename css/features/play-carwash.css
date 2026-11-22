@@ -1,0 +1,123 @@
+.wash-board {
+  width: 100%;
+  max-width: 1020px;
+  margin: auto;
+  display: grid;
+  justify-items: center;
+  gap: clamp(10px, 1.6vh, 18px);
+  color: #21454c;
+}
+.wash-steps {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  list-style: none;
+  margin: 0;
+  padding: 4px;
+  border-radius: 14px;
+  background: #e7efed;
+}
+.wash-steps li { border-radius: 11px; padding: 5px 13px; color: #466563; font-weight: 700; }
+.wash-steps [aria-current="step"] { color: white; background: #286e67; }
+.wash-steps .wash-step-done { color: #28685e; }
+.wash-workspace {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(112px, .34fr) 28px minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(8px, 1.5vw, 18px);
+}
+.wash-arrow { color: #447670; font-size: 32px; text-align: center; font-weight: 800; }
+.wash-tool {
+  --wash-tool-height: clamp(94px, 16vh, 160px);
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  justify-self: stretch;
+  gap: 10px;
+  min-height: clamp(155px, 23vh, 220px);
+  padding: 12px;
+  border: 2px solid #a4c8b8;
+  border-radius: 22px;
+  box-shadow: 0 4px 0 #cddfd4;
+  background: #fff;
+  color: #254e44;
+  font: inherit;
+}
+.wash-tool[aria-pressed="true"] { outline: 4px solid #267365; outline-offset: 2px; }
+.wash-tool-art {
+  display: block;
+  width: min(100%, calc(var(--wash-tool-height) * var(--wash-ratio)));
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+.wash-tool strong { font-size: clamp(17px, 2.3vw, 26px); }
+.wash-bay {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 5px;
+  width: 100%;
+  min-height: clamp(190px, 33vh, 330px);
+  padding: 18px;
+  border: 2px solid #a9c9c6;
+  border-radius: 24px;
+  background: repeating-linear-gradient(90deg, transparent 0 63px, #6b9e9913 64px 65px),
+              linear-gradient(to bottom, #eaf6f5 0%, #cce6df 68%, #9cb9b3 69%, #e1ede8 72%, #c9dad3 100%);
+  color: #234e4b;
+}
+.wash-bay.wash-ready { outline: 3px dashed #267365; outline-offset: -8px; }
+.wash-car-art { width: min(100%, 65vh, 610px); position: relative; display: block; }
+.wash-car-photo { display: block; width: 100%; height: auto; }
+.wash-bay-label {
+  display: block;
+  border-radius: 99px;
+  background: #fff;
+  padding: 5px 13px;
+  font-size: 15px;
+  font-weight: 750;
+  box-shadow: 0 2px 0 #709a8d30;
+}
+.wash-marks { position: absolute; inset: 0; pointer-events: none; }
+.wash-marks i { position: absolute; left: 25%; top: 51%; width: 8%; aspect-ratio: 1.7; }
+.wash-marks i:nth-child(2) { left: 44%; top: 61%; transform: scale(.8) rotate(-12deg); }
+.wash-marks i:nth-child(3) { left: 58%; top: 45%; transform: scale(1.2) rotate(11deg); }
+.wash-marks i:nth-child(4) { left: 76%; top: 51%; transform: scale(.7); }
+.wash-mud i {
+  background: radial-gradient(ellipse at 30% 24%, #bd8a63, #886045 62%, #694934);
+  border-radius: 64% 39% 56% 45%;
+  box-shadow: 3px 2px 1px #734831bd, -8px -4px 0 -5px #ac7857, 12px -9px 0 -8px #91644b;
+}
+.wash-foam i {
+  aspect-ratio: 1.4;
+  border-radius: 50%;
+  background: #e2f6ff;
+  box-shadow: 5px -5px 0 #fff, -6px -3px 0 #c2e9f2, 8px 3px 0 #f8fdff;
+}
+.wash-water i { width: 4%; aspect-ratio: .8; border-radius: 8% 55% 50% 55%; background: #a6e2ff; box-shadow: inset -2px -3px #3d95b7; }
+.wash-shine i {
+  width: 8%; aspect-ratio: 1; background: #fff4ba;
+  clip-path: polygon(50% 0,63% 35%,100% 50%,64% 64%,50% 100%,36% 64%,0 50%,35% 36%);
+}
+.wash-finished { width: min(100%,720px); }
+.wash-replay { min-height: 46px; }
+@media (prefers-reduced-motion: no-preference) {
+  .wash-board:not(.wash-still) .wash-shine i { animation: wash-polish .8s ease-out 1; }
+  @keyframes wash-polish { from { opacity: 0; scale: .5; } to { opacity: 1; scale: 1; } }
+}
+@media (max-width: 620px) and (orientation: portrait) {
+  .wash-workspace { grid-template-columns: 88px 14px minmax(0,1fr); gap: 5px; }
+  .wash-tool { --wash-tool-height: 86px; min-height: 124px; padding: 7px; border-radius: 15px; }
+  .wash-arrow { font-size: 19px; }
+  .wash-bay { min-height: 160px; border-radius: 16px; padding: 8px; }
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  .wash-board { gap: 5px; }
+  .wash-workspace { max-width: 680px; }
+  .wash-tool { --wash-tool-height: 76px; min-height: 108px; }
+  .wash-car-art { max-width: 260px; }
+  .wash-bay { min-height: 118px; padding: 6px; gap: 0; }
+}

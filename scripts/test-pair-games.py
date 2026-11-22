@@ -99,6 +99,7 @@ def main():
             page.get_by_text('재민이 놀이학교', exact=True).click()
             page.wait_for_selector('.ps-collection')
             assert page.locator('.ps-sticker.is-collected').count() == 1
+            page.get_by_role('button', name='숫자 · 짝 맞추기', exact=True).click()
             page.locator('[data-game="numbers"]').click()
             all_numbers = set()
             for round_index in range(3):
