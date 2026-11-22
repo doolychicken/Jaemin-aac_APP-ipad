@@ -57,8 +57,11 @@ def update_kitchen(book):
  for index,piece in enumerate(fixtures['pieces']):
   if piece['id'] in replacements: fixtures['pieces'][index]=replacements[piece['id']]
   elif piece['id']=='sink':
-   ratio=piece['crop'][3]/piece['crop'][2]
-   piece['target']=[810/1536,325/1024,170/1536,170*ratio/1024]
+   # Broaden the basin while keeping the faucet at its previous height.
+   width=198
+   height=170*piece['crop'][3]/piece['crop'][2]
+   piece['target'][2:]=[width/1536,height/1024]
+   piece['displayAspect']=width/height
  fixtures['pieces'].extend([
   kitchen_piece('microwave','전자레인지',appliances,(500,175,1130,565),450,305,220),
   kitchen_piece('purifier','정수기',appliances,(1190,25,1460,580),690,195,245,'h')
@@ -134,7 +137,7 @@ def arrange_kitchen(book):
  fixtures,items,cooking=book['chapters']
  book['sceneCrop']=[88,24,1368,984]
  byid={p['id']:p for p in fixtures['pieces']}
- for pid,x in [('microwave',108),('hob',287),('sink',630),('blender',815),('cooker',928),('purifier',1061)]:
+ for pid,x in [('microwave',108),('hob',287),('sink',612),('blender',815),('cooker',928),('purifier',1061)]:
   p=byid[pid];p['target'][:2]=[x/1536,444/1024-p['target'][3]]
  byid['fridge']['target'][:2]=[1175/1536,165/1024]
  table=byid['table']
@@ -146,12 +149,12 @@ def arrange_kitchen(book):
  fixtures['pieces'].append(kitchen_piece('chair-left','왼쪽 의자','kitchen-chairs-side',(0,0,cw//2,ch),130,643,277,'h'))
 
  item_by_id={p['id']:p for p in items['pieces']}
- # The cup stands below the dispenser and the paddle beside the cooker. The
- # gloves hang from the cabinet, leaving both the sink and the meals visible.
+ # The sponge sits on the left lip and the gloves drape over the right lip,
+ # with their fingertips just above the dining table.
  counter={
   'glass':(1110,465,74,112), 'paddle':(902,461,43,115),
-  'sponge':(685,469,98,81), 'dish-soap':(598,437,64,150),
-  'rubber-gloves':(245,632,141,130),
+  'sponge':(671,460,98,81), 'dish-soap':(598,437,64,150),
+  'rubber-gloves':(756,470,122,113),
  }
  # Each diner faces inward. The bowls flank the shared dishes and the three
  # utensil handles face the chair that will use them.

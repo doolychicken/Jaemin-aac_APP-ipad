@@ -52,11 +52,12 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               243
             ],
             "target": [
-              0.41015625,
+              0.3984375,
               0.28742781929347827,
-              0.11067708333333333,
+              0.12890625,
               0.14616593070652173
-            ]
+            ],
+            "displayAspect": 1.3228758169934642
           },
           {
             "id": "hob",
@@ -444,8 +445,8 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               261
             ],
             "target": [
-              0.41434312140804597,
-              0.37890625,
+              0.40522853807471265,
+              0.3701171875,
               0.06324084051724138,
               0.0791015625
             ]
@@ -595,10 +596,10 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               1148
             ],
             "target": [
-              0.1140173580865273,
-              0.490234375,
-              0.09097570049361207,
-              0.126953125
+              0.4526480609393147,
+              0.3486328125,
+              0.0790788781213705,
+              0.1103515625
             ]
           },
           {
