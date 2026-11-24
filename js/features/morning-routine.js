@@ -3,6 +3,7 @@
   window.createMorningRoutine = function ({ gridEl, speak, openTalk }) {
     const KEY = "jaemin-morning-board-v1";
     let selected = "", enteredToday = "", cleanup = () => {}, config;
+    let showWholePlan = false;
     const today = () => new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Seoul", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
     function validDate(value) {
       return typeof value === "string" && /^20\d\d-\d\d-\d\d$/.test(value)
@@ -46,7 +47,46 @@
       b.append(art(card), node("strong", "", card.label)); return b;
     }
     function changePlan(update) {
-      const d = dayState(); update(d.plan); d.placed = 0; d.done = 0; save(); draw();
+      const d = dayState(); update(d.plan); d.placed = 0; d.done = 0;
+      showWholePlan = false; save(); draw();
+    }
+    function nowAndNext(d, complete, undo) {
+      const section = node("section", "mr-focus");
+      section.setAttribute("aria-label", "지금과 다음 일정");
+      const current = config.cards[d.plan[d.done]];
+      const next = config.cards[d.plan[d.done + 1]];
+      if (current) {
+        const pair = node("div", "mr-focus-pair");
+        const addCard = (label, card, style) => {
+          const panel = node("div", "mr-focus-slot " + style);
+          panel.append(node("h3", "", label), picture(card, () => speak(card.speech)));
+          pair.append(panel);
+        };
+        addCard("지금", current, "mr-focus-current");
+        if (next) addCard("다음", next, "mr-focus-next");
+        section.append(pair);
+        if (!next) section.append(node("p", "mr-focus-last", "마지막 일정이에요"));
+        section.append(complete());
+      } else {
+        const notice = node("p", "mr-focus-finished", "오늘 일정을 모두 마쳤어요.");
+        notice.setAttribute("role", "status");
+        notice.tabIndex = -1;
+        section.append(notice);
+      }
+      if (d.done > 0) {
+        const completed = node("details", "mr-focus-completed");
+        completed.append(node("summary", "", "마친 일정 " + d.done + "개"));
+        const list = node("ol", "mr-focus-list");
+        for (const id of d.plan.slice(0, d.done)) {
+          const card = config.cards[id];
+          const item = node("li");
+          item.append(picture(card, () => speak(card.speech)));
+          list.append(item);
+        }
+        completed.append(list, undo());
+        section.append(completed);
+      }
+      return section;
     }
     function draw() {
       cleanup(); cleanup = () => {}; gridEl.replaceChildren(); gridEl.className = "morning-board";
@@ -54,8 +94,16 @@
       const [year, month, date] = selected.split("-").map(Number);
       const weekday = new Intl.DateTimeFormat("ko-KR", { weekday: "long", timeZone: "Asia/Seoul" }).format(new Date(selected + "T12:00:00+09:00"));
       const dateText = `${year}년 ${month}월 ${date}일 ${weekday}`;
+      const ready = d.datePlaced && d.weather && d.plan.length > 0 && d.placed === d.plan.length;
       const header = node("div", "mr-header");
-      header.append(node("h2", "", selected === today() ? "오늘 하루" : "다른 날 미리 보기"), button("말하기", openTalk));
+      const actions = node("div", "mr-header-actions");
+      if (ready) actions.append(button(showWholePlan ? "지금·다음 보기" : "전체 일정 보기", () => {
+        showWholePlan = !showWholePlan; draw();
+        gridEl.scrollTop = 0;
+        gridEl.querySelector(".mr-view-switch")?.focus({ preventScroll: true });
+      }, "mr-button mr-view-switch"));
+      actions.append(button("말하기", openTalk));
+      header.append(node("h2", "", selected === today() ? "오늘 하루" : "다른 날 미리 보기"), actions);
       gridEl.append(header);
       const calendar = node("div", "mr-calendar");
       calendar.append(button(d.datePlaced ? dateText : "오늘 날짜 붙이기 · " + dateText, () => {
@@ -63,6 +111,20 @@
       }, "mr-date"));
       if (d.weather) calendar.append(button("날씨 · " + d.weather + " (바꾸기)", () => { d.weather = ""; save(); draw(); }));
       gridEl.append(calendar);
+      function complete() {
+        return button("다 했어요", () => {
+          if (d.done >= d.placed) return;
+          d.done++; save(); speak("다 했어요"); draw();
+          gridEl.querySelector(".mr-complete, .mr-focus-finished")?.focus({ preventScroll: true });
+        }, "mr-button mr-complete");
+      }
+      function undo() {
+        return button("완료 한 칸 되돌리기", () => {
+          if (!d.done) return;
+          d.done--; save(); draw();
+          gridEl.querySelector(".mr-complete")?.focus();
+        });
+      }
       if (!d.datePlaced) {
         gridEl.append(node("p", "mr-instruction", "날짜 카드를 눌러 붙여요."));
       } else if (!d.weather) {
@@ -72,6 +134,8 @@
         gridEl.append(choices);
       } else if (!d.plan.length) {
         gridEl.append(node("p", "mr-instruction", "정해진 일정이 없어요. 보호자 설정에서 오늘 일정을 넣어주세요."));
+      } else if (ready && !showWholePlan) {
+        gridEl.append(nowAndNext(d, complete, undo));
       } else {
         const building = d.placed < d.plan.length;
         gridEl.append(node("p", "mr-instruction", building ? "카드를 다음 자리에 붙여요. 눌러서 붙여도 돼요." : "오늘 일정을 만들었어요. 다녀온 뒤 다 했어요를 눌러요."));
@@ -90,7 +154,12 @@
         });
         body.append(board);
         const side = node("div", "mr-side");
-        function attach() { if (d.placed >= d.plan.length) return; const card = config.cards[d.plan[d.placed++]]; save(); speak(card.speech); draw(); }
+        function attach() {
+          if (d.placed >= d.plan.length) return;
+          const card = config.cards[d.plan[d.placed++]];
+          save(); speak(card.speech); draw();
+          if (d.placed === d.plan.length) gridEl.scrollTop = 0;
+        }
         if (building) {
           side.append(node("strong", "", "이번 카드"));
           const card = picture(config.cards[d.plan[d.placed]], attach, "mr-card mr-source");
@@ -124,18 +193,18 @@
           });
         } else if (d.done < d.plan.length) {
           side.append(node("strong", "", "지금"), picture(config.cards[d.plan[d.done]], () => speak(config.cards[d.plan[d.done]].speech)));
-          side.append(button("다 했어요", () => { d.done++; save(); speak("다 했어요"); draw(); }, "mr-button mr-complete"));
+          side.append(complete());
           side.append(node("p", "", d.done + 1 < d.plan.length ? "다음 · " + config.cards[d.plan[d.done + 1]].label : "마지막 일정이에요"));
         } else side.append(node("p", "mr-instruction", "오늘 일정을 모두 마쳤어요."));
-        if (d.done > 0) side.append(button("완료 한 칸 되돌리기", () => { d.done--; save(); draw(); }));
+        if (d.done > 0) side.append(undo());
         body.append(side); gridEl.append(body);
       }
       const settings = node("details", "mr-settings"); settings.append(node("summary", "", "보호자 · 날짜 / 오늘 일정 수정"));
       settings.append(node("p", "", "수정은 선택한 날짜에만 적용됩니다. 일정 수정 시 붙이기와 완료 표시를 처음부터 시작합니다."));
       const dateLabel = node("label", "", "날짜 선택 ");
       const input = node("input"); input.type = "date"; input.value = selected; input.min = "2000-01-01"; input.max = "2099-12-31";
-      input.onchange = () => { if (validDate(input.value)) { selected = input.value; draw(); } }; dateLabel.append(input); settings.append(dateLabel);
-      settings.append(button("오늘로 돌아가기", () => { selected = today(); draw(); }));
+      input.onchange = () => { if (validDate(input.value)) { selected = input.value; showWholePlan = false; draw(); } }; dateLabel.append(input); settings.append(dateLabel);
+      settings.append(button("오늘로 돌아가기", () => { selected = today(); showWholePlan = false; draw(); }));
       const editor = node("ol", "mr-editor");
       d.plan.forEach((id, i) => {
         const row = node("li"); row.append(node("span", "", config.cards[id].label));
@@ -148,7 +217,7 @@
       const add = button("일정 추가", () => changePlan(plan => { if (plan.length<14) plan.push(select.value); })); add.disabled=d.plan.length>=14;
       settings.append(select, add, button("이 날짜의 기본 일정으로 초기화", () => {
         if (!window.confirm("붙인 카드와 완료 표시도 초기화할까요?")) return;
-        delete days[selected]; dayState(); save(); draw();
+        delete days[selected]; showWholePlan = false; dayState(); save(); draw();
       }));
       gridEl.append(settings);
     }
@@ -156,7 +225,7 @@
       render(screen) {
         config = screen;
         if (!days) load();
-        if (!selected || enteredToday !== today()) { selected = today(); enteredToday = today(); }
+        if (!selected || enteredToday !== today()) { selected = today(); enteredToday = today(); showWholePlan = false; }
         draw();
       },
       clear() { cleanup(); cleanup = () => {}; selected = ""; }

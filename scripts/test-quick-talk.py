@@ -20,7 +20,8 @@ try:
   page.locator('#buttonGrid').get_by_text('바로 말하기',exact=True).click()
   page.wait_for_selector('.quick-talk-card')
   expected=page.evaluate('DATA.screens.quickTalk.items.map(i=>i.speech)')
-  assert len(expected)==11
+  support=['도와줘요','쉬고 싶어요','다 했어요']
+  assert len(expected)==14 and expected[-3:]==support
   for i,phrase in enumerate(expected):
    page.locator('.quick-talk-card').nth(i).tap()
    assert page.evaluate('currentKey()')=='quickTalk'
@@ -31,7 +32,7 @@ try:
   for w,h in [(1180,820),(820,1180),(390,844)]:
    page.set_viewport_size(dict(width=w,height=h))
    page.wait_for_timeout(200) # The app redraws the current route after a resize.
-   assert page.locator('#buttonGrid .quick-talk-card').count()==11
+   assert page.locator('#buttonGrid .quick-talk-card').count()==14
    assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
    if w>600:
     assert page.locator('#buttonGrid').evaluate('(e)=>getComputedStyle(e).gridTemplateColumns.split(" ").length')==4
@@ -60,6 +61,9 @@ try:
    before=page.evaluate('window.spoken.length')
    page.evaluate("speak('게임 안내')")
    assert page.evaluate('window.spoken.length')==before
+   for phrase in support:
+    dialog.get_by_role('button',name=phrase,exact=True).tap()
+    assert page.evaluate('window.spoken.at(-1)')==phrase
    assert page.evaluate('currentKey()')=='playSchool_kiosk'
    assert page.locator('[data-kiosk-step="1"]').is_visible()
    dialog.screenshot(path=str(out/f'quick-talk-overlay-{w}.png'))
@@ -71,5 +75,5 @@ try:
   assert page.locator(f'[data-kiosk-step="3"] [data-kiosk-meal="{meal}"]').is_visible()
   assert not errors,errors
   browser.close()
- print('PASS: 11 stable request cards, speech, and return to the same kiosk order from the overlay at three screen sizes')
+ print('PASS: 14 request cards including help, a break and done; speech and the same kiosk order at three screen sizes')
 finally:server.shutdown()

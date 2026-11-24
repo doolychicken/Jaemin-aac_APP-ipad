@@ -26,6 +26,10 @@ try:
   def select_date(date):
    page.locator('summary').click()
    page.locator('input[type=date]').fill(date)
+  def full_plan():
+   page.get_by_role('button',name='전체 일정 보기',exact=True).tap()
+  def now_next(*labels):
+   assert page.locator('.mr-focus-pair .mr-card strong').all_text_contents()==list(labels)
   expected={
    '2026-10-19':['학교','점심 먹기','장애인 콜택시','강서 큰나무 병원','택시','집'],
    '2026-10-20':['학교','점심 먹기','장애인 콜택시','강서 큰나무 병원','택시','집'],
@@ -41,21 +45,32 @@ try:
   page.mouse.move(sx,sy);page.mouse.down();page.mouse.move(drop['x']+drop['width']/2,drop['y']+drop['height']/2,steps=8);page.mouse.up()
   assert page.locator('.mr-sequence .mr-card').count()==1
   while page.locator('.mr-source').count():page.locator('.mr-source').tap()
-  assert page.locator('.mr-sequence strong').all_text_contents()==expected['2026-10-21']
+  now_next('학교','점심 먹기')
   page.get_by_role('button',name='다 했어요',exact=True).tap()
+  now_next('점심 먹기','장애인 콜택시')
+  page.locator('.mr-focus-completed summary').tap()
+  assert page.locator('.mr-focus-list strong').all_text_contents()==['학교']
   page.reload();page.get_by_text('아침 일정',exact=True).click()
   page.wait_for_selector('.morning-board')
+  now_next('점심 먹기','장애인 콜택시')
+  page.screenshot(path=str(out/'now-next-1180.png'))
+  full_plan()
   assert page.locator('.mr-done').count()==1
   assert page.locator('.mr-sequence .mr-card').count()==6
+  assert page.locator('.mr-sequence strong').all_text_contents()==expected['2026-10-21']
   for date,labels in expected.items():
    if date=='2026-10-21':continue
    select_date(date);prepare()
    while page.locator('.mr-source').count():page.locator('.mr-source').tap()
+   now_next(*labels[:2])
+   full_plan()
    assert page.locator('.mr-sequence strong').all_text_contents()==labels,(date,labels)
+  page.get_by_role('button',name='지금·다음 보기',exact=True).tap()
   for w,h in [(1180,820),(820,1180),(390,844)]:
    page.set_viewport_size(dict(width=w,height=h))
    page.wait_for_timeout(500)  # App debounces responsive re-rendering.
    assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
+   now_next('학교','점심 먹기')
    page.screenshot(path=str(out/f'friday-{w}.png'))
   page.set_viewport_size(dict(width=1180,height=820))
   page.wait_for_timeout(500)
@@ -64,13 +79,19 @@ try:
   assert page.locator('.mr-slot').count()==6
   assert page.locator('.mr-source').count()==1
   select_date('2026-10-22')
+  full_plan()
   assert page.locator('.mr-slot').count()==7
   select_date('2026-10-24');prepare()
   assert page.locator('.mr-slot').count()==0
   page.locator('summary').click();page.get_by_label('추가할 일정').select_option('home')
   page.get_by_role('button',name='일정 추가',exact=True).click()
   page.locator('.mr-source').tap()
-  assert page.locator('.mr-sequence strong').all_text_contents()==['집']
+  now_next('집')
+  page.locator('.mr-complete').tap()
+  assert page.locator('.mr-focus-finished').is_visible()
+  page.locator('.mr-focus-completed summary').tap()
+  page.get_by_role('button',name='완료 한 칸 되돌리기',exact=True).tap()
+  now_next('집')
   # A new day never inherits yesterday's completion marks.
   page.clock.set_fixed_time('2026-10-22T08:00:00+09:00')
   page.evaluate('pushScreen("main","메인 화면");render();pushScreen("morningRoutine","아침 일정");render()')

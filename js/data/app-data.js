@@ -363,7 +363,10 @@ const DATA = {
         { label: "아이패드", speech: "아이패드 주세요", image: "./images/ipad.png" },
         { label: "유튜브", speech: "유튜브 보고 싶어요", image: "./images/youtube.png" },
         { label: "산책하기", speech: "산책 가고 싶어요", image: "./images/shoes.png" },
-        { label: "자동차 타기", speech: "자동차 타고 싶어요", image: "./images/dad_carkey.png" }
+        { label: "자동차 타기", speech: "자동차 타고 싶어요", image: "./images/dad_carkey.png" },
+        { label: "도와줘요", speech: "도와줘요", image: "./images/emotions/help.jpg", support: true },
+        { label: "쉬고 싶어요", speech: "쉬고 싶어요", image: "./images/quick_talk/take-a-break.webp", support: true },
+        { label: "다 했어요", speech: "다 했어요", image: "./images/quick_talk/all-done.webp", support: true }
       ]
     },
     main: {

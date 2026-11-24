@@ -2664,7 +2664,11 @@ function renderQuickTalkCards(container, items) {
   const status = document.createElement("div");
   status.className = "quick-talk-status";
   status.setAttribute("role", "status");
-  status.textContent = "?? ?? ?? ?????";
+  status.textContent = "하고 싶은 말을 골라요";
+  const support = document.createElement("div");
+  support.className = "quick-talk-support";
+  support.setAttribute("role", "group");
+  support.setAttribute("aria-label", "도움과 휴식, 마치기");
   for (const item of items) {
     const card = document.createElement("button");
     card.type = "button";
@@ -2704,15 +2708,16 @@ function renderQuickTalkCards(container, items) {
       status.textContent = item.speech;
       speak(item.speech, { quickTalk: true });
     });
-    container.append(card);
+    (item.support ? support : container).append(card);
   }
+  if (support.childElementCount) container.append(support);
   container.append(status);
 }
 
 function openQuickTalk() {
   if (quickTalkDialog?.open || currentKey() === "quickTalk") return;
   if (typeof quickTalkDialog?.showModal !== "function") {
-    pushScreen("quickTalk", "?? ???");
+    pushScreen("quickTalk", "바로 말하기");
     render();
     return;
   }
