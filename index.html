@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://img.youtube.com" />
   <link rel="preconnect" href="https://i.ytimg.com" />
   <title>AAC 앱</title>
-  <link rel="stylesheet" href="./css/app.css?v=428" />
+  <link rel="stylesheet" href="./css/app.css?v=431" />
   <link rel="stylesheet" href="./css/features/study-puzzle.css?v=277" />
   <link rel="stylesheet" href="./css/features/recycling-game.css?v=339" />
   <link rel="stylesheet" href="./css/features/mart-cart-game.css?v=301" />
@@ -43,6 +43,7 @@
         <p id="breadcrumb" class="crumb" style="display:none;"></p>
       </div>
       <div class="topbar-btns">
+        <button id="quickTalkButton" class="quick-talk-button" type="button" aria-haspopup="dialog" aria-controls="quickTalkDialog">바로 말하기</button>
         <button id="fullscreenButton" class="fullscreen-btn" type="button" aria-pressed="false">⛶ 전체화면</button>
         <button id="homeButton" class="home-btn" style="display:none;">🏠 홈</button>
         <button id="backButton" class="back-btn" style="display:none;">뒤로 가기</button>
@@ -72,6 +73,17 @@
       </button>
     </section>
     <section id="buttonGrid" class="grid"></section>
+    <dialog id="quickTalkDialog" class="quick-talk-dialog" aria-labelledby="quickTalkTitle">
+      <div class="quick-talk-panel">
+        <header class="quick-talk-header">
+          <h2 id="quickTalkTitle">바로 말하기</h2>
+          <form method="dialog">
+            <button class="back-btn" type="submit" autofocus>돌아가기</button>
+          </form>
+        </header>
+        <div id="quickTalkCards" class="quick-talk-grid"></div>
+      </div>
+    </dialog>
   </main>
 
   <script src="./js/data/study-data.js?v=428"></script>
@@ -99,7 +111,7 @@
   <script src="./js/features/play-objectnames.js?v=430"></script>
   <script src="./js/features/play-school.js?v=430"></script>
   <script src="./js/features/sticker-book.js?v=428"></script>
-  <script src="./js/main.js?v=428"></script>
-  <script src="./js/core/offline-status.js?v=430"></script>
+  <script src="./js/main.js?v=431"></script>
+  <script src="./js/core/offline-status.js?v=431"></script>
 </body>
 </html>

@@ -9,6 +9,8 @@
 const titleEl            = document.getElementById("screenTitle");
 const backBtn            = document.getElementById("backButton");
 const homeBtn            = document.getElementById("homeButton") || { style: {}, addEventListener: () => {} };
+const quickTalkDialog = document.getElementById("quickTalkDialog");
+const quickTalkBtn = document.getElementById("quickTalkButton");
 const fullscreenBtn      = document.getElementById("fullscreenButton") || { style: {}, addEventListener: () => {}, setAttribute: () => {} };
 const crumbEl            = document.getElementById("breadcrumb");
 const gridEl             = document.getElementById("buttonGrid");
@@ -373,7 +375,8 @@ function unlockAudioOnce() {
 }
 
 // ── 2. speak: 안드로이드 정교한 예외 처리 ────────────────────────────────────
-function speak(text) {
+function speak(text, { quickTalk = false } = {}) {
+  if (quickTalkDialog?.open && !quickTalk) return Promise.resolve();
   const spokenText = String(text || "").trim();
   if (!spokenText) return Promise.resolve();
   const request = ++ttsRequestId;
@@ -2656,51 +2659,75 @@ function appendQuickToiletTile(options = {}) {
   gridEl.appendChild(btn);
 }
 
+function renderQuickTalkCards(container, items) {
+  container.replaceChildren();
+  const status = document.createElement("div");
+  status.className = "quick-talk-status";
+  status.setAttribute("role", "status");
+  status.textContent = "?? ?? ?? ?????";
+  for (const item of items) {
+    const card = document.createElement("button");
+    card.type = "button";
+    card.className = "quick-talk-card";
+    card.setAttribute("aria-label", item.speech);
+    if (item.crop) {
+      const ns = "http://www.w3.org/2000/svg";
+      const svg = document.createElementNS(ns, "svg");
+      svg.setAttribute("viewBox", item.crop.join(" "));
+      svg.setAttribute("aria-hidden", "true");
+      const img = document.createElementNS(ns, "image");
+      img.setAttribute("href", item.image);
+      img.setAttribute("width", item.sheet[0]);
+      img.setAttribute("height", item.sheet[1]);
+      const clip = document.createElementNS(ns, "clipPath");
+      clip.id = container.id + "-crop-" + container.childElementCount;
+      const rect = document.createElementNS(ns, "rect");
+      ["x", "y", "width", "height"].forEach((key, i) => rect.setAttribute(key, item.crop[i]));
+      clip.append(rect);
+      svg.append(clip);
+      img.setAttribute("clip-path", "url(#"+ clip.id + ")");
+      svg.append(img);
+      card.append(svg);
+    } else {
+      const img = document.createElement("img");
+      img.src = item.image;
+      img.alt = "";
+      img.draggable = false;
+      card.append(img);
+    }
+    const label = document.createElement("span");
+    label.textContent = item.label;
+    card.append(label);
+    card.addEventListener("click", () => {
+      container.querySelector(".is-selected")?.classList.remove("is-selected");
+      card.classList.add("is-selected");
+      status.textContent = item.speech;
+      speak(item.speech, { quickTalk: true });
+    });
+    container.append(card);
+  }
+  container.append(status);
+}
+
+function openQuickTalk() {
+  if (quickTalkDialog?.open || currentKey() === "quickTalk") return;
+  if (typeof quickTalkDialog?.showModal !== "function") {
+    pushScreen("quickTalk", "?? ???");
+    render();
+    return;
+  }
+  renderQuickTalkCards(document.getElementById("quickTalkCards"), DATA.screens.quickTalk.items);
+  quickTalkDialog.showModal();
+  ++ttsRequestId;
+  window.offlineSpeech?.cancel();
+  try { window.speechSynthesis?.cancel(); } catch (_) {}
+}
+
 function renderButtons(items, layout) {
   gridEl.innerHTML = "";
   if (layout === "quickTalk") {
     gridEl.className = "quick-talk-grid";
-    const status = document.createElement("div");
-    status.className = "quick-talk-status";
-    status.setAttribute("role", "status");
-    status.textContent = "하고 싶은 말을 골라주세요";
-    for (const item of items) {
-      const card = document.createElement("button");
-      card.type = "button";
-      card.className = "quick-talk-card";
-      card.setAttribute("aria-label", item.speech);
-      if (item.crop) {
-        const ns = "http://www.w3.org/2000/svg";
-        const svg = document.createElementNS(ns, "svg");
-        svg.setAttribute("viewBox", item.crop.join(" "));
-        svg.setAttribute("aria-hidden", "true");
-        const img = document.createElementNS(ns, "image");
-        img.setAttribute("href", item.image);
-        img.setAttribute("width", item.sheet[0]);
-        img.setAttribute("height", item.sheet[1]);
-        const clip = document.createElementNS(ns, "clipPath");
-        clip.id = "quick-talk-remote-clip";
-        const rect = document.createElementNS(ns, "rect");
-        ["x", "y", "width", "height"].forEach((key, i) => rect.setAttribute(key, item.crop[i]));
-        clip.append(rect); svg.append(clip);
-        img.setAttribute("clip-path", "url(#quick-talk-remote-clip)");
-        svg.append(img); card.append(svg);
-      } else {
-        const img = document.createElement("img");
-        img.src = item.image; img.alt = "";
-        card.append(img);
-      }
-      const label = document.createElement("span");
-      label.textContent = item.label; card.append(label);
-      card.addEventListener("click", () => {
-        for (const other of gridEl.querySelectorAll(".quick-talk-card")) other.classList.remove("is-selected");
-        card.classList.add("is-selected");
-        status.textContent = item.speech;
-        speak(item.speech);
-      });
-      gridEl.append(card);
-    }
-    gridEl.append(status);
+    renderQuickTalkCards(gridEl, items);
     return;
   }
   const isMain  = layout === "main";
@@ -3099,6 +3126,7 @@ function render() {
   renderRevision += 1;
   const entry = navStack[navStack.length - 1];
   if (renderedEntry !== entry) {
+    if (quickTalkDialog?.open) quickTalkDialog.close();
     if (activeFeature) activeFeature.clear();
     activeFeature = null;
     dateTasks.clear();
@@ -3111,6 +3139,7 @@ function render() {
   const screen = DATA.screens[key] || DATA.screens.main;
   if (key !== "toilet") stopWaterSound();
   const isMain = key === "main";
+  if (quickTalkBtn) quickTalkBtn.hidden = key === "quickTalk";
   backBtn.style.display = isMain ? "none" : "inline-flex";
   homeBtn.style.display = isMain ? "none" : "inline-flex";
   titleEl.textContent = screen.title || "AAC";
@@ -3310,6 +3339,8 @@ homeBtn.addEventListener("click", () => {
   resetPageState();
   render();
 });
+
+quickTalkBtn?.addEventListener("click", openQuickTalk);
 
 fullscreenBtn.addEventListener("click", () => {
   toggleFullscreenMode();
