@@ -1,0 +1,51 @@
+.ox-choices {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(8px, 2vw, 18px);
+}
+.ox-answer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(6px, 1.7vw, 16px);
+  min-height: 82px;
+  padding: 5px 10px;
+  border: 2px solid currentColor;
+  border-radius: 18px;
+  color: #116344;
+  background: #ecf8f0;
+  font: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.ox-answer[data-ox-answer="no"] { background: #fff1ee; color: #9a3d30; }
+.ox-answer.is-selected, .ox-answer:active { box-shadow: inset 0 0 0 2px currentColor; }
+.ox-answer:focus-visible { outline: 3px solid #185e9b; outline-offset: 2px; }
+.ox-answer:disabled { opacity: .54; }
+.ox-mark { font-size: clamp(38px, 7vw, 72px); font-weight: 800; line-height: 1; }
+.ox-answer strong { font-size: clamp(16px, 3vw, 30px); word-break: keep-all; }
+.quick-talk-grid > .ox-choices { grid-column: 1 / -1; }
+.quick-talk-grid .ox-answer { min-height: 52px; border-radius: 14px; }
+.quick-talk-grid .ox-mark { font-size: clamp(29px, 4vw, 44px); }
+.quick-talk-grid .ox-answer strong { font-size: clamp(16px, 2.5vw, 24px); }
+.ox-game {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  max-width: 850px;
+  align-self: center;
+  padding: clamp(9px, 2vw, 18px);
+  border: 1px solid #d7e4db;
+  border-radius: 22px;
+  background: #fafcf7;
+  color: #223f36;
+}
+.ox-modes { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.ox-modes [aria-pressed="true"] { background: #246652; border-color: #246652; color: white; }
+.ox-heading { margin: 0; text-align: center; font-size: clamp(21px, 3.5vw, 34px); }
+.ox-picture { display: block; width: min(310px, 100%); height: clamp(110px, 25vh, 240px); object-fit: contain; }
+.ox-controls { display: grid; justify-items: center; gap: 9px; width: min(620px, 100%); }
+.ox-controls .ox-choices,.ox-track { width: 100%; }
+.ox-track .ps-road,.ox-stopped { height: clamp(120px, 25vh, 240px); min-height: 0; }
+.ox-stopped { display: grid; place-items: center; border-radius: 18px; background: #eaf0ed; font-size: clamp(20px, 3vw, 30px); }
+.ox-status { min-height: 1em; margin: 0; color: #425e51; }

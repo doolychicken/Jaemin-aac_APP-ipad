@@ -352,6 +352,7 @@ const DATA = {
     quickTalk: {
       title: "바로 말하기", helper: "사진을 누르면 내 말을 들려줘요.",
       hero: [], layout: "quickTalk", showPlayer: false,
+      choiceLabels: ["할래요", "안 할래요"],
       items: [
         { label: "에그타르트", speech: "에그타르트 주세요", image: "./images/meal_eggtart.png" },
         { label: "우유", speech: "우유 주세요", image: "./images/meal_milk_large_v2.png" },
@@ -392,6 +393,7 @@ const DATA = {
     playSchool_dishwash: { title: "설거지 놀이", helper: "", hero: [], items: [], layout: "playSchool", game: "dishwash" },
     playSchool_tablesetting: { title: "밥상 차리기", helper: "", hero: [], items: [], layout: "playSchool", game: "tablesetting" },
     playSchool_objectnames: { title: "물건 이름 찾기", helper: "", hero: [], items: [], layout: "playSchool", game: "objectnames" },
+    playSchool_yesno: { title: "오엑스 놀이", helper: "", hero: [], items: [], layout: "playSchool", game: "yesno" },
     playSchool_music: { title: "악기 소리 놀이", helper: "", hero: [], items: [], layout: "playSchool", game: "music" },
     playSchool_carwash: { title: "반짝 세차장", helper: "", hero: [], items: [], layout: "playSchool", game: "carwash" },
     playSchool_snackshop: { title: "내가 고르는 매점", helper: "", hero: [], items: [], layout: "playSchool", game: "snackshop" },

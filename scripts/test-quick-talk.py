@@ -64,6 +64,9 @@ try:
    for phrase in support:
     dialog.get_by_role('button',name=phrase,exact=True).tap()
     assert page.evaluate('window.spoken.at(-1)')==phrase
+   for response in ['할래요','안 할래요']:
+    dialog.get_by_role('button',name=response,exact=True).tap()
+    assert page.evaluate('window.spoken.at(-1)')==response
    assert page.evaluate('currentKey()')=='playSchool_kiosk'
    assert page.locator('[data-kiosk-step="1"]').is_visible()
    dialog.screenshot(path=str(out/f'quick-talk-overlay-{w}.png'))

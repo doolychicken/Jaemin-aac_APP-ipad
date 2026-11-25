@@ -115,6 +115,32 @@ def find_names(page):
             named(page, "종류 바꾸기").tap()
 
 
+def learn_yes_no(page):
+    board = page.locator(".ox-game")
+    yes = board.locator('[data-ox-answer="yes"]')
+    no = board.locator('[data-ox-answer="no"]')
+    assert yes.bounding_box()["x"] < no.bounding_box()["x"]
+    no.tap()
+    assert board.locator(".ox-stopped").is_visible()
+    assert board.locator(".ps-road-car").count() == 0
+    named(page, "다시 골라요").tap()
+    yes.tap()
+    assert board.locator(".ps-road-car.is-driving").is_visible()
+    no.tap()
+    assert board.locator(".ps-road-car").count() == 0
+    assert not page.locator(".ps-reward-actions").count()
+    named(page, "사진 오엑스 퀴즈").tap()
+    no.tap()
+    assert board.locator(".ox-status").inner_text() == "사진을 보고 다시 골라요"
+    yes.tap()
+    named(page, "다음").tap()
+    no.tap()
+    assert board.locator(".ox-heading").inner_text() == "아니에요. 리모컨이에요."
+    named(page, "할래요·안 할래요").tap()
+    assert board.locator(".ox-stopped").is_visible()
+    assert not page.locator(".ps-reward-actions").count()
+
+
 def main():
     server = ThreadingHTTPServer(("127.0.0.1", 0), partial(base.QuietHandler, directory=str(ROOT)))
     threading.Thread(target=server.serve_forever, daemon=True).start()
@@ -133,7 +159,7 @@ def main():
             page.locator(".ps-settings summary").click()
             page.get_by_label("고르는 그림 수").select_option("3")
             page.locator(".ps-settings summary").click()
-            for game, check in [("kiosk", order_meal), ("dishwash", wash_dish), ("tablesetting", set_table), ("objectnames", find_names)]:
+            for game, check in [("kiosk", order_meal), ("dishwash", wash_dish), ("tablesetting", set_table), ("objectnames", find_names), ("yesno", learn_yes_no)]:
                 page.locator(f'[data-game="{game}"]').tap()
                 check(page)
                 page.locator(".ps-footer").get_by_role("button", name="놀이 목록", exact=True).tap()

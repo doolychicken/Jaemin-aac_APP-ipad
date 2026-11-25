@@ -2665,6 +2665,14 @@ function renderQuickTalkCards(container, items) {
   status.className = "quick-talk-status";
   status.setAttribute("role", "status");
   status.textContent = "하고 싶은 말을 골라요";
+  const responses = DATA.screens.quickTalk.choiceLabels;
+  const choose = (card, phrase) => {
+    container.querySelector(".is-selected")?.classList.remove("is-selected");
+    card.classList.add("is-selected");
+    status.textContent = phrase;
+    speak(phrase, { quickTalk: true });
+  };
+  container.append(window.createOxChoices(responses, (answer, button) => choose(button, responses[answer ? 0 : 1])));
   const support = document.createElement("div");
   support.className = "quick-talk-support";
   support.setAttribute("role", "group");
@@ -2702,12 +2710,7 @@ function renderQuickTalkCards(container, items) {
     const label = document.createElement("span");
     label.textContent = item.label;
     card.append(label);
-    card.addEventListener("click", () => {
-      container.querySelector(".is-selected")?.classList.remove("is-selected");
-      card.classList.add("is-selected");
-      status.textContent = item.speech;
-      speak(item.speech, { quickTalk: true });
-    });
+    card.addEventListener("click", () => choose(card, item.speech));
     (item.support ? support : container).append(card);
   }
   if (support.childElementCount) container.append(support);

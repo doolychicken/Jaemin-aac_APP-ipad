@@ -4,6 +4,7 @@
     { id: 'dishwash', title: '설거지 놀이', subtitle: '문지르고 헹군 뒤 건조대에 놓아요', book: 'kitchen', piece: 'sponge', tone: 'mint', group: 'daily' },
     { id: 'tablesetting', title: '밥상 차리기', subtitle: '밥과 국, 반찬과 수저를 놓아요', book: 'kitchen', piece: 'side-dishes', tone: 'yellow', group: 'daily' },
     { id: 'objectnames', title: '물건 이름 찾기', subtitle: '전자기기와 우리 집 물건을 구분해요', image: './images/play_household/laptop.webp', tone: 'blue', group: 'daily' },
+    { id: 'yesno', title: '오엑스 놀이', subtitle: '내 마음을 말하고 사진 퀴즈를 풀어요', badge: '○ ×', tone: 'lavender', group: 'daily' },
     { id: 'carwash', title: '반짝 세차장', subtitle: '자동차를 씻고 닦아요', image: './images/traffic_game/car_blue.png', tone: 'blue', group: 'cars' },
     { id: 'snackshop', title: '내가 고르는 매점', subtitle: '먹고 싶은 것을 주문해요', image: './images/meal_eggtart.png', tone: 'peach', group: 'study' },
     { id: 'family', title: '우리 가족 찾기', subtitle: '나, 엄마, 아빠를 찾아요', image: './images/outing_person_me.png', tone: 'peach', group: 'study' },
@@ -72,7 +73,8 @@
     const activityViews = {
       carwash: window.renderPlayCarwash, snackshop: window.renderPlaySnackshop,
       kiosk: window.renderPlayKiosk, dishwash: window.renderPlayDishwash,
-      tablesetting: window.renderPlayTableSetting, objectnames: window.renderPlayObjectNames
+      tablesetting: window.renderPlayTableSetting, objectnames: window.renderPlayObjectNames,
+      yesno: window.renderPlayYesNo
     };
     let menuGroup = 'daily';
 
@@ -657,7 +659,7 @@
       const progress = element('div', 'ps-progress');
       progress.setAttribute('aria-label', '전체 ' + settings.rounds + '번 중 ' + Math.min(state.round + 1, settings.rounds) + '번째');
       for (let i = 0; i < settings.rounds; i++) progress.appendChild(element('span', i <= state.round ? 'is-done' : ''));
-      if (game.id !== 'music') header.appendChild(progress);
+      if (game.id !== 'music' && (game.id !== 'yesno' || state.oxMode === 'quiz')) header.appendChild(progress);
       gridEl.appendChild(header);
       if (state.paused) {
         const rest = element('div', 'ps-rest');
@@ -687,7 +689,7 @@
         gridEl.appendChild(board);
         const active = () => board.isConnected && state?.id === game.id && state.phase === 'question' && !state.paused;
         activityViews[game.id]({
-          board, state, settings, element, button, photo, shuffled, draw: render,
+          board, state, settings, element, button, photo, shuffled, road, still, draw: render,
           say(text) {
             tasks.clear();
             return say(text);
