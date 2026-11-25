@@ -259,6 +259,27 @@ def prepare_life_items(page):
     assert scene.locator(".lp-picked-art").bounding_box()["height"] >= 100
     assert_photos(scene)
 
+    page.locator(".ps-footer").get_by_role("button", name="놀이 목록", exact=True).tap()
+    page.locator("[data-game=lifeprep]").tap()
+    board.locator("[data-prep-topic=outdoorWeather]").tap()
+    for task, ids in [
+        ("rain", ["umbrella"]), ("puddle", ["rainBoots"]),
+        ("sunny", ["sunCap", "sunscreen"]), ("snow", ["gloves", "scarf"]),
+    ]:
+        assert board.get_attribute("data-prep-task") == task
+        assert empty.count() == len(ids)
+        choices = ",".join(f"[data-prep-choice={item}]" for item in ids)
+        for _ in ids:
+            board.locator(choices).first.drag_to(empty.first)
+        assert scene.locator(".lp-picked").count() == len(ids)
+        assert_photos(scene)
+        if task == "sunny":
+            named(page, "다 했어요").tap()
+            named(page, "한 번 더").tap()
+            board.locator("[data-prep-topic=outdoorWeather]").tap()
+        elif task != "snow":
+            named(page, "다음").tap()
+
 
 def match_transport(page):
     board = page.locator(".lp-board")

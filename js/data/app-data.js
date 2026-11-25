@@ -41,6 +41,13 @@ const PHOTO_AAC_CELEBRATION = {
   microphone: photoAacCard("마이크", "karaoke-microphone.webp")
 };
 
+const PHOTO_AAC_WEATHER_ITEMS = {
+  umbrella: photoAacCard("우산", "weather/umbrella.webp"),
+  rainBoots: photoAacCard("장화", "weather/rain-boots.webp"),
+  sunscreen: photoAacCard("선크림", "weather/sunscreen.webp"),
+  sunCap: photoAacCard("햇빛을 가리는 모자", "weather/sun-cap.webp")
+};
+
 const transportAacCard = (label, name) => photoAacCard(label, `transport/${name}.webp`);
 const PHOTO_AAC_TRANSPORT = {
   policeCar: photoAacCard("경찰차", "policecar.png", "./images/"),
@@ -187,7 +194,8 @@ const PHOTO_AAC_SECTIONS = [
       photoAacItem("outing_weather", 13, "우산쓰기"),
       photoAacItem("outing_weather", 14, "맑음"),
       photoAacItem("outing_weather", 15, "비온다"),
-      photoAacItem("outing_weather", 16, "눈온다")
+      photoAacItem("outing_weather", 16, "눈온다"),
+      ...Object.values(PHOTO_AAC_WEATHER_ITEMS)
     ]
   },
   {

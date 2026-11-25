@@ -44,13 +44,16 @@
     coat: sticker('겉옷', 'wardrobe', 'coat'),
     shoes: sticker('신발', 'wardrobe', 'shoes'),
     socks: sticker('양말', 'wardrobe', 'socks'),
+    gloves: sticker('장갑', 'wardrobe', 'gloves'),
+    scarf: sticker('목도리', 'wardrobe', 'scarf'),
     pajamas: sticker('잠옷', 'wardrobe', 'pajamas'),
     birthdayCake: PHOTO_AAC_CELEBRATION.cake,
     birthdayCandle: PHOTO_AAC_CELEBRATION.candle,
     birthdayHat: PHOTO_AAC_CELEBRATION.hat,
     birthdayGift: PHOTO_AAC_CELEBRATION.gift,
     microphone: PHOTO_AAC_CELEBRATION.microphone,
-    ...PHOTO_AAC_TRANSPORT
+    ...PHOTO_AAC_TRANSPORT,
+    ...PHOTO_AAC_WEATHER_ITEMS
   };
 
   const topics = [
@@ -91,6 +94,16 @@
         ['birthdayCake', 'birthdayCandle', 'birthdayHat', 'birthdayGift'], ['microphone', 'tvRemote', 'kettle']),
       task('karaoke', '노래방에서 노래하려면 무엇이 필요할까요?', PHOTO_AAC_CELEBRATION.karaoke,
         ['microphone'], ['tvRemote', 'birthdayGift', 'laptop'])
+    ] },
+    { id: 'outdoorWeather', label: '날씨와 옷차림', tasks: [
+      task('rain', '비가 와요. 비를 막으려면 무엇을 펼칠까요?', situation('비 오는 날', 'outing_weather_15.jpg'),
+        ['umbrella'], ['sunscreen', 'scarf', 'dryer']),
+      task('puddle', '물웅덩이가 있어요. 발이 젖지 않게 무엇을 신을까요?', situation('물웅덩이가 있는 날', 'outing_weather_15.jpg'),
+        ['rainBoots'], ['shoes', 'socks', 'gloves']),
+      task('sunny', '햇볕이 강해요. 모자와 피부에 바를 것을 찾아요', situation('햇볕이 강한 날', 'outing_weather_14.jpg'),
+        ['sunCap', 'sunscreen'], ['gloves', 'scarf', 'rainBoots']),
+      task('snow', '눈이 오고 추워요. 손과 목에 무엇을 할까요?', situation('눈 오는 날', 'outing_weather_16.jpg'),
+        ['gloves', 'scarf'], ['sunCap', 'sunscreen', 'bag'])
     ] }
   ];
   const transport = [

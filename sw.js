@@ -4,9 +4,9 @@
  * On first visit, pre-caches all images so subsequent loads are instant.
  */
 
-importScripts('./js/data/speech-manifest.js?v=442');
+importScripts('./js/data/speech-manifest.js?v=443');
 
-const CACHE_VERSION = 'v442';
+const CACHE_VERSION = 'v443';
 const CACHE_NAME = `jaemin-aac-${CACHE_VERSION}`;
 
 self.addEventListener('message', (event) => {
@@ -119,6 +119,10 @@ const PRECACHE_ASSETS = [
   './images/photo_aac/transport/taxi-driver.webp',
   './images/photo_aac/transport/taxi.webp',
   './images/photo_aac/transport/transit-card.webp',
+  './images/photo_aac/weather/umbrella.webp',
+  './images/photo_aac/weather/rain-boots.webp',
+  './images/photo_aac/weather/sunscreen.webp',
+  './images/photo_aac/weather/sun-cap.webp',
   './images/play_elevator/entrance.webp',
   './images/play_elevator/steel-doors.webp',
   './images/play_elevator/steel-button.webp',
