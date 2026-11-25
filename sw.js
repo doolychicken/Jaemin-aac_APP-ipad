@@ -6,7 +6,7 @@
 
 importScripts('./js/data/speech-manifest.js?v=436');
 
-const CACHE_VERSION = 'v436';
+const CACHE_VERSION = 'v437';
 const CACHE_NAME = `jaemin-aac-${CACHE_VERSION}`;
 
 self.addEventListener('message', (event) => {
@@ -91,6 +91,9 @@ const PRECACHE_ASSETS = [
   './js/features/play-objectnames.js',
   './js/features/play-yesno.js',
   './js/features/play-elevator.js',
+  './images/play_elevator/entrance.webp',
+  './images/play_elevator/steel-doors.webp',
+  './images/play_elevator/steel-button.webp',
   './images/play_dishwash/drying-rack.webp',
   './images/play_kiosk/gimbap.webp',
   './images/play_kiosk/udon.webp',

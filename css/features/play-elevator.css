@@ -12,9 +12,9 @@
 .lift-scene {
   display: grid;
   justify-items: center;
-  padding: 13px 14% 0;
+  padding: 11px 12px 12px;
   border-radius: 18px;
-  background: linear-gradient(to bottom, #d7cfc3 83%, #b8aaa0 83%, #c5b9a9);
+  background: #e8e7e4;
   box-shadow: inset 0 0 0 1px #857b6a24;
 }
 .lift-display {
@@ -34,79 +34,88 @@
   font-variant-numeric: tabular-nums;
 }
 .lift-arrow { font-size: .65em; }
+.lift-photo-frame { position: relative; width: min(100%, 283px); border-radius: 8px; overflow: hidden; }
+.lift-entrance { display: block; width: 100%; height: auto; aspect-ratio: 792 / 1096; }
+/* Align the photographed door leaves with the opening in the entrance photo. */
 .lift-doorway {
-  width: 100%;
-  height: clamp(190px, 34vh, 330px);
-  position: relative;
+  position: absolute;
+  left: 21.2%;
+  top: 19%;
+  width: 58.6%;
+  height: 69.2%;
   overflow: hidden;
-  isolation: isolate;
-  border: 7px solid #636e73;
-  border-bottom-width: 4px;
-  background: #8f999a;
-  box-shadow: 0 2px 0 #5f615e;
-}
-.lift-interior {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, #58686d 0%, #bcc4c0 15%, #b3bdb7 85%, #59686c),
-              linear-gradient(#c8c6bc 75%, #a69e92 75%);
-}
-.lift-interior::after {
-  content: "";
-  position: absolute;
-  left: 12%;
-  right: 12%;
-  bottom: 34%;
-  height: 6px;
-  border: 1px solid #4f5d60;
-  border-radius: 4px;
-  background: #dedfe1;
-  box-shadow: 0 4px 8px #142e3b3a;
 }
 .lift-door {
   position: absolute;
   width: 50%;
   inset-block: 0;
-  background: linear-gradient(93deg, #969da1, #d7dcdb 32%, #aaafb2 65%, #e1e3e0);
+  background: url('../../images/play_elevator/steel-doors.webp') no-repeat;
+  background-size: 200% 100%;
 }
-.lift-door-left { left: 0; border-right: 1px solid #525f63; }
-.lift-door-right { right: 0; border-left: 1px solid #525f63; }
-.lift-open .lift-door-left { transform: translateX(-92%); }
-.lift-open .lift-door-right { transform: translateX(92%); }
-[data-lift-phase="board"] .lift-door-left,[data-lift-phase="arrive"] .lift-door-left { animation: lift-open-left .4s ease-out; }
-[data-lift-phase="board"] .lift-door-right,[data-lift-phase="arrive"] .lift-door-right { animation: lift-open-right .4s ease-out; }
+.lift-door-left { left: 0; background-position: left center; border-right: 1px solid #525f63; }
+.lift-door-right { right: 0; background-position: right center; }
+.lift-open .lift-door-left { transform: translateX(-100%); }
+.lift-open .lift-door-right { transform: translateX(100%); }
+.lift-opening .lift-door-left { animation: lift-open-left .4s ease-out; }
+.lift-opening .lift-door-right { animation: lift-open-right .4s ease-out; }
 .lift-closing .lift-door-left { animation: lift-close-left .3s ease-in; }
 .lift-closing .lift-door-right { animation: lift-close-right .3s ease-in; }
 @keyframes lift-open-left { from { transform: translateX(0); } }
 @keyframes lift-open-right { from { transform: translateX(0); } }
-@keyframes lift-close-left { from { transform: translateX(-92%); } }
-@keyframes lift-close-right { from { transform: translateX(92%); } }
+@keyframes lift-close-left { from { transform: translateX(-100%); } }
+@keyframes lift-close-right { from { transform: translateX(100%); } }
 .ps-still .lift-doorway .lift-door { animation: none; }
 .lift-controls { display: grid; gap: 8px; align-content: start; }
 .lift-goal { display: flex; align-items: center; justify-content: space-between; margin: 0; padding: 7px 13px; border-radius: 12px; background: #e0f0e9; font-weight: 700; }
 .lift-goal strong { font-size: clamp(23px, 3vw, 33px); }
 .lift-call-buttons,.lift-panel { display: grid; gap: 7px; }
-.lift-call-buttons { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.lift-panel { grid-template-columns: repeat(5, minmax(0, 1fr)); padding: 9px; background: #c9d2d9; border-radius: 15px; }
+.lift-call-buttons,.lift-panel {
+  padding: 8px;
+  border: 1px solid #92979a;
+  border-radius: 14px;
+  background: linear-gradient(120deg, #f3f4f3, #aeb5b8 55%, #dce0e1);
+  box-shadow: inset 0 0 0 2px #fff6, 0 3px 7px #16252c26;
+}
+.lift-call-buttons { width: min(190px, 100%); justify-self: center; }
+.lift-panel { grid-template-columns: repeat(2, minmax(0, 1fr)); width: min(292px, 100%); justify-self: center; }
 .lift-board .lift-key {
   min-width: 0;
-  min-height: 52px;
+  min-height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  padding: 4px;
-  border: 2px solid #8199a6;
+  gap: 8px;
+  padding: 0 5px;
+  border: 1px solid transparent;
   border-radius: 12px;
-  background: #fafdff;
-  color: #233f4c;
-  font-size: clamp(17px, 2.1vw, 23px);
+  background: transparent;
+  color: #172d37;
+  font-size: clamp(16px, 2vw, 20px);
   font-weight: 800;
 }
-.lift-board .lift-call { flex-direction: column; gap: 2px; min-height: 96px; font-size: clamp(19px, 2.5vw, 28px); }
-.lift-call span { font-size: 1.35em; line-height: 1; }
+.lift-key-face {
+  width: clamp(44px, 5.2vw, 53px);
+  aspect-ratio: 1;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #c1c6c8 url('../../images/play_elevator/steel-button.webp') center / cover no-repeat;
+  box-shadow: 0 2px 3px #19292e60;
+  color: #102128;
+  text-shadow: 0 1px 1px #fff;
+  font-size: clamp(20px, 2.4vw, 25px);
+  font-weight: 900;
+  line-height: 1;
+}
+.lift-board .lift-call { min-height: 62px; justify-content: flex-start; gap: 12px; padding-inline: 14px; }
+.lift-call .lift-key-face { width: 52px; }
+.lift-door-key .lift-key-face { font-size: clamp(13px, 1.8vw, 17px); }
+.lift-key:enabled:active .lift-key-face,.lift-floor-key[aria-pressed="true"] .lift-key-face {
+  box-shadow: inset 0 0 0 3px #ffb932, 0 0 7px 2px #ffd06b;
+}
 .lift-door-buttons { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
-.lift-floor-key[aria-pressed="true"] { background: #ffec9a; border-color: #7d6824; color: #372c06; }
+.lift-board .lift-door-key { padding-inline: 3px; gap: 4px; }
 .lift-key:disabled:not([aria-pressed="true"]) { opacity: .66; }
 .lift-destination { padding: 5px 0; }
 .lift-destination summary { min-height: 42px; padding: 8px 0; cursor: pointer; }
@@ -115,8 +124,5 @@
 .lift-status { margin: 0; min-height: 1.25em; font-weight: 700; }
 @media (max-width: 600px) {
   .lift-layout { grid-template-columns: minmax(0, 1fr); gap: 8px; }
-  .lift-scene { padding-inline: 24%; }
-  .lift-doorway { height: clamp(128px, 23vh, 208px); }
-  .lift-board .lift-call { min-height: 68px; }
-  .lift-board .lift-key { min-height: 48px; }
+  .lift-photo-frame { width: min(100%, 190px); }
 }
