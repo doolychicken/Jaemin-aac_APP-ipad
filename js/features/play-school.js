@@ -6,6 +6,7 @@
     { id: 'objectnames', title: '물건 이름 찾기', subtitle: '전자기기와 우리 집 물건을 구분해요', image: './images/play_household/laptop.webp', tone: 'blue', group: 'daily' },
     { id: 'yesno', title: '오엑스 놀이', subtitle: '내 마음을 말하고 사진 퀴즈를 풀어요', badge: '○ ×', tone: 'lavender', group: 'daily' },
     { id: 'elevator', title: '엘리베이터 놀이', subtitle: '위·아래 버튼을 누르고 층을 골라요', image: './images/school_elevator.png', tone: 'blue', group: 'daily' },
+    { id: 'lifeprep', title: '무엇이 필요할까요?', subtitle: '사진을 보고 필요한 물건을 골라요', book: 'kitchen', piece: 'paddle', tone: 'mint', group: 'daily' },
     { id: 'carwash', title: '반짝 세차장', subtitle: '자동차를 씻고 닦아요', image: './images/traffic_game/car_blue.png', tone: 'blue', group: 'cars' },
     { id: 'snackshop', title: '내가 고르는 매점', subtitle: '먹고 싶은 것을 주문해요', image: './images/meal_eggtart.png', tone: 'peach', group: 'study' },
     { id: 'family', title: '우리 가족 찾기', subtitle: '나, 엄마, 아빠를 찾아요', image: './images/outing_person_me.png', tone: 'peach', group: 'study' },
@@ -75,7 +76,8 @@
       carwash: window.renderPlayCarwash, snackshop: window.renderPlaySnackshop,
       kiosk: window.renderPlayKiosk, dishwash: window.renderPlayDishwash,
       tablesetting: window.renderPlayTableSetting, objectnames: window.renderPlayObjectNames,
-      yesno: window.renderPlayYesNo, elevator: window.renderPlayElevator
+      yesno: window.renderPlayYesNo, elevator: window.renderPlayElevator,
+      lifeprep: window.renderPlayLifePrep
     };
     let menuGroup = 'daily';
 

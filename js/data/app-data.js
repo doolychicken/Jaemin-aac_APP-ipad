@@ -395,6 +395,7 @@ const DATA = {
     playSchool_objectnames: { title: "물건 이름 찾기", helper: "", hero: [], items: [], layout: "playSchool", game: "objectnames" },
     playSchool_yesno: { title: "오엑스 놀이", helper: "", hero: [], items: [], layout: "playSchool", game: "yesno" },
     playSchool_elevator: { title: "엘리베이터 놀이", helper: "", hero: [], items: [], layout: "playSchool", game: "elevator" },
+    playSchool_lifeprep: { title: "무엇이 필요할까요?", helper: "", hero: [], items: [], layout: "playSchool", game: "lifeprep" },
     playSchool_music: { title: "악기 소리 놀이", helper: "", hero: [], items: [], layout: "playSchool", game: "music" },
     playSchool_carwash: { title: "반짝 세차장", helper: "", hero: [], items: [], layout: "playSchool", game: "carwash" },
     playSchool_snackshop: { title: "내가 고르는 매점", helper: "", hero: [], items: [], layout: "playSchool", game: "snackshop" },

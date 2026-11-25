@@ -4,9 +4,9 @@
  * On first visit, pre-caches all images so subsequent loads are instant.
  */
 
-importScripts('./js/data/speech-manifest.js?v=436');
+importScripts('./js/data/speech-manifest.js?v=438');
 
-const CACHE_VERSION = 'v437';
+const CACHE_VERSION = 'v438';
 const CACHE_NAME = `jaemin-aac-${CACHE_VERSION}`;
 
 self.addEventListener('message', (event) => {
@@ -32,6 +32,7 @@ const PRECACHE_ASSETS = [
   './css/features/play-school.css',
   './css/features/play-yesno.css',
   './css/features/play-elevator.css',
+  './css/features/play-life-prep.css',
   './css/features/play-household.css',
   './css/features/play-dishwash.css',
   './css/features/play-kiosk.css',
@@ -91,6 +92,10 @@ const PRECACHE_ASSETS = [
   './js/features/play-objectnames.js',
   './js/features/play-yesno.js',
   './js/features/play-elevator.js',
+  './js/features/play-life-prep.js',
+  './js/data/life-prep-data.js',
+  './images/play_life_prep/comb.webp',
+  './images/play_life_prep/heated-mat.webp',
   './images/play_elevator/entrance.webp',
   './images/play_elevator/steel-doors.webp',
   './images/play_elevator/steel-button.webp',

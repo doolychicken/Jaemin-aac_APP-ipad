@@ -1,0 +1,51 @@
+.lp-board {
+  --lp-ink: #203f36;
+  width: min(900px, 100%);
+  align-self: center;
+  display: grid;
+  gap: 12px;
+  padding: clamp(10px, 2vw, 22px);
+  border: 1px solid #d5e3d9;
+  border-radius: 24px;
+  background: #f7faf5;
+  color: var(--lp-ink);
+}
+.lp-tabs,.lp-actions { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+.lp-tabs [aria-pressed="true"] { background: #216453; border-color: #216453; color: white; }
+.lp-topics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.lp-board .lp-topic,.lp-board .lp-choice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  gap: 5px;
+  border: 2px solid #bbd2c6;
+  border-radius: 17px;
+  padding: 8px;
+  background: #fff;
+  color: var(--lp-ink);
+  word-break: keep-all;
+}
+.lp-board .lp-topic { flex-direction: row; min-height: 92px; font-size: clamp(16px, 2.3vw, 22px); }
+.lp-topic-art { width: 39%; height: 70px; object-fit: contain; }
+.lp-scene { display: flex; align-items: center; gap: clamp(10px, 3vw, 27px); padding: 10px 14px; border-radius: 17px; background: #e9f2ea; }
+.lp-heading { margin: 0; font-size: clamp(21px, 3.4vw, 33px); line-height: 1.25; word-break: keep-all; text-align: center; }
+.lp-scene .lp-heading { text-align: left; }
+.lp-cue { width: clamp(110px, 27vw, 245px); height: clamp(110px, 23vh, 220px); object-fit: contain; border-radius: 10px; flex: 0 0 auto; }
+.lp-collected { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 9px; min-height: 44px; }
+.lp-count { font-weight: 800; }
+.lp-board .lp-picked { display: flex; align-items: center; gap: 5px; min-height: 44px; padding: 3px 7px; color: #184b3b; background: #e1f1e4; border: 1px solid #a5cdbb; border-radius: 12px; }
+.lp-picked-art { display: block; width: 42px; height: 34px; object-fit: contain; }
+.lp-choices { display: grid; grid-template-columns: repeat(var(--lp-columns), minmax(0, 1fr)); gap: clamp(7px, 2vw, 18px); }
+.lp-board .lp-choice { min-height: 110px; font-size: clamp(18px, 2.6vw, 25px); }
+.lp-choice-art { display: block; width: 100%; height: clamp(72px, 17vh, 160px); object-fit: contain; }
+.lp-board .lp-choice.lp-hint { border-color: #267261; box-shadow: inset 0 0 0 3px #267261; background: #eef9f1; }
+.lp-photo-hint { display: block; width: min(240px, 90%); height: clamp(96px, 18vh, 160px); object-fit: contain; justify-self: center; }
+.lp-status { margin: 0; text-align: center; color: #315b4b; min-height: 1em; }
+@media (max-width: 600px) {
+  .lp-topics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lp-board .lp-topic { min-height: 70px; }
+  .lp-topic-art { height: 51px; }
+  .lp-board .lp-choice { font-size: 16px; }
+}

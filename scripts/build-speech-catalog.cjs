@@ -27,7 +27,8 @@ vm.runInNewContext(read('js/data/sticker-book-data.js'), stickerContext);
 vm.runInNewContext(read('js/data/home-sticker-data.js'), stickerContext);
 vm.runInNewContext(read('js/data/storage-dress-data.js'), stickerContext);
 walk(stickerContext.window.STICKER_BOOKS);
-const sourceFiles = ['js/main.js', ...fs.readdirSync(path.join(root, 'js/features')).filter(n => n.endsWith('.js')).map(n => 'js/features/' + n)];
+const sourceFiles = ['js/main.js', 'js/data/life-prep-data.js',
+  ...fs.readdirSync(path.join(root, 'js/features')).filter(n => n.endsWith('.js')).map(n => 'js/features/' + n)];
 for (const file of sourceFiles) {
   const source = read(file);
   for (const match of source.matchAll(/"(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*'/g)) {

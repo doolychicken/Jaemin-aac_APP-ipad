@@ -25,6 +25,9 @@ vm.runInContext(read('js/data/sticker-book-data.js'), context);
 vm.runInContext(read('js/data/home-sticker-data.js'), context);
 vm.runInContext(read('js/data/storage-dress-data.js'), context);
 walk(context.window.STICKER_BOOKS, 'STICKER_BOOKS');
+vm.runInContext(read('js/data/life-prep-data.js'), context);
+const lifePrep = context.window.LIFE_PREP;
+walk(lifePrep, 'LIFE_PREP');
 for (const text of ['오늘은 2026년 9월 29일 화요일입니다. 날씨는 맑음입니다.',
   '우유 아니야. 사과를 주세요', '하나로마트에 가요 완료!', '양치하기 완료했어요', '월요일 스케줄 수정',
   '11. 장애인 콜택시 타요', 'ㄱㄴㄷ']) {
@@ -45,5 +48,23 @@ function assetsIn(object) {
 }
 assetsIn(data);
 assetsIn(context.window.STICKER_BOOKS);
+assetsIn(lifePrep);
+for (const item of Object.values(lifePrep.objects)) {
+  if (!item.book) continue;
+  const book = context.window.STICKER_BOOKS.find(book => book.id === item.book);
+  if (!book?.chapters.some(chapter => chapter.pieces.some(piece => piece.id === item.piece))) {
+    missing.push(['life prep sticker', item.book + '/' + item.piece]);
+  }
+}
+for (const { tasks } of lifePrep.topics) {
+  for (const task of tasks) {
+    for (const id of [...task.answers.flat(), ...task.distractors]) {
+      if (!Object.hasOwn(lifePrep.objects, id)) missing.push(['life prep object', task.id + '/' + id]);
+    }
+    if (task.distractors.length < 2 || task.distractors.some(id => task.answers.flat().includes(id))) {
+      missing.push(['life prep choices', task.id]);
+    }
+  }
+}
 if (missing.length) { console.error(JSON.stringify(missing, null, 2)); process.exitCode = 1; }
 else console.log(`PASS: ${count} data speech values, dynamic sentences, and ${assets.length} offline assets`);

@@ -176,6 +176,47 @@ def ride_elevator(page):
     board.locator("[data-lift-enter]").wait_for()
 
 
+def prepare_life_items(page):
+    board = page.locator(".lp-board")
+    board.locator("[data-prep-topic=kitchen]").tap()
+    assert board.get_attribute("data-prep-task") == "rice"
+    wrong = board.locator(".lp-choice:not([data-prep-choice=paddle]):not([data-prep-choice=bowl])").first
+    wrong.tap()
+    assert board.locator(".lp-picked").count() == 0
+    named(page, "사진 힌트").tap()
+    assert board.locator(".lp-hint").count() == 2
+    board.locator("[data-prep-choice=bowl]").tap()
+    assert board.locator(".lp-picked").count() == 1
+    board.locator("[data-prep-choice=paddle]").tap()
+    named(page, "다음").tap()
+    assert board.get_attribute("data-prep-task") == "dishes"
+    while board.locator(".lp-choice").count():
+        board.locator('.lp-choice:is([data-prep-choice=dishSoap],[data-prep-choice=sponge],[data-prep-choice=rubberGloves])').first.tap()
+    assert board.locator(".lp-picked").count() == 3
+    named(page, "다음").tap()
+    named(page, "종류 바꾸기").tap()
+    board.locator("[data-prep-topic=weather]").tap()
+    assert board.get_attribute("data-prep-task") == "hot"
+    assert board.locator("[data-prep-choice=aircon]").is_visible()
+    board.locator("[data-prep-choice=fan]").tap()
+    assert board.locator(".lp-picked").count() == 1
+    named(page, "다 했어요").tap()
+    named(page, "한 번 더").tap()
+    named(page, "사진 AAC 퀴즈").tap()
+    expected = page.evaluate("DATA.screens.photoAacHome.items.map(item => item.nav)")
+    assert board.locator("[data-prep-topic]").evaluate_all("topics => topics.map(t => t.dataset.prepTopic)") == expected
+    board.locator("[data-prep-topic=photoAacActions]").tap()
+    assert board.get_attribute("data-prep-photo") == "0"
+    named(page, "사진 힌트").tap()
+    answer = board.locator(".lp-photo-hint").get_attribute("src")
+    board.locator(f'.lp-choice:has(img[src="{answer}"])').tap()
+    named(page, "다음").tap()
+    assert board.get_attribute("data-prep-photo") == "1"
+    named(page, "종류 바꾸기").tap()
+    board.locator("[data-prep-topic=photoAacActions]").tap()
+    assert board.get_attribute("data-prep-photo") == "1"
+
+
 def main():
     server = ThreadingHTTPServer(("127.0.0.1", 0), partial(base.QuietHandler, directory=str(ROOT)))
     threading.Thread(target=server.serve_forever, daemon=True).start()
@@ -195,7 +236,8 @@ def main():
             page.get_by_label("고르는 그림 수").select_option("3")
             page.locator(".ps-settings summary").click()
             games = [("kiosk", order_meal), ("dishwash", wash_dish), ("tablesetting", set_table),
-                     ("objectnames", find_names), ("yesno", learn_yes_no), ("elevator", ride_elevator)]
+                     ("objectnames", find_names), ("yesno", learn_yes_no), ("elevator", ride_elevator),
+                     ("lifeprep", prepare_life_items)]
             for game, check in games:
                 page.locator(f'[data-game="{game}"]').tap()
                 check(page)
