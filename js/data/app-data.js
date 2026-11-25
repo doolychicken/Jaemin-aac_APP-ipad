@@ -21,11 +21,11 @@ function photoAacItem(prefix, index, label) {
   return photoAacCard(label, assetName);
 }
 
-function photoAacCard(label, assetName) {
+function photoAacCard(label, assetName, directory = "./images/photo_aac/") {
   return {
     label,
     speech: label,
-    image: `./images/photo_aac/${assetName}`,
+    image: directory + assetName,
     imageFit: "contain",
     embeddedLabel: false
   };
@@ -39,6 +39,31 @@ const PHOTO_AAC_CELEBRATION = {
   gift: photoAacCard("선물", "birthday-gift.webp"),
   karaoke: photoAacCard("노래방", "karaoke-room.webp"),
   microphone: photoAacCard("마이크", "karaoke-microphone.webp")
+};
+
+const transportAacCard = (label, name) => photoAacCard(label, `transport/${name}.webp`);
+const PHOTO_AAC_TRANSPORT = {
+  policeCar: photoAacCard("경찰차", "policecar.png", "./images/"),
+  policeStation: photoAacCard("경찰서", "policestation.png", "./images/"),
+  fireEngine: photoAacCard("소방차", "fire truck.png", "./images/"),
+  fireStation: photoAacCard("소방서", "fire_station.png", "./images/"),
+  firefighter: transportAacCard("불을 끄는 소방관", "firefighter"),
+  ambulance: transportAacCard("구급차", "ambulance"),
+  patient: transportAacCard("응급환자", "patient"),
+  hospital: transportAacCard("병원", "hospital"),
+  bus: photoAacCard("버스", "bus.png", "./images/"),
+  transitCard: transportAacCard("교통카드", "transit-card"),
+  fareReader: transportAacCard("버스 카드 단말기", "bus-fare-reader"),
+  stopButton: transportAacCard("하차벨", "bus-stop-button"),
+  busInterior: transportAacCard("버스 안", "bus-interior"),
+  subway: transportAacCard("지하철", "subway"),
+  subwayInterior: transportAacCard("지하철 안", "subway-interior"),
+  subwayStation: transportAacCard("지하철역", "subway-station"),
+  taxi: transportAacCard("택시", "taxi"),
+  taxiDriver: transportAacCard("택시 기사님", "taxi-driver"),
+  airplane: transportAacCard("비행기", "airplane"),
+  airport: transportAacCard("공항", "airport"),
+  pilot: transportAacCard("비행기 조종사", "pilot")
 };
 
 const PHOTO_AAC_SECTIONS = [
@@ -141,7 +166,8 @@ const PHOTO_AAC_SECTIONS = [
       photoAacItem("feelings_hobbies", 9, "지하철타기"),
       photoAacItem("feelings_hobbies", 10, "자전거타기"),
       photoAacItem("home_leisure", 14, "차타기"),
-      photoAacItem("preferred", 1, "엘리베이터 타기")
+      photoAacItem("preferred", 1, "엘리베이터 타기"),
+      ...Object.values(PHOTO_AAC_TRANSPORT)
     ]
   },
   {
@@ -423,6 +449,7 @@ const DATA = {
     playSchool_yesno: { title: "오엑스 놀이", helper: "", hero: [], items: [], layout: "playSchool", game: "yesno" },
     playSchool_elevator: { title: "엘리베이터 놀이", helper: "", hero: [], items: [], layout: "playSchool", game: "elevator" },
     playSchool_lifeprep: { title: "무엇이 필요할까요?", helper: "", hero: [], items: [], layout: "playSchool", game: "lifeprep" },
+    playSchool_transportmatch: { title: "교통수단 연결하기", helper: "", hero: [], items: [], layout: "playSchool", game: "transportmatch" },
     playSchool_music: { title: "악기 소리 놀이", helper: "", hero: [], items: [], layout: "playSchool", game: "music" },
     playSchool_carwash: { title: "반짝 세차장", helper: "", hero: [], items: [], layout: "playSchool", game: "carwash" },
     playSchool_snackshop: { title: "내가 고르는 매점", helper: "", hero: [], items: [], layout: "playSchool", game: "snackshop" },

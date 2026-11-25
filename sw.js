@@ -4,9 +4,9 @@
  * On first visit, pre-caches all images so subsequent loads are instant.
  */
 
-importScripts('./js/data/speech-manifest.js?v=440');
+importScripts('./js/data/speech-manifest.js?v=442');
 
-const CACHE_VERSION = 'v441';
+const CACHE_VERSION = 'v442';
 const CACHE_NAME = `jaemin-aac-${CACHE_VERSION}`;
 
 self.addEventListener('message', (event) => {
@@ -103,6 +103,22 @@ const PRECACHE_ASSETS = [
   './images/photo_aac/birthday-gift.webp',
   './images/photo_aac/karaoke-room.webp',
   './images/photo_aac/karaoke-microphone.webp',
+  './images/photo_aac/transport/airplane.webp',
+  './images/photo_aac/transport/airport.webp',
+  './images/photo_aac/transport/ambulance.webp',
+  './images/photo_aac/transport/bus-fare-reader.webp',
+  './images/photo_aac/transport/bus-interior.webp',
+  './images/photo_aac/transport/bus-stop-button.webp',
+  './images/photo_aac/transport/firefighter.webp',
+  './images/photo_aac/transport/hospital.webp',
+  './images/photo_aac/transport/patient.webp',
+  './images/photo_aac/transport/pilot.webp',
+  './images/photo_aac/transport/subway-interior.webp',
+  './images/photo_aac/transport/subway-station.webp',
+  './images/photo_aac/transport/subway.webp',
+  './images/photo_aac/transport/taxi-driver.webp',
+  './images/photo_aac/transport/taxi.webp',
+  './images/photo_aac/transport/transit-card.webp',
   './images/play_elevator/entrance.webp',
   './images/play_elevator/steel-doors.webp',
   './images/play_elevator/steel-button.webp',

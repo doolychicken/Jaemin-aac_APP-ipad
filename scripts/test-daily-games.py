@@ -1,4 +1,4 @@
-"""Exercise the four household activities through the child's play-school menu."""
+"""Exercise the activities through the child's daily play-school menu."""
 import importlib.util
 import threading
 from functools import partial
@@ -260,6 +260,45 @@ def prepare_life_items(page):
     assert_photos(scene)
 
 
+def match_transport(page):
+    board = page.locator(".lp-board")
+    scene = board.locator(".lp-scene")
+    empty = scene.locator(".lp-slot:not(.lp-picked)")
+    groups = {
+        "emergencyVehicles": {
+            "police": ["policeStation"], "fire": ["fireStation", "firefighter"],
+            "ambulance": ["patient", "hospital"],
+        },
+        "publicTransit": {
+            "bus": ["transitCard", "fareReader", "stopButton", "busInterior"],
+            "subway": ["subwayInterior", "subwayStation"],
+        },
+        "taxiAndPlane": {
+            "taxi": ["taxiDriver"], "airplane": ["airport", "pilot"],
+        },
+    }
+    for group, tasks in groups.items():
+        board.locator(f"[data-prep-topic={group}]").tap()
+        for index, (task, answers) in enumerate(tasks.items(), 1):
+            assert board.get_attribute("data-prep-task") == task
+            assert empty.count() == len(answers)
+            wanted = ",".join(f"[data-prep-choice={answer}]" for answer in answers)
+            if task == "bus":
+                board.locator(f".lp-choice:not(:is({wanted}))").first.drag_to(empty.first)
+                assert empty.count() == len(answers)
+            for _ in answers:
+                board.locator(wanted).first.drag_to(empty.first)
+            assert scene.locator(".lp-count").inner_text() == f"찾은 사진 {len(answers)} / {len(answers)}"
+            assert_photos(scene)
+            if index < len(tasks):
+                named(page, "다음").tap()
+        if group != "taxiAndPlane":
+            page.locator(".ps-footer").get_by_role("button", name="놀이 목록", exact=True).tap()
+            page.locator("[data-game=transportmatch]").tap()
+    assert page.evaluate("""() => Object.values(PHOTO_AAC_TRANSPORT)
+        .every(card => DATA.screens.photoAacTransport.items.includes(card))""")
+
+
 def main():
     server = ThreadingHTTPServer(("127.0.0.1", 0), partial(base.QuietHandler, directory=str(ROOT)))
     threading.Thread(target=server.serve_forever, daemon=True).start()
@@ -280,7 +319,7 @@ def main():
             page.locator(".ps-settings summary").click()
             games = [("kiosk", order_meal), ("dishwash", wash_dish), ("tablesetting", set_table),
                      ("objectnames", find_names), ("yesno", learn_yes_no), ("elevator", ride_elevator),
-                     ("lifeprep", prepare_life_items)]
+                     ("lifeprep", prepare_life_items), ("transportmatch", match_transport)]
             for game, check in games:
                 page.locator(f'[data-game="{game}"]').tap()
                 check(page)

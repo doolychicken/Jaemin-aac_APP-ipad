@@ -49,7 +49,8 @@
     birthdayCandle: PHOTO_AAC_CELEBRATION.candle,
     birthdayHat: PHOTO_AAC_CELEBRATION.hat,
     birthdayGift: PHOTO_AAC_CELEBRATION.gift,
-    microphone: PHOTO_AAC_CELEBRATION.microphone
+    microphone: PHOTO_AAC_CELEBRATION.microphone,
+    ...PHOTO_AAC_TRANSPORT
   };
 
   const topics = [
@@ -92,5 +93,27 @@
         ['microphone'], ['tvRemote', 'birthdayGift', 'laptop'])
     ] }
   ];
-  window.LIFE_PREP = { objects, topics };
+  const transport = [
+    { id: 'emergencyVehicles', label: '우리를 도와주는 차', tasks: [
+      task('police', '경찰차와 관련 있는 장소를 찾아요', objects.policeCar,
+        ['policeStation'], ['fireStation', 'airport']),
+      task('fire', '소방차와 관련 있는 장소와 사람을 찾아요', objects.fireEngine,
+        ['fireStation', 'firefighter'], ['policeStation', 'taxiDriver', 'pilot']),
+      task('ambulance', '구급차와 관련 있는 사람과 장소를 찾아요', objects.ambulance,
+        ['patient', 'hospital'], ['taxiDriver', 'airport', 'subwayStation'])
+    ] },
+    { id: 'publicTransit', label: '버스·지하철', tasks: [
+      task('bus', '버스를 탈 때 볼 수 있는 사진을 찾아요', objects.bus,
+        ['transitCard', 'fareReader', 'stopButton', 'busInterior'], ['taxiDriver', 'pilot', 'subwayInterior']),
+      task('subway', '지하철 안과 지하철역 사진을 찾아요', objects.subway,
+        ['subwayInterior', 'subwayStation'], ['busInterior', 'airport', 'fireStation'])
+    ] },
+    { id: 'taxiAndPlane', label: '택시·비행기', tasks: [
+      task('taxi', '택시를 운전하는 사람을 찾아요', objects.taxi,
+        ['taxiDriver'], ['pilot', 'firefighter']),
+      task('airplane', '비행기와 관련 있는 장소와 사람을 찾아요', objects.airplane,
+        ['airport', 'pilot'], ['hospital', 'firefighter', 'taxiDriver'])
+    ] }
+  ];
+  window.LIFE_PREP = { objects, topics, transport };
 })();

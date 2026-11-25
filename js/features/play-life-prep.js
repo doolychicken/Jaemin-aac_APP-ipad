@@ -1,12 +1,12 @@
 (function () {
   'use strict';
-  const { objects, topics } = window.LIFE_PREP;
+  const { objects, topics, transport } = window.LIFE_PREP;
   const library = PHOTO_AAC_SECTIONS.map(section => ({
     id: section.key,
     label: section.title,
     cards: DATA.screens[section.key].items
   }));
-  const catalog = [...topics, ...library];
+  const catalog = [...topics, ...transport, ...library];
   const key = 'jaemin-life-prep-v1';
   const cursor = window.appStorage.load(key, {}, value =>
     value && typeof value === 'object' && !Array.isArray(value) &&
@@ -23,14 +23,19 @@
   function menu(ctx) {
     const { board, button, element, photo, state } = ctx;
     const mode = state.prepMode || 'tools';
-    const switcher = element('div', 'lp-tabs');
-    for (const [value, label] of [['tools', '물건 준비하기'], ['photos', '사진 AAC 퀴즈']]) {
-      const tab = button(label, () => { state.prepMode = value; ctx.draw(); });
-      tab.setAttribute('aria-pressed', String(mode === value));
-      switcher.append(tab);
+    const transportGame = state.id === 'transportmatch';
+    if (!transportGame) {
+      const switcher = element('div', 'lp-tabs');
+      for (const [value, label] of [['tools', '물건 준비하기'], ['photos', '사진 AAC 퀴즈']]) {
+        const tab = button(label, () => { state.prepMode = value; ctx.draw(); });
+        tab.setAttribute('aria-pressed', String(mode === value));
+        switcher.append(tab);
+      }
+      board.append(switcher);
     }
     const groups = element('div', 'lp-topics');
-    for (const group of mode === 'tools' ? topics : library) {
+    const groupList = transportGame ? transport : (mode === 'tools' ? topics : library);
+    for (const group of groupList) {
       const topic = button('', () => {
         state.prepGroup = group.id;
         state.prepRound = null;
@@ -41,7 +46,7 @@
       topic.append(photo(group.tasks?.[0].cue || group.cards[0], 'lp-topic-art'), element('strong', '', group.label));
       groups.append(topic);
     }
-    board.append(switcher, groups);
+    board.append(groups);
   }
 
   function displayChoices(ctx, entries, onChoose) {
@@ -81,19 +86,22 @@
     const task = q.task;
     const done = state.phase === 'reward';
     const total = task.answers.length;
+    const transportGame = state.id === 'transportmatch';
+    const countLabel = transportGame ? '찾은 사진' : '준비한 물건';
+    const completion = transportGame ? '관련 있는 사진을 모두 찾았어요' : '필요한 물건을 모두 찾았어요';
     board.classList.add('lp-tools');
     board.dataset.prepTask = task.id;
-    board.append(element('h2', 'lp-heading', done ? total + '개 모두 준비했어요' : task.prompt));
+    board.append(element('h2', 'lp-heading', done ? (transportGame ? completion : total + '개 모두 준비했어요') : task.prompt));
     const scene = done ? element('div', 'lp-scene') : button('', () => {
       if (q.selected) place(q.selected);
     }, 'lp-scene');
     if (done) scene.setAttribute('role', 'group');
-    const sceneLabel = task.cue.label + ' · 준비한 물건 ' + q.picked.length + ' / ' + total;
+    const sceneLabel = task.cue.label + ' · ' + countLabel + ' ' + q.picked.length + ' / ' + total;
     const pickedLabels = q.picked.map(id => objects[id].label).join(', ');
     scene.setAttribute('aria-label', pickedLabels ? sceneLabel + ' · ' + pickedLabels : sceneLabel);
     const art = photo(task.cue, 'lp-cue');
     const tray = element('span', 'lp-tray');
-    const count = element('span', 'lp-count', '준비한 물건 ' + q.picked.length + ' / ' + total);
+    const count = element('span', 'lp-count', countLabel + ' ' + q.picked.length + ' / ' + total);
     const slots = element('span', 'lp-slots' + (total > 2 ? ' lp-two-rows' : ''));
     slots.style.setProperty('--lp-columns', Math.min(total, 2));
     slots.style.setProperty('--lp-slot-count', total);
@@ -119,7 +127,7 @@
     }
     const status = element('p', 'lp-status');
     status.setAttribute('role', 'status');
-    const placeInstruction = '물건을 빈칸으로 끌어다 놓아요';
+    const placeInstruction = transportGame ? '관련 있는 사진을 빈칸으로 끌어다 놓아요' : '물건을 빈칸으로 끌어다 놓아요';
     const selectedInstruction = '빈칸을 눌러서 놓아요';
     status.textContent = q.selected ? selectedInstruction : placeInstruction;
     function place(id) {
@@ -129,7 +137,7 @@
       if (index === -1) {
         choices.querySelector('[aria-pressed="true"]')?.setAttribute('aria-pressed', 'false');
         scene.classList.remove('lp-ready');
-        status.textContent = '무엇에 쓰는 물건인지 다시 봐요';
+        status.textContent = transportGame ? '사진을 보고 다시 골라요' : '무엇에 쓰는 물건인지 다시 봐요';
         ctx.say(status.textContent);
         return;
       }
@@ -137,7 +145,7 @@
       q.picked.push(id);
       if (!q.remaining.length) {
         saveAnswer(group, q.index);
-        ctx.win('필요한 물건을 모두 찾았어요');
+        ctx.win(completion);
       } else {
         q.choiceIds = null;
         q.hint = false;

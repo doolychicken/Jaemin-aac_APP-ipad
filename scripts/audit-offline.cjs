@@ -56,7 +56,7 @@ for (const item of Object.values(lifePrep.objects)) {
     missing.push(['life prep sticker', item.book + '/' + item.piece]);
   }
 }
-for (const { tasks } of lifePrep.topics) {
+for (const { tasks } of [...lifePrep.topics, ...lifePrep.transport]) {
   for (const task of tasks) {
     for (const id of [...task.answers.flat(), ...task.distractors]) {
       if (!Object.hasOwn(lifePrep.objects, id)) missing.push(['life prep object', task.id + '/' + id]);
