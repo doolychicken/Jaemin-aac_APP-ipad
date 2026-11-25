@@ -131,7 +131,7 @@ def main():
             print('PASS: morning date/weather board and hospital speech work offline', flush=True)
 
             page.evaluate("pushScreen('playSchoolHome', '놀이학교'); render();")
-            assert page.locator('.ps-game-card').count() == 8
+            assert page.locator('.ps-game-card').count() == 9
             page.get_by_role('button', name='먼저 해봐요', exact=True).click()
             assert page.locator('.ps-game-card').count() == 2
             page.locator('[data-game="carwash"]').click()
@@ -148,7 +148,7 @@ def main():
             page.wait_for_function("before => window.recordedEnds > before && window.nativeSpeechCalls === 0", arg=recorded_before_order)
             page.locator('.ps-footer').get_by_role('button', name='놀이 목록', exact=True).click()
             page.get_by_role('button', name='전체', exact=True).click()
-            assert page.locator('.ps-game-card').count() == 23
+            assert page.locator('.ps-game-card').count() == 24
             page.locator('[data-game="match"]').click()
             page.locator('[data-choice="juice"]').drag_to(page.locator('.ps-drop-target').first)
             assert page.locator('.ps-reward-actions').count() == 1
@@ -211,7 +211,7 @@ def main():
             print('PASS: local video plays and seeks with network disabled', flush=True)
 
             # Readiness must recover if a required recording disappears from storage.
-            page.evaluate("async () => { const cache = await caches.open('jaemin-aac-v443'); await cache.delete(OFFLINE_SPEECH.assets[0]); }")
+            page.evaluate("async () => { const cache = await caches.open('jaemin-aac-v444'); await cache.delete(OFFLINE_SPEECH.assets[0]); }")
             page.reload()
             page.wait_for_function("document.querySelector('#offlineStatusText').textContent.includes('파일이 부족')")
             context.set_offline(False)

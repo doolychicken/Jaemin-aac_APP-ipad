@@ -8,6 +8,7 @@
     { id: 'elevator', title: '엘리베이터 놀이', subtitle: '위·아래 버튼을 누르고 층을 골라요', image: './images/school_elevator.png', tone: 'blue', group: 'daily' },
     { id: 'lifeprep', title: '무엇이 필요할까요?', subtitle: '사진을 보고 필요한 물건을 골라요', book: 'kitchen', piece: 'paddle', tone: 'mint', group: 'daily' },
     { id: 'transportmatch', title: '교통수단 연결하기', subtitle: '탈것과 관련 있는 장소·사람·물건을 찾아요', image: './images/bus.png', tone: 'blue', group: 'daily' },
+    { id: 'martcart', nav: 'studyMartCartGame', title: '마트 카트', subtitle: '음식을 카트에 담고 카드로 계산해요', image: './images/mart_cart_jaemin.png', tone: 'yellow', group: 'daily' },
     { id: 'carwash', title: '반짝 세차장', subtitle: '자동차를 씻고 닦아요', image: './images/traffic_game/car_blue.png', tone: 'blue', group: 'cars' },
     { id: 'snackshop', title: '내가 고르는 매점', subtitle: '먹고 싶은 것을 주문해요', image: './images/meal_eggtart.png', tone: 'peach', group: 'study' },
     { id: 'family', title: '우리 가족 찾기', subtitle: '나, 엄마, 아빠를 찾아요', image: './images/outing_person_me.png', tone: 'peach', group: 'study' },
@@ -135,7 +136,7 @@
       return image;
     }
     function open(game) {
-      pushScreen('playSchool_' + game.id, game.title);
+      pushScreen(game.nav || 'playSchool_' + game.id, game.title);
       render();
     }
     function menu() {
@@ -178,7 +179,7 @@
       details.appendChild(element('p', 'ps-parent-note', '이름과 짝 맞추기는 조각을 끌어 놓아요. 악기와 기억 카드는 눌러요. 시간 제한과 감점은 없어요.'));
       const records = element('div', 'ps-records');
       GAMES.forEach(game => {
-        if (game.id === 'music') return; // Free play has no scored rounds.
+        if (game.id === 'music' || game.nav) return;
         const row = stats[game.id] || { completed: 0, first: 0, help: 0 };
         records.appendChild(element('p', '', game.title + ' · 완료 ' + row.completed
           + (game.id === 'drive' || activityViews[game.id] ? '' : ' · 첫 선택 성공 ' + row.first + ' · 도움 ' + row.help)));

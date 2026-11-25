@@ -16,6 +16,37 @@
 
     const gameState = {};
     const tasks = window.createTaskScope();
+    const progressKey = "jaemin-mart-next-item-v1";
+    const itemsPerTrip = 3;
+
+    function shoppingItems(legacyItems) {
+      const fridge = window.STICKER_BOOKS.find(book => book.id === "fridge");
+      if (!fridge) return legacyItems;
+      const sections = {
+        drinks: "음료 코너", meals: "음식과 간식 코너",
+        vegetables: "채소 코너", fruit: "과일 코너"
+      };
+      const starterSections = {
+        milk: "유제품 코너", yogurt: "유제품 코너", cheese: "유제품 코너",
+        eggs: "계란 코너", juice: "음료 코너"
+      };
+      const fridgeItems = new Map();
+      for (const chapter of fridge.chapters) {
+        for (const piece of chapter.pieces) {
+          const photoKey = piece.image + ":" + piece.crop.join(",");
+          fridgeItems.set(photoKey, {
+            ...piece, id: "fridge-" + piece.id,
+            section: sections[chapter.id] || starterSections[piece.id] || "냉장 식품 코너"
+          });
+        }
+      }
+      // Use the fridge photo when the same product was already on the shelf.
+      const replaced = new Set([
+        "yogurt", "milk", "strawberryMilk", "chocomilk", "cheese", "juice", "waterJelly", "soda",
+        "apple", "strawberry", "banana", "grape", "watermelon", "carrot", "tomato", "egg"
+      ]);
+      return [...fridgeItems.values(), ...legacyItems.filter(item => !replaced.has(item.id))];
+    }
 
     function shuffle(items) {
       const copy = items.slice();
@@ -29,6 +60,10 @@
     function stateFor(screen) {
       const key = screen.key || "studyMartCartGame";
       if (!gameState[key]) {
+        const items = shoppingItems(screen.martCart?.items || []);
+        const next = window.appStorage.load(progressKey, "", value => typeof value === "string");
+        const start = Math.max(0, items.findIndex(item => item.id === next));
+        const sequence = items.slice(start, start + itemsPerTrip);
         gameState[key] = {
           round: 0,
           score: 0,
@@ -37,7 +72,9 @@
           promptedKey: null,
           checkoutPrompted: false,
           phase: "shop",
-          sequence: (screen.martCart?.missions || []).slice()
+          items,
+          sequence,
+          nextItem: items[start + sequence.length]?.id || items[0]?.id
         };
       }
       return gameState[key];
@@ -58,7 +95,26 @@
     function makeVisual(item, classPrefix) {
       const wrap = document.createElement("div");
       wrap.className = `${classPrefix}-visual`;
-      if (item.image) {
+      if (item.crop) {
+        const ns = "http://www.w3.org/2000/svg";
+        const [, , width, height] = item.crop;
+        const frame = document.createElementNS(ns, "svg");
+        frame.setAttribute("viewBox", `0 0 ${width} ${height}`);
+        frame.setAttribute("aria-hidden", "true");
+        frame.setAttribute("focusable", "false");
+        const crop = document.createElementNS(ns, "svg");
+        crop.setAttribute("viewBox", item.crop.join(" "));
+        crop.setAttribute("width", width);
+        crop.setAttribute("height", height);
+        crop.setAttribute("overflow", "hidden");
+        const image = document.createElementNS(ns, "image");
+        image.setAttribute("href", item.image);
+        image.setAttribute("width", item.sheet[0]);
+        image.setAttribute("height", item.sheet[1]);
+        crop.appendChild(image);
+        frame.appendChild(crop);
+        wrap.appendChild(frame);
+      } else if (item.image) {
         const img = document.createElement("img");
         img.src = item.image;
         img.alt = item.label;
@@ -74,18 +130,8 @@
       return x >= rect.left - pad && x <= rect.right + pad && y >= rect.top - pad && y <= rect.bottom + pad;
     }
 
-    function pointInCartArea(x, y, cart, driver) {
-      const cartRect = cart?.getBoundingClientRect();
-      if (cartRect && pointInRect(x, y, cartRect, 44)) return true;
-      if (!driver) return false;
-      const rect = driver.getBoundingClientRect();
-      const cartArea = {
-        left: rect.left + rect.width * 0.43,
-        right: rect.left + rect.width * 1.02,
-        top: rect.top + rect.height * 0.26,
-        bottom: rect.top + rect.height * 0.94
-      };
-      return x >= cartArea.left && x <= cartArea.right && y >= cartArea.top && y <= cartArea.bottom;
+    function pointInCartArea(x, y, cart) {
+      return pointInRect(x, y, cart.getBoundingClientRect(), 24);
     }
 
     function pointInCheckoutArea(x, y, terminal) {
@@ -125,9 +171,9 @@
       const again = document.createElement("button");
       again.type = "button";
       again.className = "btn main mart-cart-again";
-      again.textContent = "처음부터 다시";
+      again.textContent = "계속 장보기";
       again.addEventListener("click", () => {
-        speak("처음부터 다시");
+        speak("계속 장보기");
         reset(screen);
       });
       done.appendChild(again);
@@ -173,6 +219,7 @@
         card.classList.add("is-paid");
         speak("계산했어요");
         tasks.setTimeout(() => {
+          if (state.nextItem) window.appStorage.save(progressKey, state.nextItem);
           state.phase = "done";
           state.locked = false;
           render();
@@ -249,7 +296,7 @@
 
     function renderShopping(screen, state, missions, current, total) {
       const config = screen.martCart || {};
-      const pool = config.items || [];
+      const pool = state.items;
       const driverImage = config.driverImage || "./images/mart_cart_jaemin.png";
       helperEl.textContent = "소리를 듣고 맞는 물건을 카트에 담아보세요.";
       gridEl.className = "mart-cart-game";
@@ -268,8 +315,10 @@
       const speech = document.createElement("button");
       speech.type = "button";
       speech.className = "mart-cart-speech";
-      speech.innerHTML = `<span class="mart-cart-speaker">🔊</span><span>${current.label}을 주세요</span>`;
-      speech.addEventListener("click", () => speak(`${current.label}을 주세요`));
+      const hasFinal = (current.label.charCodeAt(current.label.length - 1) - 0xac00) % 28 !== 0;
+      const prompt = `${current.label}${hasFinal ? "을" : "를"} 주세요`;
+      speech.innerHTML = `<span class="mart-cart-speaker">🔊</span><span>${prompt}</span>`;
+      speech.addEventListener("click", () => speak(prompt));
 
       const shelf = document.createElement("div");
       shelf.className = "mart-cart-shelf";
@@ -327,7 +376,7 @@
         sourceEl?.classList.add("is-wrong");
         cart.classList.add("is-wrong");
         playPuzzleSound("fail");
-        speak(`${item.label} 아니야. ${current.label}을 주세요`);
+        speak(`${item.label} 아니야. ${prompt}`);
         tasks.setTimeout(() => {
           sourceEl?.classList.remove("is-wrong");
           cart.classList.remove("is-wrong");
@@ -408,7 +457,7 @@
             if ((dx * dx) + (dy * dy) > 64) moved = true;
             ghost.style.left = `${rect.left + dx}px`;
             ghost.style.top = `${rect.top + dy}px`;
-            cart.classList.toggle("is-over", pointInCartArea(ev.clientX, ev.clientY, cart, driver));
+            cart.classList.toggle("is-over", pointInCartArea(ev.clientX, ev.clientY, cart));
           }
 
           function up(ev) {
@@ -421,7 +470,7 @@
             cart.classList.remove("is-over");
             if (!moved) return;
             suppressClick = true;
-            if (pointInCartArea(ev.clientX, ev.clientY, cart, driver)) tryItem(item, btn);
+            if (pointInCartArea(ev.clientX, ev.clientY, cart)) tryItem(item, btn);
             else missCart(btn);
           }
 
@@ -445,7 +494,7 @@
       scene.appendChild(speech);
       scene.appendChild(shelf);
       scene.appendChild(driver);
-      scene.appendChild(cart);
+      driver.appendChild(cart);
       gridEl.appendChild(awning);
       gridEl.appendChild(scene);
 
@@ -453,7 +502,7 @@
       if (state.promptedKey !== promptKey) {
         state.promptedKey = promptKey;
         tasks.setTimeout(() => {
-          if (!state.locked && state.phase === "shop") speak(`${current.label}을 주세요`);
+          if (!state.locked && state.phase === "shop") speak(prompt);
         }, 450);
       }
     }

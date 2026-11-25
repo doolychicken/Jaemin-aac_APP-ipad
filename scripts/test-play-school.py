@@ -30,7 +30,7 @@ def main():
             page.goto(url)
             page.get_by_text('재민이 놀이학교', exact=True).click()
             page.wait_for_selector('.ps-menu-grid')
-            assert page.locator('.ps-game-card').count() == 8
+            assert page.locator('.ps-game-card').count() == 9
             page.get_by_role('button', name='먼저 해봐요', exact=True).click()
             assert page.locator('.ps-game-card').count() == 2
             page.locator('[data-game="carwash"]').click()
@@ -58,7 +58,7 @@ def main():
             page.locator('.ps-footer').get_by_role('button', name='놀이 목록', exact=True).click()
             print('PASS: both starter games, wash stages, pause and resume, changing and voicing an order', flush=True)
             page.get_by_role('button', name='전체', exact=True).click()
-            assert page.locator('.ps-game-card').count() == 23
+            assert page.locator('.ps-game-card').count() == 24
             page.screenshot(path=str(output / 'menu-landscape.png'))
 
             def open_game(game):

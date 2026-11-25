@@ -320,6 +320,22 @@ def match_transport(page):
         .every(card => DATA.screens.photoAacTransport.items.includes(card))""")
 
 
+def shop_mart(page):
+    cart = page.locator(".mart-cart-cart")
+    assert page.locator(".mart-cart-round").inner_text() == "1/4"
+    for product in ("plain-milk", "water", "apple"):
+        food = page.locator(f'.mart-cart-item[data-id="fridge-{product}"]')
+        assert_photos(food)
+        food.drag_to(cart)
+        assert page.locator(".mart-cart-mini svg image").is_visible()
+        page.locator(".mart-cart-mini").wait_for(state="detached")
+    page.locator(".mart-cart-card").drag_to(page.locator(".mart-cart-terminal"))
+    assert page.locator(".mart-cart-complete-score").inner_text() == "3개를 사고 계산했어요"
+    named(page, "계속 장보기").tap()
+    assert page.locator(".mart-cart-speech").inner_text().endswith("달걀을 주세요")
+    named(page, "뒤로").tap()
+
+
 def main():
     server = ThreadingHTTPServer(("127.0.0.1", 0), partial(base.QuietHandler, directory=str(ROOT)))
     threading.Thread(target=server.serve_forever, daemon=True).start()
@@ -347,6 +363,10 @@ def main():
                 page.locator(".ps-footer").get_by_role("button", name="놀이 목록", exact=True).tap()
                 assert named(page, "생활 놀이").get_attribute("aria-pressed") == "true"
                 print("PASS: " + game, flush=True)
+            page.locator("[data-game=martcart]").tap()
+            shop_mart(page)
+            assert named(page, "생활 놀이").get_attribute("aria-pressed") == "true"
+            print("PASS: mart cart, checkout, continue and return to play school", flush=True)
             assert not errors, errors
             browser.close()
     finally:

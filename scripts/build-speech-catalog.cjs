@@ -27,6 +27,12 @@ vm.runInNewContext(read('js/data/sticker-book-data.js'), stickerContext);
 vm.runInNewContext(read('js/data/home-sticker-data.js'), stickerContext);
 vm.runInNewContext(read('js/data/storage-dress-data.js'), stickerContext);
 walk(stickerContext.window.STICKER_BOOKS);
+const fridge = stickerContext.window.STICKER_BOOKS.find(book => book.id === 'fridge');
+const groceries = [...data.screens.studyMartCartGame.martCart.items, ...fridge.chapters.flatMap(chapter => chapter.pieces)];
+for (const { label } of groceries) {
+  const hasFinal = (label.charCodeAt(label.length - 1) - 0xac00) % 28 !== 0;
+  add(label + (hasFinal ? '을' : '를') + ' 주세요');
+}
 const sourceFiles = ['js/main.js', 'js/data/life-prep-data.js',
   ...fs.readdirSync(path.join(root, 'js/features')).filter(n => n.endsWith('.js')).map(n => 'js/features/' + n)];
 for (const file of sourceFiles) {

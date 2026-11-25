@@ -88,8 +88,7 @@
     #f8e2e8;
 }
 
-.mart-cart-scene.is-driving .mart-cart-driver,
-.mart-cart-scene.is-driving .mart-cart-cart {
+.mart-cart-scene.is-driving .mart-cart-driver {
   animation: mart-cart-drive-away 1.35s cubic-bezier(0.22, 0.82, 0.28, 1) forwards;
 }
 
@@ -228,7 +227,8 @@
   line-height: 1;
 }
 
-.mart-cart-item-visual img {
+.mart-cart-item-visual img,
+.mart-cart-item-visual svg {
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -246,11 +246,12 @@
 }
 
 .mart-cart-driver {
+  --driver-height: clamp(330px, 43vh, 480px);
   position: absolute;
   left: clamp(8px, 5vw, 72px);
   bottom: clamp(-20px, -1.5vh, -8px);
-  width: clamp(620px, 60vw, 850px);
-  height: clamp(330px, 43vh, 480px);
+  width: calc(1.5 * var(--driver-height));
+  height: var(--driver-height);
   z-index: 3;
   pointer-events: none;
   filter: drop-shadow(0 20px 20px rgba(86, 48, 62, 0.14));
@@ -266,14 +267,15 @@
 
 .mart-cart-cart {
   position: absolute;
-  left: clamp(420px, 41vw, 660px);
-  bottom: clamp(76px, 11vh, 132px);
-  width: clamp(310px, 31vw, 440px);
-  height: clamp(150px, 18vh, 210px);
+  left: 47%;
+  top: 39%;
+  width: 35%;
+  height: 37%;
   border: 4px dashed rgba(34, 197, 94, 0);
   border-radius: 22px;
   background: rgba(34, 197, 94, 0);
   z-index: 8;
+  pointer-events: auto;
   cursor: pointer;
   touch-action: none;
   transition: transform 0.14s ease, background 0.14s ease, border-color 0.14s ease;
@@ -292,10 +294,10 @@
 
 .mart-cart-cart-items {
   position: absolute;
-  left: 55%;
-  bottom: 35%;
-  width: clamp(218px, 25vw, 330px);
-  height: clamp(78px, 10vh, 118px);
+  left: 48%;
+  top: 43%;
+  width: 32%;
+  height: 27%;
   display: flex;
   align-items: flex-end;
   gap: 5px;
@@ -314,7 +316,8 @@
 }
 
 .mart-cart-mini-visual,
-.mart-cart-mini-visual img {
+.mart-cart-mini-visual img,
+.mart-cart-mini-visual svg {
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -528,11 +531,5 @@
 
   .mart-cart-driver {
     left: -22px;
-    width: 610px;
-  }
-
-  .mart-cart-cart {
-    left: 324px;
-    width: 300px;
   }
 }
