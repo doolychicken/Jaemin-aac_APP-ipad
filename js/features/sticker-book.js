@@ -8,6 +8,7 @@
     const chapterById = id => catalog.chapters.find(chapter => chapter.id === id);
     const roomName = catalog.label || '화장실';
     const navKey = catalog.nav || 'stickerBathroom';
+    const frame = catalog.sceneCrop || [0, 0, catalog.width, catalog.height];
     const { gridEl, appMainEl, spotlightViewEl, spotlightBtnEl, heroEl, helperEl, speak, playPuzzleSound } = deps;
     const saved = window.appStorage.load(KEY, { version: 1, sound: true, hints: true, progress: {} }, value => {
       if (!value || value.version !== 1 || typeof value.sound !== 'boolean' || typeof value.hints !== 'boolean'
@@ -103,8 +104,27 @@
       } else svg.appendChild(image);
       return svg;
     }
-    function position(node, piece) {
+    function displayBounds(piece) {
       const [x, y, w, h] = piece.target;
+      const [left, top, frameWidth, frameHeight] = frame;
+      const artWidth = w * catalog.width;
+      const artHeight = h * catalog.height;
+      // Keep the cutlery close to its place settings without covering the bowls.
+      const scaleLimit = catalog.id === 'kitchen' && /^(spoon|fork|chopsticks)(-right)?$/.test(piece.id) ? 1.18 : 1.55;
+      const scale = Math.min(scaleLimit, 0.054 * frameWidth / Math.min(artWidth, artHeight),
+        0.275 * frameWidth / Math.max(artWidth, artHeight));
+      if (scale <= 1) return piece.target;
+      const minX = left / catalog.width, minY = top / catalog.height;
+      const maxX = (left + frameWidth) / catalog.width, maxY = (top + frameHeight) / catalog.height;
+      if (x < minX || y < minY || x + w > maxX || y + h > maxY) return piece.target;
+      const width = w * scale, height = h * scale;
+      return [
+        Math.max(minX, Math.min(maxX - width, x + (w - width) / 2)),
+        Math.max(minY, Math.min(maxY - height, y + (h - height) / 2)),
+        width, height
+      ];
+    }
+    function position(node, [x, y, w, h]) {
       Object.assign(node.style, { left: x * 100 + '%', top: y * 100 + '%', width: w * 100 + '%', height: h * 100 + '%' });
     }
     // Expand the landing area around the original cutout, including at room edges.
@@ -122,7 +142,7 @@
     function placedSprite(piece, layer) {
       const wrap = el('div', 'sb-placed');
       wrap.dataset.placed = piece.id;
-      position(wrap, piece);
+      position(wrap, displayBounds(piece));
       wrap.appendChild(sprite(piece));
       layer.appendChild(wrap);
     }
@@ -436,13 +456,13 @@
       }
       const resize = () => {
         const rect = canvasWrap.getBoundingClientRect();
-        const [left, top, frameWidth, frameHeight] = catalog.sceneCrop || [0, 0, catalog.width, catalog.height];
+        const [left, top, frameWidth, frameHeight] = frame;
         const width = Math.max(1, Math.min(rect.width, rect.height * frameWidth / frameHeight));
         const height = width * frameHeight / frameWidth;
         stage.style.width = width + 'px'; stage.style.height = height + 'px';
         const target = stage.querySelector('.sb-target');
         if (target) {
-          const [x, y, w, h] = piece.target;
+          const [x, y, w, h] = displayBounds(piece);
           sizeDropTarget(target, [(x * catalog.width - left) / frameWidth, (y * catalog.height - top) / frameHeight,
             w * catalog.width / frameWidth, h * catalog.height / frameHeight], width, height);
         }
