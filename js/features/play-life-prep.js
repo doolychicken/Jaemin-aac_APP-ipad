@@ -94,8 +94,9 @@
     const art = photo(task.cue, 'lp-cue');
     const tray = element('span', 'lp-tray');
     const count = element('span', 'lp-count', '준비한 물건 ' + q.picked.length + ' / ' + total);
-    const slots = element('span', 'lp-slots');
-    slots.style.setProperty('--lp-columns', total);
+    const slots = element('span', 'lp-slots' + (total > 2 ? ' lp-two-rows' : ''));
+    slots.style.setProperty('--lp-columns', Math.min(total, 2));
+    slots.style.setProperty('--lp-slot-count', total);
     for (let index = 0; index < total; index++) {
       const item = objects[q.picked[index]];
       const slot = element('span', 'lp-slot' + (item ? ' lp-picked' : ''));
@@ -118,8 +119,9 @@
     }
     const status = element('p', 'lp-status');
     status.setAttribute('role', 'status');
-    const placeInstruction = '물건을 사진 위에 끌어다 놓아요';
-    status.textContent = q.selected ? '사진 위 빈칸에 놓아요' : placeInstruction;
+    const placeInstruction = '물건을 빈칸으로 끌어다 놓아요';
+    const selectedInstruction = '빈칸을 눌러서 놓아요';
+    status.textContent = q.selected ? selectedInstruction : placeInstruction;
     function place(id) {
       if (!scene.isConnected) return;
       const index = q.remaining.findIndex(set => set.includes(id));
@@ -150,7 +152,7 @@
         option.setAttribute('aria-pressed', String(option.dataset.prepChoice === q.selected));
       }
       scene.classList.toggle('lp-ready', !!q.selected);
-      status.textContent = q.selected ? '사진 위 빈칸에 놓아요' : placeInstruction;
+      status.textContent = q.selected ? selectedInstruction : placeInstruction;
       if (q.selected) ctx.say(item.label);
     });
     scene.classList.toggle('lp-ready', !!q.selected);

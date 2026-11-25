@@ -238,17 +238,25 @@ def prepare_life_items(page):
     board.locator("[data-prep-topic=celebration]").tap()
     scene = board.locator(".lp-scene")
     empty = scene.locator(".lp-slot:not(.lp-picked)")
+    cue = scene.locator(".lp-cue")
+    tray = scene.locator(".lp-tray")
     assert board.get_attribute("data-prep-task") == "birthday"
     assert empty.count() == 4
+    cue_box, tray_box = cue.bounding_box(), tray.bounding_box()
+    assert cue_box["x"] + cue_box["width"] <= tray_box["x"]
+    assert empty.nth(0).bounding_box()["y"] == empty.nth(1).bounding_box()["y"]
+    assert empty.nth(2).bounding_box()["y"] > empty.nth(0).bounding_box()["y"]
     for placed in range(1, 5):
         board.locator('[data-prep-choice^="birthday"]').first.drag_to(empty.first)
         assert scene.locator(".lp-picked").count() == placed
     assert scene.locator(".lp-count").inner_text() == "준비한 물건 4 / 4"
+    assert cue.bounding_box()["height"] == cue_box["height"]
     assert_photos(scene)
     named(page, "다음").tap()
     assert board.get_attribute("data-prep-task") == "karaoke"
     board.locator("[data-prep-choice=microphone]").drag_to(empty)
     assert scene.locator(".lp-picked").inner_text() == "마이크"
+    assert scene.locator(".lp-picked-art").bounding_box()["height"] >= 100
     assert_photos(scene)
 
 
