@@ -80,25 +80,36 @@
     const { element, board, state, button, photo, shuffled } = ctx;
     const task = q.task;
     const done = state.phase === 'reward';
+    const total = task.answers.length;
+    board.classList.add('lp-tools');
     board.dataset.prepTask = task.id;
-    const scene = element('div', 'lp-scene');
+    board.append(element('h2', 'lp-heading', done ? total + '개 모두 준비했어요' : task.prompt));
+    const scene = done ? element('div', 'lp-scene') : button('', () => {
+      if (q.selected) place(q.selected);
+    }, 'lp-scene');
+    if (done) scene.setAttribute('role', 'group');
+    const sceneLabel = task.cue.label + ' · 준비한 물건 ' + q.picked.length + ' / ' + total;
+    const pickedLabels = q.picked.map(id => objects[id].label).join(', ');
+    scene.setAttribute('aria-label', pickedLabels ? sceneLabel + ' · ' + pickedLabels : sceneLabel);
     const art = photo(task.cue, 'lp-cue');
-    art.removeAttribute('aria-hidden');
-    art.setAttribute('role', 'img');
-    art.setAttribute('aria-label', task.cue.label);
-    scene.append(art, element('h2', 'lp-heading', done ? '필요한 물건을 모두 찾았어요' : task.prompt));
-    board.append(scene);
-    const collected = element('div', 'lp-collected');
-    collected.setAttribute('aria-label', '준비한 물건');
-    const count = element('span', 'lp-count', '준비한 물건 ' + q.picked.length + ' / ' + task.answers.length);
-    collected.append(count);
-    for (const id of q.picked) {
-      const item = objects[id];
-      const saved = button('', () => ctx.say(item.label), 'lp-picked');
-      saved.append(photo(item, 'lp-picked-art'), element('strong', '', item.label));
-      collected.append(saved);
+    const tray = element('span', 'lp-tray');
+    const count = element('span', 'lp-count', '준비한 물건 ' + q.picked.length + ' / ' + total);
+    const slots = element('span', 'lp-slots');
+    slots.style.setProperty('--lp-columns', total);
+    for (let index = 0; index < total; index++) {
+      const item = objects[q.picked[index]];
+      const slot = element('span', 'lp-slot' + (item ? ' lp-picked' : ''));
+      if (item) {
+        slot.append(photo(item, 'lp-picked-art'), element('strong', '', item.label));
+      } else {
+        slot.append(element('span', 'lp-empty-mark', '+'));
+        slot.setAttribute('aria-hidden', 'true');
+      }
+      slots.append(slot);
     }
-    board.append(collected);
+    tray.append(count, slots);
+    scene.append(art, tray);
+    board.append(scene);
     if (done) return;
     if (!q.choiceIds) {
       const possible = shuffled(q.remaining.flat()).slice(0, ctx.settings.choices - 1);
@@ -107,11 +118,15 @@
     }
     const status = element('p', 'lp-status');
     status.setAttribute('role', 'status');
-    let choices;
-    choices = displayChoices(ctx, q.choiceIds.map(id => [id, objects[id]]), (id, item) => {
-      if (!choices.isConnected) return;
+    const placeInstruction = '물건을 사진 위에 끌어다 놓아요';
+    status.textContent = q.selected ? '사진 위 빈칸에 놓아요' : placeInstruction;
+    function place(id) {
+      if (!scene.isConnected) return;
       const index = q.remaining.findIndex(set => set.includes(id));
+      q.selected = null;
       if (index === -1) {
+        choices.querySelector('[aria-pressed="true"]')?.setAttribute('aria-pressed', 'false');
+        scene.classList.remove('lp-ready');
         status.textContent = '무엇에 쓰는 물건인지 다시 봐요';
         ctx.say(status.textContent);
         return;
@@ -124,16 +139,28 @@
       } else {
         q.choiceIds = null;
         q.hint = false;
-        ctx.say(item.label);
+        ctx.say(objects[id].label);
         ctx.draw();
       }
-    });
-    if (q.hint) {
-      for (const option of choices.children) {
-        if (q.remaining.some(set => set.includes(option.dataset.prepChoice))) option.classList.add('lp-hint');
-      }
     }
-    board.append(choices, status);
+    const choices = displayChoices(ctx, q.choiceIds.map(id => [id, objects[id]]), (id, item) => {
+      if (!choices.isConnected) return;
+      q.selected = q.selected === id ? null : id;
+      for (const option of choices.children) {
+        option.setAttribute('aria-pressed', String(option.dataset.prepChoice === q.selected));
+      }
+      scene.classList.toggle('lp-ready', !!q.selected);
+      status.textContent = q.selected ? '사진 위 빈칸에 놓아요' : placeInstruction;
+      if (q.selected) ctx.say(item.label);
+    });
+    scene.classList.toggle('lp-ready', !!q.selected);
+    for (const option of choices.children) {
+      const id = option.dataset.prepChoice;
+      option.setAttribute('aria-pressed', String(id === q.selected));
+      ctx.bindDrag(option, scene, () => place(id));
+      if (q.hint && q.remaining.some(set => set.includes(id))) option.classList.add('lp-hint');
+    }
+    board.append(status, choices);
     addActions(ctx, task.prompt, () => { q.hint = true; ctx.draw(); });
   }
 

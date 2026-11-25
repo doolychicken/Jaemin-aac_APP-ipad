@@ -178,27 +178,40 @@ def ride_elevator(page):
 
 def prepare_life_items(page):
     board = page.locator(".lp-board")
+    scene = board.locator(".lp-scene")
     board.locator("[data-prep-topic=kitchen]").tap()
     assert board.get_attribute("data-prep-task") == "rice"
+    assert scene.locator(".lp-slot:not(.lp-picked)").count() == 2
     wrong = board.locator(".lp-choice:not([data-prep-choice=paddle]):not([data-prep-choice=bowl])").first
-    wrong.tap()
+    wrong.drag_to(scene.locator(".lp-slot").first)
     assert board.locator(".lp-picked").count() == 0
+    assert wrong.get_attribute("aria-pressed") == "false"
     named(page, "사진 힌트").tap()
     assert board.locator(".lp-hint").count() == 2
     board.locator("[data-prep-choice=bowl]").tap()
+    assert board.locator(".lp-picked").count() == 0
+    scene.tap()
     assert board.locator(".lp-picked").count() == 1
-    board.locator("[data-prep-choice=paddle]").tap()
+    board.locator("[data-prep-choice=paddle]").drag_to(scene.locator(".lp-slot:not(.lp-picked)"))
+    assert scene.locator(".lp-picked").count() == 2
     named(page, "다음").tap()
     assert board.get_attribute("data-prep-task") == "dishes"
+    assert scene.locator(".lp-slot:not(.lp-picked)").count() == 3
+    picked = []
     while board.locator(".lp-choice").count():
-        board.locator('.lp-choice:is([data-prep-choice=dishSoap],[data-prep-choice=sponge],[data-prep-choice=rubberGloves])').first.tap()
-    assert board.locator(".lp-picked").count() == 3
+        tool = board.locator('.lp-choice:is([data-prep-choice=dishSoap],[data-prep-choice=sponge],[data-prep-choice=rubberGloves])').first
+        target = scene.locator(".lp-slot:not(.lp-picked)").first
+        picked.append(tool.inner_text())
+        tool.drag_to(target)
+        assert scene.locator(".lp-picked").all_inner_texts() == picked
+        assert scene.locator(".lp-slot:not(.lp-picked)").count() == 3 - len(picked)
+    assert scene.locator(".lp-count").inner_text() == "준비한 물건 3 / 3"
     named(page, "다음").tap()
     named(page, "종류 바꾸기").tap()
     board.locator("[data-prep-topic=weather]").tap()
     assert board.get_attribute("data-prep-task") == "hot"
     assert board.locator("[data-prep-choice=aircon]").is_visible()
-    board.locator("[data-prep-choice=fan]").tap()
+    board.locator("[data-prep-choice=fan]").drag_to(scene)
     assert board.locator(".lp-picked").count() == 1
     named(page, "다 했어요").tap()
     named(page, "한 번 더").tap()
