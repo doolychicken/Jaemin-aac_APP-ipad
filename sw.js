@@ -4,9 +4,9 @@
  * On first visit, pre-caches all images so subsequent loads are instant.
  */
 
-importScripts('./js/data/speech-manifest.js?v=438');
+importScripts('./js/data/speech-manifest.js?v=440');
 
-const CACHE_VERSION = 'v439';
+const CACHE_VERSION = 'v440';
 const CACHE_NAME = `jaemin-aac-${CACHE_VERSION}`;
 
 self.addEventListener('message', (event) => {
@@ -96,6 +96,13 @@ const PRECACHE_ASSETS = [
   './js/data/life-prep-data.js',
   './images/play_life_prep/comb.webp',
   './images/play_life_prep/heated-mat.webp',
+  './images/photo_aac/birthday-celebration.webp',
+  './images/photo_aac/birthday-cake.webp',
+  './images/photo_aac/birthday-candle.webp',
+  './images/photo_aac/birthday-hat.webp',
+  './images/photo_aac/birthday-gift.webp',
+  './images/photo_aac/karaoke-room.webp',
+  './images/photo_aac/karaoke-microphone.webp',
   './images/play_elevator/entrance.webp',
   './images/play_elevator/steel-doors.webp',
   './images/play_elevator/steel-button.webp',

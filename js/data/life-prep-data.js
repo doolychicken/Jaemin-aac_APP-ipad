@@ -44,7 +44,12 @@
     coat: sticker('겉옷', 'wardrobe', 'coat'),
     shoes: sticker('신발', 'wardrobe', 'shoes'),
     socks: sticker('양말', 'wardrobe', 'socks'),
-    pajamas: sticker('잠옷', 'wardrobe', 'pajamas')
+    pajamas: sticker('잠옷', 'wardrobe', 'pajamas'),
+    birthdayCake: PHOTO_AAC_CELEBRATION.cake,
+    birthdayCandle: PHOTO_AAC_CELEBRATION.candle,
+    birthdayHat: PHOTO_AAC_CELEBRATION.hat,
+    birthdayGift: PHOTO_AAC_CELEBRATION.gift,
+    microphone: PHOTO_AAC_CELEBRATION.microphone
   };
 
   const topics = [
@@ -79,6 +84,12 @@
       task('hot', '더울 때 바람이 나오는 물건을 골라요', situation('덥다', 'daily_08.jpg'), [['aircon', 'fan']], ['heatedMat', 'pot', 'tv']),
       task('cold', '추울 때 이불 아래를 따뜻하게 해 주는 물건을 골라요', situation('춥다', 'daily_09.jpg'), ['heatedMat'], ['fan', 'aircon', 'wateringCan']),
       task('flowers', '화분에 물을 주려면 무엇이 필요할까요?', objects.plant, ['wateringCan'], ['dryer', 'acRemote', 'paddle'])
+    ] },
+    { id: 'celebration', label: '생일·노래방', tasks: [
+      task('birthday', '생일 축하에 필요한 물건 네 가지를 준비해요', PHOTO_AAC_CELEBRATION.birthday,
+        ['birthdayCake', 'birthdayCandle', 'birthdayHat', 'birthdayGift'], ['microphone', 'tvRemote', 'kettle']),
+      task('karaoke', '노래방에서 노래하려면 무엇이 필요할까요?', PHOTO_AAC_CELEBRATION.karaoke,
+        ['microphone'], ['tvRemote', 'birthdayGift', 'laptop'])
     ] }
   ];
   window.LIFE_PREP = { objects, topics };

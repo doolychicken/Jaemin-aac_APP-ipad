@@ -228,6 +228,28 @@ def prepare_life_items(page):
     named(page, "종류 바꾸기").tap()
     board.locator("[data-prep-topic=photoAacActions]").tap()
     assert board.get_attribute("data-prep-photo") == "1"
+    named(page, "종류 바꾸기").tap()
+    board.locator("[data-prep-topic=photoAacBirthday]").tap()
+    named(page, "사진 힌트").tap()
+    assert board.locator(".lp-photo-hint").get_attribute("src").endswith("birthday-celebration.webp")
+    assert_photos(board)
+    named(page, "종류 바꾸기").tap()
+    named(page, "물건 준비하기").tap()
+    board.locator("[data-prep-topic=celebration]").tap()
+    scene = board.locator(".lp-scene")
+    empty = scene.locator(".lp-slot:not(.lp-picked)")
+    assert board.get_attribute("data-prep-task") == "birthday"
+    assert empty.count() == 4
+    for placed in range(1, 5):
+        board.locator('[data-prep-choice^="birthday"]').first.drag_to(empty.first)
+        assert scene.locator(".lp-picked").count() == placed
+    assert scene.locator(".lp-count").inner_text() == "준비한 물건 4 / 4"
+    assert_photos(scene)
+    named(page, "다음").tap()
+    assert board.get_attribute("data-prep-task") == "karaoke"
+    board.locator("[data-prep-choice=microphone]").drag_to(empty)
+    assert scene.locator(".lp-picked").inner_text() == "마이크"
+    assert_photos(scene)
 
 
 def main():

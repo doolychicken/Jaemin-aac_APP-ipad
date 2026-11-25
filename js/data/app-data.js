@@ -18,6 +18,10 @@ function photoAacItem(prefix, index, label) {
   const assetName = prefix === "routine" && routineReplacement[index]
     ? routineReplacement[index]
     : `${assetPrefix}_${String(index).padStart(2, "0")}.jpg`;
+  return photoAacCard(label, assetName);
+}
+
+function photoAacCard(label, assetName) {
   return {
     label,
     speech: label,
@@ -26,6 +30,16 @@ function photoAacItem(prefix, index, label) {
     embeddedLabel: false
   };
 }
+
+const PHOTO_AAC_CELEBRATION = {
+  birthday: photoAacCard("생일 축하해요", "birthday-celebration.webp"),
+  cake: photoAacCard("생일 케이크", "birthday-cake.webp"),
+  candle: photoAacCard("생일 초", "birthday-candle.webp"),
+  hat: photoAacCard("생일 모자", "birthday-hat.webp"),
+  gift: photoAacCard("선물", "birthday-gift.webp"),
+  karaoke: photoAacCard("노래방", "karaoke-room.webp"),
+  microphone: photoAacCard("마이크", "karaoke-microphone.webp")
+};
 
 const PHOTO_AAC_SECTIONS = [
   {
@@ -88,7 +102,9 @@ const PHOTO_AAC_SECTIONS = [
       photoAacItem("places_answers", 5, "피아노치기"),
       photoAacItem("places_answers", 6, "우쿨렐레연주"),
       photoAacItem("places_answers", 7, "북치기"),
-      { ...photoAacItem("preferred", 3, "터치벨 연주"), imageFit: "contain" }
+      { ...photoAacItem("preferred", 3, "터치벨 연주"), imageFit: "contain" },
+      PHOTO_AAC_CELEBRATION.karaoke,
+      PHOTO_AAC_CELEBRATION.microphone
     ]
   },
   {
@@ -224,6 +240,17 @@ const PHOTO_AAC_SECTIONS = [
       photoAacItem("feelings_hobbies", 7, "빵먹기"),
       photoAacItem("feelings_hobbies", 11, "우유먹기"),
       photoAacItem("daily", 10, "아이스크림 먹다")
+    ]
+  },
+  {
+    key: "photoAacBirthday",
+    title: "생일 축하",
+    items: [
+      PHOTO_AAC_CELEBRATION.birthday,
+      PHOTO_AAC_CELEBRATION.cake,
+      PHOTO_AAC_CELEBRATION.candle,
+      PHOTO_AAC_CELEBRATION.hat,
+      PHOTO_AAC_CELEBRATION.gift
     ]
   }
 ];
