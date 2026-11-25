@@ -141,6 +141,41 @@ def learn_yes_no(page):
     assert not page.locator(".ps-reward-actions").count()
 
 
+def ride_elevator(page):
+    board = page.locator(".lift-board")
+    assert board.get_attribute("data-lift-phase") == "call"
+    assert board.locator("[data-lift-select]").count() == 0
+    for start, goal, direction in [(1, 10, "up"), (10, 1, "down")]:
+        wrong = "down" if direction == "up" else "up"
+        board.locator(f'[data-lift-call="{wrong}"]').tap()
+        assert board.get_attribute("data-lift-phase") == "call"
+        assert board.locator(".lift-status").inner_text().endswith("버튼을 눌러요")
+        board.locator(f'[data-lift-call="{direction}"]').tap()
+        assert board.locator(".lift-open").count() == 1
+        board.locator("[data-lift-enter]").tap()
+        assert sorted(map(int, board.locator("[data-lift-select]").evaluate_all(
+            "keys => keys.map(key => key.dataset.liftSelect)"))) == list(range(1, 11))
+        board.locator("[data-lift-door=close]").tap()
+        assert board.locator(".lift-open").count() == 0
+        board.locator("[data-lift-door=open]").tap()
+        assert board.locator(".lift-open").count() == 1
+        board.locator(f'[data-lift-select="{start}"]').tap()
+        assert board.locator(".lift-status").inner_text() == "갈 층을 다시 확인해요"
+        chosen = board.locator(f'[data-lift-select="{goal}"]')
+        chosen.tap()
+        assert chosen.get_attribute("aria-pressed") == "true"
+        board.locator("[data-lift-door=close]").tap()
+        assert board.locator("[data-lift-door=open]").is_disabled()
+        page.wait_for_selector(f'[data-lift-phase="arrive"] [data-lift-floor="{goal}"]')
+        assert board.locator(".lift-open").count() == 1
+        board.locator("[data-lift-exit]").tap()
+        named(page, "다음").tap()
+    board.locator(".lift-destination summary").tap()
+    board.locator("select").select_option("2")
+    board.locator("[data-lift-call=down]").tap()
+    board.locator("[data-lift-enter]").wait_for()
+
+
 def main():
     server = ThreadingHTTPServer(("127.0.0.1", 0), partial(base.QuietHandler, directory=str(ROOT)))
     threading.Thread(target=server.serve_forever, daemon=True).start()
@@ -159,7 +194,9 @@ def main():
             page.locator(".ps-settings summary").click()
             page.get_by_label("고르는 그림 수").select_option("3")
             page.locator(".ps-settings summary").click()
-            for game, check in [("kiosk", order_meal), ("dishwash", wash_dish), ("tablesetting", set_table), ("objectnames", find_names), ("yesno", learn_yes_no)]:
+            games = [("kiosk", order_meal), ("dishwash", wash_dish), ("tablesetting", set_table),
+                     ("objectnames", find_names), ("yesno", learn_yes_no), ("elevator", ride_elevator)]
+            for game, check in games:
                 page.locator(f'[data-game="{game}"]').tap()
                 check(page)
                 page.locator(".ps-footer").get_by_role("button", name="놀이 목록", exact=True).tap()

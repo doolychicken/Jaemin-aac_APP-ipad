@@ -1,0 +1,122 @@
+.lift-board {
+  width: min(880px, 100%);
+  align-self: center;
+  padding: clamp(10px, 2vw, 22px);
+  border: 1px solid #d9e2e7;
+  border-radius: 24px;
+  background: #f5f8fa;
+  color: #203d4b;
+}
+.lift-title { margin: 0 0 14px; text-align: center; font-size: clamp(21px, 3.3vw, 35px); }
+.lift-layout { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(220px, 1fr); gap: clamp(10px, 3vw, 26px); align-items: start; }
+.lift-scene {
+  display: grid;
+  justify-items: center;
+  padding: 13px 14% 0;
+  border-radius: 18px;
+  background: linear-gradient(to bottom, #d7cfc3 83%, #b8aaa0 83%, #c5b9a9);
+  box-shadow: inset 0 0 0 1px #857b6a24;
+}
+.lift-display {
+  min-width: 106px;
+  min-height: 42px;
+  margin-bottom: 8px;
+  padding: 3px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #172b30;
+  color: #c2f5d4;
+  border: 2px solid #5d6667;
+  border-radius: 8px;
+  font-size: clamp(22px, 3vw, 32px);
+  font-variant-numeric: tabular-nums;
+}
+.lift-arrow { font-size: .65em; }
+.lift-doorway {
+  width: 100%;
+  height: clamp(190px, 34vh, 330px);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border: 7px solid #636e73;
+  border-bottom-width: 4px;
+  background: #8f999a;
+  box-shadow: 0 2px 0 #5f615e;
+}
+.lift-interior {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #58686d 0%, #bcc4c0 15%, #b3bdb7 85%, #59686c),
+              linear-gradient(#c8c6bc 75%, #a69e92 75%);
+}
+.lift-interior::after {
+  content: "";
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: 34%;
+  height: 6px;
+  border: 1px solid #4f5d60;
+  border-radius: 4px;
+  background: #dedfe1;
+  box-shadow: 0 4px 8px #142e3b3a;
+}
+.lift-door {
+  position: absolute;
+  width: 50%;
+  inset-block: 0;
+  background: linear-gradient(93deg, #969da1, #d7dcdb 32%, #aaafb2 65%, #e1e3e0);
+}
+.lift-door-left { left: 0; border-right: 1px solid #525f63; }
+.lift-door-right { right: 0; border-left: 1px solid #525f63; }
+.lift-open .lift-door-left { transform: translateX(-92%); }
+.lift-open .lift-door-right { transform: translateX(92%); }
+[data-lift-phase="board"] .lift-door-left,[data-lift-phase="arrive"] .lift-door-left { animation: lift-open-left .4s ease-out; }
+[data-lift-phase="board"] .lift-door-right,[data-lift-phase="arrive"] .lift-door-right { animation: lift-open-right .4s ease-out; }
+.lift-closing .lift-door-left { animation: lift-close-left .3s ease-in; }
+.lift-closing .lift-door-right { animation: lift-close-right .3s ease-in; }
+@keyframes lift-open-left { from { transform: translateX(0); } }
+@keyframes lift-open-right { from { transform: translateX(0); } }
+@keyframes lift-close-left { from { transform: translateX(-92%); } }
+@keyframes lift-close-right { from { transform: translateX(92%); } }
+.ps-still .lift-doorway .lift-door { animation: none; }
+.lift-controls { display: grid; gap: 8px; align-content: start; }
+.lift-goal { display: flex; align-items: center; justify-content: space-between; margin: 0; padding: 7px 13px; border-radius: 12px; background: #e0f0e9; font-weight: 700; }
+.lift-goal strong { font-size: clamp(23px, 3vw, 33px); }
+.lift-call-buttons,.lift-panel { display: grid; gap: 7px; }
+.lift-call-buttons { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.lift-panel { grid-template-columns: repeat(5, minmax(0, 1fr)); padding: 9px; background: #c9d2d9; border-radius: 15px; }
+.lift-board .lift-key {
+  min-width: 0;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 4px;
+  border: 2px solid #8199a6;
+  border-radius: 12px;
+  background: #fafdff;
+  color: #233f4c;
+  font-size: clamp(17px, 2.1vw, 23px);
+  font-weight: 800;
+}
+.lift-board .lift-call { flex-direction: column; gap: 2px; min-height: 96px; font-size: clamp(19px, 2.5vw, 28px); }
+.lift-call span { font-size: 1.35em; line-height: 1; }
+.lift-door-buttons { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
+.lift-floor-key[aria-pressed="true"] { background: #ffec9a; border-color: #7d6824; color: #372c06; }
+.lift-key:disabled:not([aria-pressed="true"]) { opacity: .66; }
+.lift-destination { padding: 5px 0; }
+.lift-destination summary { min-height: 42px; padding: 8px 0; cursor: pointer; }
+.lift-destination label { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding-bottom: 8px; }
+.lift-destination select { min-height: 44px; padding: 4px 10px; border: 1px solid #8199a6; border-radius: 10px; background: white; }
+.lift-status { margin: 0; min-height: 1.25em; font-weight: 700; }
+@media (max-width: 600px) {
+  .lift-layout { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .lift-scene { padding-inline: 24%; }
+  .lift-doorway { height: clamp(128px, 23vh, 208px); }
+  .lift-board .lift-call { min-height: 68px; }
+  .lift-board .lift-key { min-height: 48px; }
+}
