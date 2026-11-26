@@ -128,6 +128,15 @@
     }
     function displayBounds(piece) {
       const [x, y, w, h] = piece.target;
+      if (catalog.id === 'living' && piece.id === 'purifier') {
+        const scale = 1.45;
+        return [x - w * (scale - 1) / 2, y - h * (scale - 1), w * scale, h * scale];
+      }
+      if (catalog.id === 'living' && piece.id === 'watering-can') {
+        const scale = 1.4;
+        // Leave the sprayer and the plant clear while staying on the same patch of floor.
+        return [x + .006, y + .052, w * scale, h * scale];
+      }
       const [left, top, frameWidth, frameHeight] = frame;
       const artWidth = w * catalog.width;
       const artHeight = h * catalog.height;
@@ -346,6 +355,7 @@
         if (!ready || dragCancel || event.button !== 0 || event.isPrimary === false) return;
         event.preventDefault();
         const id = event.pointerId, x0 = event.clientX, y0 = event.clientY;
+        const guide = target.querySelector('.sb-guide');
         let moved = false, ghost = null;
         const hit = (x, y) => {
           const rect = target.getBoundingClientRect();
@@ -370,15 +380,21 @@
           if (!moved && Math.hypot(e.clientX - x0, e.clientY - y0) < 6) return;
           if (!moved) {
             moved = true;
-            ghost = el('div', 'sb-drag-ghost'); ghost.append(sprite(piece));
-            const r = target.querySelector('.sb-guide').getBoundingClientRect();
-            const longest = Math.max(1, r.width, r.height);
-            const factor = Math.max(120, Math.min(200, longest)) / longest;
-            ghost.style.width = r.width * factor + 'px'; ghost.style.height = r.height * factor + 'px';
+            ghost = el('div', 'sb-drag-ghost');
+            ghost.append(sprite(piece));
             document.body.appendChild(ghost); card.classList.add('sb-dragging');
           }
-          ghost.style.left = e.clientX + 'px'; ghost.style.top = (e.clientY - (e.pointerType === 'touch' ? 24 : 0)) + 'px';
-          target.classList.toggle('sb-over', hit(e.clientX, e.clientY));
+          const rect = guide.getBoundingClientRect();
+          const over = hit(e.clientX, e.clientY);
+          Object.assign(ghost.firstElementChild.style, {
+            height: guide.style.height, transform: guide.style.transform, transformOrigin: guide.style.transformOrigin
+          });
+          Object.assign(ghost.style, {
+            width: rect.width + 'px', height: rect.height + 'px',
+            left: (over ? rect.left + rect.width / 2 : e.clientX) + 'px',
+            top: (over ? rect.top + rect.height / 2 : e.clientY - (e.pointerType === 'touch' ? 24 : 0)) + 'px'
+          });
+          target.classList.toggle('sb-over', over);
         }
         function end(e) {
           if (e.pointerId !== id) return;

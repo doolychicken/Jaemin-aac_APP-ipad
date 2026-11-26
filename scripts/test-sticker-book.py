@@ -67,6 +67,9 @@ def main():
                     point={k:start[k]+(end[k]-start[k])*step/6 for k in start}
                     touch.send('Input.dispatchTouchEvent',{'type':'touchMove','touchPoints':[dict(point,id=1)]})
                 assert page.locator('.sb-drag-ghost').count()==1
+                ghost=page.locator('.sb-drag-ghost .sb-sprite').bounding_box()
+                guide=page.locator('.sb-guide').bounding_box()
+                assert all(abs(ghost[key]-guide[key])<1 for key in ('width','height'))
                 if exit: page.evaluate('backBtn.click()')
                 touch.send('Input.dispatchTouchEvent',{'type':'touchCancel' if cancel else 'touchEnd','touchPoints':[]})
                 assert page.locator('.sb-drag-ghost').count()==0
@@ -149,7 +152,7 @@ def main():
             off=offline.new_page(); off.set_default_timeout(120000)
             off.goto(url)
             off.wait_for_function("""async () => {
-                const cache=await caches.open('jaemin-aac-v448');
+                const cache=await caches.open('jaemin-aac-v449');
                 const paths=['./images/bathroom_book/boy-two.png','./js/features/sticker-book.js','./images/home_books/kitchen-table-square.png'];
                 return (await Promise.all(paths.map(path=>cache.match(path)))).every(Boolean);
             }""")
