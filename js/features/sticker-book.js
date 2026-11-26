@@ -7,7 +7,7 @@
     bathroom: [0, .015, 1, 1],
     living: [0, .16, 1, 1],
     bedroom: [.025, .05, 1, .99],
-    fridge: [.16, 0, .99, 1],
+    fridge: [.012, 0, .99, .99],
     wardrobe: [.10, .025, .93, .955],
     linen: [.10, .025, .93, .955],
     dress: [.31, 0, .68, .985],
@@ -127,6 +127,7 @@
       return svg;
     }
     function displayBounds(piece) {
+      if (catalog.sharedStorage) return piece.target;
       const [x, y, w, h] = piece.target;
       if (catalog.id === 'living' && piece.id === 'purifier') {
         const scale = 1.45;
@@ -142,7 +143,8 @@
       const artHeight = h * catalog.height;
       const frameSize = Math.max(frameWidth, frameHeight);
       // Keep the cutlery close to its place settings without covering the bowls.
-      const scaleLimit = catalog.id === 'kitchen' && /^(spoon|fork|chopsticks)(-right)?$/.test(piece.id) ? 1.18 : 1.65;
+      let scaleLimit = 1.65;
+      if (catalog.id === 'kitchen' && /^(spoon|fork|chopsticks)(-right)?$/.test(piece.id)) scaleLimit = 1.18;
       const scale = Math.min(scaleLimit, 0.054 * frameSize / Math.min(artWidth, artHeight),
         0.275 * frameSize / Math.max(artWidth, artHeight));
       if (scale <= 1) return piece.target;
@@ -338,7 +340,33 @@
       background.alt = '스티커를 붙이는 ' + roomName + ' 배경'; background.draggable = false;
       stage.appendChild(background);
       const layer = el('div', 'sb-piece-layer'); stage.appendChild(layer);
-      if (isFixture) {
+      if (catalog.sharedStorage) {
+        const key = piece => piece.image + ':' + piece.crop.join(',');
+        const visible = new Set();
+        if (active && !state.placed.includes(active.id)) visible.add(key(active));
+        for (const chapter of catalog.chapters) {
+          const placed = saved.progress[chapter.id]?.placed || [];
+          for (const piece of chapter.pieces) {
+            const photo = key(piece);
+            if (placed.includes(piece.id) && !visible.has(photo)) {
+              placedSprite(piece, layer);
+              visible.add(photo);
+            }
+          }
+        }
+        for (const zone of catalog.sharedStorage) {
+          const area = el('div', 'sb-storage-area');
+          area.dataset.zone = zone.id;
+          area.setAttribute('aria-hidden', 'true');
+          position(area, zone.bounds);
+          stage.append(area);
+          const label = el('span', 'sb-storage-label', zone.label);
+          label.dataset.zone = zone.id;
+          label.style.left = zone.target[0] * 100 + '%';
+          label.style.top = zone.target[1] * 100 + '%';
+          stage.append(label);
+        }
+      } else if (isFixture) {
         chapter.pieces.filter(piece => state.placed.includes(piece.id)).forEach(piece => placedSprite(piece, layer));
       } else if (isRoutine) {
         catalog.chapters[0].pieces.filter(piece => piece.id !== last?.omit).forEach(piece => placedSprite(piece, layer));
@@ -356,11 +384,12 @@
         event.preventDefault();
         const id = event.pointerId, x0 = event.clientX, y0 = event.clientY;
         const guide = target.querySelector('.sb-guide');
+        const compartment = piece.storageZone && stage.querySelector(`.sb-storage-area[data-zone="${piece.storageZone}"]`);
         let moved = false, ghost = null;
         const hit = (x, y) => {
-          const rect = target.getBoundingClientRect();
+          const rect = (compartment || target).getBoundingClientRect();
           const room = stage.getBoundingClientRect();
-          const pad = 18;
+          const pad = compartment ? 0 : 18;
           return x >= Math.max(room.left, rect.left - pad) && x <= Math.min(room.right, rect.right + pad)
             && y >= Math.max(room.top, rect.top - pad) && y <= Math.min(room.bottom, rect.bottom + pad);
         };
@@ -369,6 +398,7 @@
           document.removeEventListener('pointerup', end, true);
           document.removeEventListener('pointercancel', cancel, true);
           card.removeEventListener('lostpointercapture', cancel);
+          compartment?.classList.remove('sb-storage-over');
           ghost?.remove(); target.classList.remove('sb-over'); card.classList.remove('sb-dragging');
           dragCancel = null;
           if (card.hasPointerCapture?.(id)) card.releasePointerCapture(id);
@@ -395,6 +425,7 @@
             top: (over ? rect.top + rect.height / 2 : e.clientY - (e.pointerType === 'touch' ? 24 : 0)) + 'px'
           });
           target.classList.toggle('sb-over', over);
+          compartment?.classList.toggle('sb-storage-over', over);
         }
         function end(e) {
           if (e.pointerId !== id) return;
@@ -522,7 +553,9 @@
       observer = new ResizeObserver(resize); observer.observe(canvasWrap); resize();
       const localEpoch = epoch;
       const urls = new Set([catalog.room, catalog.empty, ...chapter.pieces.map(p => p.image)]);
-      if (chapter.id === 'routines' || catalog.compose) {
+      if (catalog.sharedStorage) {
+        catalog.chapters.forEach(group => group.pieces.forEach(piece => urls.add(piece.image)));
+      } else if (chapter.id === 'routines' || catalog.compose) {
         catalog.chapters[0].pieces.forEach(piece => urls.add(piece.image));
       }
       const loading = el('div', 'sb-loading', '스티커를 준비하고 있어요…');

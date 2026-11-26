@@ -52,6 +52,13 @@
 .sb-scene { position: absolute; }
 .sb-room { display: block; width: 100%; height: 100%; user-select: none; pointer-events: none; }
 .sb-piece-layer { position: absolute; inset: 0; pointer-events: none; }
+.sb-storage-area { position: absolute; pointer-events: none; border-radius: 8px; }
+.sb-storage-over { outline: 3px solid #318276; outline-offset: -2px; background: #b7efcd34; }
+.sb-storage-label { position: absolute; transform: translate(-50%, -50%); z-index: 1; padding: 3px 8px; border: 1px solid #93b5ab; border-radius: 999px; background: #fafffaff; color: #184c40; font-size: clamp(10px, 1.25vw, 16px); line-height: 1.15; font-weight: 800; white-space: nowrap; pointer-events: none; }
+.sb-storage-label[data-zone="drinks"] { background: #e5f3ff; color: #174977; }
+.sb-storage-label[data-zone="meals"] { background: #fff0df; color: #6a401d; }
+.sb-storage-label[data-zone="fruit"] { background: #fff0f1; color: #7a334b; }
+.sb-storage-label[data-zone="vegetables"] { background: #e9f5e7; }
 .sb-placed { position: absolute; pointer-events: none; }
 .sb-sprite { display: block; width: 100%; height: 100%; overflow: hidden; pointer-events: none; user-select: none; }
 .sb-target { position: absolute; padding: 0; border: 0; background: transparent; border-radius: 8px; touch-action: none !important; }

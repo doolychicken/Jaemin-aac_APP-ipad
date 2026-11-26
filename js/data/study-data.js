@@ -288,7 +288,7 @@ function buildStudyScreensMap() {
   rest.stickerKitchen_cooking = { title: "조리도구 올려놓기", book: "kitchen", chapter: "cooking", helper: "", hero: [], items: [], layout: "stickerBook", showPlayer: false };
 
   for (const [book, nav, title, chapterTitle] of [
-    ["fridge", "stickerFridge", "냉장고 채우기", "냉장고에 넣어요"],
+    ["fridge", "stickerFridge", "냉장고 채우기", "냉장고 전체 채우기"],
     ["vanity", "stickerVanity", "화장대 정리하기", "화장대에 올려요"],
     ["wardrobe", "stickerWardrobe", "옷장 정리하기", "옷장에 넣어요"],
     ["linen", "stickerLinen", "이불장 정리하기", "이불과 베개를 넣어요"],

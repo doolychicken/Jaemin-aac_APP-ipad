@@ -119,7 +119,7 @@ def book(id,label,title,chapterTitle,pieces,room,**extra):
  path=f'./images/storage_dress/{room}.png'
  return dict(id=id,label=label,title=title,heading=title,nav='sticker'+id.title(),storageKey=f'jaemin-{id}-stickers-v1',
   width=1536,height=1024,room=path,empty=path,chapters=[dict(id='items',title=chapterTitle,subtitle='하나씩 끌어서 알맞은 자리에 놓아요',pieces=pieces)],**extra)
-books=[book('fridge','냉장고','냉장고 채우기','냉장고에 넣어요',items[:8],'fridge',hidden=True,returnNav='stickerKitchen',returnLabel='주방 스티커북'),
+books=[book('fridge','냉장고','냉장고 채우기','냉장고 전체 채우기',items[:8],'fridge-wide',hidden=True,returnNav='stickerKitchen',returnLabel='주방 스티커북'),
  book('vanity','화장대','화장대 정리하기','화장대에 올려요',vanity_items,'vanity-ivory',hidden=True,returnNav='stickerBedroom',returnLabel='침실 스티커북'),
  book('wardrobe','옷장','옷장 정리하기','옷장에 넣어요',wardrobe_items,'wardrobe-ivory',hidden=True,returnNav='stickerBedroom',returnLabel='침실 스티커북'),
  book('linen','이불장','이불장 정리하기','이불과 베개를 넣어요',linen,'linen',hidden=True,returnNav='stickerBedroom',returnLabel='침실 스티커북'),

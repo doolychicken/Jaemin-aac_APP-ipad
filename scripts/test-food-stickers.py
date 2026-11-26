@@ -24,7 +24,7 @@ def main():
             page.wait_for_selector('[data-chapter="rice"]')
             assert page.locator('[data-chapter]').count()==4
             for book,chapters in [('Tray',{'rice':9,'meal':9,'fruit':9,'snack':9}),
-                                  ('Fridge',{'drinks':9,'meals':7,'vegetables':6,'fruit':9})]:
+                                  ('Fridge',{'drinks':10,'meals':9,'vegetables':6,'fruit':9})]:
                 for chapter,total in chapters.items():
                     page.evaluate(f"pushScreen('sticker{book}_{chapter}','스티커북');render()")
                     for i in range(total):
