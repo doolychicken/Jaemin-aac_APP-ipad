@@ -8,7 +8,12 @@
     const chapterById = id => catalog.chapters.find(chapter => chapter.id === id);
     const roomName = catalog.label || '화장실';
     const navKey = catalog.nav || 'stickerBathroom';
-    const frame = catalog.sceneCrop || [0, 0, catalog.width, catalog.height];
+    const isKitchen = catalog.id === 'kitchen';
+    const kitchenControls = isKitchen ? document.getElementById('stickerControls') : null;
+    const roomFrame = catalog.sceneCrop || [0, 0, catalog.width, catalog.height];
+    const fridge = isKitchen && catalog.chapters[0].pieces.find(piece => piece.id === 'fridge');
+    const top = fridge ? Math.max(roomFrame[1], Math.floor(fridge.target[1] * catalog.height) - 10) : roomFrame[1];
+    const frame = [roomFrame[0], top, roomFrame[2], roomFrame[1] + roomFrame[3] - top];
     const { gridEl, appMainEl, spotlightViewEl, spotlightBtnEl, heroEl, helperEl, speak, playPuzzleSound } = deps;
     const saved = window.appStorage.load(KEY, { version: 1, sound: true, hints: true, progress: {} }, value => {
       if (!value || value.version !== 1 || typeof value.sound !== 'boolean' || typeof value.hints !== 'boolean'
@@ -149,6 +154,7 @@
     function clearView() {
       epoch++;
       dragCancel?.();
+      kitchenControls?.replaceChildren();
       observer?.disconnect();
       observer = null;
       armed = false;
@@ -261,9 +267,9 @@
     }
     // Keep photos and placed stickers in their original room coordinates. Only the
     // outside frame clips the room, so the same crop works at every screen size.
-    function sceneLayer(frame, book) {
-      if (!book.sceneCrop) return frame;
-      const [x, y, width, height] = book.sceneCrop;
+    function sceneLayer(frame, book, crop = book.sceneCrop) {
+      if (!crop) return frame;
+      const [x, y, width, height] = crop;
       const scene = el('div', 'sb-scene');
       Object.assign(scene.style, {
         left: -100 * x / width + '%', top: -100 * y / height + '%',
@@ -385,12 +391,13 @@
       progress.append(progressText);
       const meter = el('progress', ''); meter.max = chapter.pieces.length; meter.value = state.placed.length;
       meter.setAttribute('aria-label', '붙인 스티커'); progress.append(meter); toolbar.append(progress);
-      root.append(toolbar);
+      if (kitchenControls) kitchenControls.append(toolbar);
+      else root.append(toolbar);
       const workspace = el('div', 'sb-workspace');
       const canvasWrap = el('div', 'sb-canvas-wrap');
       const stage = el('div', 'sb-stage'); stage.setAttribute('aria-label', roomName + ' 배경');
       canvasWrap.append(stage); workspace.append(canvasWrap);
-      const scene = sceneLayer(stage, catalog);
+      const scene = sceneLayer(stage, catalog, isKitchen ? frame : catalog.sceneCrop);
       renderScene(scene, state);
       if (chapter.id === 'items' || done) {
         (catalog.activities || []).filter(activity => activity.target).forEach(activity => {
@@ -404,7 +411,8 @@
       tray.setAttribute('aria-label', '지금 붙일 스티커');
       workspace.append(tray); root.append(workspace);
       const status = el('p', 'sb-status', done ? (catalog.completeMessage || roomName + ' 꾸미기를 완성했어요!') : matched ? '잘 붙였어요! 다음 스티커도 만나볼까요?' : '스티커를 꾹 잡고 표시된 자리로 옮겨요.');
-      status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite'); root.append(status);
+      status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite');
+      if (!kitchenControls) root.append(status);
       const footer = el('div', 'sb-footer');
       const undo = button('하나 되돌리기', () => {
         const last = state.placed.pop();
@@ -415,7 +423,8 @@
         button('처음부터', () => dialog('이 활동을 다시 할까요?', '이 활동에서 붙인 스티커만 지워져요.', '처음부터', () => {
           saved.progress[chapter.id] = { placed: [], cursor: 0 }; save(); render({ chapter: chapter.id });
         })));
-      root.append(footer);
+      if (kitchenControls) toolbar.append(footer);
+      else root.append(footer);
       if (done) {
         tray.classList.add('sb-tray--complete');
         tray.append(el('span', 'sb-star', '★'), el('h2', '', '다 붙였어요!'), el('p', '', '하나씩, 정말 잘했어요.'), button('다른 활동', menu, 'sb-button sb-primary'));
@@ -454,6 +463,7 @@
         }
         attachDrag(card, stage, target, piece, accept);
       }
+      if (kitchenControls) tray.prepend(status);
       const resize = () => {
         const rect = canvasWrap.getBoundingClientRect();
         const [left, top, frameWidth, frameHeight] = frame;
