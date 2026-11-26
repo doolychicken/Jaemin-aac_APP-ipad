@@ -135,8 +135,9 @@
 .sb-root--play[data-book="kitchen"] { display: flex; padding: 7px; }
 [data-book="kitchen"] .sb-canvas-wrap { align-items: flex-start; background: transparent; }
 [data-book="kitchen"] .sb-stage { border-radius: 12px; }
-[data-book="kitchen"] .sb-tray { position: relative; padding-bottom: 34px; }
-[data-book="kitchen"] .sb-status { position: absolute; inset: auto 8px 4px; font-size: 13px; }
+[data-book="kitchen"] .sb-tray { position: relative; padding-bottom: 38px; }
+[data-book="kitchen"] .sb-tray .sb-button { padding-inline: 7px; word-break: keep-all; }
+[data-book="kitchen"] .sb-status { position: absolute; inset: auto 8px 4px; font-size: 12px; line-height: 1.25; }
 @media (min-width: 700px) and (max-width: 1100px) and (orientation: portrait) {
   [data-book="kitchen"] .sb-workspace {
     grid-template-rows: minmax(0, 1fr) clamp(172px, 18vh, 236px);

@@ -133,7 +133,7 @@
       Object.assign(node.style, { left: x * 100 + '%', top: y * 100 + '%', width: w * 100 + '%', height: h * 100 + '%' });
     }
     // Expand the landing area around the original cutout, including at room edges.
-    function sizeDropTarget(target, bounds, width, height) {
+    function sizeDropTarget(target, bounds, width, height, verticalScale) {
       const [x, y, w, h] = bounds;
       const artWidth = w * width, artHeight = h * height;
       const zoneWidth = Math.min(width, Math.max(84, artWidth + 16));
@@ -142,7 +142,8 @@
       const top = Math.max(0, Math.min(height - zoneHeight, y * height + (artHeight - zoneHeight) / 2));
       Object.assign(target.style, { left: left + 'px', top: top + 'px', width: zoneWidth + 'px', height: zoneHeight + 'px' });
       Object.assign(target.querySelector('.sb-guide').style, { left: (x * width - left) + 'px', top: (y * height - top) + 'px',
-        width: artWidth + 'px', height: artHeight + 'px' });
+        width: artWidth + 'px', height: artHeight / verticalScale + 'px',
+        transform: `scaleY(${verticalScale})`, transformOrigin: 'top left' });
     }
     function placedSprite(piece, layer) {
       const wrap = el('div', 'sb-placed');
@@ -468,13 +469,22 @@
         const rect = canvasWrap.getBoundingClientRect();
         const [left, top, frameWidth, frameHeight] = frame;
         const width = Math.max(1, Math.min(rect.width, rect.height * frameWidth / frameHeight));
-        const height = width * frameHeight / frameWidth;
+        const naturalHeight = width * frameHeight / frameWidth;
+        // Use the spare vertical space without cropping the fridge or the worktop.
+        const fillKitchen = isKitchen && window.matchMedia('(min-width: 601px) and (orientation: landscape)').matches;
+        const height = fillKitchen ? Math.max(1, rect.height) : naturalHeight;
+        const verticalScale = height / naturalHeight;
         stage.style.width = width + 'px'; stage.style.height = height + 'px';
+        if (isKitchen) {
+          scene.style.height = 100 * catalog.height / frameHeight / verticalScale + '%';
+          scene.style.transformOrigin = 'top left';
+          scene.style.transform = `scaleY(${verticalScale})`;
+        }
         const target = stage.querySelector('.sb-target');
         if (target) {
           const [x, y, w, h] = displayBounds(piece);
           sizeDropTarget(target, [(x * catalog.width - left) / frameWidth, (y * catalog.height - top) / frameHeight,
-            w * catalog.width / frameWidth, h * catalog.height / frameHeight], width, height);
+            w * catalog.width / frameWidth, h * catalog.height / frameHeight], width, height, verticalScale);
         }
       };
       observer = new ResizeObserver(resize); observer.observe(canvasWrap); resize();
