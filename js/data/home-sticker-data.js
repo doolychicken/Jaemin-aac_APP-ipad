@@ -1318,22 +1318,22 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
           {
             "id": "bed",
             "label": "침대",
-            "image": "./images/home_books/bedroom-stickers-v2.png",
+            "image": "./images/home_books/bedroom-ivory-furniture.png",
             "sheet": [
-              1086,
-              1448
+              1536,
+              1024
             ],
             "crop": [
-              11,
-              80,
-              470,
-              292
+              29,
+              133,
+              439,
+              245
             ],
             "target": [
               0.078125,
-              0.439453125,
+              0.48036197323462415,
               0.37109375,
-              0.3458277925531915
+              0.31065365176537585
             ]
           },
           {
@@ -1360,64 +1360,64 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
           {
             "id": "dresser",
             "label": "화장대",
-            "image": "./images/home_books/bedroom-stickers-v2.png",
+            "image": "./images/home_books/bedroom-ivory-furniture.png",
             "sheet": [
-              1086,
-              1448
+              1536,
+              1024
             ],
             "crop": [
-              732,
-              153,
-              335,
-              219
+              1071,
+              92,
+              405,
+              345
             ],
             "target": [
-              0.595703125,
-              0.498046875,
-              0.18229166666666666,
-              0.1787546641791045
+              0.5611979166666666,
+              0.49225983796296297,
+              0.14973958333333334,
+              0.19133391203703703
             ]
           },
           {
             "id": "mirror",
             "label": "거울",
-            "image": "./images/home_books/bedroom-stickers-v2.png",
+            "image": "./images/home_books/bedroom-ivory-furniture.png",
             "sheet": [
-              1086,
-              1448
+              1536,
+              1024
             ],
             "crop": [
-              24,
-              466,
-              353,
-              255
+              57,
+              645,
+              404,
+              246
             ],
             "target": [
-              0.595703125,
-              0.3005212021954674,
-              0.18229166666666666,
-              0.19752567280453256
+              0.5755208333333334,
+              0.38713433517830953,
+              0.12044270833333333,
+              0.11000831528465346
             ]
           },
           {
             "id": "wardrobe",
-            "label": "장롱",
-            "image": "./images/home_books/bedroom-stickers-v2.png",
+            "label": "키큰 옷장",
+            "image": "./images/home_books/bedroom-ivory-furniture.png",
             "sheet": [
-              1086,
-              1448
+              1536,
+              1024
             ],
             "crop": [
-              422,
-              397,
-              239,
-              362
+              551,
+              32,
+              431,
+              441
             ],
             "target": [
-              0.80078125,
-              0.244140625,
-              0.19342411947513813,
-              0.439453125
+              0.7161458333333334,
+              0.28567738544083526,
+              0.265625,
+              0.40768198955916474
             ]
           },
           {
@@ -1439,6 +1439,27 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               0.771484375,
               0.1953125,
               0.1852009536784741
+            ]
+          },
+          {
+            "id": "vanity-stool",
+            "label": "화장대 의자",
+            "image": "./images/home_books/bedroom-ivory-furniture.png",
+            "sheet": [
+              1536,
+              1024
+            ],
+            "crop": [
+              610,
+              594,
+              309,
+              359
+            ],
+            "target": [
+              0.58203125,
+              0.620945211367314,
+              0.06901041666666667,
+              0.12026572613268609
             ]
           }
         ]
@@ -1463,8 +1484,8 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               155
             ],
             "target": [
-              0.15299479166666666,
-              0.5078125,
+              0.15950520833333334,
+              0.5300665575170843,
               0.20833333333333334,
               0.1295120320855615
             ]
@@ -1556,6 +1577,6 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
         ]
       }
     ],
-    "description": "창가 침대 · 협탁 · 화장대와 거울 · 장롱"
+    "description": "창가 침대 · 화장대와 의자 · 키큰 옷장"
   }
 ]];

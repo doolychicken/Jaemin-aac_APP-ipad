@@ -263,10 +263,25 @@ def update_bedroom(book):
  pieces[4]['target'][1]=510/1024-pieces[4]['target'][3]
  # Both clocks and the lamp sit on their furniture instead of floating above it.
  pieces[9]['target'][1]=607/1024-pieces[9]['target'][3]
+ ivory='bedroom-ivory-furniture'
+ def ivory_piece(index,pid,label,left,bottom,width):
+  col,row=index%3,index//3
+  region=(col*512,row*512,(col+1)*512,(row+1)*512)
+  piece=kitchen_piece(pid,label,ivory,region,left,0,width)
+  piece['target'][1]=bottom/1024-piece['target'][3]
+  return piece
+ pieces[1]=ivory_piece(0,'bed','침대',120,810,570)
+ pieces[3]=ivory_piece(2,'dresser','화장대',862,700,230)
+ mirror_bottom=pieces[3]['target'][1]*1024+5
+ pieces[4]=ivory_piece(3,'mirror','거울',884,mirror_bottom,185)
+ pieces[5]=ivory_piece(1,'wardrobe','키큰 옷장',1100,710,408)
+ stool=ivory_piece(4,'vanity-stool','화장대 의자',894,759,106)
+ pieces[7]['target'][:2]=[245/1536,pieces[1]['target'][1]+.16*pieces[1]['target'][3]]
  book['room']=book['empty']='./images/home_books/bedroom-room-v2.png'
  book['storageKey']='jaemin-bedroom-stickers-v2'
- book['description']='창가 침대 · 협탁 · 화장대와 거울 · 장롱'
- book['chapters']=[dict(id='fixtures',title='큰 가구 붙이기',subtitle='창가부터 차례로 침실을 꾸며요',pieces=pieces[:7]),
+ book['description']='창가 침대 · 화장대와 의자 · 키큰 옷장'
+ # Append the stool so saved placements can continue from the original furniture.
+ book['chapters']=[dict(id='fixtures',title='큰 가구 붙이기',subtitle='창가부터 차례로 침실을 꾸며요',pieces=[*pieces[:7],stool]),
                    dict(id='items',title='생활용품 놓기',subtitle='베개와 시계, 스탠드를 놓아요',pieces=pieces[7:])]
 
 for id,(label,nav,rows) in ROOMS.items():

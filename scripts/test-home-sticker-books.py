@@ -71,7 +71,7 @@ def main():
     assert page.locator('.sb-library-card').count()==6
    shelf();page.screenshot(path=str(out/'shelf.png'))
    chapter_counts = {'kitchen': {'fixtures':10, 'items':25, 'cooking':3},
-                     'living': {'fixtures':9, 'items':8}, 'bedroom': {'fixtures':7, 'items':5}}
+                     'living': {'fixtures':9, 'items':8}, 'bedroom': {'fixtures':8, 'items':5}}
    for id,label in [('kitchen','주방'),('living','거실'),('bedroom','침실')]:
     page.get_by_text(label+' 스티커북',exact=True).click()
     chapters=chapter_counts[id]
