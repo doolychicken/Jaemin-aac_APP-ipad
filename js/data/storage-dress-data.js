@@ -873,6 +873,177 @@ window.STICKER_BOOKS.push(...[
     "description": "음료 · 음식과 간식 · 과일 · 채소를 하나씩 넣어요"
   },
   {
+    "id": "vanity",
+    "label": "화장대",
+    "title": "화장대 정리하기",
+    "heading": "화장대 정리하기",
+    "nav": "stickerVanity",
+    "storageKey": "jaemin-vanity-stickers-v1",
+    "width": 1536,
+    "height": 1024,
+    "room": "./images/storage_dress/vanity-ivory.png",
+    "empty": "./images/storage_dress/vanity-ivory.png",
+    "chapters": [
+      {
+        "id": "items",
+        "title": "화장대에 올려요",
+        "subtitle": "하나씩 끌어서 알맞은 자리에 놓아요",
+        "pieces": [
+          {
+            "id": "vanity-dryer",
+            "label": "드라이기",
+            "image": "./images/storage_dress/vanity-items.png",
+            "sheet": [
+              1536,
+              1024
+            ],
+            "crop": [
+              65,
+              42,
+              386,
+              430
+            ],
+            "target": [
+              0.13671875,
+              0.33633723283678757,
+              0.08333333333333333,
+              0.13924870466321243
+            ]
+          },
+          {
+            "id": "vanity-comb",
+            "label": "머리빗",
+            "image": "./images/storage_dress/vanity-items.png",
+            "sheet": [
+              1536,
+              1024
+            ],
+            "crop": [
+              541,
+              39,
+              430,
+              425
+            ],
+            "target": [
+              0.24088541666666666,
+              0.3627475472383721,
+              0.08138020833333333,
+              0.12065089026162791
+            ]
+          },
+          {
+            "id": "vanity-toner",
+            "label": "스킨",
+            "image": "./images/storage_dress/vanity-items.png",
+            "sheet": [
+              1536,
+              1024
+            ],
+            "crop": [
+              1196,
+              16,
+              165,
+              461
+            ],
+            "target": [
+              0.34375,
+              0.294921875,
+              0.037283080260303685,
+              0.15625
+            ]
+          },
+          {
+            "id": "vanity-lotion",
+            "label": "얼굴 로션",
+            "image": "./images/storage_dress/vanity-items.png",
+            "sheet": [
+              1536,
+              1024
+            ],
+            "crop": [
+              176,
+              534,
+              175,
+              474
+            ],
+            "target": [
+              0.4361979166666667,
+              0.3291015625,
+              0.03292979738045007,
+              0.1337890625
+            ]
+          },
+          {
+            "id": "vanity-body-lotion",
+            "label": "바디로션",
+            "image": "./images/storage_dress/vanity-items.png",
+            "sheet": [
+              1536,
+              1024
+            ],
+            "crop": [
+              620,
+              499,
+              298,
+              512
+            ],
+            "target": [
+              0.52734375,
+              0.287109375,
+              0.06782786051432292,
+              0.1748046875
+            ]
+          },
+          {
+            "id": "vanity-lipstick",
+            "label": "립스틱",
+            "image": "./images/storage_dress/vanity-items.png",
+            "sheet": [
+              1536,
+              1024
+            ],
+            "crop": [
+              1137,
+              538,
+              267,
+              445
+            ],
+            "target": [
+              0.6282552083333334,
+              0.3798828125,
+              0.039843750000000004,
+              0.099609375
+            ]
+          },
+          {
+            "id": "vanity-clock",
+            "label": "탁상시계",
+            "image": "./images/home_books/bedroom-stickers-v2.png",
+            "sheet": [
+              1086,
+              1448
+            ],
+            "crop": [
+              776,
+              876,
+              281,
+              171
+            ],
+            "target": [
+              0.7259114583333334,
+              0.38954070284697506,
+              0.08463541666666667,
+              0.07725617215302491
+            ]
+          }
+        ]
+      }
+    ],
+    "hidden": true,
+    "returnNav": "stickerBedroom",
+    "returnLabel": "침실 스티커북"
+  },
+  {
     "id": "wardrobe",
     "label": "옷장",
     "title": "옷장 정리하기",
@@ -881,8 +1052,8 @@ window.STICKER_BOOKS.push(...[
     "storageKey": "jaemin-wardrobe-stickers-v1",
     "width": 1536,
     "height": 1024,
-    "room": "./images/storage_dress/wardrobe.png",
-    "empty": "./images/storage_dress/wardrobe.png",
+    "room": "./images/storage_dress/wardrobe-ivory.png",
+    "empty": "./images/storage_dress/wardrobe-ivory.png",
     "chapters": [
       {
         "id": "items",
@@ -904,10 +1075,10 @@ window.STICKER_BOOKS.push(...[
               248
             ],
             "target": [
-              0.24088541666666666,
-              0.4150390625,
-              0.09765625,
-              0.1413545719844358
+              0.21223958333333334,
+              0.154296875,
+              0.1551736811155914,
+              0.224609375
             ]
           },
           {
@@ -925,10 +1096,10 @@ window.STICKER_BOOKS.push(...[
               264
             ],
             "target": [
-              0.380859375,
-              0.41015625,
-              0.09118282433712122,
-              0.1416015625
+              0.3528645833333333,
+              0.541015625,
+              0.05974047111742425,
+              0.0927734375
             ]
           },
           {
@@ -946,10 +1117,10 @@ window.STICKER_BOOKS.push(...[
               260
             ],
             "target": [
-              0.5598958333333334,
-              0.2734375,
-              0.09549028445512821,
-              0.1416015625
+              0.634765625,
+              0.1494140625,
+              0.08561197916666667,
+              0.126953125
             ]
           },
           {
@@ -967,10 +1138,10 @@ window.STICKER_BOOKS.push(...[
               251
             ],
             "target": [
-              0.6998697916666666,
-              0.3125,
-              0.06590824203187251,
-              0.1025390625
+              0.6393229166666666,
+              0.375,
+              0.05523738379814077,
+              0.0859375
             ]
           },
           {
@@ -988,10 +1159,10 @@ window.STICKER_BOOKS.push(...[
               257
             ],
             "target": [
-              0.5696614583333334,
-              0.1220703125,
-              0.09440104166666667,
-              0.14441111731150794
+              0.7369791666666666,
+              0.16183423239087302,
+              0.07486979166666667,
+              0.11453295510912699
             ]
           },
           {
@@ -1009,10 +1180,10 @@ window.STICKER_BOOKS.push(...[
               290
             ],
             "target": [
-              0.625,
-              0.60546875,
-              0.10324622844827586,
-              0.205078125
+              0.6705729166666666,
+              0.6572265625,
+              0.06391433189655173,
+              0.126953125
             ]
           },
           {
@@ -1030,8 +1201,8 @@ window.STICKER_BOOKS.push(...[
               233
             ],
             "target": [
-              0.2864583333333333,
-              0.703125,
+              0.22395833333333334,
+              0.76953125,
               0.08226037195994278,
               0.1123046875
             ]
@@ -1051,10 +1222,10 @@ window.STICKER_BOOKS.push(...[
               221
             ],
             "target": [
-              0.5729166666666666,
-              0.478515625,
-              0.09553520927601811,
-              0.1123046875
+              0.4459635416666667,
+              0.658203125,
+              0.08307409502262443,
+              0.09765625
             ]
           },
           {
@@ -1072,10 +1243,10 @@ window.STICKER_BOOKS.push(...[
               228
             ],
             "target": [
-              0.6966145833333334,
-              0.48828125,
-              0.07161458333333333,
-              0.08246527777777778
+              0.7356770833333334,
+              0.37697285353535354,
+              0.07291666666666667,
+              0.08396464646464646
             ]
           },
           {
@@ -1093,10 +1264,10 @@ window.STICKER_BOOKS.push(...[
               227
             ],
             "target": [
-              0.234375,
-              0.1220703125,
-              0.09114583333333333,
-              0.09021847747093023
+              0.3600260416666667,
+              0.15190940679505816,
+              0.08528645833333333,
+              0.08441871820494186
             ]
           },
           {
@@ -1114,10 +1285,10 @@ window.STICKER_BOOKS.push(...[
               368
             ],
             "target": [
-              0.3385416666666667,
-              0.1220703125,
-              0.15625,
-              0.2559347181008902
+              0.419921875,
+              0.1513671875,
+              0.16991656759510868,
+              0.2783203125
             ]
           },
           {
@@ -1135,10 +1306,10 @@ window.STICKER_BOOKS.push(...[
               232
             ],
             "target": [
-              0.6998697916666666,
-              0.146484375,
-              0.0732421875,
-              0.087890625
+              0.6490885416666666,
+              0.5439453125,
+              0.07486979166666667,
+              0.08984375
             ]
           },
           {
@@ -1156,8 +1327,8 @@ window.STICKER_BOOKS.push(...[
               192
             ],
             "target": [
-              0.22786458333333334,
-              0.60546875,
+              0.21028645833333334,
+              0.5491153492647058,
               0.09765625,
               0.08272058823529412
             ]
@@ -1177,10 +1348,10 @@ window.STICKER_BOOKS.push(...[
               188
             ],
             "target": [
-              0.390625,
-              0.6201171875,
-              0.07161458333333333,
-              0.06963900862068965
+              0.322265625,
+              0.6675713900862069,
+              0.091796875,
+              0.0892645474137931
             ]
           }
         ]
@@ -2422,5 +2593,5 @@ window.STICKER_BOOKS.push(...[
     "completeMessage": "식사 준비를 마쳤어요!"
   }
 ]);
-const storageActivities = {"kitchen": [{"label": "냉장고 채우기", "description": "음료와 음식, 과일과 채소를 넣어요", "nav": "stickerFridge", "target": [0.85, 0.4]}, {"label": "식판 차리기", "description": "밥과 반찬, 간식을 차려요", "nav": "stickerTray"}], "bedroom": [{"label": "옷장 정리하기", "description": "옷과 소품 14개를 정리해요", "nav": "stickerWardrobe_items", "target": [0.9, 0.48]}, {"label": "이불장 정리하기", "description": "넓은 칸에 이불과 베개를 넣어요", "nav": "stickerLinen_items", "target": [0.72, 0.86]}, {"label": "옷입히기", "description": "재민이와 외출 준비를 해요", "nav": "stickerDress"}]};
+const storageActivities = {"kitchen": [{"label": "냉장고 채우기", "description": "음료와 음식, 과일과 채소를 넣어요", "nav": "stickerFridge", "target": [0.85, 0.4]}, {"label": "식판 차리기", "description": "밥과 반찬, 간식을 차려요", "nav": "stickerTray"}], "bedroom": [{"label": "화장대 정리하기", "description": "드라이기와 화장품 일곱 가지를 올려요", "nav": "stickerVanity_items", "target": [0.634, 0.52]}, {"label": "옷장 정리하기", "description": "옷과 소품 14개를 정리해요", "nav": "stickerWardrobe_items", "target": [0.9, 0.48]}, {"label": "이불장 정리하기", "description": "넓은 칸에 이불과 베개를 넣어요", "nav": "stickerLinen_items", "target": [0.72, 0.86]}, {"label": "옷입히기", "description": "재민이와 외출 준비를 해요", "nav": "stickerDress"}]};
 window.STICKER_BOOKS.forEach(book => { if (storageActivities[book.id]) book.activities = storageActivities[book.id]; });
