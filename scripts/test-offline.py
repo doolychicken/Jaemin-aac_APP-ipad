@@ -211,7 +211,7 @@ def main():
             print('PASS: local video plays and seeks with network disabled', flush=True)
 
             # Readiness must recover if a required recording disappears from storage.
-            page.evaluate("async () => { const cache = await caches.open('jaemin-aac-v447'); await cache.delete(OFFLINE_SPEECH.assets[0]); }")
+            page.evaluate("async () => { const cache = await caches.open('jaemin-aac-v448'); await cache.delete(OFFLINE_SPEECH.assets[0]); }")
             page.reload()
             page.wait_for_function("document.querySelector('#offlineStatusText').textContent.includes('파일이 부족')")
             context.set_offline(False)

@@ -2,6 +2,18 @@
 (function () {
   'use strict';
 
+  // The playing area shows the useful part of each photo. Covers use the original frame.
+  const playCrops = {
+    bathroom: [0, .015, 1, 1],
+    living: [0, .16, 1, 1],
+    bedroom: [.025, .05, 1, .99],
+    fridge: [.16, 0, .99, 1],
+    wardrobe: [.10, .025, .93, .955],
+    linen: [.10, .025, .93, .955],
+    dress: [.31, 0, .68, .985],
+    tray: [.015, .05, .99, .94]
+  };
+
   window.createStickerBookFeature = function (deps) {
     const catalog = deps.catalog || window.STICKER_BOOK;
     const KEY = catalog.storageKey || 'jaemin-bathroom-stickers-v1';
@@ -9,11 +21,16 @@
     const roomName = catalog.label || '화장실';
     const navKey = catalog.nav || 'stickerBathroom';
     const isKitchen = catalog.id === 'kitchen';
-    const kitchenControls = isKitchen ? document.getElementById('stickerControls') : null;
+    const controls = document.getElementById('stickerControls');
     const roomFrame = catalog.sceneCrop || [0, 0, catalog.width, catalog.height];
     const fridge = isKitchen && catalog.chapters[0].pieces.find(piece => piece.id === 'fridge');
-    const top = fridge ? Math.max(roomFrame[1], Math.floor(fridge.target[1] * catalog.height) - 10) : roomFrame[1];
-    const frame = [roomFrame[0], top, roomFrame[2], roomFrame[1] + roomFrame[3] - top];
+    const top = fridge ? Math.max(roomFrame[1], Math.floor(Math.min(fridge.target[1],
+      ...catalog.chapters.flatMap(chapter => chapter.pieces.map(piece => piece.target[1]))) * catalog.height) - 6) : roomFrame[1];
+    const crop = playCrops[catalog.id];
+    const frame = crop ? [
+      crop[0] * catalog.width, crop[1] * catalog.height,
+      (crop[2] - crop[0]) * catalog.width, (crop[3] - crop[1]) * catalog.height
+    ] : [roomFrame[0], top, roomFrame[2], roomFrame[1] + roomFrame[3] - top];
     const { gridEl, appMainEl, spotlightViewEl, spotlightBtnEl, heroEl, helperEl, speak, playPuzzleSound } = deps;
     const saved = window.appStorage.load(KEY, { version: 1, sound: true, hints: true, progress: {} }, value => {
       if (!value || value.version !== 1 || typeof value.sound !== 'boolean' || typeof value.hints !== 'boolean'
@@ -114,10 +131,11 @@
       const [left, top, frameWidth, frameHeight] = frame;
       const artWidth = w * catalog.width;
       const artHeight = h * catalog.height;
+      const frameSize = Math.max(frameWidth, frameHeight);
       // Keep the cutlery close to its place settings without covering the bowls.
-      const scaleLimit = catalog.id === 'kitchen' && /^(spoon|fork|chopsticks)(-right)?$/.test(piece.id) ? 1.18 : 1.55;
-      const scale = Math.min(scaleLimit, 0.054 * frameWidth / Math.min(artWidth, artHeight),
-        0.275 * frameWidth / Math.max(artWidth, artHeight));
+      const scaleLimit = catalog.id === 'kitchen' && /^(spoon|fork|chopsticks)(-right)?$/.test(piece.id) ? 1.18 : 1.65;
+      const scale = Math.min(scaleLimit, 0.054 * frameSize / Math.min(artWidth, artHeight),
+        0.275 * frameSize / Math.max(artWidth, artHeight));
       if (scale <= 1) return piece.target;
       const minX = left / catalog.width, minY = top / catalog.height;
       const maxX = (left + frameWidth) / catalog.width, maxY = (top + frameHeight) / catalog.height;
@@ -145,17 +163,17 @@
         width: artWidth + 'px', height: artHeight / verticalScale + 'px',
         transform: `scaleY(${verticalScale})`, transformOrigin: 'top left' });
     }
-    function placedSprite(piece, layer) {
+    function placedSprite(piece, layer, bounds = displayBounds(piece)) {
       const wrap = el('div', 'sb-placed');
       wrap.dataset.placed = piece.id;
-      position(wrap, displayBounds(piece));
+      position(wrap, bounds);
       wrap.appendChild(sprite(piece));
       layer.appendChild(wrap);
     }
     function clearView() {
       epoch++;
       dragCancel?.();
-      kitchenControls?.replaceChildren();
+      controls?.replaceChildren();
       observer?.disconnect();
       observer = null;
       armed = false;
@@ -286,7 +304,7 @@
       const scene = sceneLayer(frame, book);
       const photo = el('img', 'sb-room'); photo.src = book.room; photo.alt = (book.label || '화장실') + ' 배경';
       scene.append(photo);
-      if (book.compose) book.chapters[0].pieces.forEach(piece => placedSprite(piece, scene));
+      if (book.compose) book.chapters[0].pieces.forEach(piece => placedSprite(piece, scene, piece.target));
       return frame;
     }
     function library() {
@@ -392,13 +410,13 @@
       progress.append(progressText);
       const meter = el('progress', ''); meter.max = chapter.pieces.length; meter.value = state.placed.length;
       meter.setAttribute('aria-label', '붙인 스티커'); progress.append(meter); toolbar.append(progress);
-      if (kitchenControls) kitchenControls.append(toolbar);
+      if (controls) controls.append(toolbar);
       else root.append(toolbar);
       const workspace = el('div', 'sb-workspace');
       const canvasWrap = el('div', 'sb-canvas-wrap');
       const stage = el('div', 'sb-stage'); stage.setAttribute('aria-label', roomName + ' 배경');
       canvasWrap.append(stage); workspace.append(canvasWrap);
-      const scene = sceneLayer(stage, catalog, isKitchen ? frame : catalog.sceneCrop);
+      const scene = sceneLayer(stage, catalog, frame);
       renderScene(scene, state);
       if (chapter.id === 'items' || done) {
         (catalog.activities || []).filter(activity => activity.target).forEach(activity => {
@@ -413,7 +431,7 @@
       workspace.append(tray); root.append(workspace);
       const status = el('p', 'sb-status', done ? (catalog.completeMessage || roomName + ' 꾸미기를 완성했어요!') : matched ? '잘 붙였어요! 다음 스티커도 만나볼까요?' : '스티커를 꾹 잡고 표시된 자리로 옮겨요.');
       status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite');
-      if (!kitchenControls) root.append(status);
+      if (!controls) root.append(status);
       const footer = el('div', 'sb-footer');
       const undo = button('하나 되돌리기', () => {
         const last = state.placed.pop();
@@ -424,7 +442,7 @@
         button('처음부터', () => dialog('이 활동을 다시 할까요?', '이 활동에서 붙인 스티커만 지워져요.', '처음부터', () => {
           saved.progress[chapter.id] = { placed: [], cursor: 0 }; save(); render({ chapter: chapter.id });
         })));
-      if (kitchenControls) toolbar.append(footer);
+      if (controls) toolbar.append(footer);
       else root.append(footer);
       if (done) {
         tray.classList.add('sb-tray--complete');
@@ -464,22 +482,20 @@
         }
         attachDrag(card, stage, target, piece, accept);
       }
-      if (kitchenControls) tray.prepend(status);
+      if (controls) tray.prepend(status);
       const resize = () => {
         const rect = canvasWrap.getBoundingClientRect();
         const [left, top, frameWidth, frameHeight] = frame;
         const width = Math.max(1, Math.min(rect.width, rect.height * frameWidth / frameHeight));
         const naturalHeight = width * frameHeight / frameWidth;
-        // Use the spare vertical space without cropping the fridge or the worktop.
-        const fillKitchen = isKitchen && window.matchMedia('(min-width: 601px) and (orientation: landscape)').matches;
-        const height = fillKitchen ? Math.max(1, rect.height) : naturalHeight;
+        // Use spare vertical space while keeping every placement in view.
+        const fillHeight = window.matchMedia('(min-width: 601px) and (orientation: landscape)').matches;
+        const height = fillHeight ? Math.max(1, Math.min(rect.height, isKitchen ? Infinity : naturalHeight * 1.32)) : naturalHeight;
         const verticalScale = height / naturalHeight;
         stage.style.width = width + 'px'; stage.style.height = height + 'px';
-        if (isKitchen) {
-          scene.style.height = 100 * catalog.height / frameHeight / verticalScale + '%';
-          scene.style.transformOrigin = 'top left';
-          scene.style.transform = `scaleY(${verticalScale})`;
-        }
+        scene.style.height = 100 * catalog.height / frameHeight / verticalScale + '%';
+        scene.style.transformOrigin = 'top left';
+        scene.style.transform = `scaleY(${verticalScale})`;
         const target = stage.querySelector('.sb-target');
         if (target) {
           const [x, y, w, h] = displayBounds(piece);
