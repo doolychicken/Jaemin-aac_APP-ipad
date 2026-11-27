@@ -6,7 +6,7 @@
 
 importScripts('./js/data/speech-manifest.js?v=462');
 
-const CACHE_VERSION = 'v463';
+const CACHE_VERSION = 'v464';
 const CACHE_NAME = `jaemin-aac-${CACHE_VERSION}`;
 
 self.addEventListener('message', (event) => {

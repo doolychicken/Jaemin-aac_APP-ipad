@@ -4,6 +4,7 @@ import json,sys
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT/'_local/print-tools'))
 from PIL import Image
+from bathroom_art import BATHROOM_ITEMS_IMAGE, BATHROOM_VANITY_BOXES, bathroom_photo
 from food import extend_storage, place
 
 def piece(id,label,file,box,target,fit=False,folder='storage_dress'):
@@ -216,8 +217,17 @@ vanity_defs=[
 vanity_items=[]
 vanity_boxes=[(0,0,512,495),(512,0,1024,488),(1024,0,1536,496),
               (0,505,512,1024),(512,488,1024,1024),(1024,505,1536,1024)]
+vanity_bathroom_photos={'vanity-dryer':'dryer','vanity-body-lotion':'lotion'}
+with Image.open(ROOT/BATHROOM_ITEMS_IMAGE) as bathroom_sheet:
+ bathroom_art={
+  pid: bathroom_photo(bathroom_sheet,BATHROOM_ITEMS_IMAGE,BATHROOM_VANITY_BOXES[source])
+  for pid,source in vanity_bathroom_photos.items()
+ }
 for i,(pid,label,x,bottom,size,axis) in enumerate(vanity_defs):
- item=piece(pid,label,'vanity-items',vanity_boxes[i],(0,0,size,axis))
+ if pid in bathroom_art:
+  item=dict(id=pid,label=label,**bathroom_art[pid])
+ else:
+  item=piece(pid,label,'vanity-items',vanity_boxes[i],(0,0,size,axis))
  place_on_surface(item,x,bottom,size,axis)
  vanity_items.append(item)
 clock=piece('vanity-clock','탁상시계','bedroom-stickers-v2',(760,850,1086,1065),(0,0,130,'w'),folder='home_books')

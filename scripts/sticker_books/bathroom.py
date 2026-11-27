@@ -5,17 +5,17 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / '_local/print-tools'))
 from PIL import Image
+from bathroom_art import BATHROOM_VANITY_BOXES, bathroom_photo
 
 folder = ROOT / 'images/bathroom_book'
 images = {name: Image.open(folder / (name + '.png')) for name in ['fixtures', 'items', 'towel-bin', 'boy-one', 'boy-two', 'poop']}
 def piece(id, label, source, box, x, y, width=None, height=None, **extra):
-    image = images[source]
     # Read alpha bounds only; the browser clips the unchanged sheet using SVG viewBox.
-    b = image.getchannel('A').crop(box).point(lambda v: 255 if v > 100 else 0).getbbox()
-    r = [box[0]+b[0], box[1]+b[1], b[2]-b[0], b[3]-b[1]]
+    art = bathroom_photo(images[source], './images/bathroom_book/'+source+'.png', box)
+    r = art['crop']
     if width is None: width = height*r[2]/r[3]
     if height is None: height = width*r[3]/r[2]
-    return dict(id=id, label=label, image='./images/bathroom_book/'+source+'.png', sheet=list(image.size), crop=r,
+    return dict(id=id, label=label, **art,
                 target=[round(x/1491,6), round(y/1055,6), round(width/1491,6), round(height/1055,6)], **extra)
 
 fixtures=[]
@@ -40,8 +40,8 @@ items=[
     piece('bin','쓰레기통','towel-bin',(850,0,1536,1024),1335,800,width=120),
     piece('mat','발매트','items',(735,20,1024,280),445,885,width=220),
     piece('slippers','슬리퍼','items',(260,0,475,290),810,867,width=115),
-    piece('lotion','로션','items',(15,275,205,615),1150,105,height=110),
-    piece('dryer','드라이기','items',(205,310,535,655),1250,100,width=100),
+    piece('lotion','로션','items',BATHROOM_VANITY_BOXES['lotion'],1150,105,height=110),
+    piece('dryer','드라이기','items',BATHROOM_VANITY_BOXES['dryer'],1250,100,width=100),
     piece('roll','수건','items',(760,915,1024,1118),1147,245,width=95),
     piece('puff','샤워볼','items',(0,855,270,1115),1256,243,width=75),
     piece('cleaner','변기솔','items',(805,280,1000,605),1005,820,height=130),

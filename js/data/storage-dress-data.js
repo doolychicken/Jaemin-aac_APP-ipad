@@ -1709,22 +1709,22 @@ window.STICKER_BOOKS.push(...[
           {
             "id": "vanity-dryer",
             "label": "드라이기",
-            "image": "./images/storage_dress/vanity-items.png",
+            "image": "./images/bathroom_book/items.png",
             "sheet": [
-              1536,
-              1024
+              1024,
+              1536
             ],
             "crop": [
-              65,
-              42,
-              386,
-              430
+              215,
+              335,
+              310,
+              314
             ],
             "target": [
               0.13671875,
-              0.33633723283678757,
+              0.34897303427419357,
               0.08333333333333333,
-              0.13924870466321243
+              0.12661290322580646
             ]
           },
           {
@@ -1793,21 +1793,21 @@ window.STICKER_BOOKS.push(...[
           {
             "id": "vanity-body-lotion",
             "label": "바디로션",
-            "image": "./images/storage_dress/vanity-items.png",
+            "image": "./images/bathroom_book/items.png",
             "sheet": [
-              1536,
-              1024
+              1024,
+              1536
             ],
             "crop": [
-              620,
-              499,
-              298,
-              512
+              49,
+              279,
+              134,
+              318
             ],
             "target": [
               0.52734375,
               0.287109375,
-              0.06782786051432292,
+              0.04910655791404612,
               0.1748046875
             ]
           },
