@@ -1869,8 +1869,8 @@ window.STICKER_BOOKS.push(...[
     "storageKey": "jaemin-wardrobe-stickers-v1",
     "width": 1536,
     "height": 1024,
-    "room": "./images/storage_dress/wardrobe-arranged.png",
-    "empty": "./images/storage_dress/wardrobe-arranged.png",
+    "room": "./images/storage_dress/dad-wardrobe-room-v2.png",
+    "empty": "./images/storage_dress/dad-wardrobe-room-v2.png",
     "chapters": [
       {
         "id": "items",
@@ -1879,49 +1879,26 @@ window.STICKER_BOOKS.push(...[
         "pieces": [
           {
             "id": "shirt",
-            "label": "접은 폴로 셔츠",
-            "image": "./images/storage_dress/dad-wardrobe-clothes.png",
+            "label": "폴로 셔츠",
+            "image": "./images/storage_dress/dad-wardrobe-hanging-shirts.png",
             "sheet": [
-              1254,
-              1254
+              1774,
+              887
             ],
             "crop": [
-              85,
-              918,
-              273,
-              311
+              116,
+              24,
+              665,
+              832
             ],
             "target": [
-              0.6811434468783494,
-              0.771484375,
-              0.08172352290996784,
-              0.1396484375
+              0.1005859375,
+              0.1416015625,
+              0.08268229166666667,
+              0.15516917293233082
             ],
-            "storageZone": "folded",
-            "positionCue": "접은 옷 칸"
-          },
-          {
-            "id": "pants",
-            "label": "접은 정장 바지",
-            "image": "./images/storage_dress/dad-wardrobe-clothes.png",
-            "sheet": [
-              1254,
-              1254
-            ],
-            "crop": [
-              492,
-              920,
-              269,
-              315
-            ],
-            "target": [
-              0.77470134755291,
-              0.771484375,
-              0.07950355489417989,
-              0.1396484375
-            ],
-            "storageZone": "folded",
-            "positionCue": "접은 옷 칸"
+            "storageZone": "rail",
+            "positionCue": "옷걸이 칸"
           },
           {
             "id": "pajamas",
@@ -1938,13 +1915,13 @@ window.STICKER_BOOKS.push(...[
               318
             ],
             "target": [
-              0.8658854166666666,
-              0.7937749818313954,
-              0.08463541666666667,
-              0.11735783066860465
+              0.7203387054507338,
+              0.7783203125,
+              0.09578092243186583,
+              0.1328125
             ],
             "storageZone": "folded",
-            "positionCue": "접은 옷 칸"
+            "positionCue": "잠옷 칸"
           },
           {
             "id": "socks",
@@ -2214,10 +2191,10 @@ window.STICKER_BOOKS.push(...[
               385
             ],
             "target": [
-              0.1005859375,
-              0.1416015625,
-              0.08268229166666667,
-              0.16131426836993243
+              0.1825673024891775,
+              0.36328125,
+              0.09710497835497835,
+              0.18945312499999997
             ],
             "storageZone": "rail",
             "positionCue": "옷걸이 칸"
@@ -2385,26 +2362,26 @@ window.STICKER_BOOKS.push(...[
           },
           {
             "id": "folded-shirt",
-            "label": "접은 와이셔츠",
-            "image": "./images/storage_dress/dad-wardrobe-accessories.png",
+            "label": "하늘색 와이셔츠",
+            "image": "./images/storage_dress/dad-wardrobe-hanging-shirts.png",
             "sheet": [
-              1254,
-              1254
+              1774,
+              887
             ],
             "crop": [
-              892,
-              850,
-              295,
-              384
+              990,
+              24,
+              674,
+              840
             ],
             "target": [
-              0.5931455824110243,
-              0.771484375,
-              0.07152133517795138,
-              0.1396484375
+              0.053059895833333336,
+              0.36328125,
+              0.10091145833333333,
+              0.1886475333827893
             ],
-            "storageZone": "folded",
-            "positionCue": "접은 옷 칸"
+            "storageZone": "rail",
+            "positionCue": "옷걸이 칸"
           },
           {
             "id": "navy-backpack",
@@ -2616,7 +2593,7 @@ window.STICKER_BOOKS.push(...[
       },
       {
         "id": "folded",
-        "label": "접은 옷 칸",
+        "label": "잠옷 칸",
         "target": [
           0.7682291666666666,
           0.755859375
@@ -2629,6 +2606,11 @@ window.STICKER_BOOKS.push(...[
         ]
       }
     ],
+    "retiredPieces": {
+      "items": [
+        "pants"
+      ]
+    },
     "hidden": true,
     "returnNav": "stickerBedroom",
     "returnLabel": "침실 스티커북"

@@ -19,7 +19,7 @@ def main():
    ctx.add_init_script(base.MOCK_SPEECH)
    page=ctx.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
    page.goto(f'http://127.0.0.1:{server.server_port}/')
-   for id,parent,activity,total in [('fridge','Kitchen','냉장고 채우기',34),('wardrobe','Bedroom','어른 옷장',27),('kidswardrobe','Bedroom','어린이 옷장',21),('linen','Bedroom','이불장 정리하기',6),('dress',None,'옷입히기',9)]:
+   for id,parent,activity,total in [('fridge','Kitchen','냉장고 채우기',34),('wardrobe','Bedroom','어른 옷장',26),('kidswardrobe','Bedroom','어린이 옷장',21),('linen','Bedroom','이불장 정리하기',6),('dress',None,'옷입히기',9)]:
     if parent:
      page.evaluate(f"pushScreen('sticker{parent}_items','생활용품');render()")
      page.locator('.sb-room-link',has_text=activity).click()
@@ -59,12 +59,15 @@ def main():
    page.locator('.sb-card').focus();page.keyboard.press('Enter');page.keyboard.press('Enter')
    assert page.locator('.sb-next').count()==1
    assert page.evaluate("JSON.parse(localStorage.getItem('jaemin-fridge-stickers-v1')).progress.items.placed.length")==34
-   # An older completed wardrobe continues with the newly appended underwear.
+   # An older adult wardrobe resumes at underwear after retiring the folded trousers.
    page.evaluate("""const k='jaemin-wardrobe-stickers-v1';const s=JSON.parse(localStorage.getItem(k));
-    s.progress.items={cursor:8,placed:s.progress.items.placed.slice(0,8)};localStorage.setItem(k,JSON.stringify(s));""")
+    const placed=s.progress.items.placed.slice(0,7);
+    placed.splice(1,0,'pants');
+    s.progress.items={cursor:8,placed};localStorage.setItem(k,JSON.stringify(s));""")
    page.reload();page.evaluate("pushScreen('stickerWardrobe_items','옷장');render()")
    page.wait_for_selector('.sb-card:not(:disabled)')
    assert page.locator('.sb-card').get_attribute('data-piece')=='underwear'
+   assert page.locator('.sb-placed').count()==7
    page.evaluate("pushScreen('stickerKidswardrobe_items','어린이 옷장');render()")
    page.wait_for_selector('.sb-tray--complete')
    assert page.locator('.sb-placed').count()==21
