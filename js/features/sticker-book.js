@@ -38,8 +38,17 @@
         || !value.progress || typeof value.progress !== 'object' || Array.isArray(value.progress)) return false;
       return Object.entries(value.progress).every(([id, state]) => {
         const chapter = chapterById(id);
-        return chapter && state && Number.isInteger(state.cursor) && state.cursor >= 0 && state.cursor <= chapter.pieces.length
-          && Array.isArray(state.placed) && new Set(state.placed).size === state.placed.length
+        if (!chapter || !state || !Number.isInteger(state.cursor) || state.cursor < 0
+          || !Array.isArray(state.placed) || new Set(state.placed).size !== state.placed.length
+          || state.cursor > state.placed.length || state.placed.length > state.cursor + 1) return false;
+        const retired = catalog.retiredPieces?.[id];
+        if (retired) {
+          // Keep saved order and whether the child already advanced past the last sticker.
+          const { cursor, placed } = state;
+          state.cursor = placed.slice(0, cursor).filter(piece => !retired.includes(piece)).length;
+          state.placed = placed.filter(piece => !retired.includes(piece));
+        }
+        return state.cursor <= chapter.pieces.length
           && state.placed.every((piece, index) => piece === chapter.pieces[index]?.id)
           && state.cursor <= state.placed.length && state.placed.length <= state.cursor + 1;
       });

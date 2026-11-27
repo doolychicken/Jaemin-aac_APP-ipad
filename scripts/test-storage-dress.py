@@ -19,7 +19,7 @@ def main():
    ctx.add_init_script(base.MOCK_SPEECH)
    page=ctx.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
    page.goto(f'http://127.0.0.1:{server.server_port}/')
-   for id,parent,activity,total in [('fridge','Kitchen','냉장고 채우기',34),('wardrobe','Bedroom','어른 옷장',25),('kidswardrobe','Bedroom','어린이 옷장',20),('linen','Bedroom','이불장 정리하기',6),('dress',None,'옷입히기',9)]:
+   for id,parent,activity,total in [('fridge','Kitchen','냉장고 채우기',34),('wardrobe','Bedroom','어른 옷장',25),('kidswardrobe','Bedroom','어린이 옷장',21),('linen','Bedroom','이불장 정리하기',6),('dress',None,'옷입히기',9)]:
     if parent:
      page.evaluate(f"pushScreen('sticker{parent}_items','생활용품');render()")
      page.locator('.sb-room-link',has_text=activity).click()
@@ -67,7 +67,18 @@ def main():
    assert page.locator('.sb-card').get_attribute('data-piece')=='underwear'
    page.evaluate("pushScreen('stickerKidswardrobe_items','어린이 옷장');render()")
    page.wait_for_selector('.sb-tray--complete')
-   assert page.locator('.sb-placed').count()==20
+   assert page.locator('.sb-placed').count()==21
+   # A completed v455 child wardrobe loses only the retired towel and offers the jacket next.
+   page.evaluate("""const key='jaemin-kidswardrobe-stickers-v1';
+    const saved=JSON.parse(localStorage.getItem(key));
+    const placed=saved.progress.items.placed.slice(0,-2);
+    placed.splice(7,0,'towel');
+    saved.progress.items={cursor:placed.length,placed};
+    localStorage.setItem(key,JSON.stringify(saved));""")
+   page.reload();page.evaluate("pushScreen('stickerKidswardrobe_items','어린이 옷장');render()")
+   page.wait_for_selector('.sb-card:not(:disabled)')
+   assert page.locator('.sb-placed').count()==19
+   assert page.locator('.sb-card').get_attribute('data-piece')=='jacket'
    assert not page.locator('#storageNotice').is_visible()
    assert not errors,errors
    browser.close();print('PASS: storage and dress stickers, isolated wardrobes, legacy progress, responsive layouts and keyboard')

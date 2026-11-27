@@ -2596,8 +2596,8 @@ window.STICKER_BOOKS.push(...[
     "storageKey": "jaemin-kidswardrobe-stickers-v1",
     "width": 1536,
     "height": 1024,
-    "room": "./images/storage_dress/wardrobe-arranged.png",
-    "empty": "./images/storage_dress/wardrobe-arranged.png",
+    "room": "./images/storage_dress/kids-wardrobe-room-v2.png",
+    "empty": "./images/storage_dress/kids-wardrobe-room-v2.png",
     "chapters": [
       {
         "id": "items",
@@ -2619,10 +2619,10 @@ window.STICKER_BOOKS.push(...[
               478
             ],
             "target": [
-              0.11783854166666667,
+              0.041015625,
               0.1416015625,
-              0.08463541666666667,
-              0.14693364104116224
+              0.109375,
+              0.1898834745762712
             ],
             "storageZone": "rail",
             "positionCue": "옷걸이 칸"
@@ -2711,13 +2711,13 @@ window.STICKER_BOOKS.push(...[
               257
             ],
             "target": [
-              0.6316446781776913,
+              0.7286498865110246,
               0.103515625,
               0.07915856031128406,
               0.12109375
             ],
-            "storageZone": "hat-watch",
-            "positionCue": "모자·시계 칸"
+            "storageZone": "hats",
+            "positionCue": "모자 칸"
           },
           {
             "id": "bag",
@@ -2734,10 +2734,10 @@ window.STICKER_BOOKS.push(...[
               461
             ],
             "target": [
-              0.20124389913232102,
-              0.5869140625,
-              0.053241368402024584,
-              0.09765625
+              0.17888252440347072,
+              0.6259765625,
+              0.09796411785972524,
+              0.1796875
             ],
             "storageZone": "bags",
             "positionCue": "가방 칸"
@@ -2757,36 +2757,13 @@ window.STICKER_BOOKS.push(...[
               431
             ],
             "target": [
-              0.15142685373163187,
-              0.7119140625,
-              0.0617296258700696,
-              0.095703125
+              0.13435173772235112,
+              0.83203125,
+              0.05291110788863109,
+              0.08203125
             ],
             "storageZone": "shoes",
             "positionCue": "신발 칸"
-          },
-          {
-            "id": "towel",
-            "label": "수건",
-            "image": "./images/storage_dress/storage-items.png",
-            "sheet": [
-              1254,
-              1254
-            ],
-            "crop": [
-              952,
-              982,
-              282,
-              221
-            ],
-            "target": [
-              0.25861672794117646,
-              0.8369140625,
-              0.06479779411764706,
-              0.076171875
-            ],
-            "storageZone": "linen",
-            "positionCue": "수건 칸"
           },
           {
             "id": "underwear",
@@ -2826,10 +2803,10 @@ window.STICKER_BOOKS.push(...[
               227
             ],
             "target": [
-              0.042317708333333336,
-              0.1416015625,
-              0.06770833333333333,
-              0.06701944040697674
+              0.2770182291666667,
+              0.3515625,
+              0.051432291666666664,
+              0.05090899800145349
             ],
             "storageZone": "rail",
             "positionCue": "옷걸이 칸"
@@ -2849,10 +2826,10 @@ window.STICKER_BOOKS.push(...[
               495
             ],
             "target": [
-              0.4713541666666667,
+              0.4720052083333333,
               0.1416015625,
-              0.08463541666666667,
-              0.13750940235229758
+              0.08333333333333333,
+              0.13539387308533915
             ],
             "storageZone": "rail",
             "positionCue": "옷걸이 칸"
@@ -2873,35 +2850,35 @@ window.STICKER_BOOKS.push(...[
             ],
             "target": [
               0.8199869791666666,
-              0.2734375,
+              0.435546875,
               0.09440104166666667,
               0.11328125
             ],
-            "storageZone": "belt-gloves",
-            "positionCue": "허리띠·장갑 칸"
+            "storageZone": "scarf-gloves",
+            "positionCue": "목도리·장갑 칸"
           },
           {
             "id": "scarf",
             "label": "목도리",
-            "image": "./images/storage_dress/wardrobe-extras.png",
+            "image": "./images/storage_dress/kids-wardrobe-jacket-vest-scarf.png",
             "sheet": [
-              1086,
-              1448
+              2172,
+              724
             ],
             "crop": [
-              373,
-              513,
-              340,
-              192
+              1581,
+              10,
+              436,
+              702
             ],
             "target": [
-              0.7082790798611112,
-              0.447265625,
-              0.1199001736111111,
-              0.1015625
+              0.6423128858024691,
+              0.412109375,
+              0.05782214506172839,
+              0.1396484375
             ],
-            "storageZone": "scarf",
-            "positionCue": "목도리 칸"
+            "storageZone": "scarf-gloves",
+            "positionCue": "목도리·장갑 칸"
           },
           {
             "id": "belt",
@@ -2923,8 +2900,8 @@ window.STICKER_BOOKS.push(...[
               0.10091145833333333,
               0.09812769396551724
             ],
-            "storageZone": "belt-gloves",
-            "positionCue": "허리띠·장갑 칸"
+            "storageZone": "belt-watch",
+            "positionCue": "허리띠·시계 칸"
           },
           {
             "id": "long-sleeve",
@@ -2941,10 +2918,10 @@ window.STICKER_BOOKS.push(...[
               479
             ],
             "target": [
-              0.20540364583333334,
+              0.15559895833333334,
               0.1416015625,
-              0.08658854166666667,
-              0.12934275922557173
+              0.11067708333333333,
+              0.16532533134095634
             ],
             "storageZone": "rail",
             "positionCue": "옷걸이 칸"
@@ -2964,10 +2941,10 @@ window.STICKER_BOOKS.push(...[
               386
             ],
             "target": [
-              0.2945963541666667,
+              0.2734375,
               0.1416015625,
-              0.08658854166666667,
-              0.15238530585106383
+              0.10026041666666667,
+              0.17644614361702127
             ],
             "storageZone": "rail",
             "positionCue": "옷걸이 칸"
@@ -3010,10 +2987,10 @@ window.STICKER_BOOKS.push(...[
               260
             ],
             "target": [
-              0.3629557291666667,
-              0.7167124807098766,
-              0.09440104166666667,
-              0.09090470679012345
+              0.3786308092948718,
+              0.83203125,
+              0.08518629807692307,
+              0.08203125
             ],
             "storageZone": "shoes",
             "positionCue": "신발 칸"
@@ -3034,12 +3011,12 @@ window.STICKER_BOOKS.push(...[
             ],
             "target": [
               0.8569298664122137,
-              0.0986328125,
+              0.2607421875,
               0.02051526717557252,
               0.1259765625
             ],
-            "storageZone": "hat-watch",
-            "positionCue": "모자·시계 칸"
+            "storageZone": "belt-watch",
+            "positionCue": "허리띠·시계 칸"
           },
           {
             "id": "folded-shirt",
@@ -3063,6 +3040,52 @@ window.STICKER_BOOKS.push(...[
             ],
             "storageZone": "folded",
             "positionCue": "접은 옷 칸"
+          },
+          {
+            "id": "jacket",
+            "label": "점퍼",
+            "image": "./images/storage_dress/kids-wardrobe-jacket-vest-scarf.png",
+            "sheet": [
+              2172,
+              724
+            ],
+            "crop": [
+              6,
+              12,
+              718,
+              626
+            ],
+            "target": [
+              0.048828125,
+              0.3515625,
+              0.11067708333333333,
+              0.14474342792479108
+            ],
+            "storageZone": "rail",
+            "positionCue": "옷걸이 칸"
+          },
+          {
+            "id": "vest",
+            "label": "조끼",
+            "image": "./images/storage_dress/kids-wardrobe-jacket-vest-scarf.png",
+            "sheet": [
+              2172,
+              724
+            ],
+            "crop": [
+              867,
+              11,
+              453,
+              664
+            ],
+            "target": [
+              0.18247501725652612,
+              0.3515625,
+              0.07906038215361445,
+              0.173828125
+            ],
+            "storageZone": "rail",
+            "positionCue": "옷걸이 칸"
           }
         ]
       }
@@ -3072,14 +3095,14 @@ window.STICKER_BOOKS.push(...[
         "id": "rail",
         "label": "옷걸이 칸",
         "target": [
-          0.302734375,
+          0.2962239583333333,
           0.0947265625
         ],
         "bounds": [
           0.035807291666666664,
-          0.1171875,
+          0.1162109375,
           0.521484375,
-          0.4404296875
+          0.4443359375
         ]
       },
       {
@@ -3087,13 +3110,13 @@ window.STICKER_BOOKS.push(...[
         "label": "가방 칸",
         "target": [
           0.302734375,
-          0.5732421875
+          0.5859375
         ],
         "bounds": [
           0.037109375,
           0.5810546875,
           0.5182291666666666,
-          0.107421875
+          0.2275390625
         ]
       },
       {
@@ -3101,32 +3124,18 @@ window.STICKER_BOOKS.push(...[
         "label": "신발 칸",
         "target": [
           0.302734375,
-          0.6982421875
-        ],
-        "bounds": [
-          0.037109375,
-          0.70703125,
-          0.5182291666666666,
-          0.1064453125
-        ]
-      },
-      {
-        "id": "linen",
-        "label": "수건 칸",
-        "target": [
-          0.10611979166666667,
-          0.8505859375
+          0.837890625
         ],
         "bounds": [
           0.037109375,
           0.830078125,
           0.5182291666666666,
-          0.087890625
+          0.08984375
         ]
       },
       {
-        "id": "hat-watch",
-        "label": "모자·시계 칸",
+        "id": "hats",
+        "label": "모자 칸",
         "target": [
           0.7682291666666666,
           0.0810546875
@@ -3139,8 +3148,8 @@ window.STICKER_BOOKS.push(...[
         ]
       },
       {
-        "id": "belt-gloves",
-        "label": "허리띠·장갑 칸",
+        "id": "belt-watch",
+        "label": "허리띠·시계 칸",
         "target": [
           0.7682291666666666,
           0.259765625
@@ -3153,8 +3162,8 @@ window.STICKER_BOOKS.push(...[
         ]
       },
       {
-        "id": "scarf",
-        "label": "목도리 칸",
+        "id": "scarf-gloves",
+        "label": "목도리·장갑 칸",
         "target": [
           0.7682291666666666,
           0.419921875
@@ -3195,6 +3204,11 @@ window.STICKER_BOOKS.push(...[
         ]
       }
     ],
+    "retiredPieces": {
+      "items": [
+        "towel"
+      ]
+    },
     "hidden": true,
     "returnNav": "stickerBedroom",
     "returnLabel": "침실 스티커북"

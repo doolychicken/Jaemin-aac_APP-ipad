@@ -102,8 +102,7 @@ wardrobe_layout=[
   ('folded-shirt',990,933,157,143),('pants',1176,933,154,143),('pajamas',1361,933,157,143)]),
 ]
 wardrobe_by_id={item['id']:item for item in wardrobe_items}
-# The two wardrobes use the same shelves. Keep the existing adult IDs and order so
-# previously saved placements still load, and give the child wardrobe its own save.
+# Keep the existing IDs and order for stickers that can already be saved.
 kids_sheet='kids-wardrobe-items'
 with Image.open(ROOT/f'images/storage_dress/{kids_sheet}.png') as sheet:
  kids_width,kids_height=sheet.size
@@ -116,24 +115,48 @@ for index,(pid,label) in enumerate([
  box=(col*kids_width//3,row*kids_height//2,(col+1)*kids_width//3,(row+1)*kids_height//2)
  kids_replacements[pid]=piece(pid,label,kids_sheet,box,(0,0,100,'w'))
 adult_variants={'navy-backpack','white-sneakers','crossbody','tote','dress-shoes'}
+kids_additions='kids-wardrobe-jacket-vest-scarf'
+with Image.open(ROOT/f'images/storage_dress/{kids_additions}.png') as sheet:
+ width,height=sheet.size
+for index,(pid,label) in enumerate([('jacket','점퍼'),('vest','조끼'),('scarf','목도리')]):
+ box=(index*width//3,0,(index+1)*width//3,height)
+ kids_replacements[pid]=piece(pid,label,kids_additions,box,(0,0,100,'w'))
 kids_items=[kids_replacements.get(item['id'],dict(item)) for item in wardrobe_items
-            if item['id'] not in adult_variants]
+            if item['id'] not in adult_variants and item['id']!='towel']
+kids_items.extend(kids_replacements[pid] for pid in ('jacket','vest'))
 kids_by_id={item['id']:item for item in kids_items}
-kids_centers={'bag':350,'shoes':280,'sandals':630}
 
-def place_in_wardrobe(item,zone,label,cx,bottom,maxw,maxh):
- updated=place(item,cx,bottom or 145+maxh,maxw,maxh)
- if not bottom: updated['target'][1]=145/1024
+def place_in_wardrobe(item,zone,label,cx,bottom,maxw,maxh,top=145):
+ updated=place(item,cx,bottom or top+maxh,maxw,maxh)
+ if not bottom: updated['target'][1]=top/1024
  item.update(updated,storageZone=zone,positionCue=label)
 
-wardrobe_zones=[]
-for zone,label,(left,top,w,h),(x,y),slots in wardrobe_layout:
- wardrobe_zones.append(dict(id=zone,label=label,target=[x/1536,y/1024],
-  bounds=[left/1536,top/1024,w/1536,h/1024]))
- for pid,cx,bottom,maxw,maxh in slots:
-  place_in_wardrobe(wardrobe_by_id[pid],zone,label,cx,bottom,maxw,maxh)
-  if pid in kids_by_id:
-   place_in_wardrobe(kids_by_id[pid],zone,label,kids_centers.get(pid,cx),bottom,maxw,maxh)
+def wardrobe_shelves(layout,items_by_id):
+ zones=[]
+ for zone,label,(left,top,w,h),(x,y),slots in layout:
+  zones.append(dict(id=zone,label=label,target=[x/1536,y/1024],
+   bounds=[left/1536,top/1024,w/1536,h/1024]))
+  for pid,*slot in slots:
+   place_in_wardrobe(items_by_id[pid],zone,label,*slot)
+ return zones
+
+wardrobe_zones=wardrobe_shelves(wardrobe_layout,wardrobe_by_id)
+kids_layout=[
+ ('rail','옷걸이 칸',(55,119,801,455),(455,97),[
+  ('shirt',147,0,168,215),('long-sleeve',324,0,170,218),('button-shirt',497,0,154,218),
+  ('hanging-pants',655,0,132,356),('coat',789,0,128,230),
+  ('jacket',160,0,170,185,360),('vest',341,0,131,178,360),('hanger',465,0,79,94,360)]),
+ ('bags','가방 칸',(57,595,796,233),(465,600),[('bag',350,825,155,184)]),
+ ('shoes','신발 칸',(57,850,796,92),(465,858),[
+  ('shoes',247,936,159,84),('sandals',647,936,169,84)]),
+ ('hats','모자 칸',(891,79,596,155),(1180,83),[('cap',1180,230,158,124)]),
+ ('belt-watch','허리띠·시계 칸',(891,249,596,153),(1180,266),[
+  ('belt',1031,396,155,103),('wristwatch',1332,396,138,129)]),
+ ('scarf-gloves','목도리·장갑 칸',(891,417,596,154),(1180,430),[
+  ('scarf',1031,565,166,143),('gloves',1332,562,145,119)]),
+ *wardrobe_layout[-2:],
+]
+kids_zones=wardrobe_shelves(kids_layout,kids_by_id)
 
 vanity_defs=[
  ('vanity-dryer','드라이기',210,487,128,'w'),
@@ -193,7 +216,7 @@ def book(id,label,title,chapterTitle,pieces,room,**extra):
 books=[book('fridge','냉장고','냉장고 채우기','냉장고 전체 채우기',items[:8],'fridge-wide',hidden=True,returnNav='stickerKitchen',returnLabel='주방 스티커북'),
  book('vanity','화장대','화장대 정리하기','화장대에 올려요',vanity_items,'vanity-ivory',hidden=True,returnNav='stickerBedroom',returnLabel='침실 스티커북'),
  book('wardrobe','어른 옷장','어른 옷장 정리하기','어른 옷장에 넣어요',wardrobe_items,'wardrobe-arranged',sharedStorage=wardrobe_zones,hidden=True,returnNav='stickerBedroom',returnLabel='침실 스티커북'),
- book('kidswardrobe','어린이 옷장','어린이 옷장 정리하기','어린이 옷장에 넣어요',kids_items,'wardrobe-arranged',sharedStorage=wardrobe_zones,hidden=True,returnNav='stickerBedroom',returnLabel='침실 스티커북'),
+ book('kidswardrobe','어린이 옷장','어린이 옷장 정리하기','어린이 옷장에 넣어요',kids_items,'kids-wardrobe-room-v2',sharedStorage=kids_zones,retiredPieces={'items':['towel']},hidden=True,returnNav='stickerBedroom',returnLabel='침실 스티커북'),
  book('linen','이불장','이불장 정리하기','이불과 베개를 넣어요',linen,'linen',hidden=True,returnNav='stickerBedroom',returnLabel='침실 스티커북'),
  book('dress','옷입히기','옷입히기','재민이 옷입히기',dress,'dress-base-refined',description='옷 · 양말 · 신발 · 소품',completeMessage='외출 준비를 마쳤어요!')]
 extend_storage(books)
