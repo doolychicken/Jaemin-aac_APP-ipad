@@ -70,38 +70,67 @@ for i,(pid,label) in enumerate(new_wardrobe_labels):
  box=(col*width//3,row*height//3,(col+1)*width//3,(row+1)*height//3)
  new_wardrobe.append(piece(pid,label,'wardrobe-arranged-items',box,(0,0,100,'w')))
 wardrobe_items=[new_wardrobe[0],*wardrobe_items[1:],*new_wardrobe[1:],folded_shirt]
-with Image.open(ROOT/'images/storage_dress/wardrobe-bag-shoes.png') as sheet:
- width,height=sheet.size
-wardrobe_items.extend([
- piece('navy-backpack','남색 백팩','wardrobe-bag-shoes',(0,0,width//2,height),(0,0,100,'w')),
- piece('white-sneakers','흰 운동화','wardrobe-bag-shoes',(width//2,0,width,height),(0,0,100,'w')),
-])
+
+adult_sheets={
+ 'dad-wardrobe-clothes':[
+  ('hanger','나무 옷걸이'),('long-sleeve','니트'),('button-shirt','흰 와이셔츠'),
+  ('suit-jacket','양복 재킷'),('hanging-pants','양복 바지'),('coat','코트'),
+  ('shirt','접은 폴로 셔츠'),('pants','접은 정장 바지'),('pajamas','체크 잠옷'),
+ ],
+ 'dad-wardrobe-accessories':[
+  ('tie','넥타이'),('belt','가죽 허리띠'),('wristwatch','금속 손목시계'),
+  ('cap','회색 모자'),('gloves','가죽 장갑'),('scarf','울 목도리'),
+  ('socks','정장 양말'),('underwear','사각팬티'),('folded-shirt','접은 와이셔츠'),
+ ],
+ 'dad-wardrobe-bags-shoes':[
+  ('bag','서류 가방'),('navy-backpack','노트북 백팩'),('crossbody','어깨 가방'),
+  ('tote','업무용 토트백'),('towel','손수건'),('shoes','검은 구두'),
+  ('dress-shoes','갈색 로퍼'),('white-sneakers','흰 운동화'),('sandals','실내 슬리퍼'),
+ ],
+}
+wardrobe_by_id={}
+for asset,entries in adult_sheets.items():
+ with Image.open(ROOT/f'images/storage_dress/{asset}.png') as sheet:
+  width,height=sheet.size
+ rows=(0,415,890,height) if asset=='dad-wardrobe-clothes' else (0,height//3,2*height//3,height)
+ for index,(pid,label) in enumerate(entries):
+  col,row=index%3,index//3
+  left=405 if pid=='underwear' else col*width//3
+  box=(left,rows[row],(col+1)*width//3,rows[row+1])
+  wardrobe_by_id[pid]=piece(pid,label,asset,box,(0,0,100,'w'))
+adult_ids=[item['id'] for item in wardrobe_items]+['navy-backpack','white-sneakers','suit-jacket','tie']
+adult_items=[wardrobe_by_id[pid] for pid in adult_ids]
 
 # Slot centers and baselines follow the photographic shelves and preserve saved ID order.
-wardrobe_layout=[
- ('rail','옷걸이 칸',(55,120,801,451),(465,97),[
-  ('hanger',117,0,104,114),('shirt',246,0,130,238),('long-sleeve',382,0,133,270),
-  ('button-shirt',519,0,133,268),('hanging-pants',655,0,132,356),('coat',789,0,130,300)]),
- ('bags','가방 칸',(57,595,796,110),(465,587),[
-  ('bag',168,701,140,100),('navy-backpack',346,701,140,100),
-  ('crossbody',524,701,150,100),('tote',702,701,138,100)]),
- ('shoes','신발 칸',(57,724,796,109),(465,715),[
-  ('shoes',165,827,143,98),('white-sneakers',344,827,145,98),
-  ('dress-shoes',523,827,148,98),('sandals',702,827,145,98)]),
- ('linen','수건 칸',(57,850,796,90),(163,871),[
-  ('towel',447,935,170,78)]),
- ('hat-watch','모자·시계 칸',(891,79,596,155),(1180,83),[
-  ('cap',1031,230,147,124),('wristwatch',1332,230,138,129)]),
- ('belt-gloves','허리띠·장갑 칸',(891,249,596,153),(1180,266),[
-  ('belt',1031,396,155,103),('gloves',1332,396,145,119)]),
- ('scarf','목도리 칸',(891,417,596,154),(1180,430),[
-  ('scarf',1180,562,210,104)]),
+lower_shelves=[
  ('underwear','양말·속옷 칸',(891,589,596,146),(1180,600),[
   ('socks',1031,728,130,111),('underwear',1332,728,145,111)]),
  ('folded','접은 옷 칸',(891,752,596,188),(1180,774),[
   ('folded-shirt',990,933,157,143),('pants',1176,933,154,143),('pajamas',1361,933,157,143)]),
 ]
-wardrobe_by_id={item['id']:item for item in wardrobe_items}
+wardrobe_layout=[
+ ('rail','옷걸이 칸',(55,120,801,451),(465,97),[
+  ('hanger',104,0,90,114),('long-sleeve',218,0,127,231),('button-shirt',354,0,132,250),
+  ('suit-jacket',501,0,150,270),('hanging-pants',647,0,125,338),('coat',785,0,134,363)]),
+ ('bags','가방 칸',(57,595,796,110),(465,587),[
+  ('bag',168,701,140,100),('navy-backpack',346,701,140,100),
+  ('crossbody',524,701,150,100),('tote',702,701,138,100)]),
+ ('shoes','신발 칸',(57,724,796,109),(465,715),[
+  ('shoes',165,827,143,98),('dress-shoes',344,827,145,98),
+  ('white-sneakers',523,827,148,98),('sandals',702,827,145,98)]),
+ ('handkerchief','손수건 칸',(57,850,796,90),(163,871),[
+  ('towel',447,935,135,76)]),
+ ('tie-watch','넥타이·시계 칸',(891,79,596,155),(1180,83),[
+  ('tie',1031,230,124,140),('wristwatch',1332,230,138,129)]),
+ ('hat-belt','모자·허리띠 칸',(891,249,596,153),(1180,266),[
+  ('cap',1031,396,156,112),('belt',1332,396,155,103)]),
+ ('scarf-gloves','목도리·장갑 칸',(891,417,596,154),(1180,430),[
+  ('scarf',1031,562,166,139),('gloves',1332,562,145,119)]),
+ lower_shelves[0],
+ ('folded','접은 옷 칸',(891,752,596,188),(1180,774),[
+  ('folded-shirt',966,933,128,143),('shirt',1109,933,128,143),
+  ('pants',1251,933,128,143),('pajamas',1395,933,130,143)]),
+]
 # Keep the existing IDs and order for stickers that can already be saved.
 kids_sheet='kids-wardrobe-items'
 with Image.open(ROOT/f'images/storage_dress/{kids_sheet}.png') as sheet:
@@ -114,7 +143,7 @@ for index,(pid,label) in enumerate([
  col,row=index%3,index//3
  box=(col*kids_width//3,row*kids_height//2,(col+1)*kids_width//3,(row+1)*kids_height//2)
  kids_replacements[pid]=piece(pid,label,kids_sheet,box,(0,0,100,'w'))
-adult_variants={'navy-backpack','white-sneakers','crossbody','tote','dress-shoes'}
+adult_variants={'crossbody','tote','dress-shoes'}
 kids_additions='kids-wardrobe-jacket-vest-scarf'
 with Image.open(ROOT/f'images/storage_dress/{kids_additions}.png') as sheet:
  width,height=sheet.size
@@ -154,7 +183,7 @@ kids_layout=[
   ('belt',1031,396,155,103),('wristwatch',1332,396,138,129)]),
  ('scarf-gloves','목도리·장갑 칸',(891,417,596,154),(1180,430),[
   ('scarf',1031,565,166,143),('gloves',1332,562,145,119)]),
- *wardrobe_layout[-2:],
+ *lower_shelves,
 ]
 kids_zones=wardrobe_shelves(kids_layout,kids_by_id)
 
@@ -215,7 +244,7 @@ def book(id,label,title,chapterTitle,pieces,room,**extra):
   width=1536,height=1024,room=path,empty=path,chapters=[dict(id='items',title=chapterTitle,subtitle='하나씩 끌어서 알맞은 자리에 놓아요',pieces=pieces)],**extra)
 books=[book('fridge','냉장고','냉장고 채우기','냉장고 전체 채우기',items[:8],'fridge-wide',hidden=True,returnNav='stickerKitchen',returnLabel='주방 스티커북'),
  book('vanity','화장대','화장대 정리하기','화장대에 올려요',vanity_items,'vanity-ivory',hidden=True,returnNav='stickerBedroom',returnLabel='침실 스티커북'),
- book('wardrobe','어른 옷장','어른 옷장 정리하기','어른 옷장에 넣어요',wardrobe_items,'wardrobe-arranged',sharedStorage=wardrobe_zones,hidden=True,returnNav='stickerBedroom',returnLabel='침실 스티커북'),
+ book('wardrobe','어른 옷장','아빠 옷장 정리하기','아빠 옷장에 넣어요',adult_items,'wardrobe-arranged',sharedStorage=wardrobe_zones,hidden=True,returnNav='stickerBedroom',returnLabel='침실 스티커북'),
  book('kidswardrobe','어린이 옷장','어린이 옷장 정리하기','어린이 옷장에 넣어요',kids_items,'kids-wardrobe-room-v2',sharedStorage=kids_zones,retiredPieces={'items':['towel']},hidden=True,returnNav='stickerBedroom',returnLabel='침실 스티커북'),
  book('linen','이불장','이불장 정리하기','이불과 베개를 넣어요',linen,'linen',hidden=True,returnNav='stickerBedroom',returnLabel='침실 스티커북'),
  book('dress','옷입히기','옷입히기','재민이 옷입히기',dress,'dress-base-refined',description='옷 · 양말 · 신발 · 소품',completeMessage='외출 준비를 마쳤어요!')]
@@ -226,7 +255,7 @@ activities={
             dict(label='식판 차리기',description='밥과 반찬, 간식을 차려요',nav='stickerTray')],
  'bedroom':[dict(label='화장대 정리하기',description='드라이기와 화장품 일곱 가지를 올려요',nav='stickerVanity_items',target=[.634,.52]),
             dict(label='어린이 옷장',description='학교 가방, 찍찍이 운동화, 어린이 옷을 정리해요',nav='stickerKidswardrobe_items',target=[.88,.42]),
-            dict(label='어른 옷장',description='어른 옷, 가방, 신발을 칸별로 정리해요',nav='stickerWardrobe_items',target=[.88,.57]),
+            dict(label='어른 옷장',description='아빠의 양복, 넥타이, 출근 가방을 정리해요',nav='stickerWardrobe_items',target=[.88,.57]),
             dict(label='이불장 정리하기',description='넓은 칸에 이불과 베개를 넣어요',nav='stickerLinen_items',target=[.72,.86]),
             dict(label='옷입히기',description='재민이와 외출 준비를 해요',nav='stickerDress')]
 }

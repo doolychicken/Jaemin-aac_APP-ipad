@@ -1863,8 +1863,8 @@ window.STICKER_BOOKS.push(...[
   {
     "id": "wardrobe",
     "label": "어른 옷장",
-    "title": "어른 옷장 정리하기",
-    "heading": "어른 옷장 정리하기",
+    "title": "아빠 옷장 정리하기",
+    "heading": "아빠 옷장 정리하기",
     "nav": "stickerWardrobe",
     "storageKey": "jaemin-wardrobe-stickers-v1",
     "width": 1536,
@@ -1874,50 +1874,50 @@ window.STICKER_BOOKS.push(...[
     "chapters": [
       {
         "id": "items",
-        "title": "어른 옷장에 넣어요",
+        "title": "아빠 옷장에 넣어요",
         "subtitle": "하나씩 끌어서 알맞은 자리에 놓아요",
         "pieces": [
           {
             "id": "shirt",
-            "label": "반팔 티셔츠",
-            "image": "./images/storage_dress/wardrobe-arranged-items.png",
-            "sheet": [
-              1312,
-              1199
-            ],
-            "crop": [
-              54,
-              3,
-              331,
-              385
-            ],
-            "target": [
-              0.11783854166666667,
-              0.1416015625,
-              0.08463541666666667,
-              0.14766451095166164
-            ],
-            "storageZone": "rail",
-            "positionCue": "옷걸이 칸"
-          },
-          {
-            "id": "pants",
-            "label": "접은 바지",
-            "image": "./images/storage_dress/storage-items.png",
+            "label": "접은 폴로 셔츠",
+            "image": "./images/storage_dress/dad-wardrobe-clothes.png",
             "sheet": [
               1254,
               1254
             ],
             "crop": [
-              352,
-              651,
-              255,
-              264
+              85,
+              918,
+              273,
+              311
             ],
             "target": [
-              0.7206624348958334,
+              0.6811434468783494,
               0.771484375,
-              0.08992513020833333,
+              0.08172352290996784,
+              0.1396484375
+            ],
+            "storageZone": "folded",
+            "positionCue": "접은 옷 칸"
+          },
+          {
+            "id": "pants",
+            "label": "접은 정장 바지",
+            "image": "./images/storage_dress/dad-wardrobe-clothes.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              492,
+              920,
+              269,
+              315
+            ],
+            "target": [
+              0.77470134755291,
+              0.771484375,
+              0.07950355489417989,
               0.1396484375
             ],
             "storageZone": "folded",
@@ -1925,91 +1925,91 @@ window.STICKER_BOOKS.push(...[
           },
           {
             "id": "pajamas",
-            "label": "잠옷",
-            "image": "./images/storage_dress/storage-items.png",
+            "label": "체크 잠옷",
+            "image": "./images/storage_dress/dad-wardrobe-clothes.png",
             "sheet": [
               1254,
               1254
             ],
             "crop": [
-              660,
-              661,
-              263,
-              260
+              866,
+              914,
+              344,
+              318
             ],
             "target": [
-              0.8389811197916667,
-              0.771484375,
-              0.09417317708333334,
-              0.1396484375
+              0.8658854166666666,
+              0.7937749818313954,
+              0.08463541666666667,
+              0.11735783066860465
             ],
             "storageZone": "folded",
             "positionCue": "접은 옷 칸"
           },
           {
             "id": "socks",
-            "label": "양말",
-            "image": "./images/storage_dress/storage-items.png",
+            "label": "정장 양말",
+            "image": "./images/storage_dress/dad-wardrobe-accessories.png",
             "sheet": [
               1254,
               1254
             ],
             "crop": [
-              977,
-              670,
-              242,
-              251
+              45,
+              860,
+              318,
+              379
             ],
             "target": [
-              0.636386744687915,
+              0.6409067172383466,
               0.6025390625,
-              0.06967442729083666,
-              0.1083984375
+              0.06063448218997362,
+              0.10839843750000001
             ],
             "storageZone": "underwear",
             "positionCue": "양말·속옷 칸"
           },
           {
             "id": "cap",
-            "label": "모자",
-            "image": "./images/storage_dress/storage-items.png",
+            "label": "회색 모자",
+            "image": "./images/storage_dress/dad-wardrobe-accessories.png",
             "sheet": [
               1254,
               1254
             ],
             "crop": [
-              43,
-              954,
-              252,
-              257
+              22,
+              496,
+              379,
+              252
             ],
             "target": [
-              0.6316446781776913,
-              0.103515625,
-              0.07915856031128406,
-              0.12109375
+              0.6204427083333334,
+              0.28542422493403696,
+              0.1015625,
+              0.10129452506596305
             ],
-            "storageZone": "hat-watch",
-            "positionCue": "모자·시계 칸"
+            "storageZone": "hat-belt",
+            "positionCue": "모자·허리띠 칸"
           },
           {
             "id": "bag",
-            "label": "배낭",
-            "image": "./images/storage_dress/storage-items.png",
+            "label": "서류 가방",
+            "image": "./images/storage_dress/dad-wardrobe-bags-shoes.png",
             "sheet": [
               1254,
               1254
             ],
             "crop": [
-              364,
-              931,
-              219,
-              290
+              37,
+              57,
+              360,
+              318
             ],
             "target": [
-              0.08479256465517242,
+              0.07252358490566037,
               0.5869140625,
-              0.04916487068965517,
+              0.07370283018867925,
               0.09765625
             ],
             "storageZone": "bags",
@@ -2017,22 +2017,22 @@ window.STICKER_BOOKS.push(...[
           },
           {
             "id": "shoes",
-            "label": "운동화",
-            "image": "./images/storage_dress/storage-items.png",
+            "label": "검은 구두",
+            "image": "./images/storage_dress/dad-wardrobe-bags-shoes.png",
             "sheet": [
               1254,
               1254
             ],
             "crop": [
-              662,
-              981,
-              256,
-              233
+              880,
+              489,
+              336,
+              316
             ],
             "target": [
-              0.07237180346924177,
+              0.07350178006329114,
               0.7119140625,
-              0.07010014306151645,
+              0.06784018987341772,
               0.095703125
             ],
             "storageZone": "shoes",
@@ -2040,252 +2040,252 @@ window.STICKER_BOOKS.push(...[
           },
           {
             "id": "towel",
-            "label": "수건",
-            "image": "./images/storage_dress/storage-items.png",
+            "label": "손수건",
+            "image": "./images/storage_dress/dad-wardrobe-bags-shoes.png",
             "sheet": [
               1254,
               1254
             ],
             "crop": [
-              952,
-              982,
-              282,
-              221
+              486,
+              505,
+              281,
+              272
             ],
             "target": [
-              0.25861672794117646,
-              0.8369140625,
-              0.06479779411764706,
-              0.076171875
+              0.2654574525122549,
+              0.8388671875,
+              0.0511163449754902,
+              0.07421875
             ],
-            "storageZone": "linen",
-            "positionCue": "수건 칸"
+            "storageZone": "handkerchief",
+            "positionCue": "손수건 칸"
           },
           {
             "id": "underwear",
-            "label": "팬티",
-            "image": "./images/storage_dress/wardrobe-extras.png",
+            "label": "사각팬티",
+            "image": "./images/storage_dress/dad-wardrobe-accessories.png",
             "sheet": [
-              1086,
-              1448
+              1254,
+              1254
             ],
             "crop": [
-              40,
-              143,
-              297,
-              228
+              416,
+              899,
+              408,
+              306
             ],
             "target": [
-              0.8201197574013158,
-              0.6025390625,
-              0.09413548519736842,
-              0.1083984375
+              0.8199869791666666,
+              0.604736328125,
+              0.09440104166666667,
+              0.106201171875
             ],
             "storageZone": "underwear",
             "positionCue": "양말·속옷 칸"
           },
           {
             "id": "hanger",
-            "label": "옷걸이",
-            "image": "./images/storage_dress/wardrobe-extras.png",
+            "label": "나무 옷걸이",
+            "image": "./images/storage_dress/dad-wardrobe-clothes.png",
             "sheet": [
-              1086,
-              1448
+              1254,
+              1254
             ],
             "crop": [
-              371,
-              108,
-              344,
-              227
+              48,
+              86,
+              343,
+              217
             ],
             "target": [
-              0.042317708333333336,
+              0.038411458333333336,
               0.1416015625,
-              0.06770833333333333,
-              0.06701944040697674
+              0.05859374999999999,
+              0.055604272959183666
             ],
             "storageZone": "rail",
             "positionCue": "옷걸이 칸"
           },
           {
             "id": "coat",
-            "label": "외투",
-            "image": "./images/storage_dress/wardrobe-extras.png",
+            "label": "코트",
+            "image": "./images/storage_dress/dad-wardrobe-clothes.png",
             "sheet": [
-              1086,
-              1448
+              1254,
+              1254
             ],
             "crop": [
-              733,
-              48,
-              337,
-              368
+              898,
+              425,
+              280,
+              449
             ],
             "target": [
-              0.4713541666666667,
+              0.4674479166666667,
               0.1416015625,
-              0.08463541666666667,
-              0.1386313056379822
+              0.08723958333333333,
+              0.2098423549107143
             ],
             "storageZone": "rail",
             "positionCue": "옷걸이 칸"
           },
           {
             "id": "gloves",
-            "label": "장갑",
-            "image": "./images/storage_dress/wardrobe-extras.png",
+            "label": "가죽 장갑",
+            "image": "./images/storage_dress/dad-wardrobe-accessories.png",
             "sheet": [
-              1086,
-              1448
+              1254,
+              1254
             ],
             "crop": [
-              44,
-              477,
-              290,
-              232
+              451,
+              452,
+              353,
+              334
             ],
             "target": [
-              0.8199869791666666,
-              0.2734375,
-              0.09440104166666667,
-              0.11328125
+              0.8262469202220558,
+              0.4326171875,
+              0.08188115955588822,
+              0.11621093749999999
             ],
-            "storageZone": "belt-gloves",
-            "positionCue": "허리띠·장갑 칸"
+            "storageZone": "scarf-gloves",
+            "positionCue": "목도리·장갑 칸"
           },
           {
             "id": "scarf",
-            "label": "목도리",
-            "image": "./images/storage_dress/wardrobe-extras.png",
+            "label": "울 목도리",
+            "image": "./images/storage_dress/dad-wardrobe-accessories.png",
             "sheet": [
-              1086,
-              1448
+              1254,
+              1254
             ],
             "crop": [
-              373,
-              513,
-              340,
-              192
+              879,
+              431,
+              337,
+              380
             ],
             "target": [
-              0.7082790798611112,
-              0.447265625,
-              0.1199001736111111,
-              0.1015625
+              0.6310966625548246,
+              0.4130859375,
+              0.08025459155701754,
+              0.1357421875
             ],
-            "storageZone": "scarf",
-            "positionCue": "목도리 칸"
+            "storageZone": "scarf-gloves",
+            "positionCue": "목도리·장갑 칸"
           },
           {
             "id": "belt",
-            "label": "허리띠",
-            "image": "./images/storage_dress/wardrobe-extras.png",
+            "label": "가죽 허리띠",
+            "image": "./images/storage_dress/dad-wardrobe-accessories.png",
             "sheet": [
-              1086,
-              1448
+              1254,
+              1254
             ],
             "crop": [
-              755,
-              510,
-              290,
-              188
+              446,
+              103,
+              363,
+              220
             ],
             "target": [
-              0.6207682291666666,
-              0.28859105603448276,
+              0.8167317708333334,
+              0.2949810606060606,
               0.10091145833333333,
-              0.09812769396551724
+              0.09173768939393939
             ],
-            "storageZone": "belt-gloves",
-            "positionCue": "허리띠·장갑 칸"
+            "storageZone": "hat-belt",
+            "positionCue": "모자·허리띠 칸"
           },
           {
             "id": "long-sleeve",
-            "label": "긴팔 티셔츠",
-            "image": "./images/storage_dress/wardrobe-arranged-items.png",
+            "label": "니트",
+            "image": "./images/storage_dress/dad-wardrobe-clothes.png",
             "sheet": [
-              1312,
-              1199
+              1254,
+              1254
             ],
             "crop": [
-              490,
-              3,
-              332,
-              383
+              479,
+              7,
+              296,
+              385
             ],
             "target": [
-              0.20540364583333334,
+              0.1005859375,
               0.1416015625,
-              0.08658854166666667,
-              0.14983469032379518
+              0.08268229166666667,
+              0.16131426836993243
             ],
             "storageZone": "rail",
             "positionCue": "옷걸이 칸"
           },
           {
             "id": "button-shirt",
-            "label": "남방",
-            "image": "./images/storage_dress/wardrobe-arranged-items.png",
+            "label": "흰 와이셔츠",
+            "image": "./images/storage_dress/dad-wardrobe-clothes.png",
             "sheet": [
-              1312,
-              1199
+              1254,
+              1254
             ],
             "crop": [
-              930,
-              3,
-              329,
-              386
+              900,
+              7,
+              283,
+              392
             ],
             "target": [
-              0.2945963541666667,
+              0.1875,
               0.1416015625,
-              0.08658854166666667,
-              0.15238530585106383
+              0.0859375,
+              0.17855565371024734
             ],
             "storageZone": "rail",
             "positionCue": "옷걸이 칸"
           },
           {
             "id": "hanging-pants",
-            "label": "옷걸이에 건 바지",
-            "image": "./images/storage_dress/wardrobe-arranged-items.png",
+            "label": "양복 바지",
+            "image": "./images/storage_dress/dad-wardrobe-clothes.png",
             "sheet": [
-              1312,
-              1199
+              1254,
+              1254
             ],
             "crop": [
-              141,
-              401,
-              156,
-              393
+              537,
+              425,
+              177,
+              447
             ],
             "target": [
-              0.3834635416666667,
+              0.3805338541666667,
               0.1416015625,
-              0.0859375,
-              0.32474459134615385
+              0.08138020833333334,
+              0.3082792637711865
             ],
             "storageZone": "rail",
             "positionCue": "옷걸이 칸"
           },
           {
             "id": "crossbody",
-            "label": "크로스백",
-            "image": "./images/storage_dress/wardrobe-arranged-items.png",
+            "label": "어깨 가방",
+            "image": "./images/storage_dress/dad-wardrobe-bags-shoes.png",
             "sheet": [
-              1312,
-              1199
+              1254,
+              1254
             ],
             "crop": [
-              485,
-              503,
-              347,
-              245
+              844,
+              122,
+              391,
+              261
             ],
             "target": [
-              0.2950414540816327,
+              0.29238006864623245,
               0.5869140625,
-              0.09220875850340136,
+              0.09753152937420179,
               0.09765625
             ],
             "storageZone": "bags",
@@ -2293,22 +2293,22 @@ window.STICKER_BOOKS.push(...[
           },
           {
             "id": "tote",
-            "label": "토트백",
-            "image": "./images/storage_dress/wardrobe-arranged-items.png",
+            "label": "업무용 토트백",
+            "image": "./images/storage_dress/dad-wardrobe-bags-shoes.png",
             "sheet": [
-              1312,
-              1199
+              1254,
+              1254
             ],
             "crop": [
-              944,
-              411,
-              302,
-              375
+              46,
+              439,
+              340,
+              372
             ],
             "target": [
-              0.43081597222222223,
+              0.42727934587813615,
               0.5869140625,
-              0.05243055555555556,
+              0.05950380824372759,
               0.09765625
             ],
             "storageZone": "bags",
@@ -2316,22 +2316,22 @@ window.STICKER_BOOKS.push(...[
           },
           {
             "id": "dress-shoes",
-            "label": "구두",
-            "image": "./images/storage_dress/wardrobe-arranged-items.png",
+            "label": "갈색 로퍼",
+            "image": "./images/storage_dress/dad-wardrobe-bags-shoes.png",
             "sheet": [
-              1312,
-              1199
+              1254,
+              1254
             ],
             "crop": [
-              27,
-              873,
-              388,
-              284
+              44,
+              890,
+              343,
+              344
             ],
             "target": [
-              0.2969116784037559,
+              0.19215002725290697,
               0.7119140625,
-              0.08716622652582158,
+              0.06361661216085272,
               0.095703125
             ],
             "storageZone": "shoes",
@@ -2339,68 +2339,68 @@ window.STICKER_BOOKS.push(...[
           },
           {
             "id": "sandals",
-            "label": "샌들",
-            "image": "./images/storage_dress/wardrobe-arranged-items.png",
+            "label": "실내 슬리퍼",
+            "image": "./images/storage_dress/dad-wardrobe-bags-shoes.png",
             "sheet": [
-              1312,
-              1199
+              1254,
+              1254
             ],
             "crop": [
-              456,
-              880,
-              405,
-              260
+              852,
+              917,
+              386,
+              311
             ],
             "target": [
-              0.4098307291666667,
-              0.7167124807098766,
-              0.09440104166666667,
-              0.09090470679012345
+              0.4174370310825295,
+              0.7119140625,
+              0.07918843783494105,
+              0.095703125
             ],
             "storageZone": "shoes",
             "positionCue": "신발 칸"
           },
           {
             "id": "wristwatch",
-            "label": "손목시계",
-            "image": "./images/storage_dress/wardrobe-arranged-items.png",
-            "sheet": [
-              1312,
-              1199
-            ],
-            "crop": [
-              1051,
-              804,
-              96,
-              393
-            ],
-            "target": [
-              0.8569298664122137,
-              0.0986328125,
-              0.02051526717557252,
-              0.1259765625
-            ],
-            "storageZone": "hat-watch",
-            "positionCue": "모자·시계 칸"
-          },
-          {
-            "id": "folded-shirt",
-            "label": "접은 윗도리",
-            "image": "./images/storage_dress/storage-items.png",
+            "label": "금속 손목시계",
+            "image": "./images/storage_dress/dad-wardrobe-accessories.png",
             "sheet": [
               1254,
               1254
             ],
             "crop": [
-              42,
-              662,
-              257,
-              248
+              952,
+              22,
+              197,
+              372
             ],
             "target": [
-              0.596292475218414,
+              0.844949701780914,
+              0.0986328125,
+              0.04447559643817204,
+              0.1259765625
+            ],
+            "storageZone": "tie-watch",
+            "positionCue": "넥타이·시계 칸"
+          },
+          {
+            "id": "folded-shirt",
+            "label": "접은 와이셔츠",
+            "image": "./images/storage_dress/dad-wardrobe-accessories.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              892,
+              850,
+              295,
+              384
+            ],
+            "target": [
+              0.5931455824110243,
               0.771484375,
-              0.09647754956317205,
+              0.07152133517795138,
               0.1396484375
             ],
             "storageZone": "folded",
@@ -2408,22 +2408,22 @@ window.STICKER_BOOKS.push(...[
           },
           {
             "id": "navy-backpack",
-            "label": "남색 백팩",
-            "image": "./images/storage_dress/wardrobe-bag-shoes.png",
+            "label": "노트북 백팩",
+            "image": "./images/storage_dress/dad-wardrobe-bags-shoes.png",
             "sheet": [
-              1920,
-              819
+              1254,
+              1254
             ],
             "crop": [
-              71,
-              9,
-              694,
-              806
+              489,
+              29,
+              277,
+              373
             ],
             "target": [
-              0.19723169975186106,
+              0.2010863494191242,
               0.5869140625,
-              0.05605743382961125,
+              0.0483481344950849,
               0.09765625
             ],
             "storageZone": "bags",
@@ -2432,25 +2432,71 @@ window.STICKER_BOOKS.push(...[
           {
             "id": "white-sneakers",
             "label": "흰 운동화",
-            "image": "./images/storage_dress/wardrobe-bag-shoes.png",
+            "image": "./images/storage_dress/dad-wardrobe-bags-shoes.png",
             "sheet": [
-              1920,
-              819
+              1254,
+              1254
             ],
             "crop": [
-              1012,
-              232,
-              860,
-              552
+              457,
+              888,
+              342,
+              341
             ],
             "target": [
-              0.1767578125,
-              0.7167287427325582,
-              0.09440104166666667,
-              0.09088844476744186
+              0.3085001985581623,
+              0.7119140625,
+              0.0639891862170088,
+              0.09570312500000001
             ],
             "storageZone": "shoes",
             "positionCue": "신발 칸"
+          },
+          {
+            "id": "suit-jacket",
+            "label": "양복 재킷",
+            "image": "./images/storage_dress/dad-wardrobe-clothes.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              61,
+              425,
+              320,
+              433
+            ],
+            "target": [
+              0.27734375,
+              0.1416015625,
+              0.09765625,
+              0.198211669921875
+            ],
+            "storageZone": "rail",
+            "positionCue": "옷걸이 칸"
+          },
+          {
+            "id": "tie",
+            "label": "넥타이",
+            "image": "./images/storage_dress/dad-wardrobe-accessories.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              166,
+              17,
+              104,
+              396
+            ],
+            "target": [
+              0.6592553135521886,
+              0.087890625,
+              0.023937289562289563,
+              0.13671875
+            ],
+            "storageZone": "tie-watch",
+            "positionCue": "넥타이·시계 칸"
           }
         ]
       }
@@ -2499,8 +2545,8 @@ window.STICKER_BOOKS.push(...[
         ]
       },
       {
-        "id": "linen",
-        "label": "수건 칸",
+        "id": "handkerchief",
+        "label": "손수건 칸",
         "target": [
           0.10611979166666667,
           0.8505859375
@@ -2513,8 +2559,8 @@ window.STICKER_BOOKS.push(...[
         ]
       },
       {
-        "id": "hat-watch",
-        "label": "모자·시계 칸",
+        "id": "tie-watch",
+        "label": "넥타이·시계 칸",
         "target": [
           0.7682291666666666,
           0.0810546875
@@ -2527,8 +2573,8 @@ window.STICKER_BOOKS.push(...[
         ]
       },
       {
-        "id": "belt-gloves",
-        "label": "허리띠·장갑 칸",
+        "id": "hat-belt",
+        "label": "모자·허리띠 칸",
         "target": [
           0.7682291666666666,
           0.259765625
@@ -2541,8 +2587,8 @@ window.STICKER_BOOKS.push(...[
         ]
       },
       {
-        "id": "scarf",
-        "label": "목도리 칸",
+        "id": "scarf-gloves",
+        "label": "목도리·장갑 칸",
         "target": [
           0.7682291666666666,
           0.419921875
@@ -4445,5 +4491,5 @@ window.STICKER_BOOKS.push(...[
     "completeMessage": "식사 준비를 마쳤어요!"
   }
 ]);
-const storageActivities = {"kitchen": [{"label": "냉장고 채우기", "description": "음료와 음식, 과일과 채소를 넣어요", "nav": "stickerFridge", "target": [0.85, 0.4]}, {"label": "식판 차리기", "description": "밥과 반찬, 간식을 차려요", "nav": "stickerTray"}], "bedroom": [{"label": "화장대 정리하기", "description": "드라이기와 화장품 일곱 가지를 올려요", "nav": "stickerVanity_items", "target": [0.634, 0.52]}, {"label": "어린이 옷장", "description": "학교 가방, 찍찍이 운동화, 어린이 옷을 정리해요", "nav": "stickerKidswardrobe_items", "target": [0.88, 0.42]}, {"label": "어른 옷장", "description": "어른 옷, 가방, 신발을 칸별로 정리해요", "nav": "stickerWardrobe_items", "target": [0.88, 0.57]}, {"label": "이불장 정리하기", "description": "넓은 칸에 이불과 베개를 넣어요", "nav": "stickerLinen_items", "target": [0.72, 0.86]}, {"label": "옷입히기", "description": "재민이와 외출 준비를 해요", "nav": "stickerDress"}]};
+const storageActivities = {"kitchen": [{"label": "냉장고 채우기", "description": "음료와 음식, 과일과 채소를 넣어요", "nav": "stickerFridge", "target": [0.85, 0.4]}, {"label": "식판 차리기", "description": "밥과 반찬, 간식을 차려요", "nav": "stickerTray"}], "bedroom": [{"label": "화장대 정리하기", "description": "드라이기와 화장품 일곱 가지를 올려요", "nav": "stickerVanity_items", "target": [0.634, 0.52]}, {"label": "어린이 옷장", "description": "학교 가방, 찍찍이 운동화, 어린이 옷을 정리해요", "nav": "stickerKidswardrobe_items", "target": [0.88, 0.42]}, {"label": "어른 옷장", "description": "아빠의 양복, 넥타이, 출근 가방을 정리해요", "nav": "stickerWardrobe_items", "target": [0.88, 0.57]}, {"label": "이불장 정리하기", "description": "넓은 칸에 이불과 베개를 넣어요", "nav": "stickerLinen_items", "target": [0.72, 0.86]}, {"label": "옷입히기", "description": "재민이와 외출 준비를 해요", "nav": "stickerDress"}]};
 window.STICKER_BOOKS.forEach(book => { if (storageActivities[book.id]) book.activities = storageActivities[book.id]; });
