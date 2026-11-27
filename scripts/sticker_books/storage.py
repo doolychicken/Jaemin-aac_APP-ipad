@@ -102,15 +102,38 @@ wardrobe_layout=[
   ('folded-shirt',990,933,157,143),('pants',1176,933,154,143),('pajamas',1361,933,157,143)]),
 ]
 wardrobe_by_id={item['id']:item for item in wardrobe_items}
+# The two wardrobes use the same shelves. Keep the existing adult IDs and order so
+# previously saved placements still load, and give the child wardrobe its own save.
+kids_sheet='kids-wardrobe-items'
+with Image.open(ROOT/f'images/storage_dress/{kids_sheet}.png') as sheet:
+ kids_width,kids_height=sheet.size
+kids_replacements={}
+for index,(pid,label) in enumerate([
+ ('shirt','공룡 반팔 티셔츠'),('long-sleeve','줄무늬 긴팔 티셔츠'),('bag','학교 가방'),
+ ('shoes','찍찍이 운동화'),('coat','어린이 비옷'),('pajamas','별무늬 잠옷'),
+]):
+ col,row=index%3,index//3
+ box=(col*kids_width//3,row*kids_height//2,(col+1)*kids_width//3,(row+1)*kids_height//2)
+ kids_replacements[pid]=piece(pid,label,kids_sheet,box,(0,0,100,'w'))
+adult_variants={'navy-backpack','white-sneakers','crossbody','tote','dress-shoes'}
+kids_items=[kids_replacements.get(item['id'],dict(item)) for item in wardrobe_items
+            if item['id'] not in adult_variants]
+kids_by_id={item['id']:item for item in kids_items}
+kids_centers={'bag':350,'shoes':280,'sandals':630}
+
+def place_in_wardrobe(item,zone,label,cx,bottom,maxw,maxh):
+ updated=place(item,cx,bottom or 145+maxh,maxw,maxh)
+ if not bottom: updated['target'][1]=145/1024
+ item.update(updated,storageZone=zone,positionCue=label)
+
 wardrobe_zones=[]
 for zone,label,(left,top,w,h),(x,y),slots in wardrobe_layout:
  wardrobe_zones.append(dict(id=zone,label=label,target=[x/1536,y/1024],
   bounds=[left/1536,top/1024,w/1536,h/1024]))
  for pid,cx,bottom,maxw,maxh in slots:
-  item=wardrobe_by_id[pid]
-  updated=place(item,cx,bottom or 145+maxh,maxw,maxh)
-  if not bottom: updated['target'][1]=145/1024
-  item.update(updated,storageZone=zone,positionCue=label)
+  place_in_wardrobe(wardrobe_by_id[pid],zone,label,cx,bottom,maxw,maxh)
+  if pid in kids_by_id:
+   place_in_wardrobe(kids_by_id[pid],zone,label,kids_centers.get(pid,cx),bottom,maxw,maxh)
 
 vanity_defs=[
  ('vanity-dryer','드라이기',210,487,128,'w'),
@@ -169,7 +192,8 @@ def book(id,label,title,chapterTitle,pieces,room,**extra):
   width=1536,height=1024,room=path,empty=path,chapters=[dict(id='items',title=chapterTitle,subtitle='하나씩 끌어서 알맞은 자리에 놓아요',pieces=pieces)],**extra)
 books=[book('fridge','냉장고','냉장고 채우기','냉장고 전체 채우기',items[:8],'fridge-wide',hidden=True,returnNav='stickerKitchen',returnLabel='주방 스티커북'),
  book('vanity','화장대','화장대 정리하기','화장대에 올려요',vanity_items,'vanity-ivory',hidden=True,returnNav='stickerBedroom',returnLabel='침실 스티커북'),
- book('wardrobe','옷장','옷장 정리하기','옷장에 넣어요',wardrobe_items,'wardrobe-arranged',sharedStorage=wardrobe_zones,hidden=True,returnNav='stickerBedroom',returnLabel='침실 스티커북'),
+ book('wardrobe','어른 옷장','어른 옷장 정리하기','어른 옷장에 넣어요',wardrobe_items,'wardrobe-arranged',sharedStorage=wardrobe_zones,hidden=True,returnNav='stickerBedroom',returnLabel='침실 스티커북'),
+ book('kidswardrobe','어린이 옷장','어린이 옷장 정리하기','어린이 옷장에 넣어요',kids_items,'wardrobe-arranged',sharedStorage=wardrobe_zones,hidden=True,returnNav='stickerBedroom',returnLabel='침실 스티커북'),
  book('linen','이불장','이불장 정리하기','이불과 베개를 넣어요',linen,'linen',hidden=True,returnNav='stickerBedroom',returnLabel='침실 스티커북'),
  book('dress','옷입히기','옷입히기','재민이 옷입히기',dress,'dress-base-refined',description='옷 · 양말 · 신발 · 소품',completeMessage='외출 준비를 마쳤어요!')]
 extend_storage(books)
@@ -178,7 +202,8 @@ activities={
  'kitchen':[dict(label='냉장고 채우기',description='음료와 음식, 과일과 채소를 넣어요',nav='stickerFridge',target=[.85,.40]),
             dict(label='식판 차리기',description='밥과 반찬, 간식을 차려요',nav='stickerTray')],
  'bedroom':[dict(label='화장대 정리하기',description='드라이기와 화장품 일곱 가지를 올려요',nav='stickerVanity_items',target=[.634,.52]),
-            dict(label='옷장 정리하기',description='옷걸이·접은 옷·가방·신발을 칸별로 정리해요',nav='stickerWardrobe_items',target=[.90,.48]),
+            dict(label='어린이 옷장',description='학교 가방, 찍찍이 운동화, 어린이 옷을 정리해요',nav='stickerKidswardrobe_items',target=[.88,.42]),
+            dict(label='어른 옷장',description='어른 옷, 가방, 신발을 칸별로 정리해요',nav='stickerWardrobe_items',target=[.88,.57]),
             dict(label='이불장 정리하기',description='넓은 칸에 이불과 베개를 넣어요',nav='stickerLinen_items',target=[.72,.86]),
             dict(label='옷입히기',description='재민이와 외출 준비를 해요',nav='stickerDress')]
 }

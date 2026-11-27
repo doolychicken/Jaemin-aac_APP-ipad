@@ -1,4 +1,4 @@
-"""Storage hotspots, all 25 stickers, layering, persistence and keyboard access."""
+"""Storage hotspots, sticker placement, separate wardrobe saves and keyboard access."""
 import importlib.util,threading
 from pathlib import Path
 from functools import partial
@@ -19,7 +19,7 @@ def main():
    ctx.add_init_script(base.MOCK_SPEECH)
    page=ctx.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
    page.goto(f'http://127.0.0.1:{server.server_port}/')
-   for id,parent,activity,total in [('fridge','Kitchen','냉장고 채우기',34),('wardrobe','Bedroom','옷장 정리하기',25),('linen','Bedroom','이불장 정리하기',6),('dress',None,'옷입히기',9)]:
+   for id,parent,activity,total in [('fridge','Kitchen','냉장고 채우기',34),('wardrobe','Bedroom','어른 옷장',25),('kidswardrobe','Bedroom','어린이 옷장',20),('linen','Bedroom','이불장 정리하기',6),('dress',None,'옷입히기',9)]:
     if parent:
      page.evaluate(f"pushScreen('sticker{parent}_items','생활용품');render()")
      page.locator('.sb-room-link',has_text=activity).click()
@@ -43,7 +43,7 @@ def main():
     page.screenshot(path=str(out/f'{id}-complete.png'))
     assert page.locator('.sb-placed').count()==total
     page.locator('.sb-toolbar').get_by_role('button',name='목록',exact=True).click()
-    expected={'fridge':'냉장고 채우기','wardrobe':'침실 꾸미기','linen':'침실 꾸미기','dress':'옷입히기'}[id]
+    expected={'fridge':'냉장고 채우기','wardrobe':'침실 꾸미기','kidswardrobe':'침실 꾸미기','linen':'침실 꾸미기','dress':'옷입히기'}[id]
     assert page.locator('.sb-intro h2').inner_text()==expected
    page.reload()
    page.evaluate("pushScreen('stickerDress_items','옷입히기');render()")
@@ -65,9 +65,12 @@ def main():
    page.reload();page.evaluate("pushScreen('stickerWardrobe_items','옷장');render()")
    page.wait_for_selector('.sb-card:not(:disabled)')
    assert page.locator('.sb-card').get_attribute('data-piece')=='underwear'
+   page.evaluate("pushScreen('stickerKidswardrobe_items','어린이 옷장');render()")
+   page.wait_for_selector('.sb-tray--complete')
+   assert page.locator('.sb-placed').count()==20
    assert not page.locator('#storageNotice').is_visible()
    assert not errors,errors
-   browser.close();print('PASS: all 37 storage/dress stickers, linen navigation, old wardrobe progress, responsive layouts and keyboard')
+   browser.close();print('PASS: storage and dress stickers, isolated wardrobes, legacy progress, responsive layouts and keyboard')
  finally:server.shutdown()
 
 if __name__=='__main__':main()
