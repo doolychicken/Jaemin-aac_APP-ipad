@@ -152,7 +152,7 @@ def main():
             off=offline.new_page(); off.set_default_timeout(120000)
             off.goto(url)
             off.wait_for_function("""async () => {
-                const cache=await caches.open('jaemin-aac-v452');
+                const cache=await caches.open('jaemin-aac-v453');
                 const paths=['./images/bathroom_book/boy-two.png','./js/features/sticker-book.js','./images/home_books/kitchen-table-square.png'];
                 return (await Promise.all(paths.map(path=>cache.match(path)))).every(Boolean);
             }""")
@@ -180,7 +180,7 @@ def main():
                 off.mouse.move(b['x']+b['width']/2,b['y']+b['height']/2,steps=8); off.mouse.up()
                 assert off.locator('.sb-next').count()==1
             assert off.evaluate('window.nativeSpeechCalls')==0
-            for book,chapter,total in [('Kitchen','fixtures',10),('Kitchen','items',25),('Kitchen','cooking',3),('Living','fixtures',9),('Living','items',8),('Bedroom','fixtures',8),('Vanity','items',7),('Wardrobe','items',14),('Linen','items',6),('Fridge','drinks',10),('Fridge','meals',9),('Fridge','vegetables',6),('Fridge','fruit',9),('Tray','rice',9),('Tray','meal',9),('Tray','fruit',9),('Tray','snack',9)]:
+            for book,chapter,total in [('Kitchen','fixtures',10),('Kitchen','items',25),('Kitchen','cooking',3),('Living','fixtures',9),('Living','items',8),('Bedroom','fixtures',8),('Vanity','items',7),('Wardrobe','items',23),('Linen','items',6),('Fridge','drinks',10),('Fridge','meals',9),('Fridge','vegetables',6),('Fridge','fruit',9),('Tray','rice',9),('Tray','meal',9),('Tray','fruit',9),('Tray','snack',9)]:
                 off.evaluate(f"pushScreen('sticker{book}_{chapter}','스티커북'); render()")
                 for index in range(total):
                     off.wait_for_selector('.sb-card:not(:disabled)')

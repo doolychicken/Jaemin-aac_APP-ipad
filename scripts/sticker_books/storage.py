@@ -4,7 +4,7 @@ import json,sys
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT/'_local/print-tools'))
 from PIL import Image
-from food import extend_storage
+from food import extend_storage, place
 
 def piece(id,label,file,box,target,fit=False,folder='storage_dress'):
  im=Image.open(ROOT/f'images/{folder}/{file}.png')
@@ -36,6 +36,8 @@ items=[]
 for i,(id,label,target) in enumerate(storage):
  l,r=columns[i%4];t,b=bands[i//4]
  items.append(piece(id,label,'storage-items',(l,t,r,b),target))
+with Image.open(ROOT/'images/storage_dress/cheese-slices.png') as cheese_im:
+ items[5]=piece('cheese','치즈','cheese-slices',(0,0,*cheese_im.size),storage[5][2])
 
 extra_boxes=[(10,100,350,400),(350,85,725,370),(725,20,1086,430),
              (15,450,350,735),(355,480,725,725),(730,490,1086,730),
@@ -51,18 +53,56 @@ def place_on_surface(item,left,bottom,size,axis='h'):
  assert 0<=left and left+width<=1536 and 0<=bottom-height<=bottom<=1024,item['id']
  item['target']=[left/1536,(bottom-height)/1024,width/1536,height/1024]
 
-# Align hanging clothes to the rail and rest folded pieces on the new shelves.
-wardrobe_positions={
- 'shirt':(326,388,230,'h'), 'pants':(542,649,95,'h'),
- 'pajamas':(975,283,130,'h'), 'socks':(982,472,88,'h'),
- 'cap':(1132,283,115,'w'), 'bag':(1030,803,130,'h'),
- 'shoes':(344,903,115,'h'), 'towel':(685,774,100,'h'),
- 'underwear':(1130,472,112,'w'), 'hanger':(553,242,131,'w'),
- 'coat':(645,440,285,'h'), 'gloves':(997,649,92,'h'),
- 'scarf':(323,647,150,'w'), 'belt':(495,775,141,'w'),
-}
-for item in wardrobe_items:
- place_on_surface(item,*wardrobe_positions[item['id']])
+folded_shirt=dict(wardrobe_items[0],id='folded-shirt',label='접은 윗도리')
+wardrobe_items[1]['label']='접은 바지'
+wardrobe_items[5]['label']='배낭'
+wardrobe_items[6]['label']='운동화'
+new_wardrobe_labels=[
+ ('shirt','반팔 티셔츠'),('long-sleeve','긴팔 티셔츠'),('button-shirt','남방'),
+ ('hanging-pants','옷걸이에 건 바지'),('crossbody','크로스백'),('tote','토트백'),
+ ('dress-shoes','구두'),('sandals','샌들'),('wristwatch','손목시계')
+]
+with Image.open(ROOT/'images/storage_dress/wardrobe-arranged-items.png') as sheet:
+ width,height=sheet.size
+new_wardrobe=[]
+for i,(pid,label) in enumerate(new_wardrobe_labels):
+ col,row=i%3,i//3
+ box=(col*width//3,row*height//3,(col+1)*width//3,(row+1)*height//3)
+ new_wardrobe.append(piece(pid,label,'wardrobe-arranged-items',box,(0,0,100,'w')))
+wardrobe_items=[new_wardrobe[0],*wardrobe_items[1:],*new_wardrobe[1:],folded_shirt]
+
+# Slot centers and baselines follow the photographic shelves and preserve saved ID order.
+wardrobe_layout=[
+ ('rail','옷걸이 칸',(55,120,801,451),(465,97),[
+  ('hanger',117,0,104,114),('shirt',246,0,130,238),('long-sleeve',382,0,133,270),
+  ('button-shirt',519,0,133,268),('hanging-pants',655,0,132,356),('coat',789,0,130,300)]),
+ ('bags','가방 칸',(57,595,796,110),(465,587),[
+  ('bag',207,701,150,100),('crossbody',447,701,174,100),('tote',688,701,150,100)]),
+ ('shoes','신발 칸',(57,724,796,109),(465,715),[
+  ('shoes',207,827,155,98),('dress-shoes',447,827,166,98),('sandals',688,827,161,98)]),
+ ('linen','수건 칸',(57,850,796,90),(163,871),[
+  ('towel',447,935,170,78)]),
+ ('hat-watch','모자·시계 칸',(891,79,596,155),(1180,83),[
+  ('cap',1031,230,147,124),('wristwatch',1332,230,138,129)]),
+ ('belt-gloves','허리띠·장갑 칸',(891,249,596,153),(1180,266),[
+  ('belt',1031,396,155,103),('gloves',1332,396,145,119)]),
+ ('scarf','목도리 칸',(891,417,596,154),(1180,430),[
+  ('scarf',1180,562,210,104)]),
+ ('underwear','양말·속옷 칸',(891,589,596,146),(1180,600),[
+  ('socks',1031,728,130,111),('underwear',1332,728,145,111)]),
+ ('folded','접은 옷 칸',(891,752,596,188),(1180,774),[
+  ('folded-shirt',990,933,157,143),('pants',1176,933,154,143),('pajamas',1361,933,157,143)]),
+]
+wardrobe_by_id={item['id']:item for item in wardrobe_items}
+wardrobe_zones=[]
+for zone,label,(left,top,w,h),(x,y),slots in wardrobe_layout:
+ wardrobe_zones.append(dict(id=zone,label=label,target=[x/1536,y/1024],
+  bounds=[left/1536,top/1024,w/1536,h/1024]))
+ for pid,cx,bottom,maxw,maxh in slots:
+  item=wardrobe_by_id[pid]
+  updated=place(item,cx,bottom or 145+maxh,maxw,maxh)
+  if not bottom: updated['target'][1]=145/1024
+  item.update(updated,storageZone=zone,positionCue=label)
 
 vanity_defs=[
  ('vanity-dryer','드라이기',210,487,128,'w'),
@@ -121,7 +161,7 @@ def book(id,label,title,chapterTitle,pieces,room,**extra):
   width=1536,height=1024,room=path,empty=path,chapters=[dict(id='items',title=chapterTitle,subtitle='하나씩 끌어서 알맞은 자리에 놓아요',pieces=pieces)],**extra)
 books=[book('fridge','냉장고','냉장고 채우기','냉장고 전체 채우기',items[:8],'fridge-wide',hidden=True,returnNav='stickerKitchen',returnLabel='주방 스티커북'),
  book('vanity','화장대','화장대 정리하기','화장대에 올려요',vanity_items,'vanity-ivory',hidden=True,returnNav='stickerBedroom',returnLabel='침실 스티커북'),
- book('wardrobe','옷장','옷장 정리하기','옷장에 넣어요',wardrobe_items,'wardrobe-ivory',hidden=True,returnNav='stickerBedroom',returnLabel='침실 스티커북'),
+ book('wardrobe','옷장','옷장 정리하기','옷장에 넣어요',wardrobe_items,'wardrobe-arranged',sharedStorage=wardrobe_zones,hidden=True,returnNav='stickerBedroom',returnLabel='침실 스티커북'),
  book('linen','이불장','이불장 정리하기','이불과 베개를 넣어요',linen,'linen',hidden=True,returnNav='stickerBedroom',returnLabel='침실 스티커북'),
  book('dress','옷입히기','옷입히기','재민이 옷입히기',dress,'dress-base-refined',description='옷 · 양말 · 신발 · 소품',completeMessage='외출 준비를 마쳤어요!')]
 extend_storage(books)
@@ -130,7 +170,7 @@ activities={
  'kitchen':[dict(label='냉장고 채우기',description='음료와 음식, 과일과 채소를 넣어요',nav='stickerFridge',target=[.85,.40]),
             dict(label='식판 차리기',description='밥과 반찬, 간식을 차려요',nav='stickerTray')],
  'bedroom':[dict(label='화장대 정리하기',description='드라이기와 화장품 일곱 가지를 올려요',nav='stickerVanity_items',target=[.634,.52]),
-            dict(label='옷장 정리하기',description='옷과 소품 14개를 정리해요',nav='stickerWardrobe_items',target=[.90,.48]),
+            dict(label='옷장 정리하기',description='옷걸이·접은 옷·가방·신발을 칸별로 정리해요',nav='stickerWardrobe_items',target=[.90,.48]),
             dict(label='이불장 정리하기',description='넓은 칸에 이불과 베개를 넣어요',nav='stickerLinen_items',target=[.72,.86]),
             dict(label='옷입히기',description='재민이와 외출 준비를 해요',nav='stickerDress')]
 }
