@@ -4,9 +4,9 @@
  * On first visit, pre-caches all images so subsequent loads are instant.
  */
 
-importScripts('./js/data/speech-manifest.js?v=459');
+importScripts('./js/data/speech-manifest.js?v=462');
 
-const CACHE_VERSION = 'v461';
+const CACHE_VERSION = 'v462';
 const CACHE_NAME = `jaemin-aac-${CACHE_VERSION}`;
 
 self.addEventListener('message', (event) => {
@@ -58,7 +58,8 @@ const PRECACHE_ASSETS = [
   './images/storage_dress/dad-wardrobe-accessories.png',
   './images/storage_dress/dad-wardrobe-bags-shoes.png',
   './images/storage_dress/kids-wardrobe-items.png',
-  './images/storage_dress/kids-wardrobe-room-v3.png',
+  './images/storage_dress/kids-wardrobe-room-v4.png',
+  './images/storage_dress/kids-wardrobe-winter-shorts.png',
   './images/storage_dress/kids-wardrobe-jacket-vest-scarf.png',
   './images/storage_dress/vanity-ivory.png',
   './images/storage_dress/vanity-items.png',
