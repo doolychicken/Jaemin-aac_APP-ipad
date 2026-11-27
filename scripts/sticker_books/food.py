@@ -39,8 +39,11 @@ def photo(group, index):
 
 def place(p, cx, bottom, maxw, maxh):
     p=deepcopy(p)
-    ratio=min(maxw/p['crop'][2],maxh/p['crop'][3])
-    w,h=p['crop'][2]*ratio,p['crop'][3]*ratio
+    width,height=p['crop'][2:]
+    if p.get('rotate') in (90,270):
+        width,height=height,width
+    ratio=min(maxw/width,maxh/height)
+    w,h=width*ratio,height*ratio
     p['target']=[(cx-w/2)/1536,(bottom-h)/1024,w/1536,h/1024]
     assert all(v>=0 for v in p['target']) and cx+w/2<=1536 and bottom<=1024
     return p
