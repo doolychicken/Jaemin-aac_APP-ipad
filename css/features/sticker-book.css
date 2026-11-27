@@ -57,6 +57,7 @@
 .sb-storage-label { position: absolute; transform: translate(-50%, -50%); z-index: 1; padding: 3px 8px; border: 1px solid #93b5ab; border-radius: 999px; background: #fafffaff; color: #184c40; font-size: clamp(10px, 1.25vw, 16px); line-height: 1.15; font-weight: 800; white-space: nowrap; pointer-events: none; }
 .sb-storage-label[data-zone="drinks"] { background: #e5f3ff; color: #174977; }
 .sb-storage-label[data-zone="meals"] { background: #fff0df; color: #6a401d; }
+.sb-storage-label[data-zone="desserts"] { background: #f4eaff; color: #624174; }
 .sb-storage-label[data-zone="fruit"] { background: #fff0f1; color: #7a334b; }
 .sb-storage-label[data-zone="vegetables"] { background: #e9f5e7; }
 .sb-placed { position: absolute; pointer-events: none; }

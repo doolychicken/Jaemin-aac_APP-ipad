@@ -70,6 +70,12 @@ for i,(pid,label) in enumerate(new_wardrobe_labels):
  box=(col*width//3,row*height//3,(col+1)*width//3,(row+1)*height//3)
  new_wardrobe.append(piece(pid,label,'wardrobe-arranged-items',box,(0,0,100,'w')))
 wardrobe_items=[new_wardrobe[0],*wardrobe_items[1:],*new_wardrobe[1:],folded_shirt]
+with Image.open(ROOT/'images/storage_dress/wardrobe-bag-shoes.png') as sheet:
+ width,height=sheet.size
+wardrobe_items.extend([
+ piece('navy-backpack','남색 백팩','wardrobe-bag-shoes',(0,0,width//2,height),(0,0,100,'w')),
+ piece('white-sneakers','흰 운동화','wardrobe-bag-shoes',(width//2,0,width,height),(0,0,100,'w')),
+])
 
 # Slot centers and baselines follow the photographic shelves and preserve saved ID order.
 wardrobe_layout=[
@@ -77,9 +83,11 @@ wardrobe_layout=[
   ('hanger',117,0,104,114),('shirt',246,0,130,238),('long-sleeve',382,0,133,270),
   ('button-shirt',519,0,133,268),('hanging-pants',655,0,132,356),('coat',789,0,130,300)]),
  ('bags','가방 칸',(57,595,796,110),(465,587),[
-  ('bag',207,701,150,100),('crossbody',447,701,174,100),('tote',688,701,150,100)]),
+  ('bag',168,701,140,100),('navy-backpack',346,701,140,100),
+  ('crossbody',524,701,150,100),('tote',702,701,138,100)]),
  ('shoes','신발 칸',(57,724,796,109),(465,715),[
-  ('shoes',207,827,155,98),('dress-shoes',447,827,166,98),('sandals',688,827,161,98)]),
+  ('shoes',165,827,143,98),('white-sneakers',344,827,145,98),
+  ('dress-shoes',523,827,148,98),('sandals',702,827,145,98)]),
  ('linen','수건 칸',(57,850,796,90),(163,871),[
   ('towel',447,935,170,78)]),
  ('hat-watch','모자·시계 칸',(891,79,596,155),(1180,83),[
