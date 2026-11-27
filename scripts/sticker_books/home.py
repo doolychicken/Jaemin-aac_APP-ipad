@@ -207,15 +207,16 @@ def update_living(book):
   ('purifier','공기청정기',(85,780,320,1125),220,650,160,'h'),
   ('vacuum','청소기',(465,793,625,1118),1160,620,290,'h'),
   ('slippers','슬리퍼',(15,1160,385,1425),305,713,115,'w'),
-  ('remote','텔레비전 리모컨',(465,1118,620,1448),510,760,105,'h'),
-  ('acremote','에어컨 리모컨',(800,1120,990,1448),715,760,95,'h')
+  ('remote','텔레비전 리모컨',(465,1118,620,1448),1012,566,105,'h'),
+  ('acremote','에어컨 리모컨',(800,1120,990,1448),1368,458,95,'h')
  ]
  pieces=[kitchen_piece(pid,label,asset,region,x,y,size,axis) for pid,label,region,x,y,size,axis in rows]
- # TV feet rest on the console; remote controls lie horizontally on the table.
+ # The TV remote lies between the TV feet. The AC remote clips to the front panel.
  pieces[2]['target'][1]=590/1024-pieces[2]['target'][3]
- for piece in pieces[-2:]:
-  piece['rotate']=90
-  x,y,w,h=piece['target'];piece['target']=[x,y,h*1024/1536,w*1536/1024]
+ remote,acremote=pieces[-2:]
+ x,y,w,h=remote['target']
+ remote.update(rotate=90,target=[x,y,h*1024/1536,w*1536/1024],positionCue='거실장 위')
+ acremote['positionCue']='에어컨에 붙여요'
  # Start the plant-care group below the fan in the clear floor space by the window.
  for pid,label,asset,x,y,size,axis in [
   ('flowering-pot','꽃 화분','living-flowering-pot',45,766,185,'h'),

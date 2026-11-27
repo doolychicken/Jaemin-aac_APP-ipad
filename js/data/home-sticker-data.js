@@ -1108,12 +1108,13 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               301
             ],
             "target": [
-              0.33203125,
-              0.7421875,
+              0.6588541666666666,
+              0.552734375,
               0.068359375,
               0.03440679505813953
             ],
-            "rotate": 90
+            "rotate": 90,
+            "positionCue": "거실장 위"
           },
           {
             "id": "acremote",
@@ -1130,12 +1131,12 @@ window.STICKER_BOOKS = [Object.assign(window.STICKER_BOOK, {id: "bathroom", labe
               272
             ],
             "target": [
-              0.4654947916666667,
-              0.7421875,
-              0.061848958333333336,
-              0.035813275505514705
+              0.890625,
+              0.447265625,
+              0.02387551700367647,
+              0.0927734375
             ],
-            "rotate": 90
+            "positionCue": "에어컨에 붙여요"
           },
           {
             "id": "flowering-pot",

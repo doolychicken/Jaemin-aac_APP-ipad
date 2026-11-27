@@ -130,6 +130,8 @@
     function displayBounds(piece) {
       if (catalog.sharedStorage) return piece.target;
       const [x, y, w, h] = piece.target;
+      // Keep the remotes within the console surface and the air conditioner's front panel.
+      if (catalog.id === 'living' && (piece.id === 'remote' || piece.id === 'acremote')) return piece.target;
       if (catalog.id === 'living' && piece.id === 'purifier') {
         const scale = 1.45;
         return [x - w * (scale - 1) / 2, y - h * (scale - 1), w * scale, h * scale];
