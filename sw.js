@@ -6,7 +6,7 @@
 
 importScripts('./js/data/speech-manifest.js?v=459');
 
-const CACHE_VERSION = 'v459';
+const CACHE_VERSION = 'v460';
 const CACHE_NAME = `jaemin-aac-${CACHE_VERSION}`;
 
 self.addEventListener('message', (event) => {
@@ -52,7 +52,7 @@ const PRECACHE_ASSETS = [
   './images/storage_dress/wardrobe.png',
   './images/storage_dress/wardrobe-ivory.png',
   './images/storage_dress/wardrobe-arranged-items.png',
-  './images/storage_dress/dad-wardrobe-room-v2.png',
+  './images/storage_dress/dad-wardrobe-room-v3.png',
   './images/storage_dress/dad-wardrobe-hanging-shirts.png',
   './images/storage_dress/dad-wardrobe-clothes.png',
   './images/storage_dress/dad-wardrobe-accessories.png',

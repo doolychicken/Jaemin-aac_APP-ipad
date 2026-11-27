@@ -121,16 +121,14 @@ wardrobe_layout=[
   ('hanger',104,0,90,114),('shirt',218,0,127,200),('button-shirt',354,0,132,250),
   ('suit-jacket',501,0,150,270),('hanging-pants',647,0,125,338),('coat',785,0,134,363),
   ('folded-shirt',159,0,155,194,372),('long-sleeve',355,0,155,194,372)]),
- ('bags','가방 칸',(57,595,796,110),(465,587),[
-  ('bag',168,701,140,100),('navy-backpack',346,701,140,100),
-  ('crossbody',524,701,150,100),('tote',702,701,138,100)]),
- ('shoes','신발 칸',(57,724,796,109),(465,715),[
-  ('shoes',165,827,143,98),('dress-shoes',344,827,145,98),
-  ('white-sneakers',523,827,148,98),('sandals',702,827,145,98)]),
- ('handkerchief','손수건 칸',(57,850,796,90),(163,871),[
-  ('towel',447,935,135,76)]),
- ('tie-watch','넥타이·시계 칸',(891,79,596,155),(1180,83),[
-  ('tie',1031,230,124,140),('wristwatch',1332,230,138,129)]),
+ ('bags','가방 칸',(57,595,796,235),(465,605),[
+  ('bag',169,825,160,161),('navy-backpack',354,825,161,171),
+  ('crossbody',545,825,176,157),('tote',737,825,158,165)]),
+ ('shoes','신발 칸',(57,850,796,92),(439,849),[
+  ('shoes',165,936,143,82),('dress-shoes',320,936,145,82),
+  ('white-sneakers',560,936,148,82),('sandals',714,936,145,82)]),
+ ('tie-watch','넥타이·시계·손수건 칸',(891,79,596,155),(1180,80),[
+  ('tie',998,230,124,134),('wristwatch',1180,230,118,117),('towel',1369,230,115,83)]),
  ('hat-belt','모자·허리띠 칸',(891,249,596,153),(1180,266),[
   ('cap',1031,396,156,112),('belt',1332,396,155,103)]),
  ('scarf-gloves','목도리·장갑 칸',(891,417,596,154),(1180,430),[
@@ -252,7 +250,7 @@ def book(id,label,title,chapterTitle,pieces,room,**extra):
   width=1536,height=1024,room=path,empty=path,chapters=[dict(id='items',title=chapterTitle,subtitle='하나씩 끌어서 알맞은 자리에 놓아요',pieces=pieces)],**extra)
 books=[book('fridge','냉장고','냉장고 채우기','냉장고 전체 채우기',items[:8],'fridge-wide',hidden=True,returnNav='stickerKitchen',returnLabel='주방 스티커북'),
  book('vanity','화장대','화장대 정리하기','화장대에 올려요',vanity_items,'vanity-ivory',hidden=True,returnNav='stickerBedroom',returnLabel='침실 스티커북'),
- book('wardrobe','어른 옷장','아빠 옷장 정리하기','아빠 옷장에 넣어요',adult_items,'dad-wardrobe-room-v2',sharedStorage=wardrobe_zones,retiredPieces={'items':['pants']},hidden=True,returnNav='stickerBedroom',returnLabel='침실 스티커북'),
+ book('wardrobe','어른 옷장','아빠 옷장 정리하기','아빠 옷장에 넣어요',adult_items,'dad-wardrobe-room-v3',sharedStorage=wardrobe_zones,retiredPieces={'items':['pants']},hidden=True,returnNav='stickerBedroom',returnLabel='침실 스티커북'),
  book('kidswardrobe','어린이 옷장','어린이 옷장 정리하기','어린이 옷장에 넣어요',kids_items,'kids-wardrobe-room-v2',sharedStorage=kids_zones,retiredPieces={'items':['towel']},hidden=True,returnNav='stickerBedroom',returnLabel='침실 스티커북'),
  book('linen','이불장','이불장 정리하기','이불과 베개를 넣어요',linen,'linen',hidden=True,returnNav='stickerBedroom',returnLabel='침실 스티커북'),
  book('dress','옷입히기','옷입히기','재민이 옷입히기',dress,'dress-base-refined',description='옷 · 양말 · 신발 · 소품',completeMessage='외출 준비를 마쳤어요!')]
