@@ -19,7 +19,7 @@ def main():
    ctx.add_init_script(base.MOCK_SPEECH)
    page=ctx.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
    page.goto(f'http://127.0.0.1:{server.server_port}/')
-   for id,parent,activity,total in [('fridge','Kitchen','냉장고 채우기',34),('wardrobe','Bedroom','어른 옷장',27),('kidswardrobe','Bedroom','어린이 옷장',23),('linen','Bedroom','이불장 정리하기',6),('dress',None,'옷입히기',9)]:
+   for id,parent,activity,total in [('fridge','Kitchen','냉장고 채우기',34),('wardrobe','Bedroom','아빠 옷장',27),('momwardrobe','Bedroom','엄마 옷장',27),('kidswardrobe','Bedroom','어린이 옷장',23),('linen','Bedroom','이불장 정리하기',6),('dress',None,'옷입히기',9)]:
     if parent:
      page.evaluate(f"pushScreen('sticker{parent}_items','생활용품');render()")
      page.locator('.sb-room-link',has_text=activity).click()
@@ -43,7 +43,7 @@ def main():
     page.screenshot(path=str(out/f'{id}-complete.png'))
     assert page.locator('.sb-placed').count()==total
     page.locator('.sb-toolbar').get_by_role('button',name='목록',exact=True).click()
-    expected={'fridge':'냉장고 채우기','wardrobe':'침실 꾸미기','kidswardrobe':'침실 꾸미기','linen':'침실 꾸미기','dress':'옷입히기'}[id]
+    expected={'fridge':'냉장고 채우기','wardrobe':'침실 꾸미기','momwardrobe':'침실 꾸미기','kidswardrobe':'침실 꾸미기','linen':'침실 꾸미기','dress':'옷입히기'}[id]
     assert page.locator('.sb-intro h2').inner_text()==expected
    page.reload()
    page.evaluate("pushScreen('stickerDress_items','옷입히기');render()")

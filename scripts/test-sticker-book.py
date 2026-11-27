@@ -152,7 +152,7 @@ def main():
             off=offline.new_page(); off.set_default_timeout(120000)
             off.goto(url)
             off.wait_for_function("""async () => {
-                const cache=await caches.open('jaemin-aac-v464');
+                const cache=await caches.open('jaemin-aac-v465');
                 const paths=['./images/bathroom_book/boy-two.png','./js/features/sticker-book.js','./images/home_books/kitchen-table-square.png'];
                 return (await Promise.all(paths.map(path=>cache.match(path)))).every(Boolean);
             }""")

@@ -184,6 +184,46 @@ def wardrobe_shelves(layout,items_by_id):
  return zones
 
 wardrobe_zones=wardrobe_shelves(wardrobe_layout,wardrobe_by_id)
+
+# Reuse the adult shelf positions for a separate wardrobe and its own photos.
+mom_sheets={
+ 'mom-wardrobe-clothes':[
+  ('shirt','ivory-blouse','아이보리 블라우스'),('button-shirt','dress','원피스'),('suit-jacket','blazer','재킷'),
+  ('hanging-pants','slacks','정장 바지'),('coat','trench','트렌치코트'),('folded-shirt','lilac-blouse','반팔 블라우스'),
+  ('long-sleeve','cardigan','카디건'),('shorts','skirt','주름치마'),('hanger','shorts','반바지'),
+ ],
+ 'mom-wardrobe-accessories':[
+  ('tie','silk-scarf','실크 스카프'),('wristwatch','watch','손목시계'),('towel','handkerchief','손수건'),
+  ('cap','hat','벙거지 모자'),('belt','belt','허리띠'),('scarf','winter-scarf','털목도리'),
+  ('socks','socks','양말'),('gloves','gloves','장갑'),('pajamas','pajamas','줄무늬 잠옷'),
+ ],
+ 'mom-wardrobe-bags-shoes':[
+  ('navy-backpack','backpack','노트북 백팩'),('crossbody','crossbody','어깨 가방'),('tote','tote','토트백'),
+  ('bag','handbag','핸드백'),('shoes','pumps','굽 낮은 구두'),('dress-shoes','loafers','로퍼'),
+  ('white-sneakers','sneakers','흰 운동화'),('sandals','slippers','실내 슬리퍼'),('underwear','underwear','속옷'),
+ ],
+}
+mom_by_position={}
+for asset,entries in mom_sheets.items():
+ with Image.open(ROOT/f'images/storage_dress/{asset}.png') as sheet:
+  width,height=sheet.size
+ for index,(position,pid,label) in enumerate(entries):
+  col,row=index%3,index//3
+  box=(col*width//3,row*height//3,(col+1)*width//3,(row+1)*height//3)
+  mom_by_position[position]=piece(pid,label,asset,box,(0,0,100,'w'))
+
+def mom_slot(slot):
+ position,cx,bottom,maxw,maxh,*top=slot
+ maxw,maxh={'shorts':(170,197),'hanger':(154,181)}.get(position,(maxw,maxh))
+ return mom_by_position[position]['id'],cx,bottom,maxw,maxh,*top
+
+mom_layout=[
+ (zone,'스카프·시계·손수건 칸' if zone=='tie-watch' else label,bounds,anchor,[mom_slot(slot) for slot in slots])
+ for zone,label,bounds,anchor,slots in wardrobe_layout
+]
+mom_items=[mom_by_position[slot[0]] for _,_,_,_,slots in wardrobe_layout for slot in slots]
+mom_zones=wardrobe_shelves(mom_layout,{item['id']:item for item in mom_items})
+
 kids_layout=[
  ('rail','옷걸이 칸',(55,119,1070,597),(590,97),[
   ('shirt',169,0,228,268),('long-sleeve',402,0,230,262),('button-shirt',637,0,226,270),
@@ -272,7 +312,8 @@ def book(id,label,title,chapterTitle,pieces,room,**extra):
   width=1536,height=1024,room=path,empty=path,chapters=[dict(id='items',title=chapterTitle,subtitle='하나씩 끌어서 알맞은 자리에 놓아요',pieces=pieces)],**extra)
 books=[book('fridge','냉장고','냉장고 채우기','냉장고 전체 채우기',items[:8],'fridge-wide',hidden=True,returnNav='stickerKitchen',returnLabel='주방 스티커북'),
  book('vanity','화장대','화장대 정리하기','화장대에 올려요',vanity_items,'vanity-ivory',hidden=True,returnNav='stickerBedroom',returnLabel='침실 스티커북'),
- book('wardrobe','어른 옷장','아빠 옷장 정리하기','아빠 옷장에 넣어요',adult_items,'dad-wardrobe-room-v4',sharedStorage=wardrobe_zones,retiredPieces={'items':['pants']},hidden=True,returnNav='stickerBedroom',returnLabel='침실 스티커북'),
+ book('wardrobe','아빠 옷장','아빠 옷장 정리하기','아빠 옷장에 넣어요',adult_items,'dad-wardrobe-room-v4',sharedStorage=wardrobe_zones,retiredPieces={'items':['pants']},hidden=True,returnNav='stickerBedroom',returnLabel='침실 스티커북'),
+ book('momwardrobe','엄마 옷장','엄마 옷장 정리하기','엄마 옷장에 넣어요',mom_items,'dad-wardrobe-room-v4',sharedStorage=mom_zones,hidden=True,returnNav='stickerBedroom',returnLabel='침실 스티커북'),
  book('kidswardrobe','어린이 옷장','어린이 옷장 정리하기','어린이 옷장에 넣어요',kids_items,'kids-wardrobe-room-v4',sharedStorage=kids_zones,retiredPieces={'items':['towel']},hidden=True,returnNav='stickerBedroom',returnLabel='침실 스티커북'),
  book('linen','이불장','이불장 정리하기','이불과 베개를 넣어요',linen,'linen',hidden=True,returnNav='stickerBedroom',returnLabel='침실 스티커북'),
  book('dress','옷입히기','옷입히기','재민이 옷입히기',dress,'dress-base-refined',description='옷 · 양말 · 신발 · 소품',completeMessage='외출 준비를 마쳤어요!')]
@@ -283,7 +324,8 @@ activities={
             dict(label='식판 차리기',description='밥과 반찬, 간식을 차려요',nav='stickerTray')],
  'bedroom':[dict(label='화장대 정리하기',description='드라이기와 화장품 일곱 가지를 올려요',nav='stickerVanity_items',target=[.634,.52]),
             dict(label='어린이 옷장',description='학교 가방, 찍찍이 운동화, 어린이 옷을 정리해요',nav='stickerKidswardrobe_items',target=[.88,.42]),
-            dict(label='어른 옷장',description='아빠의 양복, 넥타이, 출근 가방을 정리해요',nav='stickerWardrobe_items',target=[.88,.57]),
+            dict(label='아빠 옷장',description='양복, 넥타이, 출근 가방을 정리해요',nav='stickerWardrobe_items',target=[.88,.57]),
+            dict(label='엄마 옷장',description='원피스, 블라우스, 치마와 가방을 정리해요',nav='stickerMomwardrobe_items',target=[.88,.72]),
             dict(label='이불장 정리하기',description='넓은 칸에 이불과 베개를 넣어요',nav='stickerLinen_items',target=[.72,.86]),
             dict(label='옷입히기',description='재민이와 외출 준비를 해요',nav='stickerDress')]
 }

@@ -1862,7 +1862,7 @@ window.STICKER_BOOKS.push(...[
   },
   {
     "id": "wardrobe",
-    "label": "어른 옷장",
+    "label": "아빠 옷장",
     "title": "아빠 옷장 정리하기",
     "heading": "아빠 옷장 정리하기",
     "nav": "stickerWardrobe",
@@ -2620,6 +2620,765 @@ window.STICKER_BOOKS.push(...[
         "pants"
       ]
     },
+    "hidden": true,
+    "returnNav": "stickerBedroom",
+    "returnLabel": "침실 스티커북"
+  },
+  {
+    "id": "momwardrobe",
+    "label": "엄마 옷장",
+    "title": "엄마 옷장 정리하기",
+    "heading": "엄마 옷장 정리하기",
+    "nav": "stickerMomwardrobe",
+    "storageKey": "jaemin-momwardrobe-stickers-v1",
+    "width": 1536,
+    "height": 1024,
+    "room": "./images/storage_dress/dad-wardrobe-room-v4.png",
+    "empty": "./images/storage_dress/dad-wardrobe-room-v4.png",
+    "chapters": [
+      {
+        "id": "items",
+        "title": "엄마 옷장에 넣어요",
+        "subtitle": "하나씩 끌어서 알맞은 자리에 놓아요",
+        "pieces": [
+          {
+            "id": "ivory-blouse",
+            "label": "아이보리 블라우스",
+            "image": "./images/storage_dress/mom-wardrobe-clothes.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              67,
+              12,
+              294,
+              381
+            ],
+            "target": [
+              0.046223958333333336,
+              0.111328125,
+              0.11979166666666667,
+              0.23286033163265307
+            ],
+            "storageZone": "rail",
+            "positionCue": "옷걸이 칸"
+          },
+          {
+            "id": "dress",
+            "label": "원피스",
+            "image": "./images/storage_dress/mom-wardrobe-clothes.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              518,
+              10,
+              223,
+              386
+            ],
+            "target": [
+              0.18098030683290156,
+              0.111328125,
+              0.10418521966753023,
+              0.2705078125
+            ],
+            "storageZone": "rail",
+            "positionCue": "옷걸이 칸"
+          },
+          {
+            "id": "blazer",
+            "label": "재킷",
+            "image": "./images/storage_dress/mom-wardrobe-clothes.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              880,
+              10,
+              320,
+              375
+            ],
+            "target": [
+              0.3020833333333333,
+              0.111328125,
+              0.12109375,
+              0.21286010742187503
+            ],
+            "storageZone": "rail",
+            "positionCue": "옷걸이 칸"
+          },
+          {
+            "id": "slacks",
+            "label": "정장 바지",
+            "image": "./images/storage_dress/mom-wardrobe-clothes.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              114,
+              424,
+              200,
+              392
+            ],
+            "target": [
+              0.4446614583333333,
+              0.111328125,
+              0.0859375,
+              0.25265625
+            ],
+            "storageZone": "rail",
+            "positionCue": "옷걸이 칸"
+          },
+          {
+            "id": "trench",
+            "label": "트렌치코트",
+            "image": "./images/storage_dress/mom-wardrobe-clothes.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              529,
+              424,
+              195,
+              395
+            ],
+            "target": [
+              0.567564115242616,
+              0.111328125,
+              0.10445510284810128,
+              0.3173828125
+            ],
+            "storageZone": "rail",
+            "positionCue": "옷걸이 칸"
+          },
+          {
+            "id": "lilac-blouse",
+            "label": "반팔 블라우스",
+            "image": "./images/storage_dress/mom-wardrobe-clothes.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              889,
+              428,
+              304,
+              375
+            ],
+            "target": [
+              0.052180555555555556,
+              0.4580078125,
+              0.10397222222222223,
+              0.1923828125
+            ],
+            "storageZone": "rail",
+            "positionCue": "옷걸이 칸"
+          },
+          {
+            "id": "cardigan",
+            "label": "카디건",
+            "image": "./images/storage_dress/mom-wardrobe-clothes.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              64,
+              846,
+              300,
+              390
+            ],
+            "target": [
+              0.1889523237179487,
+              0.4580078125,
+              0.09865785256410257,
+              0.1923828125
+            ],
+            "storageZone": "rail",
+            "positionCue": "옷걸이 칸"
+          },
+          {
+            "id": "skirt",
+            "label": "주름치마",
+            "image": "./images/storage_dress/mom-wardrobe-clothes.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              479,
+              847,
+              295,
+              389
+            ],
+            "target": [
+              0.32636852640317054,
+              0.4580078125,
+              0.09726294719365895,
+              0.1923828125
+            ],
+            "storageZone": "rail",
+            "positionCue": "옷걸이 칸"
+          },
+          {
+            "id": "shorts",
+            "label": "반바지",
+            "image": "./images/storage_dress/mom-wardrobe-clothes.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              873,
+              872,
+              331,
+              342
+            ],
+            "target": [
+              0.4557291666666667,
+              0.4580078125,
+              0.10026041666666667,
+              0.155388500755287
+            ],
+            "storageZone": "rail",
+            "positionCue": "옷걸이 칸"
+          },
+          {
+            "id": "handbag",
+            "label": "핸드백",
+            "image": "./images/storage_dress/mom-wardrobe-bags-shoes.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              25,
+              428,
+              368,
+              388
+            ],
+            "target": [
+              0.07423888530927834,
+              0.6728515625,
+              0.08459514604810997,
+              0.1337890625
+            ],
+            "storageZone": "bags",
+            "positionCue": "가방 칸"
+          },
+          {
+            "id": "backpack",
+            "label": "노트북 백팩",
+            "image": "./images/storage_dress/mom-wardrobe-bags-shoes.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              58,
+              20,
+              308,
+              389
+            ],
+            "target": [
+              0.23628293701799485,
+              0.6806640625,
+              0.06649662596401028,
+              0.1259765625
+            ],
+            "storageZone": "bags",
+            "positionCue": "가방 칸"
+          },
+          {
+            "id": "crossbody",
+            "label": "어깨 가방",
+            "image": "./images/storage_dress/mom-wardrobe-bags-shoes.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              418,
+              116,
+              400,
+              277
+            ],
+            "target": [
+              0.3850911458333333,
+              0.68694091796875,
+              0.115234375,
+              0.11969970703125
+            ],
+            "storageZone": "bags",
+            "positionCue": "가방 칸"
+          },
+          {
+            "id": "tote",
+            "label": "토트백",
+            "image": "./images/storage_dress/mom-wardrobe-bags-shoes.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              857,
+              7,
+              365,
+              402
+            ],
+            "target": [
+              0.5722542884535655,
+              0.6796875,
+              0.07684558975953566,
+              0.126953125
+            ],
+            "storageZone": "bags",
+            "positionCue": "가방 칸"
+          },
+          {
+            "id": "pumps",
+            "label": "굽 낮은 구두",
+            "image": "./images/storage_dress/mom-wardrobe-bags-shoes.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              424,
+              476,
+              394,
+              317
+            ],
+            "target": [
+              0.08205794886961093,
+              0.833984375,
+              0.06635285226077813,
+              0.080078125
+            ],
+            "storageZone": "shoes",
+            "positionCue": "신발 칸"
+          },
+          {
+            "id": "loafers",
+            "label": "로퍼",
+            "image": "./images/storage_dress/mom-wardrobe-bags-shoes.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              847,
+              481,
+              395,
+              333
+            ],
+            "target": [
+              0.2378687281031031,
+              0.833984375,
+              0.06332504379379379,
+              0.080078125
+            ],
+            "storageZone": "shoes",
+            "positionCue": "신발 칸"
+          },
+          {
+            "id": "sneakers",
+            "label": "흰 운동화",
+            "image": "./images/storage_dress/mom-wardrobe-bags-shoes.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              13,
+              875,
+              392,
+              354
+            ],
+            "target": [
+              0.4131503060263653,
+              0.833984375,
+              0.059116054613935966,
+              0.080078125
+            ],
+            "storageZone": "shoes",
+            "positionCue": "신발 칸"
+          },
+          {
+            "id": "slippers",
+            "label": "실내 슬리퍼",
+            "image": "./images/storage_dress/mom-wardrobe-bags-shoes.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              418,
+              873,
+              406,
+              365
+            ],
+            "target": [
+              0.5809860159817352,
+              0.833984375,
+              0.059382134703196345,
+              0.080078125
+            ],
+            "storageZone": "shoes",
+            "positionCue": "신발 칸"
+          },
+          {
+            "id": "silk-scarf",
+            "label": "실크 스카프",
+            "image": "./images/storage_dress/mom-wardrobe-accessories.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              77,
+              8,
+              270,
+              400
+            ],
+            "target": [
+              0.7401041666666667,
+              0.099609375,
+              0.05625,
+              0.125
+            ],
+            "storageZone": "tie-watch",
+            "positionCue": "스카프·시계·손수건 칸"
+          },
+          {
+            "id": "watch",
+            "label": "손목시계",
+            "image": "./images/storage_dress/mom-wardrobe-accessories.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              534,
+              7,
+              184,
+              400
+            ],
+            "target": [
+              0.8331901041666666,
+              0.11328125000000001,
+              0.034140625,
+              0.11132812499999999
+            ],
+            "storageZone": "tie-watch",
+            "positionCue": "스카프·시계·손수건 칸"
+          },
+          {
+            "id": "handkerchief",
+            "label": "손수건",
+            "image": "./images/storage_dress/mom-wardrobe-accessories.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              874,
+              43,
+              342,
+              336
+            ],
+            "target": [
+              0.9021868024553572,
+              0.1435546875,
+              0.05500139508928572,
+              0.0810546875
+            ],
+            "storageZone": "tie-watch",
+            "positionCue": "스카프·시계·손수건 칸"
+          },
+          {
+            "id": "hat",
+            "label": "벙거지 모자",
+            "image": "./images/storage_dress/mom-wardrobe-accessories.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              9,
+              479,
+              407,
+              282
+            ],
+            "target": [
+              0.740234375,
+              0.28522343366093367,
+              0.09765625,
+              0.10149531633906633
+            ],
+            "storageZone": "hat-belt",
+            "positionCue": "모자·허리띠 칸"
+          },
+          {
+            "id": "belt",
+            "label": "허리띠",
+            "image": "./images/storage_dress/mom-wardrobe-accessories.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              440,
+              515,
+              372,
+              221
+            ],
+            "target": [
+              0.8636067708333334,
+              0.3037555653561828,
+              0.09309895833333333,
+              0.0829631846438172
+            ],
+            "storageZone": "hat-belt",
+            "positionCue": "모자·허리띠 칸"
+          },
+          {
+            "id": "winter-scarf",
+            "label": "털목도리",
+            "image": "./images/storage_dress/mom-wardrobe-accessories.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              852,
+              418,
+              381,
+              402
+            ],
+            "target": [
+              0.7461787740982587,
+              0.4130859375,
+              0.0857674518034826,
+              0.1357421875
+            ],
+            "storageZone": "scarf-gloves",
+            "positionCue": "목도리·장갑 칸"
+          },
+          {
+            "id": "gloves",
+            "label": "장갑",
+            "image": "./images/storage_dress/mom-wardrobe-accessories.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              446,
+              858,
+              345,
+              358
+            ],
+            "target": [
+              0.8737670216480447,
+              0.435546875,
+              0.07277845670391062,
+              0.11328125
+            ],
+            "storageZone": "scarf-gloves",
+            "positionCue": "목도리·장갑 칸"
+          },
+          {
+            "id": "socks",
+            "label": "양말",
+            "image": "./images/storage_dress/mom-wardrobe-accessories.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              14,
+              870,
+              375,
+              363
+            ],
+            "target": [
+              0.7534166236225895,
+              0.607421875,
+              0.07129175275482094,
+              0.103515625
+            ],
+            "storageZone": "underwear",
+            "positionCue": "양말·속옷 칸"
+          },
+          {
+            "id": "underwear",
+            "label": "속옷",
+            "image": "./images/storage_dress/mom-wardrobe-bags-shoes.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              841,
+              899,
+              404,
+              310
+            ],
+            "target": [
+              0.8647639448924731,
+              0.6064453125,
+              0.09078461021505375,
+              0.1044921875
+            ],
+            "storageZone": "underwear",
+            "positionCue": "양말·속옷 칸"
+          },
+          {
+            "id": "pajamas",
+            "label": "줄무늬 잠옷",
+            "image": "./images/storage_dress/mom-wardrobe-accessories.png",
+            "sheet": [
+              1254,
+              1254
+            ],
+            "crop": [
+              868,
+              848,
+              355,
+              375
+            ],
+            "target": [
+              0.809001736111111,
+              0.7783203125,
+              0.08381944444444445,
+              0.1328125
+            ],
+            "storageZone": "folded",
+            "positionCue": "잠옷 칸"
+          }
+        ]
+      }
+    ],
+    "sharedStorage": [
+      {
+        "id": "rail",
+        "label": "옷걸이 칸",
+        "target": [
+          0.3743489583333333,
+          0.0771484375
+        ],
+        "bounds": [
+          0.035807291666666664,
+          0.1015625,
+          0.6770833333333334,
+          0.548828125
+        ]
+      },
+      {
+        "id": "bags",
+        "label": "가방 칸",
+        "target": [
+          0.3743489583333333,
+          0.666015625
+        ],
+        "bounds": [
+          0.037109375,
+          0.6708984375,
+          0.67578125,
+          0.1396484375
+        ]
+      },
+      {
+        "id": "shoes",
+        "label": "신발 칸",
+        "target": [
+          0.3665364583333333,
+          0.8291015625
+        ],
+        "bounds": [
+          0.037109375,
+          0.830078125,
+          0.67578125,
+          0.08984375
+        ]
+      },
+      {
+        "id": "tie-watch",
+        "label": "스카프·시계·손수건 칸",
+        "target": [
+          0.8509114583333334,
+          0.078125
+        ],
+        "bounds": [
+          0.7330729166666666,
+          0.0771484375,
+          0.236328125,
+          0.1513671875
+        ]
+      },
+      {
+        "id": "hat-belt",
+        "label": "모자·허리띠 칸",
+        "target": [
+          0.8509114583333334,
+          0.2578125
+        ],
+        "bounds": [
+          0.7330729166666666,
+          0.2431640625,
+          0.236328125,
+          0.1494140625
+        ]
+      },
+      {
+        "id": "scarf-gloves",
+        "label": "목도리·장갑 칸",
+        "target": [
+          0.8509114583333334,
+          0.419921875
+        ],
+        "bounds": [
+          0.7330729166666666,
+          0.4072265625,
+          0.236328125,
+          0.150390625
+        ]
+      },
+      {
+        "id": "underwear",
+        "label": "양말·속옷 칸",
+        "target": [
+          0.8509114583333334,
+          0.5859375
+        ],
+        "bounds": [
+          0.7330729166666666,
+          0.5751953125,
+          0.236328125,
+          0.142578125
+        ]
+      },
+      {
+        "id": "folded",
+        "label": "잠옷 칸",
+        "target": [
+          0.8509114583333334,
+          0.755859375
+        ],
+        "bounds": [
+          0.7330729166666666,
+          0.734375,
+          0.236328125,
+          0.18359375
+        ]
+      }
+    ],
     "hidden": true,
     "returnNav": "stickerBedroom",
     "returnLabel": "침실 스티커북"
@@ -4529,5 +5288,5 @@ window.STICKER_BOOKS.push(...[
     "completeMessage": "식사 준비를 마쳤어요!"
   }
 ]);
-const storageActivities = {"kitchen": [{"label": "냉장고 채우기", "description": "음료와 음식, 과일과 채소를 넣어요", "nav": "stickerFridge", "target": [0.85, 0.4]}, {"label": "식판 차리기", "description": "밥과 반찬, 간식을 차려요", "nav": "stickerTray"}], "bedroom": [{"label": "화장대 정리하기", "description": "드라이기와 화장품 일곱 가지를 올려요", "nav": "stickerVanity_items", "target": [0.634, 0.52]}, {"label": "어린이 옷장", "description": "학교 가방, 찍찍이 운동화, 어린이 옷을 정리해요", "nav": "stickerKidswardrobe_items", "target": [0.88, 0.42]}, {"label": "어른 옷장", "description": "아빠의 양복, 넥타이, 출근 가방을 정리해요", "nav": "stickerWardrobe_items", "target": [0.88, 0.57]}, {"label": "이불장 정리하기", "description": "넓은 칸에 이불과 베개를 넣어요", "nav": "stickerLinen_items", "target": [0.72, 0.86]}, {"label": "옷입히기", "description": "재민이와 외출 준비를 해요", "nav": "stickerDress"}]};
+const storageActivities = {"kitchen": [{"label": "냉장고 채우기", "description": "음료와 음식, 과일과 채소를 넣어요", "nav": "stickerFridge", "target": [0.85, 0.4]}, {"label": "식판 차리기", "description": "밥과 반찬, 간식을 차려요", "nav": "stickerTray"}], "bedroom": [{"label": "화장대 정리하기", "description": "드라이기와 화장품 일곱 가지를 올려요", "nav": "stickerVanity_items", "target": [0.634, 0.52]}, {"label": "어린이 옷장", "description": "학교 가방, 찍찍이 운동화, 어린이 옷을 정리해요", "nav": "stickerKidswardrobe_items", "target": [0.88, 0.42]}, {"label": "아빠 옷장", "description": "양복, 넥타이, 출근 가방을 정리해요", "nav": "stickerWardrobe_items", "target": [0.88, 0.57]}, {"label": "엄마 옷장", "description": "원피스, 블라우스, 치마와 가방을 정리해요", "nav": "stickerMomwardrobe_items", "target": [0.88, 0.72]}, {"label": "이불장 정리하기", "description": "넓은 칸에 이불과 베개를 넣어요", "nav": "stickerLinen_items", "target": [0.72, 0.86]}, {"label": "옷입히기", "description": "재민이와 외출 준비를 해요", "nav": "stickerDress"}]};
 window.STICKER_BOOKS.forEach(book => { if (storageActivities[book.id]) book.activities = storageActivities[book.id]; });
